@@ -151,10 +151,44 @@
       opacity: .8;
       line-height: 1.6;
     }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
 
     /* ───────── Mobile ───────── */
     @media (max-width: 768px) {
       body { flex-direction: column; overflow-y: auto; }
+        /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 15px;
+    background-color: rgba(0,0,0,0.45);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    backdrop-filter: blur(18px);
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .top-name {
+    font-size: 24px;
+    margin: 0 auto;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    left: -20px;
+  }
       .sidebar { 
         width: 100%; 
         height: auto; 
