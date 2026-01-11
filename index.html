@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K1LLAJAY</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%; width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black; color: white;
+      overflow-x: hidden;
+    }
+    body { display: flex; flex-direction: row; height: 100vh; }
+    /* TOPBAR (mobile only) */
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .top-name {
+      font-size: 24px;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 1px solid #333;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      background-color: black;
+      border: 1px solid #666;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: border-color 0.3s ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+      border-radius: 8px;
+    }
+    .button:hover { border-color: #999; }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: minmax(250px, auto);
+      gap: 10px;
+      overflow-y: auto;
+    }
+    .grid-item {
+      border: 1px solid #333;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .grid-item img { width: 100%; height: 100%; object-fit: cover; }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+    }
+    .modal-wrapper {
+      position: relative;
+      margin: auto;
+      width: 80%;
+      max-width: 700px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .modal-content {
+      display: block;
+      width: 100%;
+    }
+    .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .close:hover { color: #999; }
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px;
+        background-color: black;
+        border-bottom: 1px solid #333;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+      }
+      .hamburger {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .top-name {
+        font-size: 24px;
+        text-align: center;
+        margin: 0;
+        text-transform: uppercase;
+        flex: 1;
+      }
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        background-color: black;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      .profile-img {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+      }
+      .name {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      .buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .button {
+        padding: 10px;
+        font-size: 12px;
+      }
+      .main-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        padding: 10px;
+        flex: 1;
+      }
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: black;
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      .modal-wrapper { width: 95%; }
+      .close { right: 0; top: 0; font-size: 35px; }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <h1 class="top-name">HOME</h1>
+  </div>
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR PROFILE" />
+    <h1 class="name"><a href="yaeyadir.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <div class="buttons">
+      <a href="music.html" class="button">LATEST ALBUM</a>
+      <a href="portfolio.html" class="button">PORTFOLIO</a>
+      <a href="podcast.html" class="button">PODCAST</a>
+      <a href="player.html" class="button">ALL RELEASES</a>
+      <a href="#" class="button">COMING SOON</a>
+    </div>
+
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="database.html">MUSIC DATABASE</a>
+      <span class="footer-dot">•</span>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <span class="footer-dot">•</span>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="privacy-policy.html">PRIVACY</a>
+
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+  <div class="main-content" id="grid-container"></div>
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-wrapper">
+      <img class="modal-content" id="img01">
+      <span class="close">&times;</span>
+    </div>
+  </div>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba",
+      measurementId: "G-SXQHBNGQBF"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const gridContainer = document.getElementById("grid-container");
+    db.ref("slides").once("value").then(snapshot => {
+      const slides = snapshot.val();
+      gridContainer.innerHTML = "";
+      const keys = Object.keys(slides).reverse();
+      for (const key of keys) {
+        const item = slides[key];
+        const src = typeof item === "string" ? item : item.url;
+        const gridItem = document.createElement("div");
+        gridItem.className = "grid-item";
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "PORTFOLIO IMAGE";
+        gridItem.appendChild(img);
+        gridContainer.appendChild(gridItem);
+      }
+    }).catch(error => console.error("Error loading slides:", error));
+    // Modal
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const span = document.getElementsByClassName("close")[0];
+    gridContainer.addEventListener('click', function(e) {
+      if (e.target.tagName === 'IMG') {
+        modal.style.display = "block";
+        modalImg.src = e.target.src;
+      }
+    });
+    span.onclick = function() { modal.style.display = "none"; }
+    modal.onclick = function(e) { if (e.target == modal) modal.style.display = "none"; }
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
