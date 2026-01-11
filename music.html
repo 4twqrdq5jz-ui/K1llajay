@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Just How Life Goes – YAE YADIR</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%; width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black; color: white;
+      overflow: hidden;
+    }
+    body { display: flex; height: 100vh; }
+    body.no-scroll { overflow: hidden; }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .top-name {
+      font-size: 24px;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 1px solid #333;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      background-color: black;
+      border: 1px solid #666;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: border-color 0.3s ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+    }
+    .button:hover {
+      border-color: #999;
+    }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover {
+      opacity: 0.5;
+    }
+    .footer-dot {
+      color: white;
+      font-size: 10px;
+      opacity: 0.7;
+    }
+    .copyright {
+      font-size: 8px;
+      margin-top: 5px;
+      width: 100%;
+    }
+    .main-content {
+      flex: 1; padding: 80px 100px; overflow-y: auto;
+    }
+    /* NEW: Album title instead of clean/explicit toggle */
+    #album-title-section {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    #album-title {
+      font-size: 35px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .credits-button {
+      display: block;
+      margin: 30px auto 0;
+      font-size: 16px;
+      letter-spacing: 4px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .credits-button:hover {
+      opacity: 1;
+    }
+    .disc-header {
+      text-align: center; font-size: 16px; letter-spacing: 4px;
+      text-transform: uppercase; margin: 60px 0 30px; opacity: 0.7;
+    }
+    /* TRACKLIST */
+    .tracklist {
+      display: none;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 19px;
+      line-height: 2.4;
+    }
+    .tracklist.active { display: block; }
+    .track {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .track:hover { opacity: 0.7; }
+    .track-number {
+      width: 40px;
+      text-align: right;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+    .track-title {
+      flex: 1;
+      text-align: left;
+    }
+    /* OVERLAY */
+    #overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.95);
+      display: none; flex-direction: column;
+      z-index: 3000;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    #overlay.active {
+      display: flex;
+    }
+    #overlayContent {
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; padding: 10px; position: relative;
+    }
+    .overlay-close {
+      position: absolute; top: 20px; right: 20px;
+      font-size: 2rem; background: none; border: none;
+      color: #fff; cursor: pointer; z-index: 1;
+    }
+    /* Fixed logo alignment – same baseline */
+    .service-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin: 40px 0 30px;
+      height: 60px; /* forces same height container */
+    }
+    .service-logos a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .service-logos img {
+      height: 42px; /* all logos same height */
+      width: auto;
+      vertical-align: middle;
+    }
+    .sub-toggle {
+      text-align: center; margin-bottom: 20px;
+    }
+    .sub-toggle span {
+      cursor: pointer; padding: 0 15px; letter-spacing: 2px;
+    }
+    .sub-toggle .activeTab {
+      text-decoration: underline;
+    }
+    .tab-content {
+      flex: 1; overflow-y: auto; display: none;
+      margin-top: 10px; padding-right: 10px;
+    }
+    .tab-content.activeTab {
+      display: block;
+    }
+    #overlayFooter {
+      text-align: center; padding: 15px; background: #000;
+    }
+    #overlayFooter button {
+      font-size: 1.8rem; background: transparent;
+      border: none; color: #fff; cursor: pointer;
+    }
+    /* Credits Modal */
+    .song-modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.95);
+      display: none; flex-direction: column; z-index: 2000;
+    }
+    .song-modal.open {
+      display: flex;
+    }
+    .song-modal .container {
+      flex: 1; overflow-y: auto; padding: 40px;
+      line-height: 1.6;
+    }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px;
+      font-size: 2rem; background: none; border: none;
+      color: #fff; cursor: pointer;
+    }
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px;
+        background-color: black;
+        border-bottom: 1px solid #333;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+      }
+      .hamburger {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .top-name {
+        font-size: 24px;
+        text-align: center;
+        margin: 0;
+        text-transform: uppercase;
+        flex: 1;
+      }
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        background-color: black;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      .profile-img {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+      }
+      .name {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      .buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .button {
+        padding: 10px;
+        font-size: 12px;
+      }
+      .main-content {
+        padding: 10px;
+        flex: 1;
+      }
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: black;
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      #album-title-section {
+        margin-bottom: 30px;
+      }
+      #album-title {
+        margin-top: 30px;
+        font-size: 28px;
+      }
+      .disc-header {
+        margin: 40px 0 20px;
+      }
+      .tracklist {
+        font-size: 16px;
+        line-height: 2;
+      }
+      .service-logos {
+        gap: 20px;
+        height: 50px;
+      }
+      .service-logos img {
+        height: 36px;
+      }
+      .song-modal .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <h1 class="top-name">MUSIC</h1>
+  </div>
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR PROFILE" />
+    <h1 class="name"><a href="index.html">YAE YADIR</a></h1>
+    <div class="buttons">
+      <a href="index.html" class="button">GALLERY</a>
+      <a href="portfolio.html" class="button">PORTFOLIO</a>
+      <a href="podcast.html" class="button">PODCAST</a>
+      <a href="player.html" class="button">ALL RELEASES</a>
+      <a href="#" class="button">COMING SOON</a>
+    </div>
+
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="database.html">MUSIC DATABASE</a>
+      <span class="footer-dot">•</span>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <span class="footer-dot">•</span>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="privacy-policy.html">PRIVACY</a>
+
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+  <main class="main-content">
+    <!-- NEW: Album title + credits button -->
+    <section id="album-title-section">
+      <div id="album-title">JUST HOW LIFE GOES</div>
+      <div class="credits-button" onclick="openCredits()">CREDITS</div>
+    </section>
+    
+    <!-- DISC 1 -->
+    <div class="disc-header">DISC 1:</div>
+    <div id="disc1-clean" class="tracklist active">
+      <div class="track"><div class="track-number">1.</div><div class="track-title track-item" data-song="flack">LAURENT (FLACK)</div></div>
+      <div class="track"><div class="track-number">2.</div><div class="track-title track-item" data-song="sacred">SACR€D (IMPERIALISM)</div></div>
+      <div class="track"><div class="track-number">3.</div><div class="track-title track-item" data-song="step">STEP BIG</div></div>
+      <div class="track"><div class="track-number">4.</div><div class="track-title track-item" data-song="dad">DADDIES (FEAT. MORTICIA505)</div></div>
+      <div class="track"><div class="track-number">5.</div><div class="track-title track-item" data-song="cactus">CACTUS (FEAT. CL0UD!)</div></div>
+      <div class="track"><div class="track-number">6.</div><div class="track-title track-item" data-song="stash">TRAPSTASH</div></div>
+    </div>
+
+    <!-- DISC 2 -->
+    <div class="disc-header">DISC 2:</div>
+    <div id="disc2-clean" class="tracklist active">
+      <div class="track"><div class="track-number">1.</div><div class="track-title track-item" data-song="hide">NO MORE HIDING</div></div>
+      <div class="track"><div class="track-number">2.</div><div class="track-title track-item" data-song="dust">ANGEL DUST</div></div>
+      <div class="track"><div class="track-number">3.</div><div class="track-title track-item" data-song="safe">SAFE</div></div>
+      <div class="track"><div class="track-number">4.</div><div class="track-title track-item" data-song="falling">WE MIGHT EVEN BE FALLING IN LOVE</div></div>
+      <div class="track"><div class="track-number">5.</div><div class="track-title track-item" data-song="cut">CUT 'EM OFF</div></div>
+      <div class="track"><div class="track-number">6.</div><div class="track-title track-item" data-song="trap">TRAP SH*T (FEAT. NAE KA$H)</div></div>
+      <div class="track"><div class="track-number">7.</div><div class="track-title track-item" data-song="love">LOVE ME, LOVE THY</div></div>
+      <div class="track"><div class="track-number">8.</div><div class="track-title track-item" data-song="shit">SH*T</div></div>
+      <div class="track"><div class="track-number">9.</div><div class="track-title track-item" data-song="damn">DAMN.</div></div>
+      <div class="track"><div class="track-number">10.</div><div class="track-title track-item" data-song="myst">MYSTERY</div></div>
+    </div>
+
+  </main>
+
+  <!-- Overlay (lyrics + credits + streaming links) -->
+  <aside id="overlay">
+    <div id="overlayContent">
+      <button class="overlay-close" onclick="closeOverlay()">X</button>
+      <div class="service-logos">
+        <a id="link-apple" href="#" target="_blank"><img src="apple.svg" alt="Apple Music"></a>
+        <a id="link-spotify" href="#" target="_blank"><img src="spotify.svg" alt="Spotify"></a>
+        <a id="link-amazon" href="#" target="_blank"><img src="amazon.svg" alt="Amazon Music"></a>
+        <a id="link-tidal" href="#" target="_blank"><img src="tidal.svg" alt="Tidal"></a>
+      </div>
+      <div class="sub-toggle">
+        <span id="lyricsTab" class="activeTab" onclick="switchTab('lyrics')">LYRICS</span>
+        <span id="creditsTab" onclick="switchTab('credits')">CREDITS</span>
+      </div>
+      <div id="lyrics" class="tab-content activeTab">Loading lyrics...</div>
+      <div id="credits" class="tab-content">Loading credits...</div>
+    </div>
+    <div id="overlayFooter">
+      <button onclick="closeOverlay()">X</button>
+    </div>
+  </aside>
+
+  <!-- Full Credits Modal -->
+  <aside class="song-modal" id="creditsModal" aria-hidden="true">
+    <div class="container">
+      <h1>JUST HOW LIFE GOES WHEN YOU'RE HIGH</h1>
+      <h3>BY YAE YADIR</h3>
+      <br>
+      <hr>
+      <br>
+      <h3>LAURENT (FLACK)</h3>
+      <p>PERFORMED B  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>SACR€D (IMPERIALISM)</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>STEP BIG</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>DADDIES (FEAT. MORTICIA505)</h3>
+      <p>PERFORMED BY YAE YADIR & MORTICIA505 / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>CACTUS (FEAT. CL0UD!)</h3>
+      <p>PERFORMED BY YAE YADIR & CL0UD! / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>TRAPSTASH</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <h1>JUST HOW LIFE GOES</h1>
+      <h3>BY YAE YADIR</h3>
+      <br>
+      <hr>
+      <br>
+      <h3>NO MORE HIDING</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR / SAMPLED FROM "NO MORE HIDING" BY SZA</p>
+      <br>
+      <h3>ANGEL DUST</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>SAFE</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / PRODUCED BY CADO & YAE YADIR / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>WE MIGHT EVEN BE FALLING IN LOVE</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / PRODUCED BY YAE YADIR / MIXED BY YAE YADIR / SAMPLED FROM "WE MIGHT EVEN BE FALLING IN LOVE" BY VICTORIA MONET</p>
+      <br>
+      <h3>CUT 'EM OFF</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>TRAP SH*T</h3>
+      <p>PERFORMED BY YAE YADIR & NAE KA$H / WRITTEN BY JE'VEON JEFFERSON & SHALICIA MINOR / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>LOVE ME, LOVE THY</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>SH*T</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>
+      <br>
+      <h3>DAMN.</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR / INSPIRED BY KENDRICK LAMAR'S DAMN</p>
+      <br>
+      <h3>MYSTERY</h3>
+      <p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR / INSPIRED BY SUFJAN STEVENS' MYSTERY OF LOVE</p>
+      <h1>JUST HOW LIFE GOES (EXTRAS)</h1>
+      <h3>BY YAE YADIR</h3>
+      <br>
+      <hr>
+      <br>
+      <h3>PON(K)TIAC</h3>
+      <p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>
+      <button class="modal-close" onclick="closeCredits()" aria-label="Close credits">X</button>
+    </div>
+  </aside>
+
+  <script>
+    // removed showVersion() function since we no longer have clean/explicit toggle
+    // all tracklists are now always visible (only one version per disc)
+
+    function openOverlay() { document.getElementById('overlay').classList.add('active'); document.body.classList.add('no-scroll'); }
+    function closeOverlay() { document.getElementById('overlay').classList.remove('active'); document.body.classList.remove('no-scroll'); }
+    function openCredits() { document.getElementById('creditsModal').classList.add('open'); document.body.classList.add('no-scroll'); }
+    function closeCredits() { document.getElementById('creditsModal').classList.remove('open'); document.body.classList.remove('no-scroll'); }
+    function switchTab(tab) {
+      document.getElementById('lyrics').classList.toggle('activeTab', tab === 'lyrics');
+      document.getElementById('credits').classList.toggle('activeTab', tab === 'credits');
+      document.getElementById('lyricsTab').classList.toggle('activeTab', tab === 'lyrics');
+      document.getElementById('creditsTab').classList.toggle('activeTab', tab === 'credits');
+    }
+
+    // song data and click handlers unchanged (kept exactly as you had it)
+    const songData = {
+      safe: {
+        lyrics: `You’re so safe with me
+I’m who your man wanna be
+Go run them fucking streets
+Go play with somebody else
+I’ll Make you disappear
+Nobody else can tell
+
+Runnin' the entire world
+Hotboxing with your girl
+Smooth criminal
+Just like Mike Jack
+Yeah, ho
+The fuck they think they playin’ wit PM 
+I’m too smart
+Yo kids look up to me
+Man, why is yall trippin' over some bullshit
+Why y’all bringing up some old shit
+Why y’all wanna see my downfall
+Praying bout some shit that yall want to happen
+
+Yeah, you're not safe anymore
+Tired of all this drama
+do that shit again
+You gon' get hit with that fa
+I'm not playin' no more
+
+You’re so safe with me
+I’m who your man wanna be
+Go run them fucking streets
+Go play with somebody else
+I’ll Make you disappear
+Nobody else can tell
+
+Y’all can’t match my drip
+Talk behind my back, Y’all gon’ get the clip
+Y’all bitches salty
+Niggas too
+What y’all drinking on
+Oh, that haterade 
+Hate to tell you, your man is gay
+He all up in the club
+Playing hooky with them boy
+Don’t you be such a snub
+Why you built like a toy
+Finna expose yo ass
+Just like jaguar wright
+Bitch you need some class
+Get out my sight
+Why you making tapes
+Just to leak ‘em
+Why you tryna escape
+You put yourself in
+
+Yeah, you're not safe anymore
+Tired of this drama
+You gon' get hit with that fa
+
+You’re so safe with me
+Go run them fucking streets
+Go play with somebody else
+I’ll Make you disappear
+Nobody else can tell
+
+“Fuck u, Yae, I hate your flow”
+Yeah, yeah other bitches do
+I don’t give a f.u.c.k
+Yo nigga want me
+What you gon do bout that
+He kiss my neck
+Yeah, he love me
+Pull up in that lamb
+Yo man is mine
+We out in Costa Rica
+playing hooky by the seashore
+Bitch, no need for lollygagging 
+
+Yeah, you're not safe anymore
+Tired of all this drama
+do that shit again
+You gon' get hit with that fa
+I'm not playin' no more
+Get the fuck out my face
+I’m not the one, the now, or the later
+
+You’re so safe with me
+I’m who your man wanna be
+Go run them fucking streets
+Go play with somebody else
+I’ll Make you disappear
+Nobody else can tell
+
+You’re so safe with me
+I’m who your man wanna be
+Go run them fucking streets
+Go play with somebody else
+I’ll Make you disappear
+Nobody else can tell
+
+You’re so safe with me`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / PRODUCED BY CADO &  YAE YADIR / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/safe-single/1753897104',
+          spotify: 'https://open.spotify.com/album/3j7qPHrkJUIoV0p2RnIxeT?si=giSJrWYYRuSBD148rokvDw',
+          amazon:  'https://www.amazon.com/Safe-Explicit-Yae-Yadir/dp/B0D7XQP5Z7',
+          tidal:   'https://tidal.com/browse/album/371267715'
+        }
+      },
+      falling: {
+        lyrics: `I caught a vibe, couldn't even lie,
+Caught me by surprise, baby boy, lookin' fly,
+Late night talks, see the spark in your eyes,
+Feelin' something real, ain't no need to disguise.
+
+We might even be fallin' in love,
+Feelin' something different, can't get enough,
+Holdin' on tight, ain't never givin' up,
+We might even be fallin' in love.
+(We might even be fallin', falling in love, 
+boy, I might be wrong but I feel like it’s true, Verse 2)
+
+Candlelight dinners, whispers sweet,
+Chillin' by the ocean, waves at our feet,
+You the melody, baby, I'm the beat,
+Together we groove, our love’s complete.
+From sunrise to sunset, you on my mind,
+Can't deny the chemistry, it’s one of a kind,
+Every moment with you, feelin' divine,
+Boy, you the reason, my heart’s on rewind.
+
+We might even be fallin' in love,
+Feelin' something different, can't get enough,
+Holdin' on tight, ain't never givin' up,
+We might even be fallin' in love.
+(We might even be fallin', falling in love, 
+boy, I might be wrong but I feel like it’s true, Bridge)
+
+Look into your eyes, see my future clear,
+Every laugh, every tear, I'mma be right here,
+A love like ours, ain't got nothin' to fear,
+You my muse, my heart, my dear.
+
+We might even be fallin' in love,
+Feelin' something different, can't get enough,
+Holdin' on tight, ain't never givin' up,
+We might even be fallin' in love.
+
+We might even be fallin' in love,
+Feelin' something different, can't get enough,
+Holdin' on tight, ain't never givin' up,
+We might even be fallin' in love.
+
+Here's to us, to what we’ve become,
+From strangers to lovers, we’re second to none,
+In this love story, we’ve only begun,
+Baby, with you, I know I've already won.`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / PRODUCED BY  YAE YADIR / MIXED BY  YAE YADIR / SAMPLED FROM "WE MIGHT EVEN BE FALLING IN LOVE" BY VICTORIA MONET</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/we-might-even-be-falling-in-love-single/1755480445',
+          spotify: 'https://open.spotify.com/album/5EmYmcQCQrRVCwf1U8pb8E',
+          amazon:  'https://music.amazon.com/albums/B0D8MY7JSK',
+          tidal:   'https://tidal.com/browse/album/372829990'
+        }
+      },
+      shit: {
+        lyrics: `I’m steppin’ in, pride month, all rainbow
+All these niggas showing’ ass and they’re high libido
+Oh my, looka dere, here come fine shit
+All American, with some Spanish, even some brits 
+Showin’ out, with the lesbians, always play it safe
+Tops lookin’ for bottoms, they very brave
+At Cowboy Carter Tour, We are the visuals
+At the gay bar, niggas showin’ nipples
+
+Man what the fuck these niggas on
+Hoe, this ain’t Minecraft you ain’t gon respawn
+I salute to the Onika Tanya Maraj
+Stop lookin’ at my man, he like guys
+
+Come on, let’s go purge the White House
+Let’s go kill Melania’s orange ass spouse
+At the club, we all fam, lookin’ for dick
+Come here nigga, let me play with your joystick
+Then also let me drink your watermelon
+Oh lord, God made you into perfection
+Got the crown, got the henny, we gettin drunk tonight
+Got the chica’s, got sir davis, getting drunk all night
+
+We outchea, glitter poppin’ on the fuckin’ dash
+Straps tight, heels clickin’, throwin’ ass and cash
+Sweat drippin’, bodies bumpin’ like a tide
+Queer squad deep, who the fuck tryna slide
+
+What the fuck y’all tryna prove out here
+This ain’t no game, you die once — let’s be clear
+Shoutout Nicki, Queen shit, no facade
+Back up off my man, he don’t fuck with no broads`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR /</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/shit-single/1837577687',
+          spotify: 'https://open.spotify.com/album/1sZqDNXXk0br93TxXi8EfP?si=6HGelbOkTMeefpwPq9TVoQ',
+          amazon:  'https://music.amazon.com/albums/B0FPP33V29?trackAsin=B0FPP4MMVQ',
+          tidal:   'https://tidal.com/browse/track/458238736'
+        }
+      },
+      trap: {
+        lyrics: `Cookin’ up all damn day, got the trap on simmer
+Hundred bands in the whip, I ain’t no beginner
+Opps talkin’ wild, but they soft in the mirror
+Stackin’ blue-faced hunnids, make the bag get thicker
+Sippin’ on that Act’, got me high as a kite
+Bad lil’ bitch wanna ride all night
+In the trap with the racks, no sleep, no light
+Flip that shit, yeah I get it on sight
+
+bad bitch, thin waist, and she pop shit
+Makin hits, top ten, on the chart list
+And my family don’t play, yeah, they fight shit
+I’m on some real nigga shit, yeah I trap shit
+
+Bad Bitch, slim waist, and my money long
+Yo nigga wanna fuck, but can't cause he a broke hoe
+It's big sissy on the beat, you already know it's me
+Yo nigga wanna fuck, he can't, so he be beating his meat to me
+Ain't no cap in my rap, you say I'm trolling, hoe
+I ain't gotta do it, bitch what I say, really going on
+I don't give a fuck, I'm playful and you really mad
+Yo nigga wanna fuck, he took me out
+Yeah he dropped a couple bands
+Yeah, talking bout, show you a band, I'm not your friend
+Hoe look like a duck, I'm talking bout pelican
+Come get yo man
+Is you mad 
+Bitch get glad
+Bitch come kiss my ass
+Like your nigga did
+Fuck him, bitch he's not my baby dad
+
+bad bitch, thin waist, and she pop shit
+Makin hits, top ten, on the chart list
+And my family don’t play, yeah, they fight shit
+I’m on some real nigga shit, yeah I trap shit
+
+bad bitch, thin waist, and she pop shit
+Makin hits, top ten, on the chart list
+And my family don’t play, yeah, they fight shit
+I’m on some real nigga shit, yeah I trap shit`,
+        credits: `<p>PERFORMED BY  YAE YADIR & NAE KA$H / WRITTEN BY JE'VEON JEFFERSON & SHALICIA MINOR / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/trap-shit-feat-nae-ka%24h-single/1837577493',
+          spotify: 'https://open.spotify.com/album/56cGegfTWr2goKFgow12NC?si=bPmTmxs_QrqFCiaQO0NjBg',
+          amazon:  'https://music.amazon.com/albums/B0FPNMTNM6?trackAsin=B0FPNYGY8Q',
+          tidal:   'https://tidal.com/browse/track/458238736'
+        }
+      },
+      hide: {
+        lyrics: `No more hiding, stop trying
+To deny my truth
+No more lying, you not dying
+you think you that, but you not even cute
+
+I’ma tell y’all a story
+From deep in my heart, no glory
+I’m not sorry, just depressed
+all you hoes is never blessed
+my life has been a toy
+to you, that’s your joy
+all you niggas, are aired out
+you finna lose your clout
+Felt like I’ve been shot in the chest
+When I saw you with him, I address  
+Like SZA said, No More Hiding
+i wanna feel sun on my skin
+
+No more hiding, stop trying
+To deny my truth
+No more lying, you not dying
+you think you that, but you not even cute
+
+Shout out HJ Holland
+He encouraged me to write this song
+to be honest, you niggas need to move to Scotland
+because you really don’t belong
+all I know is, fuck all you niggas
+fuck you wanna be’s, y’all not a boss
+I’m tired of hurting, tired of fighting
+I’m tired of hiding my pain behind the crying
+to be honest, ima go on hiatus
+until you niggas looking like a anus
+Like SZA said, No More Hiding
+i wanna feel sun on my skin
+
+No more hiding, stop trying
+To deny my truth
+No more lying, you not dying
+you think you that, but you not even cute
+
+all the bad bitches who nigga did you wrong, wave ya hands
+to all the niggas that lie everyday, move along with your demands
+on my soul, you niggas bold, for what
+Just cheating, on some bad bitches, for a nut
+I’m sick and tired of all the arguing, your mind is gonna stay the same
+at the end of the day, you’re the one to blame`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR / SAMPLED FROM "NO MORE HIDING" BY SZA</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/no-more-hiding-single/1838045994',
+          spotify: 'https://open.spotify.com/album/4qfoaKwkKRyaZs3Nzs81Lq?si=hvre4u6gRk-4Q49g-7U4zA',
+          amazon:  'https://music.amazon.com/tracks/B0FPYL2RG5',
+          tidal:   'https://tidal.com/browse/track/458736483'
+        }
+      },
+      dust: {
+        lyrics: `I’m an Angel on Angel Dust,  
+Feathers kissed by flames, lungs choked with rust.  
+I wander through the city with a halo that's askew,  
+Hands shaking like prayers that never made it through.
+
+I’m both sacred and haunted,  
+A sinner and a saint,  
+Spitting verses in alleys splashed with pain.  Wings clipped, yet I still reach for the sky,  
+Trying to soar high enough to let my scars fly.   
+
+Every heartbeat’s a chaotic drumbeat,  
+Every breath a confession I can’t quite release.  People gaze at me as if I’m falling apart,  
+But I’m just breaking open to share my art.   
+
+Angel dust—it’s not just the powder, it’s the memory,  
+Of innocence lost in the wreckage of energy.  
+Of nights I traded my shadow for streetlight glow,  
+Just to feel alive in the grip of the night’s shadow.   
+
+Don’t call me crazy,  
+Call me infinite.  
+I’m a galaxy confined in a body that limps,  
+An unfinished sermon, a psalm yet to be sung,  A battle between heaven and where I belong.   
+
+I’m an Angel on Angel Dust,  
+A paradox, a prophecy, a flame you can’t trust.  I’m here to remind you—  
+Sometimes the most broken voices
+Carry the loudest echoes of God`,
+        credits: `<p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/just-how-life-goes/1844947382', 
+          spotify: 'https://open.spotify.com/album/6j21F1myu0zahkXavSId80?si=1',
+          amazon:  'https://www.amazon.com/dp/B0FVBN1W77?linkCode=osi&th=1&psc=1&tag=featurefm-20',
+          tidal:   'https://tidal.com/album/465760617'
+        }
+      },
+      cut: {
+        lyrics: `Cut them bitches off
+Yeah, Cut them bitches off
+We don’t need to try
+We just living life
+Cut them niggas off
+Yeah, Cut them niggas off
+Since they wanna fight
+We gon get it right
+
+Had change shit up, bad
+Had to switch from my past
+Said I was being fast
+They put me on blast
+They didn’t see the mask 
+I had no one, I 
+Had no one on my side
+Even if I tried
+To see the light
+But now I’m so bright
+
+Cut them bitches off
+Yeah, Cut them bitches off
+We don’t need to try
+We just living life
+Cut them niggas off
+Yeah, Cut them niggas off
+Since they wanna fight
+We gon get it right
+
+Just How Life Goes
+We gon steal the Show
+Everybody Hoes
+It’s a low Blow
+Bitch, I’m flower boy
+You know I’ll bring you joy
+My friend from Detroit
+He don’t kill with toys
+
+Cut them bitches off
+Yeah, Cut them bitches off
+We don’t need to try
+We just living life
+Cut them niggas off
+Yeah, Cut them niggas off
+Since they wanna fight
+We gon get it rightI’m an Angel on Angel Dust,  
+`,
+        credits: `<p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/just-how-life-goes/1844947382', 
+          spotify: 'https://open.spotify.com/album/6j21F1myu0zahkXavSId80?si=1',
+          amazon:  'https://www.amazon.com/dp/B0FVBN1W77?linkCode=osi&th=1&psc=1&tag=featurefm-20',
+          tidal:   'https://tidal.com/album/465760617'
+        }
+      },
+      love: {
+        lyrics: `Curtains fluttered to life
+Your silence becomes louder than your eyes
+I feel spaces between our hand
+Still reaching, Still reaching, but never quite so
+
+Love Me, Love Thy
+Love me beyond the fear you hide
+Love Me, Love Thy
+Like the lunar pull of the never ending tide
+If your heart is a temple, then let mine arrive
+Love Me, Love Thy, Love Thy
+
+We are the unspoken truths, painted in the air
+We blended colors, but continue to bleed through
+I have learned that silence can teach me 
+More than the strongest thing if the nail shouldn’t fall
+
+Love Me, Love Thy
+Love me beyond the fear you hide
+Love Me, Love Thy
+Like the lunar pull of the never ending tide
+If your heart is a temple, then let mine arrive
+Love Me, Love Thy, Love Thy`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/just-how-life-goes/1844947382', 
+          spotify: 'https://open.spotify.com/album/6j21F1myu0zahkXavSId80?si=1',
+          amazon:  'https://www.amazon.com/dp/B0FVBN1W77?linkCode=osi&th=1&psc=1&tag=featurefm-20',
+          tidal:   'https://tidal.com/album/465760617'
+        }
+      },
+      damn: {
+        lyrics: `Wake the fuck up, same cycle, fightin’ rivals
+Prayin’ to the Lord but I’m strapped for survival
+Dark nights, bright lights, shit feel tribal
+Either be the king or a pawn in the Bible
+Hands dirty, heart pure, still misunderstood
+Life told me, “Boy, don’t you die in the hood”
+World cold as a bitch, but I move how I should
+Every time I fall off, I come back twice as good
+
+DAMN. They don’t wanna see me rise
+DAMN. Fuck the hate up in they eyes
+DAMN. Every loss a new prize
+If you knock me on the ground, bitch, I still gon’ revive
+DAMN. I been fightin’ for my soul
+DAMN. Turn that pressure into gold
+DAMN. Never break, never fold
+When the reaper come for me, tell that bitch I’m too bold
+
+I was down bad, broke, rain on my head
+Fuck sleep, fuck love, I was fightin’ instead
+Fake friends turn snakes, left me for dead
+Everybody want the crown but can’t carry the dread
+Legacy heavy, I ain’t ask for the fame
+Still I write my own shit with the blood in my veins
+When the beat cut silent, they gon’ scream my name
+Not a product of the streets, I’m a prophet from the flames
+
+DAMN. They don’t wanna see me rise
+DAMN. Fuck the hate up in they eyes
+DAMN. Every loss a new prize
+If you knock me on the ground, bitch, I still gon’ revive
+DAMN. I been fightin’ for my soul
+DAMN. Turn that pressure into gold
+DAMN. Never break, never fold
+When the reaper come for me, tell that bitch I’m too bold`,
+        credits: `<p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR / INSPIRED BY KENDRICK LAMAR'S DAMN</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/just-how-life-goes/1844947382', 
+          spotify: 'https://open.spotify.com/album/6j21F1myu0zahkXavSId80?si=1',
+          amazon:  'https://www.amazon.com/dp/B0FVBN1W77?linkCode=osi&th=1&psc=1&tag=featurefm-20',
+          tidal:   'https://tidal.com/album/465760617'
+        }
+      },
+      myst: {
+        lyrics: `Never chasin nobody who ain’t in my league
+When they was tryna get at me last week
+No fuckboys around me
+Straight up, Keepin it P
+switchin flows with the girls FLO
+Fuck around and you’d be cracked and glowing
+Like a sloth, you be actin slow
+them weak ass flows ain’t gon make you grow
+stop being messy with yo lyin ass
+keep talking bout me, you gon eat grass
+bitch I’m yo teacher, go to class
+at the top, you can’t surpass 
+Love talking bout me, that’s mindful
+reading books with my dude, that’s kindful 
+stalking on the net, that’s slyful
+tread on territory, get the rifle
+look at you, you not responsible
+how you look like me, how’s that possible
+come here, here’s your constable
+I can’t here you, you’re not audible
+mad cause I’m in love
+sad, you don’t have a love
+me and him are doves 
+
+Step in bold, no time to be demure
+Loud as fuck, I’m the lure
+Unbreakable, can’t find a cure
+Blazin’ hot, makin’ my detour
+Crew’s tight, they’re here to stay
+By my side, every damn day
+Solid stance, just fuckin’ pray
+Grindin’ hard, no fake-ass display
+Grip tight, dreams I hold
+Paid in sweat, blood runs cold
+Howlin’ wild, story told
+Flyin’ high, can’t mold this gold
+No sniffin’ lines, fuck that coke
+They copy, but it’s a joke
+I’m stackin’ up, they stay broke
+Eyes on the prize, keepin’ hope
+Ain’t bent, never been bent
+Scars deep, feel every dent
+I rise hard, no damn repent
+Built tough, fuck yeah, till the end
+Ruthless grind, no room for never
+Built for storms, down for whatever
+Game’s deep, I’m here forever
+Stand tall, they can’t make me sever
+
+let me tell the story my way
+I fell in love with him last may
+he asked what I was doing that day
+then he proceeded to play
+he asked me to come to his game
+I said, sure I can
+then he asked for my name
+I gave it to him with no shame
+1 month later, he callin me baby
+wanted to put a ring on it,  i said maybe
+for some reason, he’s been driving me crazy
+and we’ve been really lazy
+next week he came to visit me
+I showed him all of Texas
+can you tell that we’re ment to be
+we’re like a nexus
+then we saw more of each other
+then it went to touchin each other
+he said sorry, didn’t mean to be a bother 
+told him to go farther
+he’s my one true love
+we fit like a glove
+yeah I’m calling his bluff
+Mystery Of Love
+Mystery Of Love`,
+        credits: `<p>PERFORMED BY YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY YAE YADIR / INSPIRED BY SUFJAN STEVENS' MYSTERY OF LOVE</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/just-how-life-goes/1844947382', 
+          spotify: 'https://open.spotify.com/album/6j21F1myu0zahkXavSId80?si=1',
+          amazon:  'https://www.amazon.com/dp/B0FVBN1W77?linkCode=osi&th=1&psc=1&tag=featurefm-20',
+          tidal:   'https://tidal.com/album/465760617'
+        }
+      },
+            flack: {
+        lyrics: `My nigga got them bags, my nigga love me so
+He always stackin’ racks, he always on go
+Niggas payin me, to come to their shows
+Man, you messy as hell, I thought you didn’t know 
+Body bags up, bitch, I’m a soulaan
+Keep on playing wit me, I’ll end you at your prom
+And if you scared of me, dont call yo mom
+Just to let you know, I’ll hit you with the palm 
+
+Bitch, keep complaining, My itinerary  is so amazing
+Bitches racing, I don’t care who he with, bitch I ain’t chasing 
+Hate to be like me, bitch, im blazing
+get on your knees, bitch, and start glazing
+
+Ain’t no way in hell yall should be hatin on me
+When I’m sitting in my room making web pagees
+And, I took all y’all bitches daddies
+Yeah, We outside, playing golf in a caddy
+Like the loudest bitch out there, I’m the quiet bitch inside
+I’m too rich right now to be reading replies
+Whatever you talking bout, nigga, don’t imply
+It’ll be too easy, for you to fucking die
+My nigga dick too fat to be stressing
+I mean, girl it’s a blessing
+Just one look at you, is depressing
+Girl, you look like you’re expecting
+
+Bitch, keep complaining, My itinerary  is so amazing
+Bitches racing, I don’t care who he with, bitch I ain’t chasing 
+Hate to be like me, bitch, im blazing
+get on your knees, bitch, and start glazing
+
+Go to bring your own body funeral home, bitch
+I don’t know what y’all hoes mean bout a switch 
+And what’s the word, bitch, aint that nigga rich
+Why he keep looking at me, I think he want all this
+
+Bitch, keep complaining, My itinerary  is so amazing
+Bitches racing, I don’t care who he with, bitch I ain’t chasing 
+Hate to be like me, bitch, im blazing
+get on your knees, bitch, and start glazing`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   'https://music.apple.com/us/album/laurent-flack-single/1843370252',
+          spotify: 'https://open.spotify.com/album/4mJMvRaH4l2yX8keXFmMJH?si=wBb9ky1YQcS5bFpcl2vVkg',
+          amazon:  'https://www.amazon.com/music/player/albums/B0FT8VQXXD',
+          tidal:   'https://tidal.com/album/463916183'
+        }
+      },
+      sacred: {
+        lyrics: `Bitch, I’m sacred
+Yea, my body filled with so much hatred
+Bitch, I’m sacred
+All up in yo head, like some CÉCRED
+Bitch, I’m sacred
+Feelin, on his body, bitch he naked
+Bitch, I’m sacred
+Smokin on some kush, bitch, I’m faded 
+
+Yeah, you know what I’m on
+Yeah, you know what I do
+Bitch, don’t play with the kid
+You’ll get hit with some juice  
+I’m walking out on a limb
+ You’ll get hit with the palm
+writing this at the gym
+you know what timing I’m on
+Bitch, it’s Yae Yadir, and I don’t fucking play
+Try to play my feelings, your heart gon be on display
+Grab yo ski mask, we goin to the bank
+And watch out for that nigga, I think his name is frank
+
+Bitch, I’m sacred
+Yea, my body filled with so much hatred
+Bitch, I’m sacred
+All up in yo head, like some CÉCRED
+Bitch, I’m sacred
+Feelin, on his body, bitch he naked
+Bitch, I’m sacred
+Smokin on some kush, bitch, I’m faded 
+
+Only one in the world
+Bitch, I’m a rockstar 
+The bitch going to the underworld
+She killed her with a car
+Fast money, never slow
+Fuck that nigga, no blow
+I’m too raunchy to play
+Like ‘Yoncé, I slay 
+Ballin’ hard like knics
+That’s not a dick, that’s a stick
+And I don’t give a damn
+Turn this up, this my jam
+
+Bitch, I’m sacred
+Yea, my body filled with so much hatred
+Bitch, I’m sacred
+All up in yo head, like some CÉCRED
+Bitch, I’m sacred
+Feelin, on his body, bitch he naked
+Bitch, I’m sacred
+Smokin on some kush, bitch, I’m faded 
+Bitch, I’m sacred
+
+Yall don’t know how I feel
+I said I’m the real deal
+Fuck, yall some hoes
+And I’m on go
+Bad bitch like cardi b
+When he wit me, all I see is d
+Girl, shake that wham
+And we don’t need a tan   
+ 
+Bitch, I’m sacred
+Yea, my body filled with so much hatred
+Bitch, I’m sacred
+All up in yo head, like some CÉCRED
+Bitch, I’m sacred
+Feelin, on his body, bitch he naked
+Bitch, I’m sacred
+Smokin on some kush, bitch, I’m faded`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   '',
+          spotify: '',
+          amazon:  '',
+          tidal:   ''
+        }
+      },
+      step: {
+        lyrics: `Bitch, I’m way too fucking sexy
+These hoes really don’t like me
+And I be standing on ten
+Now these bitches wanna fight me
+why yo nigga looking at me
+Ho he ain’t straight
+Bitch, I’m a masculine bottom
+But, I still give off trade
+It’s whenever bitch, it’s whatever ho
+When I walk out, you know I’m gonna show
+Bitches talking shit, they get sent through the door
+And if you nigga looking, might as well let that go
+
+Walk in the room, all these hoes staring
+Looking at my fit, they wish they could wear-this
+Niggas staring at this ass, bet they wanna feel it
+Call an SOS, but, I’m not Solana, bitch
+
+Every time I step out, you know I step big
+Every time I step out, you know I step big
+Who is this bitch, she look like a twig
+What is going on with this lil trick
+
+Bitch, I’m hotter than the summer
+These hoes cold like December
+He say he love my aura
+But can’t handle my temper
+When I pop out, lights flash, they all scream my name
+Bitch, I’m pressure, ho, you can’t match my flame
+Talk slick, get popped like bubblegum
+I don’t fight fair, bitch, I fight for fun
+Yeah, I’m that one, not two, not three
+When I step on the scene, hoes envy me
+
+Every time I step out, you know I step big
+Every time I step out, you know I step big
+Who is this bitch, she look like a twig
+What is going on with this lil trick
+
+Lights, camera, flash — I’m the main event
+Walk in, it’s a movie, bitch, every scent spent
+They be talkin’ in they groups, but in person, stay mute
+I’m the trend, I’m the topic, I’m the whole damn mood
+
+Every time I step out, you know I step big
+Every time I step out, you know I step big
+Who is this bitch, she look like a twig
+What is going on with this lil trick
+
+So when I leave, better clear that lane
+I don’t do broke talk, bitch, stay in your frame
+It’s Jae in the building, ho, know my name
+And I’ma step big — every time I came.`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   '',
+          spotify: '',
+          amazon:  '',
+          tidal:   ''
+        }
+      },
+      dad: {
+        lyrics: `You know we some baddies, always lookin’ classy
+In the club, we the ones makin’ it flashy
+Got your pops outside sayin’ I’m elastic
+Feelin’ like Miss Incredible, my vibe fantastic
+Baow, baow, my vibe fantastic
+Baow, baow, my vibe fantastic
+Yeah, I’m in the club with the dancers
+Got all the mocktails, vibin’ with the answers
+
+At this point, all I need is an athlete
+Same story, they leave quick, can’t outlast me
+Never really cared, sittin’ in the nosebleeds
+Catchin’ all the wins, they could never pass me
+Man, all these folks so bold
+Still couldn’t match me with all this gold
+Why you outside still on patrol
+While I’m out here steppin’ in full control
+
+You know we some baddies, always lookin’ classy
+In the club, we the ones makin’ it flashy
+Got your pops outside sayin’ I’m elastic
+Feelin’ like Miss Incredible, my vibe fantastic
+
+All y’all bitches out here lookin sloppy
+I’m the bitch yall wish y’all could copy
+Yeah, and why yall out here lookin like dobbie
+Yo man look like he came from Hobby lobby
+Yeah, and I woke up in a new Bugatti
+Cause stars keep texting me, yeah ima hottie
+And all these bitches are some fucking rats
+And they mad at me because I get stacks
+
+You know we some baddies, always lookin’ classy
+In the club, we the ones makin’ it flashy
+Got your pops outside sayin’ I’m elastic
+Feelin’ like Miss Incredible, my vibe fantastic
+Baow, baow, my vibe fantastic
+Baow, baow, my vibe fantastic
+Yeah, I’m in the club with the dancers
+Got all the mocktails, vibin’ with the answers
+
+Still turnin’ up on top of the cars
+While y’all sittin’ back, dreamin’ on Mars
+We in the studio, no time for playin’
+And shoutout to your fam, yeah, they what I’m sayin’`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   '',
+          spotify: '',
+          amazon:  '',
+          tidal:   ''
+        }
+      },
+      cactus: {
+        lyrics: `my people is a force to be reckoned
+We get erased every time we’re mentioned 
+And when we go outside, we get threatened
+Damn,We’re even losing our legends
+When we breathe, they killing us
+When we pop our shit, they killing us
+When we live life to the max, they killing us
+Damn, everything we do, they gon’ kill us
+
+C-A-C-T-U-S
+They don’t talk about this in the press 
+And they suppress us every time we express
+Black people are the mistress in distress
+Black people are the mistress in distress
+
+They profit off our pain, then they call it tradition
+Turn our trauma into trends, but won’t ever listen
+They steal our rhythm, our soul, our ambition
+Then criminalize us for simply existing
+They wanna break us, erase us, and cage us in systems
+Feared for our power, so they silence our vision
+We still rise from the dirt, shining louder than prisons
+We are diamonds under pressure — and that’s why we glisten
+
+C-A-C-T-U-S
+They don’t talk about this in the press 
+And they suppress us every time we express
+Black people are the mistress in distress
+Black people are the mistress in distress
+
+They say we equal but they never wanna prove that
+They give us tools, then get mad when we use that
+They steal our past, then rewrite it like they own that
+They love our pain, but they never wanna show that
+Still traumatized, we don’t ever get to reset
+We up in chains, even living with no wrist check
+They break our homes, then they ask why we misstep
+Yet we survive — that’s the part they ain’t killed yet
+
+C-A-C-T-U-S
+They don’t talk about this in the press 
+And they suppress us every time we express
+Black people are the mistress in distress
+Black people are the mistress in distress
+
+Our skin is power, that’s the reason that they fear us
+Erase the truth, ‘cause they terrified to hear us
+We built the table, but they never wanna seat us
+We grew the garden, now they coming here to beat us
+Still we rise, every time they try to bleed us
+Still we glow, even when they never see us
+We God’s people — ain’t no way they gon’ delete us
+We the future — and the future gonna free us
+
+C-A-C-T-U-S
+They don’t talk about this in the press 
+And they suppress us every time we express
+Black people are the mistress in distress
+Black people are the mistress in distress`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: {
+          apple:   '',
+          spotify: '',
+          amazon:  '',
+          tidal:   ''
+        }
+      },
+      stash: {
+        lyrics: `Fuck you begging for drugs, ho
+All doing is looking for a thrill tho
+Black nigga, and I still don’t trust a bitch
+Glock 18, That’s my automatic with a scope
+Hand me that bottle of pills
+I don’t care if you in your feels
+Bitch, you better go to meals on wheels
+Yeah, ho, you finna be concealed
+
+Get the fuck out that trap house
+And go get you a damn spouse
+Before a random nigga get aroused
+Get the fuck out that trap house
+
+Put the goddamn cup down
+You ain’t have no damn trauma to drown
+And, I’m the king, where my crown
+Got that damn bottle, looking like a clown
+Why you always drinking henny
+That casafreakho got you feeling witty
+All my bad bitches looking pretty
+Like Lizzo said, put some yitty on yo titty
+
+Get the fuck out that trap house
+And go get you a damn spouse
+Before a random nigga get aroused
+Get the fuck out that trap house
+
+And the moral of the story is
+Put the drugs and alcohol down 
+You can have fun without the drinking
+Put the motherfucking drugs down
+
+Get the fuck out that trap house
+And go get you a damn spouse
+Before a random nigga get aroused
+Get the fuck out that trap house
+
+Bitch, it’s Yae Yadir
+And I’m gon take yo bitch
+And I don’t give a damn
+You wanna know why
+Because I’m sacred`,
+        credits: `<p>PERFORMED BY  YAE YADIR / WRITTEN BY JE'VEON JEFFERSON / MIXED BY  YAE YADIR</p>`,
+        links: { apple:'https://music.apple.com/us/album/trapstash-single/1848209104', spotify:'https://open.spotify.com/album/4kfzqa49eOZppt5oriO0j1', amazon:'https://tidal.com/album/468904310', tidal:'https://www.amazon.com/dp/B0FXHHKC3H?linkCode=osi&th=1&psc=1&tag=featurefm-20' }
+      }
+    };
+
+    document.querySelectorAll('.track-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const key = el.dataset.song;
+        const data = songData[key] || { lyrics: "Lyrics coming soon...", credits: "", links: {} };
+        document.getElementById('lyrics').innerHTML = `<div>${data.lyrics.replace(/\n/g, '<br>')}</div>`;
+        document.getElementById('credits').innerHTML = data.credits || "No credits available";
+        document.getElementById('link-apple').href = data.links.apple || '#';
+        document.getElementById('link-spotify').href = data.links.spotify || '#';
+        document.getElementById('link-amazon').href = data.links.amazon || '#';
+        document.getElementById('link-tidal').href = data.links.tidal || '#';
+        openOverlay();
+        switchTab('lyrics');
+      });
+    });
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
