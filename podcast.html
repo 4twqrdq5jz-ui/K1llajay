@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EPISODES</title>
+<link rel="icon" href="favicon.ico" />
+<style>
+  @font-face {
+    font-family: 'sitefont';
+    src: url('beyoncefont.ttf') format('truetype');
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    height:100%; width:100%;
+    font-family:'sitefont', monospace;
+    background:black; color:white;
+    overflow-x:hidden;
+  }
+  body { display:flex; flex-direction:row; height:100vh; }
+  
+  /* TOPBAR (mobile only) */
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .top-name {
+      font-size: 24px;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+
+  /* Sidebar */
+  .sidebar {
+    width:250px;
+    height:100vh;
+    background:black;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    border-right:1px solid #333;
+  }
+  .profile-img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px; border:2px solid #fff; }
+  .name { font-size:24px; margin-bottom:40px; text-align:center; letter-spacing:2px; text-transform:uppercase; }
+  .buttons { display:flex; flex-direction:column; gap:10px; width:100%; }
+  .button { background:black; border:1px solid #666; color:white; padding:15px; text-align:center; cursor:pointer; font-family:inherit; font-size:14px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; display:block; transition:border-color 0.3s; }
+  .button:hover { border-color:#999; }
+  .footer { font-size:10px; text-align:center; text-transform:uppercase; opacity:0.7; display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin-top:20px; width:100%; }
+  .footer a { color:white; text-decoration:none; font-size:10px; transition:opacity 0.3s; }
+  .footer a:hover { opacity:0.5; }
+  .footer-dot { color:white; font-size:10px; opacity:0.7; }
+  .copyright { font-size:8px; margin-top:5px; width:100%; }
+
+  /* Main content */
+  .main-content {
+    flex:1;
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    gap:20px;
+    overflow-y:auto;
+  }
+
+  /* Episode tiles */
+  .episode-date { cursor:pointer; color:white; text-decoration:none; text-align:center; }
+  .square { width:100%; aspect-ratio:1; background-size:cover; background-position:center; border-radius:5px; margin:0 auto 10px; }
+  .date, .episode, .title, .action { margin:2px 0; font-size:10px; }
+  .blurred { filter: blur(5px) brightness(0.4); }
+
+  /* Modal */
+  .modal {
+    position:fixed; top:0; left:0;
+    width:100vw; height:100vh;
+    background: rgba(0,0,0,0.95);
+    color:white;
+    display:none;
+    flex-direction:column; justify-content:center; align-items:center;
+    z-index:999;
+    padding:10px;
+    box-sizing:border-box;
+  }
+  .modal-content {
+    max-width:600px; width:100%;
+    background:#111;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+  }
+  .modal iframe, .modal audio { margin-top:15px; max-width:100%; }
+  .close-btn { margin-top:20px; background:transparent; border:1px solid white; color:white; padding:5px 10px; cursor:pointer; font-family:"MysteryFont", monospace; }
+
+  /* Topbar for mobile */
+  .topbar { display:none; align-items:center; justify-content:flex-start; padding:10px; background-color:black; border-bottom:1px solid #333; width:100%; position:fixed; top:0; left:0; z-index:1001; }
+  .hamburger { font-size:24px; cursor:pointer; margin-right:10px; }
+  .top-name { font-size:24px; text-align:center; margin:0; text-transform:uppercase; flex:1; }
+
+  /* Mobile styles */
+  @media (max-width:768px) {
+    body { flex-direction:column; justify-content:flex-start; height:auto; min-height:100vh; padding-top:50px; }
+    .topbar { display:flex; }
+    .sidebar { display:none; position:absolute; top:50px; left:0; width:100%; height:auto; padding:20px; background:black; z-index:999; flex-direction:column; align-items:center; border-bottom:1px solid #333; }
+    .sidebar.active { display:flex; }
+    .profile-img { width:120px; height:120px; margin-bottom:10px; }
+    .name { font-size:32px; margin-bottom:20px; }
+    .buttons { flex-direction:column; width:100%; gap:8px; margin-top:20px; }
+    .button { padding:10px; font-size:12px; }
+    .main-content { grid-template-columns:repeat(2,1fr); gap:10px; padding:10px; flex:1; }
+    .footer { position:relative; bottom:0; width:100%; padding:10px; background:black; margin-top:auto; font-size:9px; gap:3px; }
+    .footer a, .footer-dot { font-size:9px; }
+    .copyright { font-size:7px; margin-top:5px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Topbar for mobile -->
+<div class="topbar">
+  <span class="hamburger">&#9776;</span>
+  <h1 class="top-name">TREND TALK</h1>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR PROFILE" />
+  <h1 class="name"><a href="index.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+  <div class="buttons">
+    <a href="index.html" class="button">GALLERY</a>
+    <a href="music.html" class="button">LATEST ALBUM</a>
+    <a href="portfolio.html" class="button">PORTFOLIO</a>
+    <a href="player.html" class="button">ALL RELEASES</a>
+    <a href="#" class="button">COMING SOON</a>
+  </div>
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">MYSTERY</a>
+    <span class="footer-dot">•</span>
+    <a href="database.html">MUSIC DATABASE</a>
+    <span class="footer-dot">•</span>
+    <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+    <span class="footer-dot">•</span>
+    <a href="terms-and-conditions.html">TERMS</a>
+    <span class="footer-dot">•</span>
+    <a href="privacy-policy.html">PRIVACY</a>
+    <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main-content" id="grid-container"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="episodeTitle">Episode Info</h2>
+    <audio controls id="audioPlayer">
+      <source id="audioSource" src="" type="audio/mpeg" />
+      Your browser does not support HTML5 audio.
+    </audio>
+    <iframe id="videoPlayer" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+    <button class="close-btn" onclick="closeModal()">CLOSE</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, onValue, query, orderByChild } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+  authDomain: "mainsite-eb919.firebaseapp.com",
+  databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+  projectId: "mainsite-eb919",
+  storageBucket: "mainsite-eb919.firebasestorage.app",
+  messagingSenderId: "799554641103",
+  appId: "1:799554641103:web:f23b774cbb08e03aebebba",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const gridContainer = document.getElementById("grid-container");
+
+const episodesRef = query(ref(db, "episodes"), orderByChild("releaseDate"));
+onValue(episodesRef, (snapshot) => {
+  gridContainer.innerHTML = "";
+  const episodes = [];
+  snapshot.forEach(child => {
+    const ep = child.val();
+    if(ep.episodeTitle && ep.audioURL) episodes.push(ep);
+  });
+  episodes.sort((a,b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+  episodes.forEach(ep => {
+    const div = document.createElement("div");
+    div.className = "episode-date";
+    div.title = ep.episodeTitle + " - " + ep.podcastName;
+    const cover = ep.coverURL || "default-cover.png";
+    div.innerHTML = `
+      <div class="square" style="background-image: url('${cover}');"></div>
+      <p class="date">${ep.releaseDate}</p>
+      <p class="episode">${ep.season ? `${ep.season} - Ep. ` : ""}${ep.episodeNumber}</p>
+      <p class="title">${ep.episodeTitle}</p>
+      <p class="action">LISTEN HERE</p>
+    `;
+    div.addEventListener("click", () => openModal(ep));
+    gridContainer.appendChild(div);
+  });
+});
+
+// Modal
+const modal = document.getElementById("modal");
+const episodeTitleElem = document.getElementById("episodeTitle");
+const audioPlayer = document.getElementById("audioPlayer");
+const audioSource = document.getElementById("audioSource");
+const videoPlayer = document.getElementById("videoPlayer");
+
+window.openModal = function(ep) {
+  episodeTitleElem.textContent = `${ep.season ? ep.season + " - " : ""}${ep.episodeTitle} (${ep.podcastName})`;
+  audioSource.src = ep.audioURL;
+  audioPlayer.load();
+  if(ep.youtubeURL) { videoPlayer.src = ep.youtubeURL; videoPlayer.style.display="block"; }
+  else { videoPlayer.src=""; videoPlayer.style.display="none"; }
+  modal.style.display="flex";
+  gridContainer.classList.add("blurred");
+}
+
+window.closeModal = function() {
+  modal.style.display="none";
+  audioPlayer.pause(); audioSource.src=""; audioPlayer.load();
+  videoPlayer.src="";
+  gridContainer.classList.remove("blurred");
+}
+
+// Hamburger toggle
+const hamburger = document.querySelector('.hamburger');
+const sidebar = document.querySelector('.sidebar');
+hamburger.addEventListener('click', () => { sidebar.classList.toggle('active'); });
+</script>
+
+</body>
+</html>
