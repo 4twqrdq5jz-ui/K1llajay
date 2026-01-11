@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Audio — Music Player</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%; width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 1001;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 24px; text-transform: uppercase; flex: 1; text-align: center; }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 1px solid #333;
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      background-color: black;
+      border: 1px solid #666;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: border-color 0.3s ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+      border-radius: 8px;
+    }
+    .button:hover { border-color: #999; }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+    .main h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 2px; }
+
+    .upload-box {
+      background: #111; border: 1px solid #333; border-radius: 12px; padding: 30px;
+      width: 100%; max-width: 900px;
+    }
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;
+    }
+    input, select {
+      background: transparent; border: 1px solid #444; color: white; padding: 14px;
+      border-radius: 6px; font-family: inherit; font-size: 14px;
+    }
+    input::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex; align-items: center; gap: 12px; margin: 16px 0; font-size: 14px;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
+
+    .primary-btn {
+      background: #00ff99; border: none; color: #000; padding: 14px 28px;
+      border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px; letter-spacing:1px;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn { background: #222; border: 1px solid #666; color: white; }
+    .secondary-btn:hover { border-color: #999; }
+
+    #queue { margin: 30px 0; width: 100%; }
+    .queue-item {
+      display: grid;
+      grid-template-columns: 40px 70px 1fr 100px 160px 140px;
+      gap: 10px; align-items: center; background: #111; border: 1px solid #333;
+      border-radius: 8px; padding: 12px; margin-bottom: 8px;
+    }
+    .queue-item input { background: rgba(255,255,255,0.05); padding: 8px; font-size: 13px; }
+    .queue-item .controls button {
+      padding: 6px 10px; font-size: 12px; border-radius: 4px; background: rgba(255,255,255,0.1); border: 1px solid #555;
+    }
+    .danger { background: #ff3333 !important; border-color: #ff3333 !important; }
+
+    progress { width: 100%; height: 8px; border-radius: 4px; margin: 20px 0; display: none; }
+    progress::-webkit-progress-value { background: #00ff99; }
+    progress::-moz-progress-bar { background: #00ff99; }
+
+    .thumb { width: 100%; max-width: 300px; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin: 20px 0; border: 1px solid #333; display: none; }
+
+    .song-list { width: 100%; max-width: 900px; margin-top: 60px; }
+    .song-item {
+      background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px;
+      margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .song-item audio { width: 100%; margin-top: 8px; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; padding-top: 60px; }
+      .topbar { display: flex; }
+      .sidebar { display: none; position: fixed; top: 60px; left: 0; width: 100%; height: auto; padding: 20px; z-index: 999; background: black; }
+      .sidebar.active { display: flex; }
+      .main { padding: 20px; }
+      .queue-item { grid-template-columns: 30px 60px 1fr 100px 1fr; font-size: 12px; }
+      .queue-item .controls { grid-column: 1/-1; justify-self: end; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">Upload Audio</div>
+  </div>
+
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR" />
+    <h1 class="name">YAE YADIR</h1>
+    <div class="buttons">
+      <a href="database.html" class="button">Music Database</a>
+      <a href="slide-upload.html" class="button">Upload Slides</a>
+      <a href="portfolio-upload.html" class="button">Upload Nature</a>
+      <a href="podcast-upload.html" class="button">Upload Podcast</a>
+    </div>
+    <div class="footer">
+      <a href="index.html">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="database.html">MUSIC DATABASE</a>
+      <span class="footer-dot">•</span>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <span class="footer-dot">•</span>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="privacy-policy.html">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Upload to Music Player</h1>
+
+    <div class="upload-box">
+      <div class="form-grid">
+        <select id="releaseType">
+          <option value="">Auto</option>
+          <option>Album</option>
+          <option>EP</option>
+          <option>Single</option>
+          <option>Compilation</option>
+          <option>Video</option>
+        </select>
+        <input type="text" id="releaseTitleInput" placeholder="Release Title (Album/EP/etc)" style="display:none; grid-column:1/-1;" />
+
+        <input type="text" id="defaultTitle" placeholder="Default Song Title (fallback)" />
+        <input type="text" id="artist" placeholder="Artist Name" value="Yae Yadir" />
+
+        <input type="date" id="releaseDate" />
+        <input type="number" id="yearInput" placeholder="Year (optional)" min="1900" />
+      </div>
+
+      <div style="margin:20px 0;">
+        <label class="primary-btn" style="cursor:pointer;">
+          Choose Audio Files
+          <input type="file" id="fileInput" accept="audio/*" multiple style="display:none;" />
+        </label>
+        <label class="primary-btn secondary-btn" style="cursor:pointer; margin-left:12px;">
+          Choose Cover (optional)
+          <input type="file" id="coverInput" accept="image/*" style="display:none;" />
+        </label>
+      </div>
+
+      <img id="coverPreview" class="thumb" />
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="explicit"><label for="explicit">Explicit</label>
+        <input type="checkbox" id="isVideo" style="margin-left:30px;"><label for="isVideo">Video</label>
+        <input type="checkbox" id="unreleased" style="margin-left:30px;"><label for="unreleased">Unreleased</label>
+      </div>
+
+      <h3 style="margin:30px 0 10px;">Queue — Up/Down to reorder</h3>
+      <div id="queue">
+        <div style="text-align:center; opacity:0.6; padding:30px;">No files selected</div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button id="uploadAll" class="primary-btn">Upload All to Player</button>
+        <button id="clearQueue" class="primary-btn secondary-btn">Clear Queue</button>
+      </div>
+
+      <progress id="progress" max="100" value="0"></progress>
+      <div id="status" style="margin-top:12px; font-size:14px;"></div>
+    </div>
+
+    <h1 style="margin-top:80px;">Recently Uploaded</h1>
+    <div id="songList" class="song-list"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const db = firebase.database();
+
+    const queue = [];
+    const queueEl = document.getElementById('queue');
+    const statusEl = document.getElementById('status');
+    const progEl = document.getElementById('progress');
+
+    // Show release title when needed
+    document.getElementById('releaseType').onchange = function() {
+      const show = ['album','ep','single','compilation'].includes(this.value.toLowerCase());
+      document.getElementById('releaseTitleInput').style.display = show ? 'block' : 'none';
+    };
+
+    // Cover preview
+    document.getElementById('coverInput').onchange = e => {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('coverPreview').src = URL.createObjectURL(file);
+        document.getElementById('coverPreview').style.display = 'block';
+      }
+    };
+
+    // Add files to queue
+    document.getElementById('fileInput').onchange = async e => {
+      const files = Array.from(e.target.files);
+      for (const file of files) {
+        const duration = await getDuration(file);
+        const title = document.getElementById('defaultTitle').value.trim() || file.name.replace(/\.[^/.]+$/, "");
+        queue.push({ file, title, duration, track: queue.length + 1 });
+      }
+      renderQueue();
+    };
+
+    function renderQueue() {
+      queueEl.innerHTML = queue.length === 0
+        ? '<div style="text-align:center;opacity:0.6;padding:30px;">No files selected</div>'
+        : '';
+      queue.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'queue-item';
+        div.innerHTML = `
+          <div style="opacity:0.6;text-align:center">${i+1}</div>
+          <input type="number" min="1" value="${item.track}" style="width:60px" onchange="queue[${i}].track=+this.value">
+          <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value">
+          <div style="opacity:0.8">${formatTime(item.duration)}</div>
+          <progress max="100" value="0" data-id="${i}"></progress>
+          <div class="controls">
+            <button onclick="move(${i},-1)">Up</button>
+            <button onclick="move(${i},1)">Down</button>
+            <button class="danger" onclick="queue.splice(${i},1);renderQueue()">Remove</button>
+          </div>
+        `;
+        queueEl.appendChild(div);
+      });
+    }
+
+    function move(i, dir) {
+      const ni = i + dir;
+      if (ni < 0 || ni >= queue.length) return;
+      [queue[i], queue[ni]] = [queue[ni], queue[i]];
+      renderQueue();
+    }
+
+    function formatTime(s) {
+      if (!s) return '0:00';
+      const m = Math.floor(s/60);
+      const sec = s % 60;
+      return `${m}:${sec.toString().padStart(2,'0')}`;
+    }
+
+    async function getDuration(file) {
+      return new Promise(res => {
+        const a = new Audio(URL.createObjectURL(file));
+        a.onloadedmetadata = () => res(Math.round(a.duration) || 0);
+        a.onerror = () => res(0);
+      });
+    }
+
+    // Upload everything — only writes to /songs
+    document.getElementById('uploadAll').onclick = async () => {
+      if (!queue.length) return alert('Add at least one track');
+
+      const coverFile = document.getElementById('coverInput').files[0];
+      const artist = document.getElementById('artist').value.trim() || 'Yae Yadir';
+      const releaseTitle = document.getElementById('releaseTitleInput').value.trim();
+      const releaseType = document.getElementById('releaseType').value || 'Single';
+      const year = document.getElementById('yearInput').value ||
+        (document.getElementById('releaseDate').value ? new Date(document.getElementById('releaseDate').value).getFullYear() : '');
+      const explicit = document.getElementById('explicit').checked;
+      const isVideo = document.getElementById('isVideo').checked;
+      const unreleased = document.getElementById('unreleased').checked;
+
+      let coverUrl = null, coverPath = null;
+      if (coverFile) {
+        const name = `${Date.now()}-cover-${coverFile.name}`;
+        const folder = unreleased ? 'unreleased' : 'covers';
+        coverPath = `${folder}/${name}`;
+        const ref = storage.ref(coverPath);
+        await ref.put(coverFile);
+        coverUrl = await ref.getDownloadURL();
+      }
+
+      progEl.style.display = 'block';
+      statusEl.textContent = 'Uploading...';
+
+      for (let i = 0; i < queue.length; i++) {
+        const item = queue[i];
+        const prog = document.querySelector(`progress[data-id="${i}"]`);
+        const ts = Date.now();
+        const audioName = `${ts}-${item.file.name}`;
+        const audioFolder = unreleased ? 'unreleased' : 'songs';
+        const audioPath = `${audioFolder}/${audioName}`;
+
+        const audioRef = storage.ref(audioPath);
+        const task = audioRef.put(item.file);
+
+        task.on('state_changed', snap => {
+          prog.value = (snap.bytesTransferred / snap.totalBytes) * 100;
+        });
+
+        await task;
+        const audioUrl = await audioRef.getDownloadURL();
+
+        const songData = {
+          title: item.title.trim(),
+          artist,
+          duration: item.duration || 0,
+          audioUrl,
+          audioPath,
+          coverUrl,
+          coverPath,
+          releaseTitle: releaseTitle || null,
+          group: releaseTitle || '',
+          trackNumber: Number(item.track) || null,
+          releaseType: isVideo ? 'Video' : releaseType,
+          year: year || '',
+          mediaType: isVideo ? 'video' : 'audio',
+          explicit,
+          unreleased: !!unreleased,
+          createdAt: ts
+        };
+
+        await db.ref('songs').push(songData);
+        statusEl.textContent = `Uploaded ${i + 1}/${queue.length}`;
+      }
+
+      statusEl.textContent = 'Upload complete!';
+      progEl.style.display = 'none';
+      queue.length = 0;
+      renderQueue();
+      loadSongs();
+    };
+
+    document.getElementById('clearQueue').onclick = () => {
+      queue.length = 0;
+      renderQueue();
+      document.getElementById('fileInput').value = '';
+      document.getElementById('coverInput').value = '';
+      document.getElementById('coverPreview').style.display = 'none';
+    };
+
+    // Load recent songs
+    function loadSongs() {
+      db.ref('songs').limitToLast(20).on('value', snap => {
+        const data = snap.val() || {};
+        const list = document.getElementById('songList');
+        list.innerHTML = '';
+        Object.entries(data).reverse().forEach(([key, song]) => {
+          const div = document.createElement('div');
+          div.className = 'song-item';
+          div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong>${song.title} — ${song.artist}</strong>
+              <button class="danger" style="padding:6px 12px;font-size:12px;" onclick="del('${key}','${song.audioPath}')">Delete</button>
+            </div>
+            <audio controls src="${song.audioUrl}"></audio>
+            ${song.coverUrl ? `<img src="${song.coverUrl}" style="width:120px;border-radius:8px;margin-top:8px;">` : ''}
+            <small style="opacity:0.7;">${song.releaseTitle || 'Single'} • ${song.year || '—'}</small>
+          `;
+          list.appendChild(div);
+        });
+        if (!Object.keys(data).length) {
+          list.innerHTML = '<div style="opacity:0.6;text-align:center;padding:40px;">No songs uploaded yet</div>';
+        }
+      });
+    }
+
+    window.del = async (key, path) => {
+      if (!confirm('Permanently delete this song?')) return;
+      try { await storage.ref(path).delete(); } catch(e) {}
+      await db.ref('songs/' + key).remove();
+    };
+
+    // Mobile menu toggle
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+
+    // Start loading songs immediately
+    loadSongs();
+  </script>
+</body>
+</html>
