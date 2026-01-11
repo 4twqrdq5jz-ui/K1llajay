@@ -200,9 +200,60 @@
         /* optional: give them some breathing room */
         margin-right: 1rem;
       }
+
+    /* copied from index.html: page background + overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      -webkit-background-attachment: fixed;
+      z-index: -2;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 200vh;
+    }
+
+    /* add topbar styles (mobile) copied from index */
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+    }
+    .topbar .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; color: white; }
+    .topbar .top-name { font-size: 18px; color: white; text-transform: uppercase; flex: 1; text-align: center; }
+
+    @media (max-width:768px) {
+      .topbar { display: flex; background: rgba(0,0,0,0.45); }
+      /* ensure mobile menu button remains visible / usable */
+    }
   </style>
 </head>
 <body class="dark-mode">
+  <!-- add the same topbar used on index (mobile) -->
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <h1 class="top-name">TERMS</h1>
+  </div>
+
   <!--  Mobile Hamburger Button -->
   <button id="menuBtn" class="mobile-menu-btn">MENU</button>
 
@@ -374,6 +425,15 @@
       btn.textContent = 'MENU';
       btn.style.color = 'black';
     });
+  
+    // Forward topbar hamburger to the existing off-canvas menu button
+    (function () {
+      const topHamb = document.querySelector('.topbar .hamburger');
+      const menuBtn = document.getElementById('menuBtn');
+      if (topHamb && menuBtn) {
+        topHamb.addEventListener('click', () => menuBtn.click());
+      }
+    })();
   </script>
 </body>
 </html>
