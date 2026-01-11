@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy</title>
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: white;
+      overflow: auto;
+      color: black;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    
+    /* Prevent page and slides scroll when mobile menu is open */
+    body.no-scroll {
+      overflow: hidden !important;
+      position: relative;
+      touch-action: none;
+    }
+    body.no-scroll .scroll-container {
+      overflow: hidden !important;
+    }
+    
+    /* —— Base (desktop) —— */
+    .desktop-nav,
+    .desktop-footer { display: block; }
+    
+    .mobile-menu,
+    .mobile-clover-btn,
+    .mobile-menu-btn { display: none; }
+
+    nav {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+    nav a {
+      color: #000;
+      text-decoration: none;
+      font-size: 16px;
+      letter-spacing: 2px;
+      padding: 10px 20px;
+      text-transform: uppercase;
+    }
+    nav a.clover { font-size:25px; line-height:0; }
+    
+    /*  ← new: container for your terms text */
+    main.content {
+      max-width: 800px;
+      margin: 100px auto 80px;
+      padding: 0 20px;
+      min-height: 100vh;
+      text-align: left;
+      line-height: 1.6;
+    }
+    main.content h1 {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    main.content .updated {
+      font-size: 12px;
+      margin-bottom: 24px;
+    }
+    main.content p {
+      margin-bottom: 16px;
+    }
+    footer {
+      position: fixed; bottom: 10px; right: 20px;
+      font-size: 15px; text-transform: uppercase; letter-spacing:1px;
+    }
+    footer a {
+      color: #000; text-decoration: none;
+    }
+    
+    /* ─── Mobile (≤768px) ─── */
+   @media (max-width:768px) {
+    /* hide desktop elements */
+    .desktop-nav,
+    .desktop-footer {
+      display: none;
+    }
+
+      /* show mobile hamburger */
+      .mobile-menu-btn {
+        display: block;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000; /* above mobile-menu */
+        background: none;
+        border: none;
+        font-size: 1rem;
+        font-family: 'sitefont', monospace;
+        color: black;
+        cursor: pointer;
+      }
+
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: black;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        padding: 60px 20px 20px;
+        z-index: 9999;
+      }
+      .mobile-menu.open { transform:translateX(0); }
+
+      /* mobile clover */
+      .mobile-clover-btn {
+        display: block;
+        position: fixed;
+        top: 3%;
+        left: 50%;
+        color: #000;
+        transform: translate(-50%, -50%);
+        z-index: 500;
+        background: none;
+        border: none;
+        font-size: 35px;
+        cursor: pointer;
+      }
+      /* hide clover when menu open */
+      .mobile-menu.open ~ .mobile-clover-btn { display:none; }
+      
+      .mobile-menu.open ~ .mobile-menu-btn {
+        display: block;
+      }
+      
+      /* Make nav fill available space and scroll if needed */
+      .mobile-nav {
+        flex-grow: 1; /* takes all vertical space left */
+        overflow-y: auto;
+      }
+      .mobile-nav a {
+        display: block;
+        color:#fff;
+        margin: 12px 0;
+        font-size: 1.5rem;
+      }
+
+      .mobile-footer {
+        position: absolute;
+        bottom: 125px;
+        left: 0;
+        right: 0;
+        color:#fff;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+      
+      .mobile-footer a,
+      .mobile-footer span {
+        color: white;
+        font-size: 0.75rem;
+        text-decoration: none;
+      }
+    }
+      
+      footer {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        /* optional: ensure it’s above other content */
+        z-index: 1000;
+      }
+      footer a {
+        color: #000;
+        text-decoration: none;
+        /* optional: give them some breathing room */
+        margin-right: 1rem;
+      }
+  </style>
+</head>
+<body class="dark-mode">
+  <!--  Mobile Hamburger Button -->
+  <button id="menuBtn" class="mobile-menu-btn">MENU</button>
+
+  <!--  Off‑canvas Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu">
+    <nav class="mobile-nav">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <a href="music.html">MUSIC</a>
+      <a href="https://k1llajay.store">SHOP</a>
+      <a href="podcast.html">TREND TALK</a>
+      <a href="future-songs.html">Future Songs</a>
+      <a href="portfolio.html">PORTFOLIO</a>
+      <a href="player.html">ALL SONGS</a>
+    </nav>
+    <footer class="mobile-footer">
+      <a href="database.html">MUSIC DATABASE</a>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <a href="privacy-policy.html">PRIVACY</a>
+      ©2025 JEFFERSON ENTERTAINMENT LLC
+    </footer>
+  </div>
+  <button id="mobileClover" class="mobile-clover-btn" onclick="location.href='index.html'">✦︎</button>
+  <nav class="desktop-nav">
+    <a href="future-songs.html">Future Songs</a>
+    <a href="https://mystery.k1llajay.com">MYSTERY</a>
+    <a href="music.html">MUSIC</a>
+    <a href="index.html" class="clover">✦︎</a>
+    <a href="https://k1llajay.store">SHOP</a>
+    <a href="podcast.html">TREND TALK</a>
+    <a href="player.html">ALL SONGS</a>
+  </nav>
+
+  <!-- Terms content -->
+  <main class="content">
+    <h1>Privacy Policy</h1>
+    <div class="updated">Last updated: May 20, 2025</div>
+    <p>Welcome to  k1llajay (“we,” “us,” or “our”). Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, interact with our content, or otherwise engage with  k1llajay.</p>
+    
+    <p>
+      <strong>1.</strong>
+      <strong>Information We Collect</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">1.1 Personal Information</p>
+      <p style="margin-left: 30px;">&bull; When You Provide It: Name, email address, mailing address, phone number, and any other information you choose to submit through contact forms, newsletter sign‑ups, or account registrations.<br>
+      &bull; User‑Generated Content: Comments, messages, submissions (e.g., lyrics, feedback), and any media you upload.<br>
+
+    <p style="margin-left: 20px;">1.2 Usage Data</p>
+      <p style="margin-left: 30px;">&bull; Automatically Collected: IP address, browser type/version, device identifiers, operating system, referring URLs, time stamps, pages viewed, and clickstream data.<br>
+      &bull; Analytics & Tracking: We use cookies, web beacons, and similar technologies to monitor site performance and user behavior.</p>
+    
+    <p>
+      <strong>2.</strong>
+      <strong>How We Use Your Information</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">
+      &bull; To Provide & Improve Services: Personalize your experience, deliver requested content (newsletters, updates), and optimize site functionality.<br>
+      &bull; Communication: Respond to inquiries, send administrative messages, marketing materials (if you opt in), and event/news announcements.<br>
+      &bull; Analytics & Research: Understand trends, track user engagement, and measure the effectiveness of our content and promotions.<br>
+      &bull; Legal Compliance & Security: Detect and prevent fraud, enforce terms, and comply with applicable laws.</p>
+    
+    <p>
+      <strong>3.</strong>
+      <strong>Cookies & Tracking Technologies</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">
+      &bull; Cookies: Small text files placed on your device to store preferences and track usage.<br>
+      &bull; Third‑Party Tools: We may allow services like Google Analytics, Facebook Pixel, or YouTube embeds, each of which has its own privacy practices. You can generally control cookies via your browser settings.</p>
+    
+    <p>
+      <strong>4.</strong>
+      <strong>Disclosure of Your Information</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">
+      &bull; Service Providers: We may share your data with vendors who perform services on our behalf (e.g., email delivery, hosting, analytics).<br>
+      &bull; Legal Obligations: If required by law, court order, or to protect rights, safety, or property.<br>
+      &bull; Business Transfers: In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction</p>
+    
+    <p>
+      <strong>5.</strong>
+      <strong>Third‑Party Links & Content</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">Our site may contain links to external websites, social media pages, or embedded content (videos, widgets). We are not responsible for their privacy practices. Please review each site’s policy before providing personal data.</p>
+    
+    <p>
+      <strong>6.</strong>
+      <strong>Data Security</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">We implement reasonable technical and organizational measures to protect your information from unauthorized access, alteration, or disclosure. However, no system is completely secure—use caution when transmitting sensitive information.</p>
+    
+    <p>
+      <strong>7.</strong>
+      <strong>Children’s Privacy</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">Our services are not directed to children under 13. We do not knowingly collect personal information from anyone under 13. If you believe we have collected such data, please contact us to request deletion.</p>
+
+    
+    <p>
+      <strong>8.</strong>
+      <strong>Your Rights & Choices</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">Depending on your location, you may have rights to access, correct, delete, or restrict processing of your personal information. To exercise these rights or to unsubscribe from marketing communications, please contact us at the address below.</p>
+    
+    <p>
+      <strong>9.</strong>
+      <strong>Changes to This Policy</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">We may update this Privacy Policy from time to time. If material changes are made, we will revise the “Last updated” date and, where appropriate, provide notice (e.g., via email or banner on the site).</p>
+    
+    <p>
+      <strong>10.</strong>
+      <strong>Contact Us</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">If you have questions or concerns about this Privacy Policy, please reach out:</p>
+    <p style="margin-left: 20px;">JEFFERSON RECORDS LLC</p>
+    <p style="margin-left: 20px;">EMAIL: SUPPORT@ k1llajay.STORE</p>
+    <p style="margin-left: 20px;">Thank you for trusting  k1llajay with your information. We’re committed to respecting and protecting your privacy.</p>
+  </main>
+
+  <!-- Back link -->
+  <footer>
+    <a href="javascript:history.back()">BACK</a>
+  </footer>
+  
+  <script>
+    const btn  = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+  
+    btn.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      document.body.classList.toggle('no-scroll', isOpen);
+  
+      if (isOpen) {
+        btn.textContent = 'CLOSE';
+        btn.style.color = 'white';
+      } else {
+        btn.textContent = 'MENU';
+        btn.style.color = 'black';
+      }
+    });
+  
+    // Reset menu state on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      menu.classList.remove('open');
+      document.body.classList.remove('no-scroll');
+      btn.textContent = 'MENU';
+      btn.style.color = 'black';
+    });
+  </script>
+</body>
+</html>
