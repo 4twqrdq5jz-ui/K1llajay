@@ -17,7 +17,7 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 /* Use a reliable fallback font */
-html, body { height: 100%; width: 100%; font-family: 'sitefont', Arial, sans-serif; background-color: black; color: white; }
+html, body { height: 100%; width: 100%; font-family: 'sitefont', Arial, sans-serif; color: white; }
 /* Changed to flex-direction: row only for larger screens */
 body { display: flex; height: 100vh; } 
 
@@ -27,7 +27,6 @@ body { display: flex; height: 100vh; }
       align-items: center;
       justify-content: flex-start;
       padding: 10px;
-      background-color: black;
       border-bottom: 1px solid #333;
       width: 100%;
       position: fixed;
@@ -53,7 +52,6 @@ body { display: flex; height: 100vh; }
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: black;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -68,7 +66,7 @@ body { display: flex; height: 100vh; }
 .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 2px solid #fff; }
 .name { font-size: 24px; margin-bottom: 40px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
 .buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.button { background-color: black; border: 1px solid #666; color: white; padding: 15px; text-align: center; cursor: pointer; font-size: 14px; letter-spacing: 1px; transition: border-color 0.3s ease; text-transform: uppercase; text-decoration: none; display: block; border-radius: 8px; }
+.button { border: 1px solid #666; color: white; padding: 15px; text-align: center; cursor: pointer; font-size: 14px; letter-spacing: 1px; transition: border-color 0.3s ease; text-transform: uppercase; text-decoration: none; display: block; border-radius: 8px; }
 .button:hover { border-color: #999; }
 .footer { font-size: 10px; text-align: center; opacity: 0.7; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: auto; width: 100%; padding-top: 20px; /* Added padding-top and margin-top: auto */ }
 .footer-dot { opacity: 0.7; }
@@ -160,6 +158,30 @@ body { display: flex; height: 100vh; }
     .sidebar { position: fixed; left: 0; top: 0; }
 }
 
+/* background + overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  -webkit-background-attachment: fixed;
+  z-index: -2;
+  width: 100vw;
+  height: 200vh;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+  width: 100vw;
+  height: 200vh;
+}
+
+.sidebar { backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+.modal-wrapper { backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
 </style>
 </head>
 <body>
