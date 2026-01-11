@@ -58,6 +58,8 @@
       align-items: center;
       justify-content: flex-start;
       border-right: 1px solid #333;
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
     }
     .profile-img {
       width: 120px; height: 120px;
@@ -179,6 +181,28 @@
       transform: scale(1.02);
     }
 
+    /* background + overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      -webkit-background-attachment: fixed;
+      z-index: -2;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 200vh;
+    }
+
     /* MOBILE */
     @media (max-width: 768px) {
       body {
@@ -266,9 +290,10 @@
 
   <script>
     const hamburger = document.querySelector('.hamburger');
-    const sidebar   = document.querySelector('.sidebar');
+    const sidebar = document.querySelector('.sidebar');
     hamburger.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
+      const open = sidebar.classList.toggle('active');
+      document.body.style.overflow = open ? 'hidden' : 'auto';
     });
   </script>
 
