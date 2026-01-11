@@ -224,9 +224,35 @@
         font-size: 20px;
       }
     }
+
+    /* background + overlay from index */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      -webkit-background-attachment: fixed;
+      z-index: -2;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 200vh;
+    }
+    .topbar { display:none; align-items:center; justify-content:flex-start; padding:10px; border-bottom:1px solid #333; width:100%; position:fixed; top:0; left:0; z-index:1001; backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px); }
+    .topbar .hamburger{ font-size:28px; cursor:pointer; color:white; }
+    .topbar .top-name{ font-size:24px; color:white; text-transform:uppercase; }
+
+    @media(max-width:768px){ .topbar{ display:flex; background: rgba(0,0,0,0.45);} }
   </style>
 </head>
-
 <body>
   <!-- Mobile Top Bar -->
   <div class="topbar">
@@ -265,5 +291,19 @@
     </div>
   </div>
 
+  <script>
+    // implement the referenced toggleSidebar function to match index behavior
+    function toggleSidebar() {
+      const sb = document.querySelector('.sidebar');
+      if (!sb) return;
+      const open = sb.classList.toggle('active');
+      document.body.style.overflow = open ? 'hidden' : 'auto';
+    }
+    // Also wire the topbar hamburger (if present) to same action
+    (function () {
+      const topHamb = document.querySelector('.topbar .hamburger');
+      if (topHamb) topHamb.addEventListener('click', toggleSidebar);
+    })();
+  </script>
 </body>
 </html>
