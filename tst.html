@@ -119,6 +119,34 @@
       line-height: 1.6;
     }
 
+    /* index background + overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      -webkit-background-attachment: fixed;
+      z-index: -2;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 200vh;
+    }
+
+    .topbar { display:none; align-items:center; justify-content:flex-start; padding:10px; border-bottom:1px solid #333; width:100%; position:fixed; top:0; left:0; z-index:1001; backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px); }
+    .topbar .hamburger{ font-size:24px; cursor:pointer; margin-right:10px; color:white; }
+    .topbar .top-name{ font-size:18px; color:white; text-transform:uppercase; flex:1; text-align:center; }
+
+    @media(max-width:768px){ .topbar{ display:flex; background: rgba(0,0,0,0.45);} }
+
     /* ─── Mobile (≤768px) ─── */
    @media (max-width:768px) {
     /* hide desktop elements */
@@ -212,6 +240,11 @@
   </style>
 </head>
 <body class="dark-mode">
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <h1 class="top-name">BACK</h1>
+  </div>
+
   <!--  Mobile Hamburger Button -->
   <button id="menuBtn" class="mobile-menu-btn">MENU</button>
 
@@ -284,6 +317,13 @@
       btn.textContent = 'MENU';
       btn.style.color = 'black';
     });
+  
+    // forward topbar hamburger to menu button
+    (function () {
+      const topHamb = document.querySelector('.topbar .hamburger');
+      const menuBtn = document.getElementById('menuBtn');
+      if (topHamb && menuBtn) topHamb.addEventListener('click', () => menuBtn.click());
+    })();
   </script>
 </body>
 </html>
