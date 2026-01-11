@@ -296,7 +296,7 @@
   padding: 50px;
   max-width: 90%; /* Adjusted to 90% of viewport width */
   width: 100%;
-  max-height: 60vh; /* Adjusted to 85% of viewport height */
+  max-height: 80vh; /* Adjusted to 85% of viewport height */
   overflow-y: auto; /* Allow scrolling if content exceeds viewport */
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
@@ -504,7 +504,7 @@
 
   #overlayContent {
     position: relative;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.45);
     padding: 20px;
     border-radius: 12px;
     max-width: 90%;
@@ -512,9 +512,10 @@
     max-height: 60vh;
     overflow-y: auto;
     border: 1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(9px);
     margin: 20px;
     bottom: 5px;
+    top: 10px;
   }
 
   .overlay-close {
@@ -532,6 +533,20 @@
   .overlay-close:hover {
     opacity: 1;
   }
+
+  .song-modal .container {
+  position: relative;
+  background: rgba(0,0,0,0.45);
+  padding: 50px;
+  max-width: 90%; /* Adjusted to 90% of viewport width */
+  width: 100%;
+  max-height: 60vh; /* Adjusted to 85% of viewport height */
+  overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  text-align: center;
+  backdrop-filter: blur(9px);
+}
 
   .service-logos {
     display: flex;
