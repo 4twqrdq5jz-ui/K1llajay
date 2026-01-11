@@ -338,17 +338,13 @@
     /* Mobile Styles */
     /* Mobile Styles */
 @media (max-width: 768px) {
-  html, body {
-    height: 100%;
-    overflow: hidden; /* lock body */
-  }
-
   body {
-    flex-direction: column;
-    min-height: 100vh;
-    overflow-y: auto; /* ✅ allow scrolling */
-    padding-top: 50px;
-  }
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
 
   /* Top bar */
   .topbar {
