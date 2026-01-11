@@ -1,284 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>We’ll be back soon | Maintenance</title>
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#ffffff">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K1LLAJAY – Please Wait</title>
+  <link rel="icon" href="favicon.ico">
 
   <style>
     @font-face {
-      font-family: 'MysteryFont';
+      font-family: 'sitefont';
       src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html, body {
       height: 100%;
       width: 100%;
-      font-family:'MysteryFont', monospace;
-      background:#fff; color:#000;
-      overflow:auto; transition: color .3s ease, background .3s ease;
+      font-family: 'sitefont', monospace;
+      background: black;
+      color: white;
+      overflow: hidden;
     }
 
-    /* Prevent scroll when mobile menu is open */
-    body.no-scroll { overflow:hidden !important; touch-action:none; }
-    body.no-scroll .mobile-menu-btn { right:-455px; left:auto; color:#fff !important; position:relative; }
-
-    /* Desktop Nav/Footer default visible */
-    .desktop-nav, .desktop-footer { display:block; }
-    .mobile-menu, .mobile-clover-btn, .mobile-menu-btn { display:none; }
-
-    nav {
-      position: fixed; top: 20px; width: 100%;
-      text-align: center; z-index: 10;
-    }
-    nav a {
-      color:#000; text-decoration:none; font-size:16px;
-      letter-spacing:2px; padding:10px 20px; text-transform:uppercase;
-    }
-    nav a.clover { font-size:25px; line-height:0; }
-
-    /* Main content */
-    main.content {
-      max-width: 880px; margin: 120px auto 90px;
-      padding: 0 20px; text-align:center; line-height:1.6;
+    body {
+      display: flex;
+      height: 100vh;
     }
 
-    .status-card {
-      border:1px solid #000; padding:28px; margin:0 auto 18px;
-      display:inline-block; text-align:left; max-width: 720px; width:100%;
+    /* ───────── Sidebar ───────── */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-right: 1px solid #333;
     }
 
-    .headline {
-      font-size: 28px; letter-spacing: 2px; text-transform: uppercase;
-      margin-bottom: 10px; display:flex; align-items:center; gap:10px;
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid white;
     }
 
-    .dot {
-      width:10px; height:10px; border-radius:50%;
-      background:#ff3b30; /* red offline */
-      display:inline-block;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: .5; }
-      100% { transform: scale(1); opacity: 1; }
+    .name {
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      text-align: center;
     }
 
-    .message { margin: 8px 0 16px; font-size:18px; }
-    .details { font-size:14px; opacity:.8; }
-
-    .actions { margin-top: 22px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-    .btn {
-      appearance: none; border:1px solid #000; background:#000; color:#fff;
-      padding:12px 18px; font-weight:bold; text-decoration:none; cursor:pointer;
-      transition: transform .05s ease, opacity .2s ease, background .2s ease, color .2s ease;
-      text-transform: uppercase; letter-spacing: 1px;
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .btn.secondary { background:#fff; color:#000; }
-    .btn:active { transform: translateY(1px); }
 
-    footer {
-      position:fixed; bottom:10px; right:15px; font-size:12px; z-index:10; text-align:right;
-      transition: color .3s ease; color:#000;
+    .button {
+      display: block;
+      text-decoration: none;
+      color: white;
+      border: 1px solid #666;
+      padding: 15px;
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: border-color .3s ease;
     }
-    footer a { margin-left:15px; color:#000; text-decoration:none; }
 
-    /* ─── Mobile (≤768px) ─── */
-    @media (max-width:768px) {
-      .desktop-nav, .desktop-footer { display:none; }
+    .button:hover {
+      border-color: #999;
+    }
 
-      .mobile-menu-btn {
-        display:block; position:fixed; top:20px; right:20px; z-index:10000;
-        background:none; border:1px solid #000; padding:6px 10px; border-radius:2px;
-        font-size:1rem; font-family:'MysteryFont', monospace; color:#000; cursor:pointer;
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      text-align: center;
+      opacity: .7;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+    }
+
+    .footer-dot {
+      opacity: .7;
+    }
+
+    .copyright {
+      width: 100%;
+      font-size: 8px;
+      margin-top: 5px;
+    }
+
+    /* ───────── Main Content ───────── */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .wait-box {
+      border: 1px solid #333;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .wait-title {
+      font-size: 26px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .wait-text {
+      font-size: 14px;
+      opacity: .8;
+      line-height: 1.6;
+    }
+
+    /* ───────── Mobile ───────── */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        overflow-y: auto;
       }
 
-      .mobile-menu {
-        display:flex; flex-direction:column; height:100vh; width:100vw;
-        position:fixed; top:0; left:0; background:#000; transform:translateX(100%);
-        transition:transform .3s ease; padding:60px 20px 20px; z-index:9999;
+      .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid #333;
       }
-      .mobile-menu.open { transform:translateX(0); }
 
-      .mobile-clover-btn {
-        display:block; position:fixed; top:3%; left:50%; color:#000;
-        transform:translate(-50%, -50%); z-index:500; background:none; border:none;
-        font-size:35px; cursor:pointer;
+      .profile-img {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0;
       }
-      .mobile-menu.open ~ .mobile-clover-btn { display:none; }
-      .mobile-menu.open ~ .mobile-menu-btn { display:block; }
 
-      .mobile-nav { flex-grow:1; overflow-y:auto; }
-      .mobile-nav a { display:block; color:#fff; margin:12px 0; font-size:1.5rem; text-decoration:none; }
-
-      .mobile-footer {
-        position:absolute; bottom:125px; left:0; right:0; color:#fff;
-        display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;
+      .name {
+        font-size: 16px;
+        margin: 0;
       }
-      .mobile-footer a, .mobile-footer span { color:#fff; font-size:.75rem; text-decoration:none; }
 
-      main.content { margin-top: 110px; padding: 0 16px; }
-      .status-card { padding:22px; }
-      .headline { font-size:24px; }
+      .buttons {
+        flex-direction: row;
+        gap: 5px;
+      }
+
+      .button {
+        padding: 8px;
+        font-size: 11px;
+      }
+
+      .footer {
+        font-size: 8px;
+      }
+
+      .main-content {
+        padding: 30px 15px;
+      }
+
+      .wait-title {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <!--  Mobile Hamburger Button -->
-  <button id="menuBtn" class="mobile-menu-btn" aria-controls="mobileMenu" aria-expanded="false">MENU</button>
 
-  <!--  Off-canvas Mobile Menu -->
-  <div id="mobileMenu" class="mobile-menu">
-    <nav class="mobile-nav">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a>
-      <a href="music.html">MUSIC</a>
-      <a href="https://k1llajay.store">SHOP</a>
-      <a href="podcast.html">TREND TALK</a>
-      <a href="future-songs.html">Future Songs</a>
-      <a href="unreleased.html">Unreleased</a>
-      <a href="portfolio.html">PORTFOLIO</a>
-      <a href="player.html">ALL SONGS</a>
-    </nav>
-    <footer class="mobile-footer">
-      <a href="database.html">MUSIC DATABASE</a>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
-      <a href="terms-and-conditions.html">TERMS</a>
-      <a href="privacy-policy.html">PRIVACY</a>
-      ©2025 JEFFERSON ENTERTAINMENT LLC
-    </footer>
-  </div>
-  <button id="mobileClover" class="mobile-clover-btn" onclick="location.href='index.html'">✦︎</button>
-  <nav class="desktop-nav">
-    <a href="future-songs.html">Future Songs</a>
-    <a href="https://mystery.k1llajay.com">MYSTERY</a>
-    <a href="music.html">MUSIC</a>
-    <a href="index.html" class="clover">✦︎</a>
-    <a href="https://k1llajay.store">SHOP</a>
-    <a href="podcast.html">TREND TALK</a>
-    <a href="player.html">ALL SONGS</a>
-  </nav>  <div id="mobileMenu" class="mobile-menu">
-    <nav class="mobile-nav">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a>
-      <a href="music.html">MUSIC</a>
-      <a href="https://k1llajay.store">SHOP</a>
-      <a href="podcast.html">TREND TALK</a>
-      <a href="future-songs.html">Future Songs</a>
-      <a href="unreleased.html">Unreleased</a>
-      <a href="portfolio.html">PORTFOLIO</a>
-      <a href="player.html">ALL SONGS</a>
-    </nav>
-    <footer class="mobile-footer">
-      <a href="database.html">MUSIC DATABASE</a>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
-      <a href="terms-and-conditions.html">TERMS</a>
-      <a href="privacy-policy.html">PRIVACY</a>
-      ©2025 JEFFERSON ENTERTAINMENT LLC
-    </footer>
-  </div>
-  <button id="mobileClover" class="mobile-clover-btn" onclick="location.href='index.html'">✦︎</button>
-  <nav class="desktop-nav">
-    <a href="future-songs.html">Future Songs</a>
-    <a href="https://mystery.k1llajay.com">MYSTERY</a>
-    <a href="music.html">MUSIC</a>
-    <a href="index.html" class="clover">✦︎</a>
-    <a href="https://k1llajay.store">SHOP</a>
-    <a href="podcast.html">TREND TALK</a>
-    <a href="player.html">ALL SONGS</a>
-  </nav>
+  <div class="sidebar">
+    <img src="IMG_6877.jpeg" alt="Profile" class="profile-img">
+    <div class="name">YAE YADIR</div>
 
-  <!-- Desktop footer -->
-  <footer class="desktop-footer" aria-label="Footer">
-    <a href="portfolio.html">PORTFOLIO</a>
-    <a href="database.html">MUSIC DATABASE</a>
-    <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
-    <a href="terms-and-conditions.html">TERMS</a>
-    <a href="privacy-policy.html">PRIVACY</a>
-    <span>©2025 JEFFERSON ENTERTAINMENT LLC</span>
-  </footer>
-
-  <main class="content" role="main">
-    <div class="status-card" aria-live="polite">
-      <div class="headline"><span class="dot" id="statusDot" aria-hidden="true"></span> Temporarily Down for Maintenance</div>
-      <p class="message">We’re tuning things up behind the scenes. Thanks for your patience.</p>
-      <p class="details" id="reasonLine">Status: Scheduled maintenance · Last checked just now.</p>
-
-      <div class="actions">
-        <button class="btn" id="retryBtn" type="button">Retry</button>
-        <a class="btn secondary" href="index.html">Back Home</a>
-      </div>
+    <div class="buttons">
+      <a href="music.html" class="button">Latest Release</a>
+      <a href="portfolio.html" class="button">Portfolio</a>
+      <a href="podcast.html" class="button">Podcast</a>
+      <a href="player.html" class="button">All Releases</a>
+      <a href="index.html" class="button">Home</a>
     </div>
 
-    <p class="details">If you need help, reach out on <a href="mailto:support@k1llajay.com">support@k1llajay.com</a>.</p>
-  </main>
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="database.html">MUSIC DATABASE</a>
+      <span class="footer-dot">•</span>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <span class="footer-dot">•</span>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="privacy-policy.html">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
 
-  <script>
-    // Mobile menu
-    const btn  = document.getElementById('menuBtn');
-    const menu = document.getElementById('mobileMenu');
+  <div class="main-content">
+    <div class="wait-box">
+      <div class="wait-title">Please Wait</div>
+      <div class="wait-text">
+        This section is currently unavailable.<br>
+        Content will be live shortly.
+      </div>
+    </div>
+  </div>
 
-    btn.addEventListener('click', () => {
-      const isOpen = menu.classList.toggle('open');
-      document.body.classList.toggle('no-scroll', isOpen);
-      btn.textContent = isOpen ? 'CLOSE' : 'MENU';
-      btn.style.color = isOpen ? 'white' : 'black';
-      btn.setAttribute('aria-expanded', String(isOpen));
-      menu.setAttribute('aria-hidden', String(!isOpen));
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      menu.classList.remove('open');
-      document.body.classList.remove('no-scroll');
-      btn.textContent = 'MENU';
-      btn.style.color = 'black';
-      btn.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
-    });
-
-    // Simple connectivity + retry
-    const retryBtn = document.getElementById('retryBtn');
-    const statusDot = document.getElementById('statusDot');
-    const reasonLine = document.getElementById('reasonLine');
-
-    async function checkOnline() {
-      // Basic heartbeat using a lightweight, cache-busting request to this same page
-      const url = location.href.split('#')[0] + (location.search ? '&' : '?') + 'ping=' + Date.now();
-      try {
-        const ctrl = new AbortController();
-        const id = setTimeout(() => ctrl.abort(), 5000);
-        const res = await fetch(url, { method: 'HEAD', cache: 'no-store', signal: ctrl.signal });
-        clearTimeout(id);
-        const ok = res.ok;
-        updateStatus(ok);
-        return ok;
-      } catch (e) {
-        updateStatus(false);
-        return false;
-      }
-    }
-
-    function updateStatus(ok){
-      statusDot.style.background = ok ? '#34c759' : '#ff3b30'; // green / red
-      const stamp = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-      reasonLine.textContent = (ok)
-        ? `Status: Online detected · Last checked ${stamp}.`
-        : `Status: Still under maintenance · Last checked ${stamp}.`;
-    }
-
-    retryBtn.addEventListener('click', async () => {
-      const ok = await checkOnline();
-      if (ok) location.reload();
-    });
-
-    // Auto check periodically
-    setInterval(checkOnline, 30000);
-    checkOnline();
-  </script>
 </body>
 </html>
