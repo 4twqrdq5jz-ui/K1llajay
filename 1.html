@@ -31,7 +31,11 @@
       position: fixed;
       inset: 0;
       background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
       z-index: -2;
+      -webkit-background-attachment: fixed;
+      width: 100vw;
+      height: 100vh;
     }
     body::after {
       content: "";
@@ -39,6 +43,8 @@
       inset: 0;
       background: rgba(0,0,0,0.65);
       z-index: -1;
+      width: 100vw;
+      height: 100vh;
     }
     body {
   display: flex;
