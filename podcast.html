@@ -57,6 +57,7 @@
     flex-direction:column;
     align-items:center;
     border-right:1px solid #333;
+    backdrop-filter: blur(9px);
   }
   .profile-img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px; border:2px solid #fff; }
   .name { font-size:24px; margin-bottom:40px; text-align:center; letter-spacing:2px; text-transform:uppercase; }
@@ -126,6 +127,28 @@
     .footer { position:relative; bottom:0; width:100%; padding:10px; background:black; margin-top:auto; font-size:9px; gap:3px; }
     .footer a, .footer-dot { font-size:9px; }
     .copyright { font-size:7px; margin-top:5px; }
+  }
+
+  /* background + overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("IMG_3309.gif") center / cover no-repeat;
+    background-attachment: fixed;
+    -webkit-background-attachment: fixed;
+    z-index: -2;
+    width: 100vw;
+    height: 200vh;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+    width: 100vw;
+    height: 200vh;
   }
 </style>
 </head>
@@ -249,7 +272,10 @@ window.closeModal = function() {
 // Hamburger toggle
 const hamburger = document.querySelector('.hamburger');
 const sidebar = document.querySelector('.sidebar');
-hamburger.addEventListener('click', () => { sidebar.classList.toggle('active'); });
+hamburger.addEventListener('click', () => {
+  const open = sidebar.classList.toggle('active');
+  document.body.style.overflow = open ? 'hidden' : 'auto';
+});
 </script>
 
 </body>
