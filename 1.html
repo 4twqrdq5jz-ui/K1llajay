@@ -44,7 +44,7 @@
       background: rgba(0,0,0,0.65);
       z-index: -1;
       width: 100vw;
-      height: 200vh;
+      height: 100vh;
     }
     body {
   display: flex;
@@ -175,6 +175,9 @@
       text-align: right;
       opacity: 0.6;
     }
+    .track-dash {
+      opacity: 0.6;
+    }
     /* Lyrics/Credits Overlay */
 #overlay {
   position: fixed;
@@ -205,12 +208,15 @@
   position: relative;
   padding: 20px;
   border-radius: 12px;
-  max-width: 90%; /* Adjusted to 90% of viewport width */
+  max-width: 90%;
   width: 100%;
-  max-height: 80vh; /* Adjusted to 80% of viewport height */
-  overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+  height: 80vh;
+  overflow-y: auto;
   border: 1px solid rgba(255,255,255,0.2);
   backdrop-filter: blur(9px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #overlayContent h1 {
   font-size: 18px;
@@ -222,27 +228,33 @@
   font-size: 17px;
   text-align: center;
   letter-spacing: 0.5px;
+  line-height: 1.8;
 }
-    .overlay-close {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      background: none;
-      border: none;
-      font-size: 28px;
-      color: white;
-      cursor: pointer;
-      opacity: 0.7;
-    }
-    .overlay-close:hover {
-      opacity: 1;
-    }
-    .service-logos {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 30px;
-    }
+/* Desktop: buttons fixed to viewport so they don't scroll */
+.overlay-close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 105;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.overlay-close:hover {
+  opacity: 1;
+}
+.service-logos {
+  margin-top: auto;
+  padding-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
     .service-logos img {
       height: 40px;
       opacity: 0.8;
@@ -332,14 +344,67 @@
   margin-bottom: 20px;
 }
 .modal-close {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 30px;
+  z-index: 106;
   background: none;
   border: none;
   font-size: 28px;
   color: white;
   cursor: pointer;
+  opacity: 0.7;
+}
+.track-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.track-info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.next-track-btn, .prev-track-btn {
+  padding: 12px 18px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.next-track-btn:hover, .prev-track-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.next-track-btn:disabled, .prev-track-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.next-track-btn:disabled:hover, .prev-track-btn:disabled:hover {
+  background: rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.2);
 }
 
     /* Mobile Top Bar (hidden on desktop) */
@@ -352,7 +417,6 @@
 }
 
 
-    /* Mobile Styles */
     /* Mobile Styles */
 @media (max-width: 768px) {
   body {
@@ -411,6 +475,19 @@
 
   .sidebar.active {
     display: flex;
+  }
+
+  #overlay.active ~ .sidebar,
+  .song-modal.open ~ .sidebar {
+    display: flex;
+  }
+
+  #overlay.active {
+    z-index: 50;
+  }
+
+  .song-modal.open {
+    z-index: 51;
   }
 
   .profile-img {
@@ -543,7 +620,7 @@
   padding: 50px;
   max-width: 90%; /* Adjusted to 90% of viewport width */
   width: 100%;
-  max-height: 60vh; /* Adjusted to 85% of viewport height */
+  max-height: 40vh; /* Reduced height to not fit lyrics */
   overflow-y: auto; /* Allow scrolling if content exceeds viewport */
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
@@ -632,32 +709,37 @@
     </section>
     <!-- DISC 1 -->
     <div class="tracklist">
-      <div class="track"><div class="track-number">1.</div><div class="track-title track-item" data-song="sos">i - s.o.s. (with Amari2x)</div></div>
-      <div class="track"><div class="track-number">2.</div><div class="track-title track-item" data-song="lick">hiit a lick (up style)</div></div>
-      <div class="track"><div class="track-number">3.</div><div class="track-title track-item" data-song="rivalry">rivalry</div></div>
-      <div class="track"><div class="track-number">4.</div><div class="track-title track-item" data-song="somber">somber</div></div>
-      <div class="track"><div class="track-number">5.</div><div class="track-title track-item" data-song="ii">ii</div></div>
-      <div class="track"><div class="track-number">6.</div><div class="track-title track-item" data-song="lost">lost mentality</div></div>
-      <div class="track"><div class="track-number">7.</div><div class="track-title track-item" data-song="gt3">gt3</div></div>
-      <div class="track"><div class="track-number">8.</div><div class="track-title track-item" data-song="riot">riot</div></div>
-      <div class="track"><div class="track-number">9.</div><div class="track-title track-item" data-song="iii">iii (with Amari2x)</div></div>
-      <div class="track"><div class="track-number">10.</div><div class="track-title track-item" data-song="vogue">vogue pt.2</div></div>
-      <div class="track"><div class="track-number">11.</div><div class="track-title track-item" data-song="dead">left4dead</div></div>
-      <div class="track"><div class="track-number">12.</div><div class="track-title track-item" data-song="heated">heated</div></div>
-      <div class="track"><div class="track-number">13.</div><div class="track-title track-item" data-song="iiii">iiii</div></div>
-      <div class="track"><div class="track-number">14.</div><div class="track-title track-item" data-song="kontrol">kontrol</div></div>
-      <div class="track"><div class="track-number">15.</div><div class="track-title track-item" data-song="love">learn2love (with 4MIR)</div></div>
-      <div class="track"><div class="track-number">16.</div><div class="track-title track-item" data-song="jerk">jerk</div></div>
-      <div class="track"><div class="track-number">17.</div><div class="track-title track-item" data-song="outro">iiiii</div></div>
-    </div>
+      <div class="track"><div class="track-number">1.</div><div class="track-title track-item" data-song="sos">i - sos</div><div class="track-dash"> - </div><div class="track-artist" data-song="sos">Yae Yadir & Amari2x</div></div>
+      <div class="track"><div class="track-number">2.</div><div class="track-title track-item" data-song="lick">hiit a lick (up style)</div><div class="track-dash"> - </div><div class="track-artist"data-song="lick">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">3.</div><div class="track-title track-item" data-song="rivalry">rivalry</div><div class="track-dash"> - </div><div class="track-artist" data-song="rivalry">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">4.</div><div class="track-title track-item" data-song="somber">somber</div><div class="track-dash"> - </div><div class="track-artist" data-song="somber">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">5.</div><div class="track-title track-item" data-song="ii">ii</div><div class="track-dash"> - </div><div class="track-artist" data-song="ii">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">6.</div><div class="track-title track-item" data-song="lost">lost mentality</div><div class="track-dash"> - </div><div class="track-artist" data-song="lost">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">7.</div><div class="track-title track-item" data-song="gt3">gt3</div><div class="track-dash"> - </div><div class="track-artist" data-song="gt3">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">8.</div><div class="track-title track-item" data-song="riot">riot</div><div class="track-dash"> - </div><div class="track-artist" data-song="riot">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">9.</div><div class="track-title track-item" data-song="iii">iii</div><div class="track-dash"> - </div><div class="track-artist"data-song="iii">Yae Yadir & Amari2x</div></div>
+      <div class="track"><div class="track-number">10.</div><div class="track-title track-item" data-song="vogue">vogue pt.2</div><div class="track-dash"> - </div><div class="track-artist"data-song="vogue">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">12.</div><div class="track-title track-item" data-song="heated">heated</div><div class="track-dash"> - </div><div class="track-artist"data-song="heated">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">13.</div><div class="track-title track-item" data-song="iiii">iiii</div><div class="track-dash"> - </div><div class="track-artist" data-song="iiii">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">14.</div><div class="track-title track-item" data-song="kontrol">kontrol</div><div class="track-dash"> - </div><div class="track-artist" data-song="kontrol">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">15.</div><div class="track-title track-item" data-song="love">learn2love</div><div class="track-dash"> - </div><div class="track-artist" data-song="love">Yae Yadir & 4MIR</div></div>
+      <div class="track"><div class="track-number">16.</div><div class="track-title track-item" data-song="jerk">jerk</div><div class="track-dash"> - </div><div class="track-artist" data-song="jerk">Yae Yadir</div></div>
+      <div class="track"><div class="track-number">17.</div><div class="track-title track-item" data-song="outro">iiiii</div><div class="track-dash"> - </div><div class="track-artist">Yae Yadir</div></div>
+  </main>
   </main>
 
   <!-- Lyrics/Credits Overlay -->
   <aside id="overlay">
     <div id="overlayContent">
       <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">X</button>
-      <h1 id="title" class="track-title">Loading Track Title</h1>
-      <h3>BY YAE YADIR</h3>
+      <div class="track-header">
+        <button id="prevTrackBtn" class="prev-track-btn" onclick="prevTrack()">←</button>
+        <div class="track-info">
+          <h1 id="title" class="track-title">Loading Track Title...</h1>
+          <h3 id="artist" class="track-artist">Loading Artist...</h3>
+        </div>
+        <button id="nextTrackBtn" class="next-track-btn" onclick="nextTrack()">→</button>
+      </div>
       <div class="sub-toggle">
         <span id="lyricsTab" class="activeTab" onclick="switchTab('lyrics')">LYRICS</span>
         <span id="creditsTab" onclick="switchTab('credits')">CREDITS</span>
@@ -770,6 +852,47 @@
       document.getElementById('lyricsTab').classList.toggle('activeTab', tab === 'lyrics');
       document.getElementById('creditsTab').classList.toggle('activeTab', tab === 'credits');
     }
+    const trackOrder = ['sos', 'lick', 'rivalry', 'somber', 'ii', 'lost', 'gt3', 'riot', 'iii', 'vogue', 'heated', 'iiii', 'kontrol', 'love', 'jerk', 'outro'];
+let currentTrackIndex = 0;
+
+function updateTrackButtonVisibility() {
+  const nextBtn = document.getElementById('nextTrackBtn');
+  const prevBtn = document.getElementById('prevTrackBtn');
+  
+  // Disable next button if on last track
+  nextBtn.disabled = currentTrackIndex === trackOrder.length - 1;
+  
+  // Disable previous button if on first track
+  prevBtn.disabled = currentTrackIndex === 0;
+}
+
+function nextTrack() {
+  if (!document.getElementById('nextTrackBtn').disabled) {
+    currentTrackIndex++;
+    const nextKey = trackOrder[currentTrackIndex];
+    originalOpenSongOverlay(nextKey);
+    updateTrackButtonVisibility();
+  }
+}
+
+function prevTrack() {
+  if (!document.getElementById('prevTrackBtn').disabled) {
+    currentTrackIndex--;
+    const prevKey = trackOrder[currentTrackIndex];
+    originalOpenSongOverlay(prevKey);
+    updateTrackButtonVisibility();
+  }
+}
+
+// Store the original openSongOverlay function
+const originalOpenSongOverlay = openSongOverlay;
+
+// Override openSongOverlay to track current index and update buttons
+openSongOverlay = function(key) {
+  currentTrackIndex = trackOrder.indexOf(key);
+  originalOpenSongOverlay(key);
+  updateTrackButtonVisibility();
+}
 
     const songData = {
       sos: {
@@ -1447,19 +1570,33 @@ Living my life, doin' all I can (Pick up the phone xp quit playin')`,
       }
     };
 
+    function openSongOverlay(key) {
+      const data = songData[key] || { lyrics: "Lyrics coming soon...", credits: "", links: {} };
+      const trackElement = document.querySelector(`.track-item[data-song="${key}"]`);
+      document.getElementById('title').innerHTML = trackElement ? trackElement.textContent.trim() : "Unknown";
+      const artistElement = trackElement ? trackElement.parentElement.querySelector('.track-artist') : null;
+      document.getElementById('artist').innerHTML = "By " + (artistElement ? artistElement.textContent.trim() : "Unknown");
+      document.getElementById('lyrics').innerHTML = `<div>${data.lyrics.replace(/\n/g, '<br>')}</div>`;
+      document.getElementById('credits').innerHTML = data.credits || "Credits coming soon...";
+      document.getElementById('link-apple').href = data.links.apple || '#';
+      document.getElementById('link-spotify').href = data.links.spotify || '#';
+      document.getElementById('link-amazon').href = data.links.amazon || '#';
+      document.getElementById('link-tidal').href = data.links.tidal || '#';
+      openOverlay();
+      switchTab('lyrics');
+    }
+
     document.querySelectorAll('.track-item').forEach(el => {
       el.addEventListener('click', () => {
         const key = el.dataset.song;
-        const data = songData[key] || { lyrics: "Lyrics coming soon...", credits: "", links: {} };
-        document.getElementById('title').innerHTML = el.textContent.trim();
-        document.getElementById('lyrics').innerHTML = `<div>${data.lyrics.replace(/\n/g, '<br>')}</div>`;
-        document.getElementById('credits').innerHTML = data.credits || "Credits coming soon...";
-        document.getElementById('link-apple').href = data.links.apple || '#';
-        document.getElementById('link-spotify').href = data.links.spotify || '#';
-        document.getElementById('link-amazon').href = data.links.amazon || '#';
-        document.getElementById('link-tidal').href = data.links.tidal || '#';
-        openOverlay();
-        switchTab('lyrics');
+        openSongOverlay(key);
+      });
+    });
+
+    document.querySelectorAll('.track-artist').forEach(el => {
+      el.addEventListener('click', () => {
+        const key = el.dataset.song;
+        if (key) openSongOverlay(key);
       });
     });
   </script>
