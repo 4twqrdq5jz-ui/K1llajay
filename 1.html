@@ -37,7 +37,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.65);
       z-index: -1;
     }
     body {
@@ -52,8 +52,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(18px);
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(9px);
       -webkit-backdrop-filter: blur(18px);
       border-right: 1px solid rgba(255,255,255,0.15);
     }
@@ -119,6 +119,8 @@
       height: 100vh;
       overflow-y: auto;
       padding: 80px 100px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     #album-title-section {
       text-align: center;
@@ -135,7 +137,7 @@
       font-size: 12px;
       letter-spacing: 2px;
       border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.65);
       cursor: pointer;
       transition: all 0.3s ease;
       backdrop-filter: blur(18px);
@@ -191,7 +193,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.65);
   z-index: -1;
 }
 #overlay.active {
@@ -199,7 +201,7 @@
 }
 #overlayContent {
   position: relative;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.65);
   padding: 20px;
   border-radius: 12px;
   max-width: 90%; /* Adjusted to 90% of viewport width */
@@ -207,7 +209,7 @@
   max-height: 80vh; /* Adjusted to 80% of viewport height */
   overflow-y: auto; /* Allow scrolling if content exceeds viewport */
   border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(9px);
 }
     .overlay-close {
       position: absolute;
@@ -283,7 +285,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.65);
   z-index: -1;
 }
 .song-modal.open {
@@ -291,7 +293,7 @@
 }
 .song-modal .container {
   position: relative;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.65);
   padding: 50px;
   max-width: 90%; /* Adjusted to 90% of viewport width */
   width: 100%;
@@ -300,7 +302,7 @@
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
   text-align: center;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(9px);
 }
 .song-modal h1 {
   font-size: 25px;
@@ -360,14 +362,14 @@
     align-items: center;
     justify-content: flex-start;
     padding: 10px 15px;
-    background-color: rgba(0,0,0,0.45);
+    background-color: rgba(0,0,0,0.65);
     border-bottom: 1px solid rgba(255,255,255,0.15);
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1001;
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(9px);
   }
 
   .hamburger {
@@ -394,7 +396,7 @@
     width: 100%;
     height: auto;
     padding: 20px;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.65);
     z-index: 999;
     flex-direction: column;
     align-items: center;
@@ -424,7 +426,7 @@
     overflow-y: auto; /* ✅ allow scrolling */
     -webkit-overflow-scrolling: touch; /* ✅ for better scrolling on iOS */
     padding: 10px 10px 40px;
-    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
   }
 
   /* Footer */
@@ -493,7 +495,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.65);
     z-index: -1;
   }
 
@@ -503,7 +505,7 @@
 
   #overlayContent {
     position: relative;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.65);
     padding: 20px;
     border-radius: 12px;
     max-width: 90%;
@@ -535,7 +537,7 @@
 
   .song-modal .container {
   position: relative;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.65);
   padding: 50px;
   max-width: 90%; /* Adjusted to 90% of viewport width */
   width: 100%;
