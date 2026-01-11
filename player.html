@@ -16,32 +16,90 @@
     html, body {
       margin: 0; padding: 0; height: 100%; width: 100%;
       font-family: 'sitefont', monospace;
-      background-color: black; color: white;
+    color: white;
       text-transform: uppercase;
     }
     body { display: flex; flex-direction: row; min-height: 100vh; overflow: hidden; }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  -webkit-background-attachment: fixed;
+  z-index: -2;
+  width: 100vw;
+  height: 200vh;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+  width: 100vw;
+  height: 200vh;
+}
     /* TOPBAR (mobile only) */
     .topbar {
-      display: none; align-items: center; justify-content: flex-start;
-      padding: 10px; background-color: black; border-bottom: 1px solid #333;
-      width: 100%; position: fixed; top: 0; left: 0; z-index: 1001;
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      backdrop-filter: blur(9px);
+-webkit-backdrop-filter: blur(9px);
     }
-    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
-    .top-name { font-size: 24px; flex: 1; text-align: center; }
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 250px; height: 100vh; background-color: black; padding: 20px;
-      display: flex; flex-direction: column; align-items: center;
-      border-right: 1px solid #333; gap: 20px;
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
     }
-    .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
-    .name { font-size: 24px; letter-spacing: 2px; text-align: center; }
+
+    .top-name {
+      font-size: 24px;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 1px solid #333;
+      backdrop-filter: blur(9px);
+-webkit-backdrop-filter: blur(9px);
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
     /* MINI PLAYER */
     .mini-player {
-      width: 100%; padding: 16px; background: rgba(255,255,255,0.04);
+      width: 100%; padding: 16px; padding-bottom: 16px; background: rgba(255,255,255,0.04);
       border: 1px solid #333; border-radius: 12px; display: flex;
       flex-direction: column; gap: 10px;
     }
@@ -55,22 +113,47 @@
     .mini-btn:hover { opacity: 1; transform: scale(1.1); }
     .mini-btn.main { font-size: 32px; opacity: 1; }
 
-    .buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+   .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
     .button {
-      background-color: black; border: 1px solid #666; color: white;
-      padding: 15px; text-align: center; cursor: pointer; font-size: 14px;
-      letter-spacing: 1px; transition: border-color 0.3s ease; text-decoration: none; display: block;
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
     }
-    .button:hover { border-color: #999; }
-
+    .button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
     .footer {
-      font-size: 10px; text-align: center; opacity: 0.7;
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
-      margin-top: 20px; width: 100%;
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
     }
-    .footer a { color: white; text-decoration: none; font-size: 10px; }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
     .footer a:hover { opacity: 0.5; }
-    .footer-dot { opacity: 0.7; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
     /* MAIN CONTENT */
@@ -217,7 +300,29 @@
       .video-thumb::after { font-size: 56px; }
       .video-title { font-size: 16px; }
     }
-</style>
+
+    /* background + overlay from index */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      -webkit-background-attachment: fixed;
+      z-index: -2;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 200vh;
+    }
+  </style>
 </head>
 <body class="dark-mode">
   <div class="topbar">
@@ -615,7 +720,11 @@
 
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('.sidebar');
-    hamburger.addEventListener('click', () => sidebar.classList.toggle('active'));
+    hamburger.addEventListener('click', () => {
+      const open = sidebar.classList.toggle('active');
+      document.body.style.overflow = open ? 'hidden' : 'auto';
+    });
+
 
     window.addEventListener('load', () => {
       if (window.innerWidth <= 768) {
