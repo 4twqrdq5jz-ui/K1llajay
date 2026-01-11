@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Naturetography – YAE YADIR</title>
+<link rel="icon" href="favicon.ico">
+
+<style>
+/* 1. Global/Font Setup */
+@font-face {
+  font-family: 'sitefont';
+  /* Ensure the font file 'beyoncefont.ttf' is in the correct path */
+  src: url('beyoncefont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Use a reliable fallback font */
+html, body { height: 100%; width: 100%; font-family: 'sitefont', Arial, sans-serif; background-color: black; color: white; }
+/* Changed to flex-direction: row only for larger screens */
+body { display: flex; height: 100vh; } 
+
+/* TOPBAR (mobile only) */
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .top-name {
+      font-size: 24px;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+
+/* 3. SIDEBAR (Default: desktop, Fixed position) */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-right: 1px solid #333;
+  flex-shrink: 0;
+  position: sticky; /* Keep sidebar visible while scrolling main content */
+  top: 0;
+  overflow-y: auto; /* Allow scrolling if sidebar content is too long */
+}
+.profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 2px solid #fff; }
+.name { font-size: 24px; margin-bottom: 40px; text-align: center; letter-spacing: 2px; text-transform: uppercase; }
+.buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.button { background-color: black; border: 1px solid #666; color: white; padding: 15px; text-align: center; cursor: pointer; font-size: 14px; letter-spacing: 1px; transition: border-color 0.3s ease; text-transform: uppercase; text-decoration: none; display: block; border-radius: 8px; }
+.button:hover { border-color: #999; }
+.footer { font-size: 10px; text-align: center; opacity: 0.7; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: auto; width: 100%; padding-top: 20px; /* Added padding-top and margin-top: auto */ }
+.footer-dot { opacity: 0.7; }
+.footer a { color: white; text-decoration: none; font-size: 10px; }
+.footer a:hover { opacity: 0.5; }
+.copyright { font-size: 8px; width: 100%; margin-top: 5px; }
+
+/* 4. GRID */
+/* Removed overflow: hidden; from body to allow scrolling on the main content */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 10px;
+  overflow-y: auto; /* Correct element to have scroll */
+  height: 100vh; /* Set a height to enable scrolling */
+}
+.grid-item { border: 1px solid #333; overflow: hidden; cursor: pointer; border-radius: 8px; }
+.grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.grid-item img:hover { transform: scale(1.05); } /* Added a hover effect */
+
+/* 5. MODAL */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); overflow: auto; /* Allow modal to scroll if content is too big */ }
+.modal-wrapper {
+  position: absolute; /* Changed to absolute for better vertical centering */
+  margin: auto;
+  width: 90%;
+  max-width: 900px; /* Increased max width */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  width: 100%;
+  height: auto;
+  max-height: 90vh; /* Prevents image from exceeding viewport height */
+  object-fit: contain; /* Ensures the whole image is visible */
+}
+.close { position: absolute; top: 0px; right: 0px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px black; z-index: 1001; padding: 10px; }
+.close:hover { opacity: 0.7; }
+
+/* 6. RESPONSIVE */
+@media (max-width: 768px) {
+  /* Set body to column direction and remove fixed height */
+  body { flex-direction: column; height: auto; min-height: 100vh; }
+  /* Make main-content flow normally */
+  .main-content { grid-template-columns: repeat(2, 1fr); gap: 5px; padding: 10px; overflow-y: unset; height: auto; padding-top: 50px; /* Adjust for fixed topbar */ }
+
+  .topbar { display: flex; }
+
+  /* Mobile sidebar */
+  .sidebar {
+    display: none;
+    position: fixed; /* Changed to fixed to cover the screen */
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 50px); /* Fill remaining height */
+    padding: 20px;
+    background-color: black;
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid #333;
+    overflow-y: auto; /* Important for scrollable mobile menu */
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%); /* Start off-screen */
+  }
+  .sidebar.active {
+    display: flex; /* Display the sidebar */
+    transform: translateX(0); /* Slide into view */
+  }
+  /* Adjusted for mobile */
+  .name { font-size: 20px; margin-bottom: 20px; }
+  .modal-wrapper { width: 95%; max-width: none; }
+  .close { font-size: 35px; top: 10px; right: 10px; }
+}
+
+@media (min-width: 769px) {
+    /* Desktop layout overrides */
+    body { flex-direction: row; }
+    .main-content { padding-left: 270px; /* Space for the fixed sidebar */ }
+    .sidebar { position: fixed; left: 0; top: 0; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="hamburger">&#9776;</span>
+  <h1 class="top-name">NATURETOGRAPHY</h1>
+</div>
+
+<div class="sidebar">
+  <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR" />
+  <h1 class="name"><a href="index.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+  <div class="buttons">
+    <a href="index.html" class="button">GALLERY</a>
+    <a href="music.html" class="button">LATEST ALBUM</a>
+    <a href="podcast.html" class="button">PODCAST</a>
+    <a href="player.html" class="button">ALL RELEASES</a>
+    <a href="#" class="button">COMING SOON</a>
+  </div>
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">MYSTERY</a>
+    <span class="footer-dot">•</span>
+    <a href="database.html">MUSIC DATABASE</a>
+    <span class="footer-dot">•</span>
+    <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+    <span class="footer-dot">•</span>
+    <a href="terms-and-conditions.html">TERMS</a>
+    <span class="footer-dot">•</span>
+    <a href="privacy-policy.html">PRIVACY</a>
+    <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+  </div>
+</div>
+
+<div class="main-content" id="grid-container"></div>
+
+<div id="myModal" class="modal">
+  <div class="modal-wrapper">
+    <img class="modal-content" id="img01">
+    <span class="close" id="closeModalBtn">&times;</span>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+// Firebase setup is fine
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+  authDomain: "mainsite-eb919.firebaseapp.com",
+  databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+  projectId: "mainsite-eb919",
+  storageBucket: "mainsite-eb919.firebasestorage.app",
+  messagingSenderId: "799554641103",
+  appId: "1:799554641103:web:f23b774cbb08e03aebebba",
+  measurementId: "G-SXQHBNGQBF"
+};
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+const gridContainer = document.getElementById("grid-container");
+
+db.ref("portfolio").once("value").then(snapshot => {
+  const data = snapshot.val();
+  if (!data) return;
+
+  // Reverse the items for newest first
+  const items = Object.values(data).reverse();
+
+  items.forEach(item => {
+    if (!item || !item.imageUrl) return; // Make sure imageUrl exists
+    const gridItem = document.createElement("div");
+    gridItem.className = "grid-item";
+
+    const img = document.createElement("img");
+    img.src = item.imageUrl;  // <-- Use imageUrl property
+    img.alt = "PORTFOLIO IMAGE";
+
+    gridItem.appendChild(img);
+    gridContainer.appendChild(gridItem);
+  });
+}).catch(err => console.error("Firebase error:", err));
+
+
+// Modal
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
+// Changed to an ID for clearer selection
+const closeBtn = document.getElementById("closeModalBtn"); 
+
+gridContainer.addEventListener("click", e => {
+  if (e.target.tagName === "IMG") {
+    modal.style.display = "flex"; // Use flex to center the content easily
+    modalImg.src = e.target.src;
+  }
+});
+closeBtn.onclick = () => modal.style.display = "none";
+modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+// Hamburger
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+// Fixed the missing `display` property when toggling
+hamburger.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+    // Prevent scrolling on the body when the mobile menu is open
+    document.body.style.overflow = sidebar.classList.contains("active") ? "hidden" : "auto";
+});
+</script>
+</body>
+</html>
