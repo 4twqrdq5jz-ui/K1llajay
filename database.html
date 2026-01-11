@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Database</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%; width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 1001;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 24px; text-transform: uppercase; flex: 1; text-align: center; }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 1px solid #333;
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      background-color: black;
+      border: 1px solid #666;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: border-color 0.3s ease;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+      border-radius: 8px;
+    }
+    .button:hover { border-color: #999; }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+    .main h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 2px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    input, select {
+      background: transparent; border: 1px solid #444; color: white; padding: 14px;
+      border-radius: 6px; font-family: inherit; font-size: 14px;
+    }
+    .checkbox-label { display: flex; align-items: center; gap: 10px; margin: 15px 0; font-size: 14px; }
+    .primary-btn {
+      background: #00ff99; border: none; color: #000; padding: 14px 28px;
+      border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px; letter-spacing: 1px;
+    }
+    .primary-btn:hover { background: #00cc77; }
+
+    #musicDatabase { margin-top: 40px; width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 12px; }
+    .entry {
+      background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px;
+      text-align: center;
+    }
+    .entry h2 { font-size: 18px; margin-bottom: 8px; }
+    .entry p { font-size: 13px; opacity: 0.8; margin: 4px 0; }
+    .edit-btn {
+      background: #333; border: 1px solid #555; color: white; padding: 6px 12px;
+      border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 10px;
+    }
+    .edit-btn:hover { background: #444; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; padding-top: 60px; }
+      .topbar { display: flex; }
+      .sidebar { display: none; position: fixed; top: 60px; left: 0; width: 100%; height: auto; padding: 20px; z-index: 999; background: black; }
+      .sidebar.active { display: flex; }
+      .main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">Music Database</div>
+  </div>
+
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR" />
+    <h1 class="name">YAE YADIR</h1>
+    <div class="buttons">
+      <a href="audio-upload.html" class="button">Upload Audio</a>
+      <a href="slide-upload.html" class="button">Upload Slides</a>
+      <a href="portfolio-upload.html" class="button">Upload Nature</a>
+      <a href="podcast-upload.html" class="button">Upload Podcast</a>
+    </div>
+    <div class="footer">
+      <a href="index.html">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="database.html">MUSIC DATABASE</a>
+      <span class="footer-dot">•</span>
+      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
+      <span class="footer-dot">•</span>
+      <a href="terms-and-conditions.html">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="privacy-policy.html">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Music Database</h1>
+    <div class="form-grid">
+      <input id="songTitle" type="text" placeholder="Album/Song Title" />
+      <input id="artistName" type="text" placeholder="Artist Name" />
+      <input id="upc" type="text" placeholder="UPC (Optional)" />
+      <input id="isrc" type="text" placeholder="ISRC (Optional)" />
+      <select id="tracks" class="glass p-2 w-1/4 min-w-[150px] text-white">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3 (SINGLE)</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6 (EP)</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23">23</option>
+          <option value="24">24</option>
+          <option value="25">25</option>
+          <option value="26">26</option>
+          <option value="27">27</option>
+          <option value="28">28</option>
+          <option value="29">29</option>
+          <option value="30">30</option>
+          <option value="31">31</option>
+          <option value="32">32</option>
+          <option value="33">33</option>
+          <option value="34">34</option>
+          <option value="35">35</option>
+          <option value="36">36</option>
+          <option value="37">37</option>
+          <option value="38">38</option>
+          <option value="39">39</option>
+          <option value="40">40</option>
+          <option value="41">41</option>
+          <option value="42">42</option>
+          <option value="43">43</option>
+          <option value="44">44</option>
+          <option value="45">45</option>
+          <option value="46">46</option>
+          <option value="47">47</option>
+          <option value="48">48</option>
+          <option value="49">49</option>
+          <option value="50">50</option>
+      </select>
+    </div>
+    <div class="checkbox-label">
+      <input type="checkbox" id="unreleased" />
+      <label for="unreleased">Unreleased</label>
+    </div>
+    <button id="addUpdateBtn" class="primary-btn">Add to Database</button>
+    <div id="musicDatabase"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+      authDomain: "music-database-3ee0a.firebaseapp.com",
+      databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+      projectId: "music-database-3ee0a",
+      storageBucket: "music-database-3ee0a.appspot.com",
+      messagingSenderId: "148257189959",
+      appId: "1:148257189959:web:3e52404367191d5835c162"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('musicDatabase');
+
+    let entries = [];
+    let keys = [];
+    let editing = null;
+
+    function render() {
+      const container = document.getElementById('musicDatabase');
+      container.innerHTML = '';
+      entries.forEach((e, i) => {
+        const tag = e.unreleased ? ' <span style="color:#ff0">(Unreleased)</span>' : '';
+        const editBtn = e.unreleased ? `<button onclick="edit(${i})" class="edit-btn">Edit</button>` : '';
+        container.innerHTML += `
+          <div class="entry">
+            <h2>${e.title} — ${e.artist}${tag}</h2>
+            ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+            ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+            <p>Tracks: ${e.tracks || '—'}</p>
+            ${editBtn}
+          </div>`;
+      });
+    }
+
+    function save() {
+      const title = document.getElementById('songTitle').value.trim();
+      const artist = document.getElementById('artistName').value.trim() || 'Yae Yadir';
+      const upc = document.getElementById('upc').value.trim();
+      const isrc = document.getElementById('isrc').value.trim();
+      const tracks = document.getElementById('tracks').value;
+      const unreleased = document.getElementById('unreleased').checked;
+
+      if (!title) return alert('Title required');
+
+      const data = { title, artist, upc, isrc, tracks, unreleased };
+
+      if (editing !== null) {
+        dbRef.child(keys[editing]).set(data).then(reset);
+      } else {
+        dbRef.push(data);
+        reset();
+      }
+    }
+
+    window.edit = i => {
+      const e = entries[i];
+      document.getElementById('songTitle').value = e.title;
+      document.getElementById('artistName').value = e.artist;
+      document.getElementById('upc').value = e.upc || '';
+      document.getElementById('isrc').value = e.isrc || '';
+      document.getElementById('tracks').value = e.tracks;
+      document.getElementById('unreleased').checked = e.unreleased;
+      editing = i;
+      document.getElementById('addUpdateBtn').textContent = 'Update Entry';
+    };
+
+    function reset() {
+      document.getElementById('songTitle').value = '';
+      document.getElementById('artistName').value = '';
+      document.getElementById('upc').value = '';
+      document.getElementById('isrc').value = '';
+      document.getElementById('tracks').value = '3';
+      document.getElementById('unreleased').checked = false;
+      editing = null;
+      document.getElementById('addUpdateBtn').textContent = 'Add to Database';
+    }
+
+    dbRef.on('value', snap => {
+      const val = snap.val() || {};
+      entries = Object.values(val);
+      keys = Object.keys(val);
+      render();
+    });
+
+    document.getElementById('addUpdateBtn').onclick = save;
+
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+  </script>
+</body>
+</html>
