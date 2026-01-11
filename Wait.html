@@ -29,14 +29,15 @@
     }
 
     /* ───────── Sidebar ───────── */
-    .sidebar {
+   .sidebar {
       width: 250px;
       height: 100vh;
-      background: black;
+      background-color: black;
       padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       border-right: 1px solid #333;
     }
 
@@ -46,35 +47,38 @@
       border-radius: 50%;
       object-fit: cover;
       margin-bottom: 20px;
-      border: 2px solid white;
+      border: 2px solid #fff;
     }
 
     .name {
       font-size: 24px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
       margin-bottom: 40px;
       text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .buttons {
-      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      width: 100%;
     }
 
     .button {
-      display: block;
-      text-decoration: none;
-      color: white;
+      background-color: black;
       border: 1px solid #666;
+      color: white;
       padding: 15px;
       text-align: center;
+      cursor: pointer;
+      font-family: inherit;
       font-size: 14px;
       letter-spacing: 1px;
+      transition: border-color 0.3s ease;
       text-transform: uppercase;
-      transition: border-color .3s ease;
+      text-decoration: none;
+      display: block;
     }
 
     .button:hover {
@@ -82,30 +86,40 @@
     }
 
     .footer {
-      margin-top: auto;
       font-size: 10px;
       text-align: center;
-      opacity: .7;
+      text-transform: uppercase;
+      opacity: 0.7;
       display: flex;
+      flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
       gap: 5px;
+      margin-top: 20px;
+      width: 100%;
     }
 
     .footer a {
       color: white;
       text-decoration: none;
       font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer a:hover {
+      opacity: 0.5;
     }
 
     .footer-dot {
-      opacity: .7;
+      color: white;
+      font-size: 10px;
+      opacity: 0.7;
     }
 
     .copyright {
-      width: 100%;
       font-size: 8px;
       margin-top: 5px;
+      width: 100%;
     }
 
     /* ───────── Main Content ───────── */
@@ -140,45 +154,33 @@
 
     /* ───────── Mobile ───────── */
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        overflow-y: auto;
-      }
-
-      .sidebar {
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 10px;
+      body { flex-direction: column; overflow-y: auto; }
+      .sidebar { 
+        width: 100%; 
+        height: auto; 
+        flex-direction: row; 
+        justify-content: space-around; 
+        padding: 10px; 
         border-right: none;
         border-bottom: 1px solid #333;
       }
-
-      .profile-img {
-        width: 70px;
-        height: 70px;
-        margin-bottom: 0;
-      }
-
-      .name {
-        font-size: 16px;
-        margin: 0;
-      }
-
-      .buttons {
+      .profile-img { width: 80px; height: 80px; margin-bottom: 0; }
+      .name { margin: 10px 0; font-size: 18px; }
+      .buttons { flex-direction: row; flex: none; }
+      .button { flex: 1; padding: 10px; font-size: 12px; }
+      .footer { 
+        margin-top: 10px; 
+        font-size: 9px; 
+        align-self: center;
+        flex: none;
         flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 5px;
       }
-
-      .button {
-        padding: 8px;
-        font-size: 11px;
-      }
-
-      .footer {
-        font-size: 8px;
-      }
+      .footer a { font-size: 9px; }
+      .footer-dot { font-size: 9px; }
+      .copyright { margin-top: 5px; font-size: 7px; }
 
       .main-content {
         padding: 30px 15px;
