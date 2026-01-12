@@ -187,12 +187,6 @@
         font-size: 28px;
         margin-bottom: 20px;
       }
-      .main-content {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        padding: 10px;
-        flex: 1;
-      }
       /* Footer */
       .footer {
         position: relative;
@@ -209,13 +203,10 @@
         font-size: 7px;
         margin-top: 5px;
       }
-      .modal-wrapper {
-        width: 95%;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .close {
-        right: 0; top: 0; font-size: 35px;
+      main.content {
+        min-height: calc(100vh - 50px); /* below topbar */
+        justify-content: center;
+        padding: 40px 16px;
       }
     }
     .main-content {
