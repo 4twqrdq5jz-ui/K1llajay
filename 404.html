@@ -1,239 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>K1LLAJAY – Please Wait</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | Page Not Found</title>
   <link rel="icon" href="favicon.ico">
-
   <style>
     @font-face {
       font-family: 'sitefont';
       src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+ 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
       height: 100%;
       width: 100%;
       font-family: 'sitefont', monospace;
-      background: black;
-      color: white;
-      overflow: hidden;
-    }
-
-    body {
-      display: flex;
-      height: 100vh;
-    }
-
-    /* ───────── Sidebar ───────── */
-   .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: black;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      border-right: 1px solid #333;
-    }
-
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-      border: 2px solid #fff;
-    }
-
-    .name {
-      font-size: 24px;
-      margin-bottom: 40px;
-      text-align: center;
-      letter-spacing: 2px;
       text-transform: uppercase;
-    }
-
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-
-    .button {
-      background-color: black;
-      border: 1px solid #666;
       color: white;
-      padding: 15px;
-      text-align: center;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 14px;
-      letter-spacing: 1px;
-      transition: border-color 0.3s ease;
-      text-transform: uppercase;
-      text-decoration: none;
-      display: block;
+      min-height: 100%;
     }
-
-    .button:hover {
-      border-color: #999;
-    }
-
-    .footer {
-      font-size: 10px;
-      text-align: center;
-      text-transform: uppercase;
-      opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
-    }
-
-    .footer a {
-      color: white;
-      text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
-    }
-
-    .footer a:hover {
-      opacity: 0.5;
-    }
-
-    .footer-dot {
-      color: white;
-      font-size: 10px;
-      opacity: 0.7;
-    }
-
-    .copyright {
-      font-size: 8px;
-      margin-top: 5px;
-      width: 100%;
-    }
-
-    /* ───────── Main Content ───────── */
-    .main-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .wait-box {
-      border: 1px solid #333;
-      padding: 40px;
-      max-width: 500px;
-      width: 100%;
-    }
-
-    .wait-title {
-      font-size: 26px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
-
-    .wait-text {
-      font-size: 14px;
-      opacity: .8;
-      line-height: 1.6;
-    }
-    /* Mobile Top Bar (hidden on desktop) */
-    .topbar {
-      display: none;
-    }
-
-    /* ───────── Mobile ───────── */
-    @media (max-width: 768px) {
-      body { flex-direction: column; overflow-y: auto; }
-        /* Top bar */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px 15px;
-    background-color: rgba(0,0,0,0.45);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1001;
-    backdrop-filter: blur(18px);
-  }
-
-  .hamburger {
-    font-size: 28px;
-    cursor: pointer;
-    color: white;
-  }
-
-  .top-name {
-    font-size: 24px;
-    margin: 0 auto;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    position: relative;
-    left: -20px;
-  }
-      .sidebar { 
-        width: 100%; 
-        height: auto; 
-        flex-direction: row; 
-        justify-content: space-around; 
-        padding: 10px; 
-        border-right: none;
-        border-bottom: 1px solid #333;
-      }
-      .profile-img { width: 80px; height: 80px; margin-bottom: 0; }
-      .name { margin: 10px 0; font-size: 18px; }
-      .buttons { flex-direction: row; flex: none; }
-      .button { flex: 1; padding: 10px; font-size: 12px; }
-      .footer { 
-        margin-top: 10px; 
-        font-size: 9px; 
-        align-self: center;
-        flex: none;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 5px;
-      }
-      .footer a { font-size: 9px; }
-      .footer-dot { font-size: 9px; }
-      .copyright { margin-top: 5px; font-size: 7px; }
-
-      .main-content {
-        padding: 30px 15px;
-      }
-
-      .wait-title {
-        font-size: 20px;
-      }
-    }
-
-    /* background + overlay from index */
+    /* Background */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background: url("IMG_3309.gif") center / cover no-repeat;
       background-attachment: fixed;
-      -webkit-background-attachment: fixed;
       z-index: -2;
+      -webkit-background-attachment: fixed;
       width: 100vw;
       height: 200vh;
     }
@@ -244,13 +45,223 @@
       background: rgba(0,0,0,0.65);
       z-index: -1;
       width: 100vw;
-      height: 200vh;
+      height: 100vh;
     }
-    .topbar { display:none; align-items:center; justify-content:flex-start; padding:10px; border-bottom:1px solid #333; width:100%; position:fixed; top:0; left:0; z-index:1001; backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px); }
-    .topbar .hamburger{ font-size:28px; cursor:pointer; color:white; }
-    .topbar .top-name{ font-size:24px; color:white; text-transform:uppercase; }
+    body {
+      display: flex;
+    }
+    /* Sidebar (Desktop) */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 20px;
+    }
+    .name {
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+    main.content {
+      flex: 1;                         /* take remaining space */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;         /* vertical center */
+      align-items: center;             /* horizontal center */
 
-    @media(max-width:768px){ .topbar{ display:flex; background: rgba(0,0,0,0.45);} }
+      padding: 0 20px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .empty {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    main.content > * {
+      max-width: 800px;
+    }
+    main.content p {
+      margin-bottom: 16px;
+    }
+    main.content a {
+      z-index: 1000;
+      font-size: 12px;
+      color: white;
+      text-decoration: none;
+      opacity: 0.8;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      transition: all 0.25s ease;
+    }
+    main.content a:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    /* Hero & generic sections */
+    .hero {
+      width: 100%;
+      height: 100vh;
+      background: url('hero-image.jpg') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+    .section {
+      padding: 80px 20px;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        backdrop-filter: blur(9px);
+      }
+      .hamburger {
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+      }
+      .top-name {
+        font-size: 24px;
+        margin: 0 auto;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: relative;
+        left: -20px;
+      }
+      /* Sidebar */
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+        backdrop-filter: blur(9px);
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+      }
+      .name {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      /* Footer */
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.200);
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      main.content {
+        min-height: calc(100vh - 50px); /* below topbar */
+        justify-content: center;
+        padding: 40px 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -262,48 +273,44 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR PROFILE" />
-    <h1 class="name"><a href="yaeyadir.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
     <div class="buttons">
-      <a href="music.html" class="button">LATEST RELEASE</a>
-      <a href="portfolio.html" class="button">PORTFOLIO</a>
-      <a href="podcast.html" class="button">PODCAST</a>
-      <a href="player.html" class="button">ALL RELEASES</a>
-      <a href="#" class="button">COMING SOON</a>
+      <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
+      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
+      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
+      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
     </div>
     <div class="footer">
       <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-      <a href="database.html">MUSIC DATABASE</a><span class="footer-dot">•</span>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a><span class="footer-dot">•</span>
-      <a href="terms-and-conditions.html">TERMS</a><span class="footer-dot">•</span>
-      <a href="privacy-policy.html">PRIVACY</a>
+      <a href="https://k1llajay.com/database">MUSIC DATABASE</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
     </div>
   </div>
 
-  <div class="main-content">
-    <div class="wait-box">
-      <div class="wait-title">Please Wait</div>
-      <div class="wait-text">
-        This section is currently unavailable.<br>
-        Content will be live shortly.
-      </div>
-    </div>
-  </div>
+  <main class="content">
+    <div class="empty">404</div>
+    <p>PAGE NOT FOUND</p>
+    <a href="https://k1llajay.com/">BACK HOME</a>
+  </main>
 
   <script>
-    // implement the referenced toggleSidebar function to match index behavior
     function toggleSidebar() {
-      const sb = document.querySelector('.sidebar');
-      if (!sb) return;
-      const open = sb.classList.toggle('active');
-      document.body.style.overflow = open ? 'hidden' : 'auto';
+      document.querySelector('.sidebar').classList.toggle('active');
     }
-    // Also wire the topbar hamburger (if present) to same action
-    (function () {
-      const topHamb = document.querySelector('.topbar .hamburger');
-      if (topHamb) topHamb.addEventListener('click', toggleSidebar);
-    })();
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        const topbar = document.querySelector('.topbar');
+        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      }
+    });
   </script>
 </body>
 </html>
