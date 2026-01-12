@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <title>Terms &amp; Conditions</title>
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+ 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+      color: white;
+      min-height: 100%;
+    }
+    body.no-scroll { overflow: hidden; }
+    /* Background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      z-index: -2;
+      -webkit-background-attachment: fixed;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+    }
+    body {
+      display: flex;
+    }
+    /* Sidebar (Desktop) */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 20px;
+    }
+    .name {
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+    
+    /*  ← new: container for your terms text */
+    main.content {
+      margin-left: 260px;          /* same as sidebar width */
+      height: 100vh;
+      overflow-y: auto;            /* ← scrolling happens here */
+      padding: 100px 40px 80px;
+      max-width: none;
+    }
+    main.content h1 {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    main.content .updated {
+      font-size: 12px;
+      margin-bottom: 24px;
+    }
+    main.content p {
+      margin-bottom: 16px;
+    }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
+    .back-btn {
+      position: fixed;
+      top: 24px;
+      left: 280px; /* sidebar width (260) + spacing */
+      z-index: 1000;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: white;
+      text-decoration: none;
+      opacity: 0.8;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      transition: all 0.25s ease;
+    }
+
+    .back-btn:hover {
+      opacity: 1;
+      background: rgba(255,255,255,0.1);
+    }
+
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        backdrop-filter: blur(9px);
+      }
+      .hamburger {
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+      }
+      .top-name {
+        font-size: 24px;
+        margin: 0 auto;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: relative;
+        left: -20px;
+      }
+      /* Sidebar */
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+        backdrop-filter: blur(9px);
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      /* Footer */
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.200);
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      main.content {
+        margin-left: 0;        /* remove sidebar offset */
+        height: auto;          /* let it size naturally */
+        max-width: 100%;
+        overflow-y: visible;   /* restore body scrolling */
+        padding-top: 55px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 80px;
+      }
+      .back-btn {
+        left: 16px;
+        top: 68px; /* below topbar */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Top Bar -->
+  <div class="topbar">
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    <h1 class="top-name">Terms</h1>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <div class="buttons">
+      <a href="https://k1llajay.com/index" class="button">GALLERY</a>
+      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
+      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
+      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
+      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
+      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
+    </div>
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/database">MUSIC DATABASE</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <a href="javascript:history.back()" class="back-btn">← BACK</a>
+
+  <!-- Terms content -->
+  <main class="content">
+    <h1>Terms &amp; Conditions</h1>
+    <div class="updated">EFFECTIVE DATE: MAY 15, 2025</div>
+    
+    <p>
+      <strong>1.</strong>
+      <strong>ACCEPTANCE OF TERMS</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">BY ACCESSING OR USING <a href="https://k1llajay.com" style="color: white;">https://k1llajay.com</a> (THE “SITE”), YOU AGREE TO BE BOUND BY THESE TERMS AND CONDITIONS (“TERMS”). IF YOU DO NOT AGREE, PLEASE DO NOT USE THE SITE.</p>
+    
+    <p>
+      <strong>2.</strong>
+      <strong>OWNER INFORMATION</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">THIS SITE IS OWNED AND OPERATED BY JEFFERSON ENTERTAINMENT LLC, A LIMITED LIABILITY COMPANY REGISTERED IN THE UNITED STATES.</p>
+    
+    <p>
+      <strong>3.</strong>
+      <strong>CHANGES TO TERMS</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">JEFFERSON ENTERTAINMENT LLC MAY MODIFY THESE TERMS AT ANY TIME. CHANGES BECOME EFFECTIVE UPON POSTING TO THE SITE. YOUR CONTINUED USE AFTER CHANGES ARE POSTED CONSTITUTES ACCEPTANCE OF THE NEW TERMS. WE RECOMMEND THAT YOU REVIEW THIS PAGE PERIODICALLY.</p>
+    
+    <p>
+      <strong>4.</strong>
+      <strong>USE OF THE SITE</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">A. ELIGIBILITY: YOU MUST BE AT LEAST 13 YEARS OLD TO USE THE SITE.</p>
+    <p style="margin-left: 20px;">B. USER ACCOUNT: CERTAIN FEATURES MAY REQUIRE CREATING AN ACCOUNT. YOU AGREE TO PROVIDE ACCURATE INFORMATION AND TO KEEP YOUR LOGIN CREDENTIALS SECURE. YOU’RE RESPONSIBLE FOR ALL ACTIVITY UNDER YOUR ACCOUNT.</p>
+    <p style="margin-left: 20px;">C. PROHIBITED CONDUCT:</p>
+    <p style="margin-left: 40px;">1. HARASS, THREATEN, OR DEFAME OTHERS;</p>
+    <p style="margin-left: 40px;">2. UPLOAD MALWARE OR MALICIOUS CODE;</p>
+    <p style="margin-left: 40px;">3. INFRINGE INTELLECTUAL PROPERTY RIGHTS;</p>
+    <p style="margin-left: 40px;">4. ENGAGE IN ANY ACTIVITY THAT INTERFERES WITH THE SITE’S OPERATION.</p>
+    
+    <p>
+      <strong>5.</strong>
+      <strong>INTELLECTUAL PROPERTY</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">ALL CONTENT ON THE SITE—TEXT, GRAPHICS, LOGOS, IMAGES, AUDIO, VIDEO, AND SOFTWARE—IS THE EXCLUSIVE PROPERTY OF JEFFERSON ENTERTAINMENT LLC OR ITS LICENSORS AND IS PROTECTED BY U.S. AND INTERNATIONAL COPYRIGHT, TRADEMARK, AND OTHER LAWS. YOU MAY VIEW AND DOWNLOAD ONE COPY OF THE MATERIALS FOR PERSONAL, NON‑COMMERCIAL USE ONLY. ANY OTHER USE REQUIRES OUR PRIOR WRITTEN PERMISSION.</p>
+    
+    <p>
+      <strong>6.</strong>
+      <strong>PURCHASES AND PAYMENTS</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">6.A. ORDERS: BY PLACING AN ORDER, YOU REPRESENT THAT YOU HAVE THE LEGAL RIGHT TO USE THE PAYMENT METHOD PROVIDED.  
+6.B. PRICING: ALL PRICES ARE LISTED IN U.S. DOLLARS. WE RESERVE THE RIGHT TO CHANGE PRICES AT ANY TIME.  
+6.C. REFUNDS & RETURNS: SEE OUR RETURN POLICY FOR DETAILED INFORMATION ON REFUNDS, EXCHANGES, AND CANCELLATIONS.</p>
+    
+    <p>
+      <strong>7.</strong>
+      <strong>DISCLAIMERS</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">THE SITE AND ITS CONTENT ARE PROVIDED “AS IS” AND “AS AVAILABLE” WITHOUT WARRANTY OF ANY KIND. JEFFERSON ENTERTAINMENT LLC DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON‑INFRINGEMENT.</p>
+
+    
+    <p>
+      <strong>8.</strong>
+      <strong>LIMITATION OF LIABILITY</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">IN NO EVENT SHALL JEFFERSON ENTERTAINMENT LLC BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF YOUR USE OF THE SITE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR TOTAL LIABILITY FOR ANY CLAIMS UNDER THESE TERMS IS LIMITED TO THE AMOUNT YOU PAID, IF ANY, TO ACCESS THE SITE.</p>
+    
+    <p>
+      <strong>9.</strong>
+      <strong>INDEMNIFICATION</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">YOU AGREE TO DEFEND, INDEMNIFY, AND HOLD JEFFERSON ENTERTAINMENT LLC AND ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS HARMLESS FROM ANY CLAIMS, LIABILITIES, DAMAGES, LOSSES, OR EXPENSES (INCLUDING REASONABLE ATTORNEYS’ FEES) ARISING OUT OF OR IN ANY WAY CONNECTED WITH YOUR USE OF THE SITE OR VIOLATION OF THESE TERMS.</p>
+    
+    <p>
+      <strong>10.</strong>
+      <strong>GOVERNING LAW & DISPUTE RESOLUTION</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">THESE TERMS SHALL BE GOVERNED BY AND CONSTRUED IN ACCORDANCE WITH THE LAWS OF THE STATE OF TEXAS, WITHOUT REGARD TO ITS CONFLICT OF LAW PRINCIPLES. ANY DISPUTE ARISING UNDER OR IN CONNECTION WITH THESE TERMS SHALL BE RESOLVED EXCLUSIVELY IN THE STATE OR FEDERAL COURTS LOCATED IN McLENNAN COUNTY, TEXAS.</p>
+    
+    <p>
+      <strong>11.</strong>
+      <strong>SEVERABILITY</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">IF ANY PROVISION OF THESE TERMS IS FOUND TO BE INVALID OR UNENFORCEABLE, THAT PROVISION WILL BE ENFORCED TO THE MAXIMUM EXTENT PERMISSIBLE AND THE REMAINING PROVISIONS WILL REMAIN IN FULL FORCE.</p>
+    
+    <p>
+      <strong>12.</strong>
+      <strong>ENTIRE AGREEMENT</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">THESE TERMS, TOGETHER WITH ANY POLICIES OR GUIDELINES POSTED ON THE SITE, CONSTITUTE THE ENTIRE AGREEMENT BETWEEN YOU AND JEFFERSON ENTERTAINMENT LLC REGARDING YOUR USE OF THE SITE.</p>
+    
+    <p>
+      <strong>13.</strong>
+      <strong>CONTACT INFORMATION</strong>
+    </p>
+    
+    <p style="margin-left: 20px;">IF YOU HAVE QUESTIONS ABOUT THESE TERMS, PLEASE CONTACT US AT:</p>
+    <p style="margin-left: 20px;">JEFFERSON ENTERTAINMENT LLC</p>
+    <p style="margin-left: 20px;">EMAIL: <a href="mailto:support@k1llajay.com" style="color: white;">support@k1llajay.com</a></p>
+  </main>
+  
+  <script>
+    function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        const topbar = document.querySelector('.topbar');
+        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
