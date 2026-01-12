@@ -119,64 +119,7 @@
     .footer a:hover { opacity: 0.5; }
     .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
-    .main-content {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-auto-rows: minmax(250px, auto);
-      gap: 10px;
-      overflow-y: auto;
-    }
-    .grid-item {
-      border: 1px solid #333;
-      overflow: hidden;
-      cursor: pointer;
-      border-radius: 8px;
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-    }
-    .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.9);
-    }
-    .modal-wrapper {
-      position: relative;
-      margin: auto;
-      width: 80%;
-      max-width: 700px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(0,0,0,0.55); /* semi-transparent so blur shows */
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      padding: 10px; /* optional */
-    }
-    .modal-content {
-      display: block;
-      width: 100%;
-    }
-    .close {
-      position: absolute;
-      top: 0;
-      right: 0;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .close:hover { color: #999; }
+
     /* Mobile Top Bar (hidden on desktop) */
     .topbar {
       display: none;
@@ -275,6 +218,105 @@
         right: 0; top: 0; font-size: 35px;
       }
     }
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: minmax(250px, auto);
+      gap: 10px;
+      overflow-y: auto; /* Correct element to have scroll */
+      height: 100vh; /* Set a height to enable scrolling */
+    }
+    .grid-item { backdrop-filter: blur(9px); border: 1px solid #333; overflow: hidden; cursor: pointer; border-radius: 8px; }
+    .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .grid-item img:hover { transform: scale(1.05); } /* Added a hover effect */
+
+    /* 5. MODAL */
+    .modal { 
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      backdrop-filter: blur(9px); 
+      overflow: auto; /* Allow modal to scroll if content is too big */ 
+    }
+    .modal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      z-index: -2;
+    }
+    .modal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+    }
+    .modal.open {
+      display: flex;
+    }
+    .modal-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-flex;           /* 🔑 shrink to image size */
+      align-items: center;
+      justify-content: center;
+      width: auto;                    /* 🔑 no forced width */
+      max-width: 90vw;
+      max-height: 90vh;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 12px;
+      backdrop-filter: blur(9px);
+    }
+    .modal-content {
+      display: block;                 /* remove inline gaps */
+      max-width: 90vw;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;            /* optional: match wrapper curve */
+    }
+    .close {
+      position: fixed;          /* detached from wrapper */
+      top: 24px;
+      right: 24px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;            /* above modal + image */
+      width: 50px;              /* fixed square size */
+      height: 50px;             /* equal to width */
+      display: flex;            /* center the "×" */
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 4px;       /* small rounding for subtle effect */
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.4); /* optional: add background for better visibility */
+      transition: all 0.25s ease;
+    }
+    .close:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+
+    @media (min-width: 769px) {
+        /* Desktop layout overrides */
+        body { flex-direction: row; }
+        .main-content { padding-left: 270px; /* Space for the fixed sidebar */ }
+        .sidebar { position: fixed; left: 0; top: 0; }
+    }
   </style>
 </head>
 <body>
@@ -306,11 +348,12 @@
   <div class="main-content" id="grid-container"></div>
   <!-- Modal -->
   <div id="myModal" class="modal">
-    <div class="modal-wrapper">
-      <img class="modal-content" id="img01">
-      <span class="close">&times;</span>
-    </div>
+  <span class="close" id="closeModalBtn">&times;</span>
+
+  <div class="modal-wrapper">
+    <img class="modal-content" id="img01">
   </div>
+</div>
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
