@@ -12,91 +12,70 @@
       font-weight: normal;
       font-style: normal;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
-      margin: 0; padding: 0; height: 100%; width: 100%;
-      font-family: 'sitefont', monospace;
-    color: white;
-      text-transform: uppercase;
-    }
-    body { display: flex; flex-direction: row; min-height: 100vh; overflow: hidden; }
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  background-attachment: fixed;
-  -webkit-background-attachment: fixed;
-  z-index: -2;
-  width: 100vw;
-  height: 200vh;
-}
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-  width: 100vw;
-  height: 200vh;
-}
-    /* TOPBAR (mobile only) */
-    .topbar {
-      display: none;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 10px;
-      border-bottom: 1px solid #333;
+      height: 100%;
       width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1001;
-      backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
-    }
-
-    .hamburger {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-
-    .top-name {
-      font-size: 24px;
+      font-family: 'sitefont', monospace;
       text-transform: uppercase;
-      flex: 1;
-      text-align: center;
+      color: white;
+      min-height: 100%;
     }
-    .sidebar {
-      width: 250px;
+    /* Background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      z-index: -2;
+      -webkit-background-attachment: fixed;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
       height: 100vh;
-      padding: 20px;
+    }
+    body {
+      display: flex;
+    }
+    /* Sidebar (Desktop) */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      border-right: 1px solid #333;
       backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
     .profile-img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid white;
       margin-bottom: 20px;
-      border: 2px solid #fff;
     }
     .name {
-      font-size: 24px;
+      font-size: 22px;
+      letter-spacing: 3px;
       margin-bottom: 40px;
       text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
     }
-
     /* MINI PLAYER */
     .mini-player {
       width: 100%; padding: 16px; padding-bottom: 16px; background: rgba(255,255,255,0.04);
@@ -112,12 +91,11 @@ body::after {
       cursor: pointer; padding: 4px; opacity: 0.8; transition: all 0.2s; }
     .mini-btn:hover { opacity: 1; transform: scale(1.1); }
     .mini-btn.main { font-size: 32px; opacity: 1; }
-
-   .buttons {
+    .buttons {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 100%;
+      gap: 12px;
     }
     .button {
       padding: 14px;
@@ -164,6 +142,7 @@ body::after {
       background: none; border: 1px solid #555; color: #aaa;
       padding: 6px 12px; border-radius: 999px; font-size: 11px;
       cursor: pointer; letter-spacing: 1px; transition: all 0.2s ease;
+      backdrop-filter: blur(9px);
     }
     .show-more-btn:hover { border-color: #999; color: white; }
 
@@ -276,55 +255,152 @@ body::after {
     .row .dots { color: #888; text-align: center; }
     .row.playing { background: rgba(255,255,255,.06); }
     .row:hover { background: rgba(255,255,255,.04); }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
 
-    /* MOBILE */
+    /* Mobile Styles */
     @media (max-width: 768px) {
-      body { flex-direction: column; height: auto; min-height: 100vh; padding-top: 50px; padding-bottom: 80px; overflow: auto; }
-      .topbar { display: flex; }
-      .sidebar { display: none; position: absolute; top: 50px; left: 0; width: 100%; height: auto; padding: 20px; background-color: black; z-index: 999; border-bottom: 1px solid #333; }
-      .sidebar.active { display: flex; }
-      .main-content { height: auto; overflow-y: visible; padding: 10px; }
-      .detail-head { grid-template-columns: 1fr; gap: 16px; }
-      .d-title { font-size: 32px; }
-      .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
-      h2.section { font-size: 18px; }
-      .show-more-btn { font-size: 10px; padding: 4px 8px; }
-      .mini-player { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1002; background-color: black; border: none; border-top: 1px solid #333; border-radius: 0; padding: 10px; }
-      .now-playing-title { font-size: 10px; }
-      .mini-btn { font-size: 18px; }
-      .mini-btn.main { font-size: 28px; }
-
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        backdrop-filter: blur(9px);
+      }
+      .hamburger {
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+      }
+      .top-name {
+        font-size: 24px;
+        margin: 0 auto;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: relative;
+        left: -20px;
+      }
+      /* Sidebar */
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+        backdrop-filter: blur(9px);
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+      }
+      .name {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      /* Footer */
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.200);
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      .main-content { 
+        height: auto; 
+        overflow-y: visible; 
+        padding: 10px; 
+      }
+      .detail-head { 
+        grid-template-columns: 1fr; gap: 16px; 
+      }
+      .d-title { 
+        font-size: 32px; 
+      }
+      .grid { 
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+        gap: 16px; 
+      }
+      h2.section { 
+        font-size: 18px; 
+      }
+      .show-more-btn { 
+        font-size: 10px; 
+        padding: 4px 8px; 
+      }
+      .mini-player { 
+        position: fixed; 
+        bottom: 0; 
+        left: 0; 
+        width: 100%; 
+        z-index: 1002; 
+        backdrop-filter: blur(9px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 12px;
+        border-radius: 0; 
+        padding: 10px; 
+      }
+      .now-playing-title { 
+        font-size: 10px; 
+      }
+      .mini-btn { 
+        font-size: 18px; 
+      }
+      .mini-btn.main { 
+        font-size: 28px; 
+      }
       /* Mobile video tweaks */
-      #gridVideos { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 24px; }
-      .video-header { font-size: 32px !important; margin: 40px 0 30px !important; }
-      .video-thumb::after { font-size: 56px; }
-      .video-title { font-size: 16px; }
-    }
-
-    /* background + overlay from index */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      background-attachment: fixed;
-      -webkit-background-attachment: fixed;
-      z-index: -2;
-      width: 100vw;
-      height: 200vh;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-      width: 100vw;
-      height: 200vh;
+      #gridVideos { 
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; 
+        gap: 24px; 
+      }
+      .video-header { 
+        font-size: 32px !important; 
+        margin: 40px 0 30px !important; 
+      }
+      .video-thumb::after { 
+        font-size: 56px; 
+      }
+      .video-title { 
+        font-size: 16px; 
+      }
     }
   </style>
 </head>
-<body class="dark-mode">
+<body>
   <div class="topbar">
     <span class="hamburger">&#9776;</span>
     <h1 class="top-name">PLAYER</h1>
@@ -332,8 +408,8 @@ body::after {
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR" />
-    <h1 class="name"><a href="index.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
     <div class="mini-player">
       <div class="now-playing-title" id="nowPlayingTitle">No track playing</div>
       <div class="mini-controls">
@@ -342,19 +418,18 @@ body::after {
         <button id="nextBtn" class="mini-btn">⏭</button>
       </div>
     </div>
-    <div class="buttons">
-      <a href="index.html" class="button">GALLERY</a>
-      <a href="music.html" class="button">LATEST ALBUM</a>
-      <a href="portfolio.html" class="button">PORTFOLIO</a>
-      <a href="podcast.html" class="button">PODCAST</a>
-      <a href="#" class="button">COMING SOON</a>
+    <div class="buttons" style="margin-top: 16px;">
+      <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com/music" class="button">LATEST ALBUM</a>
+      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
+      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
+      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
     </div>
     <div class="footer">
       <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot"> • </span>
-      <a href="database.html">MUSIC DATABASE</a><span class="footer-dot"> • </span>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a><span class="footer-dot"> • </span>
-      <a href="terms-and-conditions.html">TERMS</a><span class="footer-dot"> • </span>
-      <a href="privacy-policy.html">PRIVACY</a>
+      <a href="https://k1llajay.com/database">MUSIC DATABASE</a><span class="footer-dot"> • </span>
+      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot"> • </span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
     </div>
   </div>
