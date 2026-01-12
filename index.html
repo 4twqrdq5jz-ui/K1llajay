@@ -12,95 +12,76 @@
       font-weight: normal;
       font-style: normal;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
-      height: 100%; width: 100%;
-      font-family: 'sitefont', monospace;
-      color: white;
-      overflow-x: hidden;
-    }
-    body { display: flex; flex-direction: row; height: 100vh; }
-    /* Background (from 1.html) */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  background-attachment: fixed;
-  -webkit-background-attachment: fixed;
-  z-index: -2;
-  width: 100vw;
-  height: 200vh;
-}
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-  width: 100vw;
-  height: 200vh;
-}
-    /* TOPBAR (mobile only) */
-    .topbar {
-      display: none;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 10px;
-      border-bottom: 1px solid #333;
+      height: 100%;
       width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1001;
-      backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
-    }
-
-    .hamburger {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-
-    .top-name {
-      font-size: 24px;
+      font-family: 'sitefont', monospace;
       text-transform: uppercase;
-      flex: 1;
-      text-align: center;
+      color: white;
+      min-height: 100%;
     }
-    .sidebar {
-      width: 250px;
+    /* Background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      z-index: -2;
+      -webkit-background-attachment: fixed;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
       height: 100vh;
-      padding: 20px;
+    }
+    body {
+      display: flex;
+    }
+
+    /* Sidebar (Desktop) */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      border-right: 1px solid #333;
       backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
     .profile-img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid white;
       margin-bottom: 20px;
-      border: 2px solid #fff;
     }
     .name {
-      font-size: 24px;
+      font-size: 22px;
+      letter-spacing: 3px;
       margin-bottom: 40px;
       text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
     }
     .buttons {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 100%;
+      gap: 12px;
     }
     .button {
       padding: 14px;
@@ -153,7 +134,7 @@ body::after {
       cursor: pointer;
       border-radius: 8px;
       backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
     }
     .grid-item img { width: 100%; height: 100%; object-fit: cover; }
     /* Modal */
@@ -168,19 +149,19 @@ body::after {
       background-color: rgba(0,0,0,0.9);
     }
     .modal-wrapper {
-  position: relative;
-  margin: auto;
-  width: 80%;
-  max-width: 700px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(0,0,0,0.55); /* semi-transparent so blur shows */
-  backdrop-filter: blur(9px);
-  -webkit-backdrop-filter: blur(9px);
-  padding: 10px; /* optional */
-}
+      position: relative;
+      margin: auto;
+      width: 80%;
+      max-width: 700px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.55); /* semi-transparent so blur shows */
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      padding: 10px; /* optional */
+    }
     .modal-content {
       display: block;
       width: 100%;
@@ -196,6 +177,10 @@ body::after {
       cursor: pointer;
     }
     .close:hover { color: #999; }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
     /* Mobile Styles */
     @media (max-width: 768px) {
       body {
@@ -205,31 +190,34 @@ body::after {
         min-height: 100vh;
         padding-top: 50px;
       }
+      /* Top bar */
       .topbar {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 10px;
-        background-color: black;
-        border-bottom: 1px solid #333;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
         width: 100%;
         position: fixed;
         top: 0;
         left: 0;
         z-index: 1001;
+        backdrop-filter: blur(9px);
       }
       .hamburger {
-        font-size: 24px;
+        font-size: 28px;
         cursor: pointer;
-        margin-right: 10px;
+        color: white;
       }
       .top-name {
         font-size: 24px;
-        text-align: center;
-        margin: 0;
+        margin: 0 auto;
         text-transform: uppercase;
-        flex: 1;
+        letter-spacing: 3px;
+        position: relative;
+        left: -20px;
       }
+      /* Sidebar */
       .sidebar {
         display: none;
         position: absolute;
@@ -238,33 +226,23 @@ body::after {
         width: 100%;
         height: auto;
         padding: 20px;
-        background-color: black;
         z-index: 999;
         flex-direction: column;
         align-items: center;
         border-bottom: 1px solid #333;
+        backdrop-filter: blur(9px);
       }
       .sidebar.active {
         display: flex;
       }
       .profile-img {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         margin-bottom: 10px;
       }
       .name {
-        font-size: 32px;
+        font-size: 28px;
         margin-bottom: 20px;
-      }
-      .buttons {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-        margin-top: 20px;
-      }
-      .button {
-        padding: 10px;
-        font-size: 12px;
       }
       .main-content {
         grid-template-columns: repeat(3, 1fr);
@@ -272,12 +250,13 @@ body::after {
         padding: 10px;
         flex: 1;
       }
+      /* Footer */
       .footer {
         position: relative;
         bottom: 0;
         width: 100%;
         padding: 10px;
-        background-color: black;
+        background: rgba(0,0,0,0.200);
         margin-top: auto;
         font-size: 9px;
         gap: 3px;
@@ -288,41 +267,39 @@ body::after {
         margin-top: 5px;
       }
       .modal-wrapper {
-  width: 95%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-      .close { right: 0; top: 0; font-size: 35px; }
+        width: 95%;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .close {
+        right: 0; top: 0; font-size: 35px;
+      }
     }
   </style>
 </head>
-<body class="dark-mode">
+<body>
+  <!-- Mobile Top Bar -->
   <div class="topbar">
-    <span class="hamburger">&#9776;</span>
-    <h1 class="top-name">HOME</h1>
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    <h1 class="top-name">YAE YADIR</h1>
   </div>
+
+  <!-- Sidebar -->
   <div class="sidebar">
-    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR PROFILE" />
-    <h1 class="name"><a href="yaeyadir.html" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
     <div class="buttons">
-      <a href="music.html" class="button">LATEST ALBUM</a>
-      <a href="portfolio.html" class="button">PORTFOLIO</a>
-      <a href="podcast.html" class="button">PODCAST</a>
-      <a href="player.html" class="button">ALL RELEASES</a>
-      <a href="#" class="button">COMING SOON</a>
+      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
+      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
+      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
+      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
+      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
     </div>
-
     <div class="footer">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a>
-      <span class="footer-dot">•</span>
-      <a href="database.html">MUSIC DATABASE</a>
-      <span class="footer-dot">•</span>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
-      <span class="footer-dot">•</span>
-      <a href="terms-and-conditions.html">TERMS</a>
-      <span class="footer-dot">•</span>
-      <a href="privacy-policy.html">PRIVACY</a>
-
+      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/database">MUSIC DATABASE</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
     </div>
   </div>
