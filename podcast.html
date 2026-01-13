@@ -52,8 +52,11 @@
     }
     /* Sidebar (Desktop) */
     .sidebar {
+      position: fixed;       /* Freeze the sidebar */
+      top: 0;
+      left: 0;
       width: 260px;
-      height: 100vh;
+      height: 100vh;         /* Full viewport height */
       padding: 24px;
       display: flex;
       flex-direction: column;
@@ -61,6 +64,8 @@
       backdrop-filter: blur(9px);
       -webkit-backdrop-filter: blur(9px);
       border-right: 1px solid rgba(255,255,255,0.15);
+      overflow-y: auto;      /* Scroll if content overflows */
+      z-index: 1000;         /* Stay on top of main content */
     }
     .profile-img {
       width: 120px;
@@ -120,12 +125,13 @@
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
     /* Main content */
     .main-content {
-      flex:1;
-      padding:20px;
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-      gap:20px;
-      overflow-y:auto;
+      margin-left: 260px;    /* Same as sidebar width */
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+      overflow-y: auto;
     }
 
     /* Episode tiles */
