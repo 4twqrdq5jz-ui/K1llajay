@@ -50,6 +50,9 @@
     body {
       display: flex;
     }
+    body.modal-open .sidebar {
+  display: none !important;
+}
     /* Sidebar (Desktop) */
     .sidebar {
         position: fixed;
@@ -793,20 +796,23 @@
     });
 
     function openOverlay() {
-      document.getElementById('overlay').classList.add('active');
-      document.body.classList.add('no-scroll');
-    }
-    function closeOverlay() {
-      document.getElementById('overlay').classList.remove('active');
-      document.body.classList.remove('no-scroll');
-    }
-    function openCredits() {
-      document.getElementById('creditsModal').classList.add('open');
-      document.body.classList.add('no-scroll');
-    }
-    function closeCredits() {
-      document.getElementById('creditsModal').classList.remove('open');
-      document.body.classList.remove('no-scroll');
+  document.getElementById('overlay').classList.add('active');
+  document.body.classList.add('no-scroll', 'modal-open'); // add modal-open
+}
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('active');
+  document.body.classList.remove('no-scroll', 'modal-open'); // remove modal-open
+}
+
+function openCredits() {
+  document.getElementById('creditsModal').classList.add('open');
+  document.body.classList.add('no-scroll', 'modal-open'); // add modal-open
+}
+function closeCredits() {
+  document.getElementById('creditsModal').classList.remove('open');
+  document.body.classList.remove('no-scroll', 'modal-open'); // remove modal-open
+}
+
     }
     function switchTab(tab) {
       document.getElementById('lyrics').classList.toggle('activeTab', tab === 'lyrics');
