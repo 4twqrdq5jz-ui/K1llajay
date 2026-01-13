@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K1LLAJAY</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+        font-family: 'sitefont';
+        src: url('beyoncefont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+        font-family: 'sitefont', monospace;
+        text-transform: uppercase;
+        color: white;
+        overflow-x: hidden;
+        overflow: hidden; /* prevent page scroll */
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: url("IMG_3309.gif") center / cover no-repeat;
+        z-index: -2;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: -1;
+    }
+
+    body {
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        backdrop-filter: blur(9px);
+        border-right: 1px solid rgba(255,255,255,0.15);
+        z-index: 1000;
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+        margin-bottom: 20px;
+    }
+
+    .name {
+        font-size: 22px;
+        letter-spacing: 3px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .buttons {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .button {
+        padding: 14px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        letter-spacing: 2px;
+        border: 1px solid rgba(255,255,255,0.4);
+        background: rgba(0,0,0,0.4);
+        transition: all 0.3s ease;
+    }
+
+    .button:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: white;
+    }
+
+     .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    /* Main Content */
+    main.content {
+        margin-left: 260px;       /* make room for sidebar */
+        height: 100vh;
+        overflow-y: auto;         /* ONLY main scrolls */
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+        align-items: flex-start;
+    }
+
+    /* Hide scrollbar but allow scrolling */
+main.content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+main.content {
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+
+    #musicDatabase { 
+        width: 100%; 
+        max-width: 1200px; /* wider grid container */
+        display: grid; 
+        grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        gap: 16px; 
+    }
+
+    .entry {
+        border: 1px solid rgba(255,255,255,0.4);
+        background: rgba(0,0,0,0.4); 
+        backdrop-filter: blur(9px);
+        border-radius: 8px; 
+        padding: 16px;
+        text-align: center;
+    }
+
+    .entry h2 { font-size: 18px; margin-bottom: 8px; }
+    .entry p { font-size: 13px; opacity: 0.8; margin: 4px 0; }
+
+    .section-title {
+        grid-column: 1 / -1;
+        font-size: 18px;
+        letter-spacing: 4px;
+        opacity: 0.85;
+        margin: 10px 0;
+    }
+    .section-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+    .section-header button {
+        font-family: 'sitefont', monospace;
+        backdrop-filter: blur(9px);
+  font-family: inherit;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.section-header button:hover {
+  border-color: white;
+}
+
+    /* Mobile Top Bar */
+    .topbar {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        html, body {
+            overflow: auto;
+        }
+        body {
+            flex-direction: column;
+            padding-top: 50px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+            backdrop-filter: blur(9px);
+        }
+
+        .hamburger {
+            font-size: 28px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .top-name {
+            font-size: 24px;
+            margin: 0 auto;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            left: -20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            max-height: calc(100vh - 50px);
+            overflow-y: auto;
+            display: none;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            display: flex;
+        }
+
+        .profile-img { width: 100px; height: 100px; margin-bottom: 10px; }
+        .name { font-size: 28px; margin-bottom: 20px; }
+
+        .footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            margin-top: auto;
+            font-size: 9px;
+            gap: 3px;
+        }
+
+        .footer a, .footer-dot { font-size: 9px; }
+        .copyright { font-size: 7px; margin-top: 5px; }
+        main.content {
+            margin-left: 0;
+            height: auto;
+            overflow: visible;
+        }
+        #musicDatabase {
+            grid-template-columns: 1fr; /* 1 column on mobile */
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Top Bar -->
+  <div class="topbar">
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    <h1 class="top-name">YAE YADIR</h1>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <div class="buttons">
+        <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
+      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
+      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
+      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
+      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
+    </div>
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/database">MUSIC DATABASE</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <main class="content">
+    <div id="musicDatabase">
+        <div id="releasedSection"></div>
+        <div id="unreleasedSection"></div>
+    </div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    let showAllReleased = false;
+let showAllUnreleased = false;
+    const firebaseConfig = {
+      apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+      authDomain: "music-database-3ee0a.firebaseapp.com",
+      databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+      projectId: "music-database-3ee0a",
+      storageBucket: "music-database-3ee0a.firebasestorage.app",
+      messagingSenderId: "148257189959",
+      appId: "1:148257189959:web:3e52404367191d5835c162"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const dbRef = firebase.database().ref('musicDatabase');
+
+    // Sample entries (replace with your Firebase fetching logic)
+    const entries = [];
+
+    function formatDateMMDDYYYY(dateValue) {
+        if (!dateValue) return '';
+
+        const date = new Date(dateValue);
+
+        if (isNaN(date)) return dateValue; // fallback if invalid
+
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${month}/${day}/${year}`;
+    }
+
+    function render() {
+  const grid = document.getElementById('musicDatabase');
+  grid.innerHTML = '';
+
+  const released = entries.filter(e => !e.unreleased);
+  const unreleased = entries.filter(e => e.unreleased);
+
+  // Sort by date (old → new)
+  const sortByDate = (a, b) => {
+    const da = a.releaseDate ? new Date(a.releaseDate) : 0;
+    const db = b.releaseDate ? new Date(b.releaseDate) : 0;
+    return da - db;
+  };
+
+  released.sort(sortByDate);
+  unreleased.sort(sortByDate);
+
+  // Get most recent 3 (right → left)
+ const releasedToShow = showAllReleased
+  ? released
+  : released.slice(-3).reverse();
+
+const unreleasedToShow = showAllUnreleased
+  ? unreleased
+  : unreleased.slice(-3).reverse();
+
+
+  /* ================= RELEASED ================= */
+  if (released.length) {
+    grid.innerHTML += `
+      <div class="section-header">
+        <div class="section-title">RELEASED</div>
+        <button onclick="toggleReleased()">
+          ${showAllReleased ? 'Hide All' : 'Show All'}
+        </button>
+      </div>
+    `;
+
+    releasedToShow.forEach(e => {
+      grid.innerHTML += `
+        <div class="entry">
+          <h2>${e.title} — ${e.artist}</h2>
+          ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+          ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+          ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+          <p>Tracks: ${e.tracks || '—'}</p>
+        </div>
+      `;
+    });
+  }
+
+  /* ================= UNRELEASED ================= */
+  if (unreleased.length) {
+    grid.innerHTML += `
+      <div class="section-header">
+        <div class="section-title">UNRELEASED</div>
+        <button onclick="toggleUnreleased()">
+          ${showAllUnreleased ? 'Hide All' : 'Show All'}
+        </button>
+      </div>
+    `;
+
+    unreleasedToShow.forEach(e => {
+      const tag = e.unreleased
+        ? ' <span style="color:#ff0">(Unreleased)</span>'
+        : '';
+
+      grid.innerHTML += `
+        <div class="entry">
+          <h2>${e.title} — ${e.artist}${tag}</h2>
+          ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+          ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+          ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+          <p>Tracks: ${e.tracks || '—'}</p>
+        </div>
+      `;
+    });
+  }
+}
+function toggleReleased() {
+  showAllReleased = !showAllReleased;
+  render();
+}
+
+function toggleUnreleased() {
+  showAllUnreleased = !showAllUnreleased;
+  render();
+}
+
+
+    function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        const topbar = document.querySelector('.topbar');
+        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      }
+    });
+
+    // Fetch from Firebase
+    dbRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        entries.length = 0;
+        Object.values(data).forEach(item => entries.push(item));
+        render();
+      }
+    });
+  </script>
+</body>
+</html>
