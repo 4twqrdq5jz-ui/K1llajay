@@ -53,8 +53,11 @@
 
     /* Sidebar (Desktop) */
     .sidebar {
+      position: fixed;      /* Freeze the sidebar */
+      top: 0;
+      left: 0;
       width: 260px;
-      height: 100vh;
+      height: 100vh;        /* full viewport height */
       padding: 24px;
       display: flex;
       flex-direction: column;
@@ -62,7 +65,10 @@
       backdrop-filter: blur(9px);
       -webkit-backdrop-filter: blur(9px);
       border-right: 1px solid rgba(255,255,255,0.15);
+      overflow-y: auto;     /* scroll internally if content is taller than viewport */
+      z-index: 1000;        /* above main content */
     }
+
     .profile-img {
       width: 120px;
       height: 120px;
@@ -122,6 +128,7 @@
 
     /* ───────── Main Content ───────── */
     .main-content {
+      margin-left: 260px;   /* same width as sidebar */
       flex: 1;
       display: flex;
       align-items: center;
