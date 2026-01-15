@@ -26,7 +26,7 @@ html, body {
   color: white;
 }
 
-/* ================= BACKGROUND ================= */
+/* ================= BACKGROUND (EXTENDS FOREVER) ================= */
 body::before {
   content: "";
   position: fixed;
@@ -43,6 +43,7 @@ body::after {
   z-index: -1;
 }
 
+/* BODY NEVER SCROLLS */
 body {
   display: flex;
   min-height: 100dvh;
@@ -110,7 +111,6 @@ body {
 .footer a {
   color: white;
   text-decoration: none;
-  font-size: 10px;
 }
 
 .copyright {
@@ -123,7 +123,7 @@ body {
   display: none;
 }
 
-/* ================= MAIN GRID ================= */
+/* ================= MAIN SCROLL AREA ================= */
 .main-content {
   flex: 1;
   padding: 20px;
@@ -131,9 +131,14 @@ body {
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: minmax(250px, auto);
   gap: 10px;
+
+  /* THE ONLY SCROLL */
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
+/* GRID */
 .grid-item {
   backdrop-filter: blur(10px);
   border: 1px solid #333;
@@ -182,11 +187,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.modal-wrapper {
-  max-width: 90vw;
-  max-height: 90vh;
 }
 
 .modal-content {
@@ -261,7 +261,6 @@ body {
 
   .main-content {
     grid-template-columns: repeat(3, 1fr);
-    overflow-y: visible;
   }
 }
 
@@ -269,8 +268,8 @@ body {
 @media (min-width: 769px) {
   .sidebar {
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
     height: 100dvh;
   }
 
@@ -283,20 +282,23 @@ body {
 
 <body>
 
-<!-- Mobile Top Bar -->
+<!-- MOBILE TOP BAR -->
 <div class="topbar">
   <div class="hamburger">☰</div>
   <div class="top-name">YAE YADIR</div>
 </div>
 
-<!-- Sidebar -->
+<!-- SIDEBAR -->
 <div class="sidebar">
   <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR">
   <h1 class="name">
-    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">YAE YADIR</a>
+    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">
+      YAE YADIR
+    </a>
   </h1>
 
   <div class="buttons">
+    <a href="https://k1llajay.com/" class="button">Gallery</a>
     <a href="https://k1llajay.com/music" class="button">Latest Release</a>
     <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
     <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
@@ -314,18 +316,16 @@ body {
   </div>
 </div>
 
-<!-- Grid -->
+<!-- MAIN GRID -->
 <div class="main-content" id="grid-container"></div>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal" id="myModal">
   <span class="close">&times;</span>
-  <div class="modal-wrapper">
-    <img class="modal-content" id="img01">
-  </div>
+  <img class="modal-content" id="img01">
 </div>
 
-<!-- Firebase -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
