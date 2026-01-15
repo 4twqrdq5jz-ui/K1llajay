@@ -27,7 +27,7 @@ html, body {
   color: white;
 }
 
-/* ================= BACKGROUND (INFINITE) ================= */
+/* ================= INFINITE BACKGROUND ================= */
 body::before {
   content: "";
   position: fixed;
@@ -47,23 +47,23 @@ body::after {
 /* ================= BODY ================= */
 body {
   display: flex;
-  overflow: hidden;      /* 🔒 body never scrolls */
   min-height: 100dvh;
+  overflow: hidden; /* body never scrolls */
 }
 
 /* ================= SIDEBAR ================= */
 .sidebar {
   width: 260px;
+  height: 100dvh;
   padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255,255,255,0.15);
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100dvh;
 }
 
 .profile-img {
@@ -79,7 +79,6 @@ body {
   font-size: 22px;
   letter-spacing: 3px;
   margin-bottom: 40px;
-  text-align: center;
 }
 
 .buttons {
@@ -128,12 +127,11 @@ body {
   display: none;
 }
 
-/* ================= MAIN GRID (SCROLLS) ================= */
+/* ================= GRID (SCROLL CONTAINER) ================= */
 .main-content {
   margin-left: 260px;
-  flex: 1;
-  height: 100dvh;          /* 👈 defines scroll area */
-  overflow-y: auto;        /* 👈 grid scrolls */
+  height: 100dvh;
+  overflow-y: auto;
   padding: 20px;
 
   display: grid;
@@ -142,6 +140,8 @@ body {
   gap: 10px;
 
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: none;
 }
 
 .grid-item {
@@ -149,18 +149,17 @@ body {
   border: 1px solid #333;
   border-radius: 8px;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .grid-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
-}
 
-.grid-item img:hover {
-  transform: scale(1.05);
+  /* Prevent Safari from unloading */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* ================= MODAL ================= */
@@ -198,7 +197,6 @@ body {
   max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
-  border-radius: 10px;
 }
 
 .close {
@@ -208,10 +206,10 @@ body {
   font-size: 36px;
   width: 48px;
   height: 48px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   background: rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.4);
 }
@@ -229,8 +227,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    height: 50px;
     width: 100%;
+    height: 50px;
     padding: 0 15px;
     align-items: center;
     backdrop-filter: blur(10px);
@@ -331,20 +329,38 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const grid = document.getElementById("grid-container");
 
+/* === KEEP IMAGES PINNED IN MEMORY (iOS FIX) === */
+const preloadedImages = [];
+
+function preload(src) {
+  const img = new Image();
+  img.src = src;
+  preloadedImages.push(img);
+}
+
 db.ref("slides").once("value").then(snap => {
   const data = snap.val();
   if (!data) return;
 
   Object.keys(data).reverse().forEach(k => {
+    const src = data[k].url || data[k];
+    preload(src);
+
     const div = document.createElement("div");
     div.className = "grid-item";
+
     const img = document.createElement("img");
-    img.src = data[k].url || data[k];
+    img.src = src;
+    img.loading = "eager";
+    img.decoding = "sync";
+    img.fetchPriority = "high";
+
     div.appendChild(img);
     grid.appendChild(div);
   });
 });
 
+/* === MODAL === */
 const modal = document.getElementById("myModal");
 const modalImg = document.getElementById("img01");
 
@@ -362,6 +378,7 @@ document.querySelector(".close").onclick = () =>
 modal.onclick = e =>
   e.target === modal && modal.classList.remove("open");
 
+/* === MOBILE SIDEBAR === */
 document.querySelector(".hamburger").onclick = () =>
   document.querySelector(".sidebar").classList.toggle("active");
 </script>
