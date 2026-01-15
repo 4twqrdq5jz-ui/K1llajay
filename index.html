@@ -12,6 +12,7 @@
   src: url('beyoncefont.ttf') format('truetype');
 }
 
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -20,13 +21,13 @@
 
 html, body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   font-family: 'sitefont', monospace;
   text-transform: uppercase;
   color: white;
 }
 
-/* ================= BACKGROUND (EXTENDS FOREVER) ================= */
+/* ================= BACKGROUND (INFINITE) ================= */
 body::before {
   content: "";
   position: fixed;
@@ -43,11 +44,11 @@ body::after {
   z-index: -1;
 }
 
-/* BODY NEVER SCROLLS */
+/* ================= BODY ================= */
 body {
   display: flex;
+  overflow: hidden;      /* 🔒 body never scrolls */
   min-height: 100dvh;
-  overflow: hidden;
 }
 
 /* ================= SIDEBAR ================= */
@@ -59,6 +60,10 @@ body {
   align-items: center;
   backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255,255,255,0.15);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100dvh;
 }
 
 .profile-img {
@@ -104,8 +109,8 @@ body {
 .footer {
   margin-top: auto;
   font-size: 10px;
-  text-align: center;
   opacity: 0.7;
+  text-align: center;
 }
 
 .footer a {
@@ -123,22 +128,22 @@ body {
   display: none;
 }
 
-/* ================= MAIN SCROLL AREA ================= */
+/* ================= MAIN GRID (SCROLLS) ================= */
 .main-content {
+  margin-left: 260px;
   flex: 1;
+  height: 100dvh;          /* 👈 defines scroll area */
+  overflow-y: auto;        /* 👈 grid scrolls */
   padding: 20px;
+
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: minmax(250px, auto);
   gap: 10px;
 
-  /* THE ONLY SCROLL */
-  overflow-y: auto;
   overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* GRID */
 .grid-item {
   backdrop-filter: blur(10px);
   border: 1px solid #333;
@@ -201,14 +206,14 @@ body {
   top: 20px;
   right: 20px;
   font-size: 36px;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.4);
   width: 48px;
   height: 48px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
 }
 
 /* ================= MOBILE ================= */
@@ -224,8 +229,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
     height: 50px;
+    width: 100%;
     padding: 0 15px;
     align-items: center;
     backdrop-filter: blur(10px);
@@ -246,12 +251,9 @@ body {
 
   .sidebar {
     display: none;
-    position: fixed;
     top: 50px;
-    left: 0;
     width: 100%;
-    max-height: calc(100dvh - 50px);
-    overflow-y: auto;
+    height: calc(100dvh - 50px);
     z-index: 1400;
   }
 
@@ -260,21 +262,9 @@ body {
   }
 
   .main-content {
+    margin-left: 0;
+    height: calc(100dvh - 50px);
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* ================= DESKTOP ================= */
-@media (min-width: 769px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100dvh;
-  }
-
-  .main-content {
-    margin-left: 260px;
   }
 }
 </style>
@@ -290,11 +280,9 @@ body {
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="YAE YADIR">
   <h1 class="name">
-    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">
-      YAE YADIR
-    </a>
+    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">YAE YADIR</a>
   </h1>
 
   <div class="buttons">
@@ -316,7 +304,7 @@ body {
   </div>
 </div>
 
-<!-- MAIN GRID -->
+<!-- GRID -->
 <div class="main-content" id="grid-container"></div>
 
 <!-- MODAL -->
