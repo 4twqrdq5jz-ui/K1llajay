@@ -1,385 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>K1LLAJAY</title>
-  <link rel="icon" href="favicon.ico">
-  <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>K1LLAJAY</title>
+<link rel="icon" href="favicon.ico">
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
 
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      font-family: 'sitefont', monospace;
-      text-transform: uppercase;
-      color: white;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* ================= BACKGROUND ================= */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      z-index: -2;
-    }
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
 
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
+/* ================= BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
 
-    body {
-      display: flex;
-      overflow-x: hidden;
-    }
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
 
-    /* ================= SIDEBAR ================= */
-    .sidebar {
-      width: 260px;
-      height: 100vh;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(9px);
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }
+body {
+  display: flex;
+  min-height: 100dvh;
+  overflow: hidden;
+}
 
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 20px;
-    }
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
 
-    .name {
-      font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
-      text-align: center;
-    }
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
 
-    .buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+  text-align: center;
+}
 
-    .button {
-      padding: 14px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(0,0,0,0.4);
-      transition: 0.3s;
-    }
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-    .button:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
+.button {
+  padding: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
 
-    .footer {
-      margin-top: auto;
-      font-size: 10px;
-      text-align: center;
-      opacity: 0.7;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-    }
+.button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
 
-    .footer a {
-      color: white;
-      text-decoration: none;
-      font-size: 10px;
-    }
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  text-align: center;
+  opacity: 0.7;
+}
 
-    .copyright {
-      font-size: 8px;
-      width: 100%;
-      margin-top: 6px;
-    }
+.footer a {
+  color: white;
+  text-decoration: none;
+  font-size: 10px;
+}
 
-    /* ================= TOP BAR (MOBILE) ================= */
-    .topbar {
-      display: none;
-    }
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
 
-    /* ================= MAIN GRID ================= */
-    .main-content {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-auto-rows: minmax(250px, auto);
-      gap: 10px;
-      height: 100vh;
-      overflow-y: auto;
-    }
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
 
-    .grid-item {
-      backdrop-filter: blur(9px);
-      border: 1px solid #333;
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-    }
+/* ================= MAIN GRID ================= */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 10px;
+  overflow-y: auto;
+}
 
-    .grid-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
+.grid-item {
+  backdrop-filter: blur(10px);
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-    .grid-item img:hover {
-      transform: scale(1.05);
-    }
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
 
-    /* ================= MODAL ================= */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      backdrop-filter: blur(9px);
-    }
+.grid-item img:hover {
+  transform: scale(1.05);
+}
 
-    .modal::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      z-index: -2;
-    }
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+}
 
-    .modal::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
 
-    .modal.open {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.modal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
 
-    .modal-wrapper {
-      max-width: 90vw;
-      max-height: 90vh;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 12px;
-      backdrop-filter: blur(9px);
-    }
+.modal.open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .modal-content {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-      border-radius: 10px;
-    }
+.modal-wrapper {
+  max-width: 90vw;
+  max-height: 90vh;
+}
 
-    .close {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      font-size: 40px;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.4);
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.4);
-    }
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
 
-    /* ================= MOBILE ================= */
-    @media (max-width: 768px) {
+.close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 36px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.4);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+}
 
-      body {
-        flex-direction: column;
-        height: auto;
-        min-height: 100dvh;
-        overflow-y: auto;
-        padding-top: 50px;
-      }
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
 
-      body::before,
-      body::after {
-        position: absolute;
-        height: 100%;
-      }
+  body {
+    flex-direction: column;
+    padding-top: 50px;
+  }
 
-      .topbar {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 10px 15px;
-        backdrop-filter: blur(9px);
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        z-index: 1001;
-      }
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 1500;
+  }
 
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-      }
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+  }
 
-      .top-name {
-        margin: 0 auto;
-        font-size: 22px;
-        letter-spacing: 3px;
-      }
+  .top-name {
+    margin: 0 auto;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
 
-      .sidebar {
-        display: none;
-        position: absolute;
-        top: 50px;
-        width: 100%;
-        height: auto;
-        border-bottom: 1px solid #333;
-      }
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    max-height: calc(100dvh - 50px);
+    overflow-y: auto;
+    z-index: 1400;
+  }
 
-      .sidebar.active {
-        display: flex;
-      }
+  .sidebar.active {
+    display: flex;
+  }
 
-      .main-content {
-        height: auto;
-        overflow: visible;
-        grid-template-columns: repeat(3, 1fr);
-        padding-bottom: 40px;
-      }
-    }
+  .main-content {
+    grid-template-columns: repeat(3, 1fr);
+    overflow-y: visible;
+  }
+}
 
-    /* ================= DESKTOP FIX ================= */
-    @media (min-width: 769px) {
-      .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-      }
+/* ================= DESKTOP ================= */
+@media (min-width: 769px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100dvh;
+  }
 
-      .main-content {
-        padding-left: 270px;
-      }
-    }
-  </style>
+  .main-content {
+    margin-left: 260px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <!-- Mobile Top Bar -->
-  <div class="topbar">
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-    <h1 class="top-name">YAE YADIR</h1>
+
+<!-- Mobile Top Bar -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">YAE YADIR</div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR">
+  <h1 class="name">
+    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">YAE YADIR</a>
+  </h1>
+
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Music Database</a>
+    <a href="https://k1llajay.com/404" class="button">Coming Soon</a>
   </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
-    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
-    <div class="buttons">
-      <a href="https://k1llajay.com/" class="button">GALLERY</a>
-      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
-      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
-      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
-      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
-      <a href="https://k1llajay.com/portfolio" class="button">MUSIC DATABASE</a>
-      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
-    </div>
-    <div class="footer">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/database-upload">UPLOAD TO SITE</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/privacy">PRIVACY</a>
-      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
-    </div>
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/database-upload">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
   </div>
+</div>
 
-  <div class="main-content" id="grid-container"></div>
+<!-- Grid -->
+<div class="main-content" id="grid-container"></div>
 
-  <div class="modal" id="myModal">
-    <span class="close">&times;</span>
-    <div class="modal-wrapper">
-      <img class="modal-content" id="img01">
-    </div>
+<!-- Modal -->
+<div class="modal" id="myModal">
+  <span class="close">&times;</span>
+  <div class="modal-wrapper">
+    <img class="modal-content" id="img01">
   </div>
+</div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
-      authDomain: "mainsite-eb919.firebaseapp.com",
-      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
-      projectId: "mainsite-eb919",
-      storageBucket: "mainsite-eb919.firebasestorage.app",
-      messagingSenderId: "799554641103",
-      appId: "1:799554641103:web:f23b774cbb08e03aebebba",
-      measurementId: "G-SXQHBNGQBF"
-    };
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+  authDomain: "mainsite-eb919.firebaseapp.com",
+  databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+  projectId: "mainsite-eb919",
+  storageBucket: "mainsite-eb919.firebasestorage.app",
+  messagingSenderId: "799554641103",
+  appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+};
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const grid = document.getElementById("grid-container");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const grid = document.getElementById("grid-container");
 
-    db.ref("slides").once("value").then(snap => {
-      const data = snap.val();
-      Object.keys(data).reverse().forEach(k => {
-        const div = document.createElement("div");
-        div.className = "grid-item";
-        const img = document.createElement("img");
-        img.src = data[k].url || data[k];
-        div.appendChild(img);
-        grid.appendChild(div);
-      });
-    });
+db.ref("slides").once("value").then(snap => {
+  const data = snap.val();
+  if (!data) return;
 
-    const modal = document.getElementById("myModal");
-    const modalImg = document.getElementById("img01");
+  Object.keys(data).reverse().forEach(k => {
+    const div = document.createElement("div");
+    div.className = "grid-item";
+    const img = document.createElement("img");
+    img.src = data[k].url || data[k];
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+});
 
-    grid.onclick = e => {
-      if (e.target.tagName === "IMG") {
-        modal.classList.add("open");
-        modalImg.src = e.target.src;
-      }
-    };
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
 
-    document.querySelector(".close").onclick = () => modal.classList.remove("open");
-    modal.onclick = e => e.target === modal && modal.classList.remove("open");
+grid.onclick = e => {
+  if (e.target.tagName === "IMG") {
+    document.querySelector(".sidebar").classList.remove("active");
+    modal.classList.add("open");
+    modalImg.src = e.target.src;
+  }
+};
 
-    document.querySelector(".hamburger").onclick = () =>
-      document.querySelector(".sidebar").classList.toggle("active");
-  </script>
+document.querySelector(".close").onclick = () =>
+  modal.classList.remove("open");
+
+modal.onclick = e =>
+  e.target === modal && modal.classList.remove("open");
+
+document.querySelector(".hamburger").onclick = () =>
+  document.querySelector(".sidebar").classList.toggle("active");
+</script>
 
 </body>
 </html>
