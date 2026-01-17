@@ -353,11 +353,13 @@
     /* Mobile Styles */
       @media (max-width: 768px) {
       body {
+        display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        height: auto;
+        height: 100vh;
         min-height: 100vh;
-        padding-top: 50px;
+        padding-top: 0;
+        overflow: hidden;
       }
       /* Top bar */
       .topbar {
