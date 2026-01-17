@@ -6,124 +6,125 @@
   <title>SOS – YAE YADIR</title>
   <link rel="icon" href="favicon.ico">
   <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
- 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      font-family: 'sitefont', monospace;
-      text-transform: uppercase;
-      color: white;
-      min-height: 100%;
-    }
-    /* Background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      background-attachment: fixed;
-      z-index: -2;
-      -webkit-background-attachment: fixed;
-      width: 100vw;
-      height: 200vh;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-    }
-    body {
-      display: flex;
-    }
-    body.modal-open .sidebar {
-  display: none !important;
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
 }
-    /* Sidebar (Desktop) */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 260px;
-        height: 100vh;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        backdrop-filter: blur(9px);
-        border-right: 1px solid rgba(255,255,255,0.15);
-        z-index: 1000;
-    }
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 20px;
-    }
-    .name {
-      font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
-      text-align: center;
-    }
-    .buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .button {
-      padding: 14px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(0,0,0,0.4);
-      transition: all 0.3s ease;
-    }
-    .button:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
-    .footer {
-      font-size: 10px;
-      text-align: center;
-      opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
-    }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+  overflow: hidden; /* body never scrolls */
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
+
+.button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
     /* Main Content (Desktop) */
     .main-content {
       flex: 1;
@@ -418,58 +419,48 @@
 
     /* Mobile Styles */
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        justify-content: flex-start;
-        height: auto;
-        min-height: 100vh;
-        padding-top: 50px;
-      }
-      /* Top bar */
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 10px 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1001;
-        backdrop-filter: blur(9px);
-      }
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-        color: white;
-      }
-      .top-name {
-        font-size: 24px;
-        margin: 0 auto;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        position: relative;
-        left: -20px;
-      }
-      /* Sidebar */
-      .sidebar {
-        display: none;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: auto;
-        padding: 20px;
-        z-index: 999;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 1px solid #333;
-        backdrop-filter: blur(9px);
-      }
-      .sidebar.active {
-        display: flex;
-      }
+
+  body {
+    flex-direction: column;
+    padding-top: 50px;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 1500;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .sidebar {
+    display: none;
+    top: 50px;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    z-index: 1400;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
       #overlay.active ~ .sidebar,
       .song-modal.open ~ .sidebar {
         display: flex;
