@@ -1,233 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SOS – YAE YADIR</title>
-<link rel="icon" href="favicon.ico">
-
-<style>
-@font-face {
-  font-family: 'sitefont';
-  src: url('beyoncefont.ttf') format('truetype');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOS – YAE YADIR</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+ 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+      color: white;
+      min-height: 100%;
+    }
+    /* Background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      background-attachment: fixed;
+      z-index: -2;
+      -webkit-background-attachment: fixed;
+      width: 100vw;
+      height: 200vh;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+    }
+    body {
+      display: flex;
+    }
+    body.modal-open .sidebar {
+  display: none !important;
 }
+    /* Sidebar (Desktop) */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        backdrop-filter: blur(9px);
+        border-right: 1px solid rgba(255,255,255,0.15);
+        z-index: 1000;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 20px;
+    }
+    .name {
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      opacity: 0.7;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      transition: opacity 0.3s ease;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+    /* Main Content (Desktop) */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;       /* make room for sidebar */
+      height: 100vh;
+      overflow-y: auto;         /* ONLY main scrolls */
+      padding: 80px 100px;
+    }
+    #album-title-section {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    #album-title {
+      font-size: 36px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .credits-button {
+      display: inline-block;
+      padding: 10px 24px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(18px);
+    }
+    .credits-button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    .disc-header {
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 4px;
+      opacity: 0.7;
+      margin: 60px 0 30px;
+    }
+    .tracklist {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 2.4;
+    }
+    .track {
+      display: flex;
+      gap: 20px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .track:hover {
+      opacity: 0.7;
+    }
+    .track-number {
+      width: 40px;
+      text-align: right;
+      opacity: 0.6;
+    }
+    .track-dash {
+      opacity: 0.6;
+    }
+    /* Lyrics/Credits Overlay */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    #overlay::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      z-index: -2;
+    }
+    #overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+    }
+    #overlay.active {
+      display: flex;
+    }
+    #overlayContent {
+      position: relative;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 90%;
+      width: 100%;
+      height: 80vh;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(9px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #overlayContent h1 {
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+    }
+    #overlayContent h3 {
+      font-size: 17px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+    }
+    /* Desktop: buttons fixed to viewport so they don't scroll */
+    .overlay-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      z-index: 105;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      opacity: 0.7;
+    }
 
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+    .overlay-close:hover {
+      opacity: 1;
+    }
+    .service-logos {
+      margin-top: auto;
+      padding-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .service-logos img {
+      height: 40px;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .service-logos img:hover {
+      opacity: 1;
+    }
+    .sub-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+    .sub-toggle span {
+      font-size: 14px;
+      letter-spacing: 2px;
+      padding: 8px 16px;
+      cursor: pointer;
+      opacity: 0.6;
+      border-bottom: 2px solid transparent;
+    }
+    .sub-toggle span.activeTab {
+      opacity: 1;
+      border-bottom: 2px solid white;
+    }
+    .tab-content {
+      display: none;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    .tab-content.activeTab {
+      display: block;
+    }
+    /* Full Credits Modal */
+    .song-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 101;
+    }
+    .song-modal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      z-index: -2;
+    }
+    .song-modal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: -1;
+    }
+    .song-modal.open {
+      display: flex;
+    }
+    .song-modal .container {
+      position: relative;
+      padding: 50px;
+      max-width: 90%; /* Adjusted to 90% of viewport width */
+      width: 100%;
+      max-height: 80vh; /* Adjusted to 85% of viewport height */
+      overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      text-align: center;
+      backdrop-filter: blur(9px);
+    }
+    .song-modal h1 {
+      font-size: 25px;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .song-modal h3 {
+      font-size: 20px;
+      margin: 30px 0 15px;
+      letter-spacing: 1px;
+    }
+    .song-modal p {
+      font-size: 15px;
+      line-height: 1.8;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    .modal-close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      z-index: 106;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    .track-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+    .track-info {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .next-track-btn, .prev-track-btn {
+      padding: 12px 18px;
+      font-size: 18px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .next-track-btn:hover, .prev-track-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    .next-track-btn:disabled, .prev-track-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .next-track-btn:disabled:hover, .prev-track-btn:disabled:hover {
+      background: rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.2);
+    }
+    /* Mobile Top Bar (hidden on desktop) */
+    .topbar {
+      display: none;
+    }
+    .no-scroll {
+      overflow: hidden !important;
+    }
 
-html, body {
-  width: 100%;
-  min-height: 100%;
-  font-family: 'sitefont', monospace;
-  text-transform: uppercase;
-  color: white;
-}
-
-/* ================= BACKGROUND (iOS SAFE) ================= */
-.background {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-}
-
-.background-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: rgba(0,0,0,0.65);
-}
-
-/* ================= LAYOUT ================= */
-body {
-  display: flex;
-}
-
-/* ================= SIDEBAR ================= */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 100vh;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  backdrop-filter: blur(9px);
-  border-right: 1px solid rgba(255,255,255,0.15);
-  z-index: 1000;
-}
-
-.profile-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  margin-bottom: 20px;
-}
-
-.name {
-  font-size: 22px;
-  letter-spacing: 3px;
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.buttons {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.button {
-  padding: 14px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  font-size: 13px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  background: rgba(0,0,0,0.4);
-}
-
-.footer {
-  margin-top: auto;
-  font-size: 9px;
-  text-align: center;
-  opacity: 0.7;
-}
-
-/* ================= MAIN ================= */
-.main-content {
-  margin-left: 260px;
-  padding: 80px 100px;
-  width: 100%;
-}
-
-/* ================= TRACKLIST ================= */
-#album-title {
-  font-size: 36px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.credits-button {
-  text-align: center;
-  display: inline-block;
-  padding: 10px 24px;
-  border: 1px solid rgba(255,255,255,0.4);
-  cursor: pointer;
-}
-
-.tracklist {
-  max-width: 800px;
-  margin: 60px auto;
-  font-size: 18px;
-  line-height: 2.3;
-}
-
-.track {
-  display: flex;
-  gap: 16px;
-  cursor: pointer;
-}
-
-/* ================= MODALS ================= */
-.no-scroll {
-  position: fixed;
-  width: 100%;
-}
-
-#overlay,
-.song-modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1003;
-}
-
-#overlay.active,
-.song-modal.open {
-  display: flex;
-}
-
-.modal-box {
-  max-width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 24px;
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(9px);
-}
-
-.modal-close {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 28px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-/* ================= MOBILE ================= */
-.topbar {
-  display: none;
-}
-
-@media (max-width: 768px) {
-
-  body {
-    flex-direction: column;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1002;
-    backdrop-filter: blur(9px);
-  }
-
-  .hamburger {
-    font-size: 28px;
-    cursor: pointer;
-  }
-
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 52px;
-    width: 100%;
-    height: auto;
-    z-index: 1002;
-  }
-
-  .sidebar.active {
-    display: flex;
-  }
-
-  .main-content {
-    margin-left: 0;
-    padding: 80px 16px 60px;
-  }
-}
-</style>
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      /* Top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        backdrop-filter: blur(9px);
+      }
+      .hamburger {
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+      }
+      .top-name {
+        font-size: 24px;
+        margin: 0 auto;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: relative;
+        left: -20px;
+      }
+      /* Sidebar */
+      .sidebar {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #333;
+        backdrop-filter: blur(9px);
+      }
+      .sidebar.active {
+        display: flex;
+      }
+      #overlay.active ~ .sidebar,
+      .song-modal.open ~ .sidebar {
+        display: flex;
+      }
+      #overlay.active {
+        z-index: 50;
+      }
+      .song-modal.open {
+        z-index: 51;
+      }
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+      }
+      .name {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      .main-content {
+        flex: 1;
+        height: auto;      /* ✅ IMPORTANT */
+        min-height: calc(100vh - 50px);
+        overflow-y: auto; /* ✅ allow scrolling */
+        -webkit-overflow-scrolling: touch; /* ✅ for better scrolling on iOS */
+        padding: 10px 10px 40px;
+      }
+      /* Footer */
+      .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.200);
+        margin-top: auto;
+        font-size: 9px;
+        gap: 3px;
+      }
+      .footer a, .footer-dot { font-size: 9px; }
+      .copyright {
+        font-size: 7px;
+        margin-top: 5px;
+      }
+      /* Content sizing */
+      #album-title-section {
+        margin-bottom: 30px;
+      }
+      #album-title {
+        margin-top: 30px;
+        font-size: 28px;
+      }
+      .disc-header {
+        margin: 10px 0 15px;
+      }
+      .tracklist {
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .service-logos img {
+        height: 36px;
+      }
+      .song-modal .container {
+        padding: 20px;
+      }
+      /* Lyrics/Credits Overlay */
+      #overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+      #overlay::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("IMG_3309.gif") center / cover no-repeat;
+        z-index: -2;
+      }
+      #overlay::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: -1;
+      }
+      #overlay.active {
+        display: flex;
+      }
+      #overlayContent {
+        position: relative;
+        padding: 20px;
+        border-radius: 12px;
+        max-width: 90%;
+        width: 90%;
+        max-height: 60vh;
+        overflow-y: auto;
+        border: 1px solid rgba(255,255,255,0.2);
+        backdrop-filter: blur(9px);
+        margin: 20px;
+        bottom: 5px;
+        top: 10px;
+      }
+      .overlay-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+        opacity: 0.7;
+      }
+      .overlay-close:hover {
+        opacity: 1;
+      }
+      .song-modal .container {
+        position: relative;
+        padding: 50px;
+        max-width: 90%; /* Adjusted to 90% of viewport width */
+        width: 100%;
+        max-height: 40vh; /* Reduced height to not fit lyrics */
+        overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 12px;
+        text-align: center;
+        backdrop-filter: blur(9px);
+        bottom: 5px;
+          top: 10px;
+      }
+      .service-logos {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .service-logos img {
+        height: 30px;
+      }
+      .sub-toggle {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .sub-toggle span {
+        font-size: 14px;
+        letter-spacing: 2px;
+        padding: 8px 16px;
+        cursor: pointer;
+        opacity: 0.6;
+        border-bottom: 2px solid transparent;
+      }
+      .sub-toggle span.activeTab {
+        opacity: 1;
+        border-bottom: 2px solid white;
+      }
+      .tab-content {
+        display: none;
+        line-height: 1.8;
+        font-size: 14px;
+      }
+      .tab-content.activeTab {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Mobile Top Bar -->
