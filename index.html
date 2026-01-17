@@ -1,404 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>K1LLAJAY</title>
-  <link rel="icon" href="favicon.ico">
-  <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
- 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      font-family: 'sitefont', monospace;
-      text-transform: uppercase;
-      color: white;
-      min-height: 100%;
-    }
-    /* Background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      background-attachment: fixed;
-      z-index: -2;
-      -webkit-background-attachment: fixed;
-      width: 100vw;
-      height: 200vh;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-    }
-    body {
-      display: flex;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>K1LLAJAY</title>
+<link rel="icon" href="favicon.ico">
 
-    /* Sidebar (Desktop) */
-    .sidebar {
-      width: 260px;
-      height: 100vh;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 20px;
-    }
-    .name {
-      font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
-      text-align: center;
-    }
-    .buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .button {
-      padding: 14px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(0,0,0,0.4);
-      transition: all 0.3s ease;
-    }
-    .button:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
-    .footer {
-      font-size: 10px;
-      text-align: center;
-      opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
-    }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
-
-    /* Mobile Top Bar (hidden on desktop) */
-    .topbar {
-      display: none;
-    }
-    /* Mobile Styles */
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        justify-content: flex-start;
-        height: auto;
-        min-height: 100vh;
-        padding-top: 50px;
-      }
-      /* Top bar */
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 10px 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1001;
-        backdrop-filter: blur(9px);
-      }
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-        color: white;
-      }
-      .top-name {
-        font-size: 24px;
-        margin: 0 auto;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        position: relative;
-        left: -20px;
-      }
-      /* Sidebar */
-      .sidebar {
-        display: none;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: auto;
-        padding: 20px;
-        z-index: 999;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 1px solid #333;
-        backdrop-filter: blur(9px);
-      }
-      .sidebar.active {
-        display: flex;
-      }
-      .profile-img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 10px;
-      }
-      .name {
-        font-size: 28px;
-        margin-bottom: 20px;
-      }
-      /* Footer */
-      .footer {
-        position: relative;
-        bottom: 0;
-        width: 100%;
-        padding: 10px;
-        background: rgba(0,0,0,0.200);
-        margin-top: auto;
-        font-size: 9px;
-        gap: 3px;
-      }
-      .footer a, .footer-dot { font-size: 9px; }
-      .copyright {
-        font-size: 7px;
-        margin-top: 5px;
-      }
-      .main-content {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
-  gap: 10px;
-  padding: 16px;
+<style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
 }
 
-    }
-    .main-content {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-auto-rows: minmax(250px, auto);
-      gap: 10px;
-      overflow-y: auto; /* Correct element to have scroll */
-      height: 100vh; /* Set a height to enable scrolling */
-    }
-    .grid-item { backdrop-filter: blur(9px); border: 1px solid #333; overflow: hidden; cursor: pointer; border-radius: 8px; }
-    .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-    .grid-item img:hover { transform: scale(1.05); } /* Added a hover effect */
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* 5. MODAL */
-    .modal { 
-      display: none; 
-      position: fixed; 
-      z-index: 1000; 
-      left: 0; 
-      top: 0; 
-      width: 100%; 
-      height: 100%; 
-      backdrop-filter: blur(9px); 
-      overflow: auto; /* Allow modal to scroll if content is too big */ 
-    }
-    .modal::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      z-index: -2;
-    }
-    .modal::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
-    .modal.open {
-      display: flex;
-    }
-    .modal-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: inline-flex;           /* 🔑 shrink to image size */
-      align-items: center;
-      justify-content: center;
-      width: auto;                    /* 🔑 no forced width */
-      max-width: 90vw;
-      max-height: 90vh;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 12px;
-      backdrop-filter: blur(9px);
-    }
-    .modal-content {
-      display: block;                 /* remove inline gaps */
-      max-width: 90vw;
-      max-height: 90vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 10px;            /* optional: match wrapper curve */
-    }
-    .close {
-      position: fixed;          /* detached from wrapper */
-      top: 24px;
-      right: 24px;
-      color: white;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1000;            /* above modal + image */
-      width: 50px;              /* fixed square size */
-      height: 50px;             /* equal to width */
-      display: flex;            /* center the "×" */
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 4px;       /* small rounding for subtle effect */
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.4); /* optional: add background for better visibility */
-      transition: all 0.25s ease;
-    }
-    .close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
 
-    @media (min-width: 769px) {
-        /* Desktop layout overrides */
-        body { flex-direction: row; }
-        .main-content { padding-left: 270px; /* Space for the fixed sidebar */ }
-        .sidebar { position: fixed; left: 0; top: 0; }
-    }
-  </style>
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+  overflow: hidden; /* body never scrolls */
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
+
+.button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
+
+/* ================= GRID (SCROLL CONTAINER) ================= */
+.main-content {
+  margin-left: 260px;
+  height: 100dvh;
+  overflow-y: auto;
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 10px;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: none;
+}
+
+.grid-item {
+  backdrop-filter: blur(10px);
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* Prevent Safari from unloading */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+.modal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+.modal.open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 36px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+    padding-top: 50px;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 1500;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .sidebar {
+    display: none;
+    top: 50px;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    z-index: 1400;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .main-content {
+    margin-left: 0;
+    height: calc(100dvh - 50px);
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
 </head>
+
 <body>
-  <!-- Mobile Top Bar -->
-  <div class="topbar">
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-    <h1 class="top-name">YAE YADIR</h1>
+
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">YAE YADIR</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="YAE YADIR">
+  <h1 class="name">
+    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">YAE YADIR</a>
+  </h1>
+
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Music Database</a>
+    <a href="https://k1llajay.com/404" class="button">Coming Soon</a>
   </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
-    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
-    <div class="buttons">
-      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
-      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
-      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
-      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
-      <a href="https://k1llajay.com/music-database" class="button">MUSIC DATABASE</a>
-      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
-    </div>
-    <div class="footer">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-<a href="https://k1llajay.com/database-upload">UPLOAD TO SITE</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/privacy">PRIVACY</a>
-      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
-    </div>
-  </div>
-  <div class="main-content" id="grid-container"></div>
-  <!-- Modal -->
-  <div id="myModal" class="modal">
-  <span class="close" id="closeModalBtn">&times;</span>
-
-  <div class="modal-wrapper">
-    <img class="modal-content" id="img01">
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/database-upload">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
   </div>
 </div>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
-      authDomain: "mainsite-eb919.firebaseapp.com",
-      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
-      projectId: "mainsite-eb919",
-      storageBucket: "mainsite-eb919.firebasestorage.app",
-      messagingSenderId: "799554641103",
-      appId: "1:799554641103:web:f23b774cbb08e03aebebba",
-      measurementId: "G-SXQHBNGQBF"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const gridContainer = document.getElementById("grid-container");
-    db.ref("slides").once("value").then(snapshot => {
-      const slides = snapshot.val();
-      gridContainer.innerHTML = "";
-      const keys = Object.keys(slides).reverse();
-      for (const key of keys) {
-        const item = slides[key];
-        const src = typeof item === "string" ? item : item.url;
-        const gridItem = document.createElement("div");
-        gridItem.className = "grid-item";
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = "PORTFOLIO IMAGE";
-        gridItem.appendChild(img);
-        gridContainer.appendChild(gridItem);
-      }
-    }).catch(error => console.error("Error loading slides:", error));
-    // Modal
-    const modal = document.getElementById("myModal");
-    const modalImg = document.getElementById("img01");
-    const span = document.getElementsByClassName("close")[0];
-    gridContainer.addEventListener('click', function(e) {
-      if (e.target.tagName === 'IMG') {
-        modal.style.display = "block";
-        modalImg.src = e.target.src;
-      }
-    });
-    span.onclick = function() { modal.style.display = "none"; }
-    modal.onclick = function(e) { if (e.target == modal) modal.style.display = "none"; }
-    // Hamburger menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const sidebar = document.querySelector('.sidebar');
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-    });
-  </script>
+
+<!-- GRID -->
+<div class="main-content" id="grid-container"></div>
+
+<!-- MODAL -->
+<div class="modal" id="myModal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+  authDomain: "mainsite-eb919.firebaseapp.com",
+  databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+  projectId: "mainsite-eb919",
+  storageBucket: "mainsite-eb919.firebasestorage.app",
+  messagingSenderId: "799554641103",
+  appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const grid = document.getElementById("grid-container");
+
+/* === KEEP IMAGES PINNED IN MEMORY (iOS FIX) === */
+const preloadedImages = [];
+
+function preload(src) {
+  const img = new Image();
+  img.src = src;
+  preloadedImages.push(img);
+}
+
+db.ref("slides").once("value").then(snap => {
+  const data = snap.val();
+  if (!data) return;
+
+  Object.keys(data).reverse().forEach(k => {
+    const src = data[k].url || data[k];
+    preload(src);
+
+    const div = document.createElement("div");
+    div.className = "grid-item";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.loading = "eager";
+    img.decoding = "sync";
+    img.fetchPriority = "high";
+
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+});
+
+/* === MODAL === */
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
+
+grid.onclick = e => {
+  if (e.target.tagName === "IMG") {
+    document.querySelector(".sidebar").classList.remove("active");
+    modal.classList.add("open");
+    modalImg.src = e.target.src;
+  }
+};
+
+document.querySelector(".close").onclick = () =>
+  modal.classList.remove("open");
+
+modal.onclick = e =>
+  e.target === modal && modal.classList.remove("open");
+
+/* === MOBILE SIDEBAR === */
+document.querySelector(".hamburger").onclick = () =>
+  document.querySelector(".sidebar").classList.toggle("active");
+</script>
+
 </body>
 </html>
