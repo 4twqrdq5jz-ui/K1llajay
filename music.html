@@ -441,10 +441,12 @@ body {
       }
       .main-content {
         flex: 1;
-        height: auto;      /* ✅ IMPORTANT */
+        height: auto;
         min-height: calc(100vh - 50px);
-        overflow-y: auto; /* ✅ allow scrolling */
-        -webkit-overflow-scrolling: touch; /* ✅ for better scrolling on iOS */
+        max-height: calc(100vh - 50px);
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
         padding: 10px 10px 40px;
         margin-left: 0;
         width: 100%;
