@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Music • Yae Yadir</title>
+<title>Music • Jae Laurent</title>
 <link rel="icon" href="favicon.ico">
 <style>
     @font-face {
@@ -416,8 +416,8 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <img class="profile-img" src="IMG_3214.JPEG" alt="YAE YADIR" />
-    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">YAE YADIR</a></h1>
+    <img class="profile-img" src="IMG_3214.JPEG" alt="Jae Laurent" />
+    <h1 class="name"><a href="https://k1llajay.com/yaeyadir" style="color: white; text-decoration: none;">Jae Laurent</a></h1>
     <div class="mini-player">
       <div class="now-playing-title" id="nowPlayingTitle">No track playing</div>
       <div class="mini-controls">
@@ -453,12 +453,6 @@
       <div id="gridAlbums" class="grid"></div>
 
       <div class="section-header">
-        <h2 class="section">Music Videos</h2>
-        <button class="show-more-btn" data-target="gridVideos">Show More</button>
-      </div>
-      <div id="gridVideos" class="grid"></div>
-
-      <div class="section-header">
         <h2 class="section">Singles &amp; EPs</h2>
         <button class="show-more-btn" data-target="gridSingles">Show More</button>
       </div>
@@ -477,7 +471,7 @@
         <img id="detailArt" class="art-lg" src="" alt="">
         <div>
           <div class="d-title" id="detailTitle">—</div>
-          <div class="d-artist">Yae Yadir</div>
+          <div class="d-artist">Jae Laurent</div>
           <div class="chips">
             <span id="detailType" class="chip" style="margin-bottom:10px; background:none; border:1px solid #555; backdrop-filter: blur(9px);">EP</span>
             <span id="detailYear" class="chip" style="margin-bottom:10px; background:none; border:1px solid #555; backdrop-filter: blur(9px);">2025</span>
@@ -547,12 +541,12 @@
     function updateNowPlaying() {
       if (!QUEUE.length || !LIB[QUEUE[INDEX]]) {
         nowPlayingTitle.textContent = "No track playing";
-        document.title = "Music • Yae Yadir";
+        document.title = "Music • Jae Laurent";
         return;
       }
       const track = LIB[QUEUE[INDEX]];
-      nowPlayingTitle.textContent = `${track.title} • Yae Yadir • ${track.releaseTitle}`;
-      document.title = `${track.title} • Yae Yadir • ${track.releaseTitle}`;
+      nowPlayingTitle.textContent = `${track.title} • Jae Laurent • ${track.releaseTitle}`;
+      document.title = `${track.title} • Jae Laurent • ${track.releaseTitle}`;
     }
     function updatePlayIcon() {
       playPauseBtn.innerHTML = audio.paused ? '▶' : '⏸';
@@ -608,26 +602,6 @@
       else { audio.pause(); updatePlayIcon(); }
     });
 
-    // ──────── UPDATED createCard (Video cards now match your screenshot) ────────
-    function createCard(release) {
-      if (release.type === 'Video') {
-        const card = el('div', 'video-card');
-        const thumb = el('div', 'video-thumb');
-        const img = el('img');
-        img.src = release.coverUrl || '';
-        img.alt = release.name;
-        thumb.appendChild(img);
-
-        const meta = el('div', 'video-meta');
-        const title = el('div', 'video-title', release.name || 'Untitled Video');
-        const year = el('div', 'video-year', release.year || '');
-
-        meta.append(title, year);
-        card.append(thumb, meta);
-        card.onclick = () => openRelease(release.key);
-        return card;
-      }
-
       // Regular album/single card
       const card = el('div', 'card');
       const thumb = el('div', 'thumb');
@@ -644,7 +618,6 @@
       card.append(thumb, meta);
       card.onclick = () => openRelease(release.key);
       return card;
-    }
 
     function limitGrid(gridEl, items, btn) {
       gridEl.innerHTML = '';
@@ -731,7 +704,7 @@
       const releaseTs = raw.releaseDate ? Date.parse(raw.releaseDate) : Number(raw.createdAt || 0);
       return {
         title: raw.title || raw.name || 'Untitled',
-        artist: raw.artist || 'Yae Yadir',
+        artist: raw.artist || 'Jae Laurent',
         duration: Number(raw.duration || 0),
         trackNumber: Number(raw.trackNumber || raw.track || raw.no || 0),
         releaseTitle: (raw.releaseTitle || raw.group || '').trim(),
@@ -777,7 +750,7 @@
         const type = ['Video', 'Compilation', 'Album', 'EP', 'Single'].find(t => idxs.some(i => LIB[i].releaseType === t)) || (idxs.length > 6 ? 'Album' : 'EP');
         const name = [...new Set(idxs.map(i => LIB[i].releaseTitle).filter(Boolean))][0] || 'Untitled Release';
         const key = `${name}__${year}__${coverUrl.split('/').pop() || 'nocover'}`;
-        GROUPS[key] = { key, name, type, year, artist: 'Yae Yadir', coverUrl, tracks: idxs, releaseTs };
+        GROUPS[key] = { key, name, type, year, artist: 'Jae Laurent', coverUrl, tracks: idxs, releaseTs };
       }
     }
 
