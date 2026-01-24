@@ -183,8 +183,8 @@
   </div>
 
   <div class="sidebar">
-    <img class="profile-img" src="IMG_6877.jpeg" alt="YAE YADIR" />
-    <h1 class="name">YAE YADIR</h1>
+    <img class="profile-img" src="IMG_6877.jpeg" alt="JAE LAURENT" />
+    <h1 class="name">JAE LAURENT</h1>
     <div class="buttons">
       <a href="database.html" class="button">Music Database</a>
       <a href="slide-upload.html" class="button">Upload Slides</a>
@@ -223,7 +223,7 @@
         <input type="text" id="releaseTitleInput" placeholder="Release Title (Album/EP/etc)" style="display:none; grid-column:1/-1;" />
 
         <input type="text" id="defaultTitle" placeholder="Default Song Title (fallback)" />
-        <input type="text" id="artist" placeholder="Artist Name" value="Yae Yadir" />
+        <input type="text" id="artist" placeholder="Artist Name" value="Jae Laurent" />
 
         <input type="date" id="releaseDate" />
         <input type="number" id="yearInput" placeholder="Year (optional)" min="1900" />
@@ -364,7 +364,7 @@
       if (!queue.length) return alert('Add at least one track');
 
       const coverFile = document.getElementById('coverInput').files[0];
-      const artist = document.getElementById('artist').value.trim() || 'Yae Yadir';
+      const artist = document.getElementById('artist').value.trim() || 'Jae Laurent';
       const releaseTitle = document.getElementById('releaseTitleInput').value.trim();
       const releaseType = document.getElementById('releaseType').value || 'Single';
       const year = document.getElementById('yearInput').value ||
