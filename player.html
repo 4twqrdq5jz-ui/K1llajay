@@ -602,6 +602,7 @@
       else { audio.pause(); updatePlayIcon(); }
     });
 
+    function createCard(release) {
       // Regular album/single card
       const card = el('div', 'card');
       const thumb = el('div', 'thumb');
@@ -618,6 +619,7 @@
       card.append(thumb, meta);
       card.onclick = () => openRelease(release.key);
       return card;
+    }
 
     function limitGrid(gridEl, items, btn) {
       gridEl.innerHTML = '';
@@ -644,20 +646,17 @@
         gridAlbums: document.getElementById('gridAlbums'),
         gridSingles: document.getElementById('gridSingles'),
         gridCompilations: document.getElementById('gridCompilations'),
-        gridVideos: document.getElementById('gridVideos')
       };
       const albums = [], singlesEPs = [], videos = [], compilations = [];
       Object.values(GROUPS).forEach(rel => {
-        if (rel.type === 'Video') videos.push(rel);
-        else if (rel.type === 'Compilation') compilations.push(rel);
+        if (rel.type === 'Compilation') compilations.push(rel);
         else if (['Single', 'EP'].includes(rel.type)) singlesEPs.push(rel);
         else albums.push(rel);
       });
       const sortNewest = (a, b) => (b.releaseTs || 0) - (a.releaseTs || 0);
-      [albums, singlesEPs, videos, compilations].forEach(arr => arr.sort(sortNewest));
+      [albums, singlesEPs, compilations].forEach(arr => arr.sort(sortNewest));
 
       limitGrid(grids.gridAlbums, albums, document.querySelector('[data-target="gridAlbums"]'));
-      limitGrid(grids.gridVideos, videos, document.querySelector('[data-target="gridVideos"]'));
       limitGrid(grids.gridSingles, singlesEPs, document.querySelector('[data-target="gridSingles"]'));
       limitGrid(grids.gridCompilations, compilations, document.querySelector('[data-target="gridCompilations"]'));
 
