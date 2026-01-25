@@ -8,7 +8,7 @@
   <style>
     @font-face {
       font-family: 'sitefont';
-      src: url('Andasia Personal Use Only.ttf') format('truetype');
+      src: url('beyoncefont.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -147,7 +147,32 @@
     }
     .primary-btn:hover { background: #00cc77; }
 
-    #musicDatabase { margin-top: 30px; width: 100%; max-width: 900px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    #musicDatabase { margin-top: 30px; width: 100%; max-width: 1200px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      letter-spacing: 4px;
+      opacity: 0.85;
+      margin: 10px 0;
+    }
+    .section-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header button {
+      font-family: inherit;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: white;
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+    .section-header button:hover { background: #444; }
     .entry {
       background: #111;
       border: 1px solid #333;
@@ -203,23 +228,19 @@
     <img class="profile-img" src="IMG_6877.jpeg" alt="JAE LAURENT" />
     <h1 class="name">JAE LAURENT</h1>
     <div class="buttons">
-      <a href="audio-upload.html" class="button">Upload Audio</a>
-      <a href="slide-upload.html" class="button">Upload Slides</a>
-      <a href="portfolio-upload.html" class="button">Upload Nature</a>
-      <a href="podcast-upload.html" class="button">Upload Podcast</a>
+      <a href="https://k1llajay.com/audio-upload" class="button">Upload Audio</a>
+      <a href="https://k1llajay.com/slide-upload" class="button">Upload Slides</a>
+      <a href="https://k1llajay.com/portfolio-upload" class="button">Upload Nature</a>
+      <a href="https://k1llajay.com/podcast-upload" class="button">Upload Podcast</a>
     </div>
     <div class="footer">
-      <a href="index.html">Main Site</a>
+      <a href="https://k1llajay.com">Main Site</a>
       <span class="footer-dot">•</span>
       <a href="https://mystery.k1llajay.com">MYSTERY</a>
       <span class="footer-dot">•</span>
-      <a href="database.html">MUSIC DATABASE</a>
+      <a href="https://k1llajay.com/terms">TERMS</a>
       <span class="footer-dot">•</span>
-      <a href="god-is-the-plan.html">GOD IS THE PLAN</a>
-      <span class="footer-dot">•</span>
-      <a href="terms-and-conditions.html">TERMS</a>
-      <span class="footer-dot">•</span>
-      <a href="privacy-policy.html">PRIVACY</a>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
     </div>
   </div>
@@ -311,22 +332,95 @@
     let entries = [];
     let keys = [];
     let editing = null;
+    let showAllReleased = false;
+    let showAllUnreleased = false;
+
+    function formatDateMMDDYYYY(dateValue) {
+      if (!dateValue) return '';
+      const date = new Date(dateValue);
+      if (isNaN(date)) return dateValue;
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    }
 
     function render() {
       const container = document.getElementById('musicDatabase');
       container.innerHTML = '';
-      entries.forEach((e, i) => {
-      const tag = e.unreleased ? ' <span style="color:#ff0">(Unreleased)</span>' : '';
-      container.innerHTML += `
-        <div class="entry">
-          <h2>${e.title} — ${e.artist}${tag}</h2>
-          ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
-          ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
-          ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
-          <p>Tracks: ${e.tracks || '—'}</p>
-          <button onclick="edit(${i})" class="edit-btn">Edit</button>
-        </div>`;
-    });
+      
+      const released = entries.filter((e, i) => !e.unreleased);
+      const unreleased = entries.filter((e, i) => e.unreleased);
+
+      const sortByDate = (a, b) => {
+        const da = a.releaseDate ? new Date(a.releaseDate) : 0;
+        const db = b.releaseDate ? new Date(b.releaseDate) : 0;
+        return da - db;
+      };
+
+      released.sort(sortByDate);
+      unreleased.sort(sortByDate);
+
+      const releasedToShow = showAllReleased ? released : released.slice(-3).reverse();
+      const unreleasedToShow = showAllUnreleased ? unreleased : unreleased.slice(-3).reverse();
+
+      // Released section
+      if (released.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">RELEASED</div>
+            <button onclick="toggleReleased()">${showAllReleased ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        releasedToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          const tag = '';
+          container.innerHTML += `
+            <div class="entry">
+              <h2>${e.title} — ${e.artist}${tag}</h2>
+              ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+              ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+              ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              <p>Tracks: ${e.tracks || '—'}</p>
+              <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+            </div>`;
+        });
+      }
+
+      // Unreleased section
+      if (unreleased.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">UNRELEASED</div>
+            <button onclick="toggleUnreleased()">${showAllUnreleased ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        unreleasedToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          const tag = ' <span style="color:#ff0">(Unreleased)</span>';
+          container.innerHTML += `
+            <div class="entry">
+              <h2>${e.title} — ${e.artist}${tag}</h2>
+              ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+              ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+              ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              <p>Tracks: ${e.tracks || '—'}</p>
+              <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+            </div>`;
+        });
+      }
+    }
+
+    function toggleReleased() {
+      showAllReleased = !showAllReleased;
+      render();
+    }
+
+    function toggleUnreleased() {
+      showAllUnreleased = !showAllUnreleased;
+      render();
     }
 
     function save() {
