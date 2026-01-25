@@ -8,38 +8,44 @@
   <style>
     @font-face {
       font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
+      src: url('Andasia Personal Use Only.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      height: 100%; width: 100%;
+      height: 100%;
+      width: 100%;
       font-family: 'sitefont', monospace;
       background-color: black;
       color: white;
       text-transform: uppercase;
-      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
     body {
       display: flex;
       flex-direction: row;
       height: 100vh;
+      overflow: hidden;
     }
     .topbar {
       display: none;
       align-items: center;
       justify-content: flex-start;
-      padding: 10px;
+      padding: 12px 15px;
       background-color: black;
       border-bottom: 1px solid #333;
       width: 100%;
+      height: 50px;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       z-index: 1001;
+      box-sizing: border-box;
     }
     .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
-    .top-name { font-size: 24px; text-transform: uppercase; flex: 1; text-align: center; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
     .sidebar {
       width: 250px;
       height: 100vh;
@@ -50,6 +56,12 @@
       align-items: center;
       justify-content: flex-start;
       border-right: 1px solid #333;
+      overflow-y: auto;
+      position: fixed;
+      left: 0;
+      top: 0;
+      box-sizing: border-box;
+      z-index: 1000;
     }
     .profile-img {
       width: 120px; height: 120px;
@@ -110,12 +122,27 @@
     .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
-    .main { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-    .main h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 2px; }
+    .main {
+      margin-left: 250px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
 
     .upload-box {
-      background: #111; border: 1px solid #333; border-radius: 12px; padding: 32px;
-      width: 100%; max-width: 900px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
     }
 
     .primary-btn {
@@ -127,9 +154,10 @@
 
     .preview-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+      width: 100%;
     }
     .preview-item {
       position: relative;
@@ -160,8 +188,11 @@
     }
 
     .slides-list {
-      margin-top: 80px; width: 100%; max-width: 900px;
+      margin-top: 40px;
+      width: 100%;
+      max-width: 800px;
     }
+    .slides-list h2 { font-size: 24px; margin: 0 0 20px 0; }
     .slide-item {
       background: #111;
       border: 1px solid #333;
@@ -197,12 +228,31 @@
     .status { margin-top: 15px; font-size: 14px; opacity: 0.9; }
 
     @media (max-width: 768px) {
-      body { flex-direction: column; padding-top: 60px; }
+      body { flex-direction: column; }
       .topbar { display: flex; }
-      .sidebar { display: none; position: fixed; top: 60px; left: 0; width: 100%; height: auto; padding: 20px; z-index: 999; background: black; }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 50px);
+        padding: 15px;
+        z-index: 999;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
       .sidebar.active { display: flex; }
-      .main { padding: 20px; }
-      .preview-grid { grid-template-columns: 1fr; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 20px;
+        height: auto;
+        min-height: calc(100vh - 50px);
+      }
+      .preview-grid { grid-template-columns: repeat(2, 1fr); }
       .slide-item { flex-direction: column; text-align: center; }
       .slide-item img { width: 100%; height: 200px; }
     }
