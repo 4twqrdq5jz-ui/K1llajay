@@ -233,7 +233,7 @@
     #queue { margin: 20px 0; width: 100%; }
     .queue-item {
       display: grid;
-      grid-template-columns: 40px 1fr 100px 160px;
+      grid-template-columns: 40px 1fr 100px 50px 160px;
       gap: 8px;
       align-items: center;
       background: #111;
@@ -501,10 +501,6 @@
         <h4>Options</h4>
         <div class="options-row">
           <div class="option-group">
-            <input type="checkbox" id="explicit">
-            <label for="explicit">Explicit</label>
-          </div>
-          <div class="option-group">
             <input type="checkbox" id="unreleased">
             <label for="unreleased">Unreleased</label>
           </div>
@@ -609,6 +605,9 @@
           <div style="opacity:0.6;text-align:center">${i+1}</div>
           <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value">
           <div style="opacity:0.8">${formatTime(item.duration)}</div>
+          <div style="display:flex; align-items:center; justify-content:center;">
+            <input type="checkbox" ${item.explicit ? 'checked' : ''} onchange="queue[${i}].explicit=this.checked" style="cursor:pointer; accent-color:#00ff99;" title="Explicit">
+          </div>
           <progress max="100" value="0" data-id="${i}"></progress>
           <div class="controls">
             <button onclick="move(${i},-1)">Up</button>
@@ -658,7 +657,6 @@
       }
       
       const producer = document.getElementById('producerInput').value.trim();
-      const explicit = document.getElementById('explicit').checked;
       const unreleased = document.getElementById('unreleased').checked;
       const remix = document.getElementById('remix').checked;
       const versions = document.getElementById('versions').checked;
@@ -708,7 +706,7 @@
           releaseType: releaseType,
           producer: producer || '',
           mediaType: 'audio',
-          explicit,
+          explicit: item.explicit || false,
           unreleased: !!unreleased,
           remix: !!remix,
           versions: !!versions,
@@ -739,7 +737,6 @@
       document.getElementById('defaultTitle').value = '';
       document.getElementById('releaseDate').value = '';
       document.getElementById('producerInput').value = '';
-      document.getElementById('explicit').checked = false;
       document.getElementById('unreleased').checked = false;
       document.getElementById('remix').checked = false;
       document.getElementById('versions').checked = false;
