@@ -665,14 +665,26 @@
       const releaseType = document.getElementById('releaseType').value.toLowerCase();
       const isAlbumEpComp = ['album','ep','compilation'].includes(releaseType);
       const hasFeature = document.getElementById('feature').checked && isAlbumEpComp;
+      const hasRemix = document.getElementById('remix').checked;
       
       queue.forEach((item, i) => {
         // Auto-assign track number based on position
         item.track = i + 1;
         if (!item.featuredArtists) item.featuredArtists = [];
+        if (!item.remixType) item.remixType = '';
         
         const div = document.createElement('div');
         div.className = 'queue-item';
+        
+        let remixHtml = '';
+        if (hasRemix) {
+          remixHtml = `
+            <div style="margin-top:12px; padding-top:12px; border-top:1px solid #444;">
+              <div style="font-size:10px; opacity:0.6; margin-bottom:6px;">REMIX TYPE</div>
+              <input type="text" value="${item.remixType || ''}" placeholder="e.g. DJName Remix" style="width:100%; padding:6px; font-size:11px;" onchange="queue[${i}].remixType=this.value" />
+            </div>
+          `;
+        }
         
         let featuredArtistsHtml = '';
         if (hasFeature) {
@@ -696,6 +708,7 @@
           <div style="opacity:0.6;text-align:center">${i+1}</div>
           <div>
             <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value" style="width:100%;">
+            ${remixHtml}
             ${featuredArtistsHtml}
           </div>
           <div style="opacity:0.8">${formatTime(item.duration)}</div>
@@ -779,11 +792,16 @@
         releaseTitle = `${releaseTitle} (Single Pack)`;
       }
       
+      // Add (Versions) suffix if versions checked
+      const versions = document.getElementById('versions').checked;
+      if (versions && releaseTitle) {
+        releaseTitle = `${releaseTitle} (Versions)`;
+      }
+      
       const producer = document.getElementById('producerInput').value.trim();
       const releaseDate = document.getElementById('releaseDate').value;
       const year = releaseDate ? releaseDate.split('-')[0] : '';
       const remix = document.getElementById('remix').checked;
-      const versions = document.getElementById('versions').checked;
 
       let coverUrl = null, coverPath = null;
       if (coverFile) {
