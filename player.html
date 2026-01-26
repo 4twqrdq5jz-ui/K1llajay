@@ -637,11 +637,19 @@
     }
     function updateMediaSession(track) {
       if ('mediaSession' in navigator) {
+        const artwork = track.coverUrl ? [
+          { src: track.coverUrl, sizes: '96x96', type: 'image/jpeg' },
+          { src: track.coverUrl, sizes: '128x128', type: 'image/jpeg' },
+          { src: track.coverUrl, sizes: '192x192', type: 'image/jpeg' },
+          { src: track.coverUrl, sizes: '256x256', type: 'image/jpeg' },
+          { src: track.coverUrl, sizes: '384x384', type: 'image/jpeg' },
+          { src: track.coverUrl, sizes: '512x512', type: 'image/jpeg' }
+        ] : [];
         navigator.mediaSession.metadata = new MediaMetadata({
           title: track.title,
           artist: track.artist,
           album: track.releaseTitle || 'Jae Laurent',
-          artwork: track.coverUrl ? [{ src: track.coverUrl, sizes: '256x256', type: 'image/jpeg' }] : []
+          artwork: artwork
         });
       }
     }
@@ -708,16 +716,49 @@
       else { audio.pause(); updatePlayIcon(); }
     });
 
-    // Media Session API for native iOS controls
+    // Media Session API for native iOS/Android controls
     if ('mediaSession' in navigator) {
-      navigator.mediaSession.setActionHandler('play', () => audio.play());
-      navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+      navigator.mediaSession.setActionHandler('play', () => {
+        audio.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        audio.pause();
+      });
       navigator.mediaSession.setActionHandler('previoustrack', () => {
         if (audio.currentTime > 3) audio.currentTime = 0;
         else playIndex(INDEX - 1);
       });
-      navigator.mediaSession.setActionHandler('nexttrack', () => playIndex(INDEX + 1));
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        playIndex(INDEX + 1);
+      });
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        audio.currentTime = Math.min(audio.currentTime + (details.seekOffset || 10), audio.duration);
+      });
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        audio.currentTime = Math.max(audio.currentTime - (details.seekOffset || 10), 0);
+      });
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime) audio.currentTime = details.seekTime;
+      });
     }
+
+    // Update media session position during playback
+    audio.addEventListener('play', () => {
+      if ('mediaSession' in navigator) {
+        updatePlayIcon();
+        const updatePosition = () => {
+          if (!audio.paused && 'mediaSession' in navigator) {
+            navigator.mediaSession.setPositionState({
+              duration: audio.duration,
+              playbackRate: audio.playbackRate,
+              position: audio.currentTime
+            });
+            requestAnimationFrame(updatePosition);
+          }
+        };
+        updatePosition();
+      }
+    });
 
     function createCard(release) {
       // Regular album/single card
