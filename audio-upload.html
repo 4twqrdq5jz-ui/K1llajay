@@ -476,7 +476,6 @@
         <h4>Metadata</h4>
         <div class="form-grid">
           <input type="text" id="artist" placeholder="Artist Name" value="Jae Laurent" />
-          <input type="text" id="defaultTitle" placeholder="Default Song Title (fallback)" />
           <input type="date" id="releaseDate" />
           <input type="text" id="producerInput" placeholder="Producer (optional)" />
         </div>
@@ -585,7 +584,7 @@
       const files = Array.from(e.target.files);
       for (const file of files) {
         const duration = await getDuration(file);
-        const title = document.getElementById('defaultTitle').value.trim() || file.name.replace(/\.[^/.]+$/, "");
+        const title = file.name.replace(/\.[^/.]+$/, "");
         queue.push({ file, title, duration, track: queue.length + 1 });
       }
       renderQueue();
@@ -734,7 +733,6 @@
       document.getElementById('releaseType').value = 'Album';
       document.getElementById('releaseType').onchange();
       document.getElementById('releaseTitleInput').value = '';
-      document.getElementById('defaultTitle').value = '';
       document.getElementById('releaseDate').value = '';
       document.getElementById('producerInput').value = '';
       document.getElementById('unreleased').checked = false;
