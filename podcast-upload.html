@@ -114,6 +114,8 @@
       box-sizing: border-box;
       height: 100vh;
     }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
     .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
 
     .upload-box {
@@ -248,22 +250,72 @@
       border-radius: 8px;
       padding: 16px;
       margin-bottom: 16px;
-      box-sizing: border-box;
+      display: flex;
+      gap: 16px;
     }
-    .episode-item h3 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
-    }
-    .episode-item iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
+    .release-cover {
+      width: 120px;
+      min-width: 120px;
+      height: 120px;
+      object-fit: cover;
       border-radius: 6px;
-      margin: 12px 0;
+      border: 1px solid #444;
     }
-    .episode-item audio {
-      width: 100%;
-      margin: 10px 0;
+    .release-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .release-header {
+      margin-bottom: 12px;
+    }
+    .release-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .release-meta {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #333;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .track-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .track-title {
+      font-size: 13px;
+    }
+    .track-duration {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .track-delete {
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-left: 8px;
+    }
+    @media (max-width: 768px) {
+      .episode-item {
+        flex-direction: column;
+      }
+      .release-cover {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+      }
     }
 
     progress {
@@ -507,20 +559,35 @@
       const data = snap.val() || {};
       const list = document.getElementById('episodesList');
       list.innerHTML = '';
-      Object.values(data).reverse().forEach(ep => {
-        const div = document.createElement('div');
-        div.className = 'episode-item';
-        div.innerHTML = `
-          <h3>Episode ${ep.episodeNumber}: ${ep.episodeTitle}</h3>
-          <p><strong>${ep.podcastName}</strong> • ${ep.season} • ${ep.releaseDate}</p>
-          ${ep.coverURL ? `<img src="${ep.coverURL}" style="width:100%; max-width:400px; border-radius:8px; margin:15px 0;">` : ''}
-          <audio controls src="${ep.audioURL}"></audio>
-          ${ep.youtubeURL ? `<iframe src="${ep.youtubeURL}" allowfullscreen></iframe>` : ''}
+      Object.entries(data).reverse().forEach(([key, ep]) => {
+        const card = document.createElement('div');
+        card.className = 'episode-item';
+        
+        const coverHtml = ep.coverURL 
+          ? `<img src="${ep.coverURL}" class="release-cover" alt="${ep.episodeTitle}"/>`
+          : `<div class="release-cover" style="background:#222;display:flex;align-items:center;justify-content:center;"><div style="opacity:0.4;text-align:center;font-size:11px;">No Cover</div></div>`;
+
+        const youtubeHtml = ep.youtubeURL 
+          ? `<iframe src="${ep.youtubeURL}" style="width:100%; height:200px; border:none; border-radius:6px; margin:12px 0;" allowfullscreen></iframe>`
+          : '';
+
+        card.innerHTML = `
+          ${coverHtml}
+          <div class="release-info">
+            <div class="release-header">
+              <div class="release-title">Episode ${ep.episodeNumber}: ${ep.episodeTitle}</div>
+              <div class="release-meta">${ep.podcastName} • ${ep.season} • ${ep.releaseDate}</div>
+            </div>
+            <audio controls style="width:100%; margin:12px 0;"></audio>
+            ${youtubeHtml}
+          </div>
         `;
-        list.appendChild(div);
+        const audio = card.querySelector('audio');
+        audio.src = ep.audioURL;
+        list.appendChild(card);
       });
       if (!Object.keys(data).length) {
-        list.innerHTML = '<p style="opacity:0.6; text-align:center; padding:60px;">No episodes yet</p>';
+        list.innerHTML = '<div style="opacity:0.6;text-align:center;padding:40px;">No episodes uploaded yet</div>';
       }
     });
 
