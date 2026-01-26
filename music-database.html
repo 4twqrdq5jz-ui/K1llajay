@@ -53,18 +53,17 @@
 
     /* Sidebar */
     .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 260px;
-        height: 100vh;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        backdrop-filter: blur(9px);
-        border-right: 1px solid rgba(255,255,255,0.15);
-        z-index: 1000;
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
 
     .profile-img {
@@ -80,7 +79,6 @@
         font-size: 22px;
         letter-spacing: 3px;
         margin-bottom: 40px;
-        text-align: center;
     }
 
     .buttons {
@@ -99,7 +97,7 @@
         letter-spacing: 2px;
         border: 1px solid rgba(255,255,255,0.4);
         background: rgba(0,0,0,0.4);
-        transition: all 0.3s ease;
+        transition: 0.3s;
     }
 
     .button:hover {
@@ -107,23 +105,15 @@
         border-color: white;
     }
 
-     .footer {
+    .footer {
+      margin-top: auto;
       font-size: 10px;
-      text-align: center;
       opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
+      text-align: center;
     }
     .footer a {
       color: white;
       text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
     }
     .footer a:hover { opacity: 0.5; }
     .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
