@@ -25,6 +25,7 @@
       text-transform: uppercase;
       color: white;
       min-height: 100%;
+      overflow: hidden;
     }
     /* Background */
     body::before {
@@ -252,6 +253,7 @@
     .row { display: grid; grid-template-columns: 36px 1fr 70px 28px; gap: 12px; align-items: center; padding: 12px 6px; border-bottom: 1px solid #555; cursor: pointer; }
     .row .idx { color: #888; text-align: right; }
     .row .tname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .row .tname .remix-tag { font-size: 10px; color: #888; margin-left: 4px; }
     .row .etime { color: #888; font-variant-numeric: tabular-nums; }
     .row .dots { color: #888; text-align: center; }
     .row.playing { background: rgba(255,255,255,.06); }
@@ -761,9 +763,11 @@
         const t = LIB[libIdx];
         if (!t) return;
         const row = el('div', 'row');
+        const remixTag = t.remixType ? ` <span class="remix-tag">${t.remixType}</span>` : '';
+        const explicitMarker = t.explicit ? ' 🄴' : '';
         row.innerHTML = `
           <div class="idx">${t.trackNumber || (i + 1)}</div>
-          <div class="tname">${t.title}</div>
+          <div class="tname">${t.title}${explicitMarker}${remixTag}</div>
           <div class="etime">${t.duration ? fmt(t.duration) : ''}</div>
           <div class="dots">...</div>
         `;
@@ -790,7 +794,12 @@
         year: raw.year || (releaseTs ? new Date(releaseTs).getUTCFullYear() : ''),
         releaseTs,
         coverUrl,
-        audioUrl
+        audioUrl,
+        explicit: raw.explicit || false,
+        remix: raw.remix || false,
+        remixType: raw.remixType || '',
+        versions: raw.versions || false,
+        producer: raw.producer || ''
       };
     }
 
