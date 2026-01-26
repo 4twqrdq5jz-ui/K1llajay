@@ -656,6 +656,8 @@
       }
       
       const producer = document.getElementById('producerInput').value.trim();
+      const releaseDate = document.getElementById('releaseDate').value;
+      const year = releaseDate ? releaseDate.split('-')[0] : '';
       const unreleased = document.getElementById('unreleased').checked;
       const remix = document.getElementById('remix').checked;
       const versions = document.getElementById('versions').checked;
@@ -703,6 +705,7 @@
           group: releaseTitle || '',
           trackNumber: Number(item.track) || null,
           releaseType: releaseType,
+          year: year || '',
           producer: producer || '',
           mediaType: 'audio',
           explicit: item.explicit || false,
