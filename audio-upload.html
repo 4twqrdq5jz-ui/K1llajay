@@ -571,16 +571,20 @@
       const show = ['album','ep','single','compilation'].includes(this.value.toLowerCase());
       document.getElementById('releaseTitleInput').style.display = show ? 'block' : 'none';
       
+      const isSingle = this.value.toLowerCase() === 'single';
+      const isAlbumEpComp = ['album','ep','compilation'].includes(this.value.toLowerCase());
+      
       // Show versions option only for Compilation
       const showVersions = this.value.toLowerCase() === 'compilation';
       document.getElementById('versionsGroup').style.display = showVersions ? 'flex' : 'none';
       
-      // Show feature option for Single and Album
-      const showFeature = ['single', 'album'].includes(this.value.toLowerCase());
-      document.getElementById('featureGroup').style.display = showFeature ? 'flex' : 'none';
+      // Show feature option for Single and Album/EP/Compilation
+      document.getElementById('featureGroup').style.display = (isSingle || isAlbumEpComp) ? 'flex' : 'none';
       document.getElementById('feature').checked = false;
       document.getElementById('featuredArtistsSection').style.display = 'none';
       document.getElementById('featuredArtistsList').innerHTML = '';
+      
+      // Re-render queue if needed
       renderQueue();
     };
     // Trigger on page load to show initial state
@@ -589,7 +593,10 @@
     // Feature checkbox handling
     document.getElementById('feature').onchange = function() {
       const releaseType = document.getElementById('releaseType').value.toLowerCase();
-      if (releaseType === 'single') {
+      const isSingle = releaseType === 'single';
+      
+      if (isSingle) {
+        // For Singles: show featured artists section in metadata
         const section = document.getElementById('featuredArtistsSection');
         section.style.display = this.checked ? 'block' : 'none';
         if (!this.checked) {
@@ -597,7 +604,8 @@
         } else {
           addFeaturedArtistInput();
         }
-      } else if (releaseType === 'album') {
+      } else {
+        // For Album/EP/Compilation: re-render queue with featured artist inputs
         renderQueue();
       }
     };
@@ -651,34 +659,43 @@
       queueEl.innerHTML = queue.length === 0
         ? '<div style="text-align:center;opacity:0.6;padding:30px;">No files selected</div>'
         : '';
+      
       const releaseType = document.getElementById('releaseType').value.toLowerCase();
-      const hasFeature = document.getElementById('feature').checked && releaseType === 'album';
+      const isAlbumEpComp = ['album','ep','compilation'].includes(releaseType);
+      const hasFeature = document.getElementById('feature').checked && isAlbumEpComp;
+      
       queue.forEach((item, i) => {
         // Auto-assign track number based on position
         item.track = i + 1;
+        if (!item.featuredArtists) item.featuredArtists = [];
         
         const div = document.createElement('div');
         div.className = 'queue-item';
-        let featuredHtml = '';
+        
+        let featuredArtistsHtml = '';
         if (hasFeature) {
-          const featuredList = item.featuredArtists || [];
-          const featuredInputsHtml = featuredList.map((feat, fIdx) => `
-            <div style="display:flex; gap:6px; align-items:center; margin-bottom:4px;">
-              <input type="text" class="featured-artist-album" value="${feat}" style="flex:1; font-size:11px; padding:6px;" onchange="queue[${i}].featuredArtists[${fIdx}]=this.value" />
-              <button type="button" onclick="queue[${i}].featuredArtists.splice(${fIdx}, 1); renderQueue();" style="padding:4px 8px; font-size:10px; background:#ff3333; border:none; color:white; border-radius:3px; cursor:pointer;">X</button>
+          const featList = (item.featuredArtists || []).map((feat, fi) => `
+            <div style="display:flex; gap:6px; align-items:center; margin-top:6px;">
+              <input type="text" value="${feat}" placeholder="Featured ${fi + 1}" style="flex:1; padding:6px; font-size:11px;" onchange="queue[${i}].featuredArtists[${fi}]=this.value" />
+              <button type="button" class="primary-btn secondary-btn" onclick="queue[${i}].featuredArtists.splice(${fi},1); renderQueue()" style="padding:4px 8px; font-size:10px;">X</button>
             </div>
           `).join('');
-          featuredHtml = `
-            <div style="grid-column:1/-1; margin-top:6px; padding:8px; background:rgba(255,255,255,0.03); border-radius:4px;">
-              <div style="font-size:10px; opacity:0.6; margin-bottom:4px;">Featured:</div>
-              ${featuredInputsHtml}
-              <button type="button" onclick="queue[${i}].featuredArtists=queue[${i}].featuredArtists||[]; queue[${i}].featuredArtists.push(''); renderQueue();" style="padding:4px 8px; font-size:10px; background:rgba(255,255,255,0.1); border:1px solid #666; color:white; border-radius:3px; cursor:pointer; width:100%;">+ Add Featured</button>
+          
+          featuredArtistsHtml = `
+            <div style="margin-top:12px; padding-top:12px; border-top:1px solid #444;">
+              <div style="font-size:10px; opacity:0.6; margin-bottom:6px;">FEATURED</div>
+              ${featList}
+              <button type="button" class="primary-btn secondary-btn" onclick="queue[${i}].featuredArtists.push(''); renderQueue()" style="width:100%; padding:6px; font-size:10px; margin-top:6px;">+ Add Feature</button>
             </div>
           `;
         }
+        
         div.innerHTML = `
           <div style="opacity:0.6;text-align:center">${i+1}</div>
-          <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value">
+          <div>
+            <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value" style="width:100%;">
+            ${featuredArtistsHtml}
+          </div>
           <div style="opacity:0.8">${formatTime(item.duration)}</div>
           <div style="display:flex; align-items:center; justify-content:center;">
             <input type="checkbox" ${item.explicit ? 'checked' : ''} onchange="queue[${i}].explicit=this.checked" style="cursor:pointer; accent-color:#00ff99;" title="Explicit">
@@ -689,7 +706,6 @@
             <button onclick="move(${i},1)">Down</button>
             <button class="danger" onclick="queue.splice(${i},1);renderQueue()">Remove</button>
           </div>
-          ${featuredHtml}
         `;
         queueEl.appendChild(div);
       });
@@ -723,11 +739,16 @@
 
       const coverFile = document.getElementById('coverInput').files[0];
       if (!coverFile) return alert('Cover art is required');
-      let artist = document.getElementById('artist').value.trim() || 'Jae Laurent';
       
-      // Handle featured artists
-      const hasFeature = document.getElementById('feature').checked;
-      if (hasFeature) {
+      const baseArtist = document.getElementById('artist').value.trim() || 'Jae Laurent';
+      const releaseType = document.getElementById('releaseType').value || 'Single';
+      const isSingle = releaseType.toLowerCase() === 'single';
+      const isAlbumEpComp = ['album','ep','compilation'].includes(releaseType.toLowerCase());
+      
+      let artist = baseArtist;
+      
+      // Handle featured artists for Singles (global)
+      if (isSingle && document.getElementById('feature').checked) {
         const featuredInputs = document.querySelectorAll('.featured-artist');
         const featuredArtists = Array.from(featuredInputs)
           .map(input => input.value.trim())
@@ -735,16 +756,15 @@
         
         if (featuredArtists.length > 0) {
           if (featuredArtists.length === 1) {
-            artist = `${artist} & ${featuredArtists[0]}`;
+            artist = `${baseArtist} & ${featuredArtists[0]}`;
           } else {
             const allButLast = featuredArtists.slice(0, -1).join(', ');
-            artist = `${artist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
+            artist = `${baseArtist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
           }
         }
       }
       
       let releaseTitle = document.getElementById('releaseTitleInput').value.trim();
-      const releaseType = document.getElementById('releaseType').value || 'Single';
       
       // Add type suffix for Single and EP
       if ((releaseType === 'Single' || releaseType === 'EP') && releaseTitle) {
@@ -789,15 +809,20 @@
         await task;
         const audioUrl = await audioRef.getDownloadURL();
         
-        // Format artist for this track (for albums with features)
+        // Format artist for this track (for Album/EP/Compilation with features)
         let trackArtist = artist;
-        if (releaseType.toLowerCase() === 'album' && hasFeature && item.featuredArtists && item.featuredArtists.length > 0) {
-          const featuredArtists = item.featuredArtists.filter(f => f.trim());
-          if (featuredArtists.length === 1) {
-            trackArtist = `${artist} & ${featuredArtists[0]}`;
-          } else if (featuredArtists.length > 1) {
-            const allButLast = featuredArtists.slice(0, -1).join(', ');
-            trackArtist = `${artist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
+        if (isAlbumEpComp && document.getElementById('feature').checked) {
+          const featuredArtists = (item.featuredArtists || [])
+            .map(f => f.trim())
+            .filter(f => f);
+          
+          if (featuredArtists.length > 0) {
+            if (featuredArtists.length === 1) {
+              trackArtist = `${baseArtist} & ${featuredArtists[0]}`;
+            } else {
+              const allButLast = featuredArtists.slice(0, -1).join(', ');
+              trackArtist = `${baseArtist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
+            }
           }
         }
 
