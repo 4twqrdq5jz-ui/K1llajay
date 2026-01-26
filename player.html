@@ -128,7 +128,8 @@
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
     /* MAIN CONTENT */
-    .main-content { flex: 1; overflow-y: auto; padding: 20px; height: 100vh; }
+    .main-content::-webkit-scrollbar { display: none; }
+    .main-content { -ms-overflow-style: none; scrollbar-width: none; flex: 1; overflow-y: auto; padding: 20px; height: 100vh; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 16px; }
     h2.section { font-size: 20px; letter-spacing: .18em; opacity: .9; margin: 0; }
     .show-more-btn {
