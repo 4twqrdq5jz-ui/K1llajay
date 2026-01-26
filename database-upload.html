@@ -47,21 +47,17 @@
     .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
     .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
     .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: black;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      border-right: 1px solid #333;
-      overflow-y: auto;
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
       position: fixed;
       left: 0;
       top: 0;
-      box-sizing: border-box;
-      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
     .profile-img {
       width: 120px; height: 120px;
@@ -84,39 +80,26 @@
       width: 100%;
     }
     .button {
-      background-color: black;
-      border: 1px solid #666;
-      color: white;
-      padding: 15px;
+      padding: 14px;
       text-align: center;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 14px;
-      letter-spacing: 1px;
-      transition: border-color 0.3s ease;
-      text-transform: uppercase;
       text-decoration: none;
-      display: block;
-      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: 0.3s;
     }
-    .button:hover { border-color: #999; }
+    .button:hover { background: rgba(255,255,255,0.1); border-color: white; }
     .footer {
+      margin-top: auto;
       font-size: 10px;
-      text-align: center;
       opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
+      text-align: center;
     }
     .footer a {
       color: white;
       text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
     }
     .footer a:hover { opacity: 0.5; }
     .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
@@ -133,6 +116,8 @@
       box-sizing: border-box;
       height: 100vh;
     }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
     .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
 
     .upload-box {
@@ -247,7 +232,7 @@
     }
     .secondary-btn:hover { border-color: #999; }
 
-    #musicDatabase { margin-top: 30px; width: 100%; max-width: 1200px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    #musicDatabase { margin-top: 40px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     .section-title {
       grid-column: 1 / -1;
       font-size: 18px;
@@ -347,13 +332,16 @@
 
   <div class="main">
     <h1>Music Database</h1>
-    <div class="form-grid">
-      <input id="songTitle" type="text" placeholder="Album/Song Title" />
-      <input id="artistName" type="text" placeholder="Artist Name" />
-      <input id="upc" type="text" placeholder="UPC (Optional)" />
-      <input id="isrc" type="text" placeholder="ISRC (Optional)" />
-      <input id="releaseDate" type="date" placeholder="Release Date" />
-      <select id="tracks" class="glass p-2 w-1/4 min-w-[150px] text-white">
+    <div class="upload-box">
+      <div class="upload-section">
+        <h4>Music Entry</h4>
+        <div class="form-grid">
+          <input id="songTitle" type="text" placeholder="Album/Song Title" />
+          <input id="artistName" type="text" placeholder="Artist Name" />
+          <input id="upc" type="text" placeholder="UPC (Optional)" />
+          <input id="isrc" type="text" placeholder="ISRC (Optional)" />
+          <input id="releaseDate" type="date" placeholder="Release Date" />
+          <select id="tracks" class="glass p-2 w-1/4 min-w-[150px] text-white">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3 (SINGLE)</option>
@@ -405,12 +393,16 @@
           <option value="49">49</option>
           <option value="50">50</option>
       </select>
+        </div>
+      </div>
+      <div class="upload-section">
+        <div class="checkbox-row">
+          <input type="checkbox" id="unreleased" />
+          <label for="unreleased">Unreleased</label>
+        </div>
+        <button id="addUpdateBtn" class="primary-btn">Add to Database</button>
+      </div>
     </div>
-    <div class="checkbox-label">
-      <input type="checkbox" id="unreleased" />
-      <label for="unreleased">Unreleased</label>
-    </div>
-    <button id="addUpdateBtn" class="primary-btn">Add to Database</button>
     <div id="musicDatabase"></div>
   </div>
 
