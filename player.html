@@ -731,12 +731,6 @@
       navigator.mediaSession.setActionHandler('nexttrack', () => {
         playIndex(INDEX + 1);
       });
-      navigator.mediaSession.setActionHandler('seekforward', (details) => {
-        audio.currentTime = Math.min(audio.currentTime + (details.seekOffset || 10), audio.duration);
-      });
-      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-        audio.currentTime = Math.max(audio.currentTime - (details.seekOffset || 10), 0);
-      });
       navigator.mediaSession.setActionHandler('seekto', (details) => {
         if (details.seekTime) audio.currentTime = details.seekTime;
       });
