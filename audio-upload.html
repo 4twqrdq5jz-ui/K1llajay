@@ -505,10 +505,6 @@
         <h4>Options</h4>
         <div class="options-row">
           <div class="option-group">
-            <input type="checkbox" id="unreleased">
-            <label for="unreleased">Unreleased</label>
-          </div>
-          <div class="option-group">
             <input type="checkbox" id="remix">
             <label for="remix">Remix</label>
           </div>
@@ -519,6 +515,10 @@
           <div class="option-group" id="versionsGroup" style="display:none;">
             <input type="checkbox" id="versions">
             <label for="versions">Versions</label>
+          </div>
+          <div class="option-group" id="singlePackGroup" style="display:none;">
+            <input type="checkbox" id="singlePack">
+            <label for="singlePack">Single Pack</label>
           </div>
         </div>
       </div>
@@ -574,9 +574,11 @@
       const isSingle = this.value.toLowerCase() === 'single';
       const isAlbumEpComp = ['album','ep','compilation'].includes(this.value.toLowerCase());
       
-      // Show versions option only for Compilation
+      // Show versions and Single Pack option only for Compilation
       const showVersions = this.value.toLowerCase() === 'compilation';
       document.getElementById('versionsGroup').style.display = showVersions ? 'flex' : 'none';
+      document.getElementById('singlePackGroup').style.display = showVersions ? 'flex' : 'none';
+      document.getElementById('singlePack').checked = false;
       
       // Show feature option for Single and Album/EP/Compilation
       document.getElementById('featureGroup').style.display = (isSingle || isAlbumEpComp) ? 'flex' : 'none';
@@ -771,17 +773,22 @@
         releaseTitle = `${releaseTitle} - ${releaseType}`;
       }
       
+      // Add Single Pack suffix for Compilation if checked
+      const singlePack = document.getElementById('singlePack').checked;
+      if (releaseType === 'Compilation' && singlePack && releaseTitle) {
+        releaseTitle = `${releaseTitle} (Single Pack)`;
+      }
+      
       const producer = document.getElementById('producerInput').value.trim();
       const releaseDate = document.getElementById('releaseDate').value;
       const year = releaseDate ? releaseDate.split('-')[0] : '';
-      const unreleased = document.getElementById('unreleased').checked;
       const remix = document.getElementById('remix').checked;
       const versions = document.getElementById('versions').checked;
 
       let coverUrl = null, coverPath = null;
       if (coverFile) {
         const name = `${Date.now()}-cover-${coverFile.name}`;
-        const folder = unreleased ? 'unreleased' : 'covers';
+        const folder = 'covers';
         coverPath = `${folder}/${name}`;
         const ref = storage.ref(coverPath);
         await ref.put(coverFile);
@@ -796,7 +803,7 @@
         const prog = document.querySelector(`progress[data-id="${i}"]`);
         const ts = Date.now();
         const audioName = `${ts}-${item.file.name}`;
-        const audioFolder = unreleased ? 'unreleased' : 'songs';
+        const audioFolder = 'songs';
         const audioPath = `${audioFolder}/${audioName}`;
 
         const audioRef = storage.ref(audioPath);
@@ -842,7 +849,6 @@
           producer: producer || '',
           mediaType: 'audio',
           explicit: item.explicit || false,
-          unreleased: !!unreleased,
           remix: !!remix,
           versions: !!versions,
           createdAt: ts
@@ -869,10 +875,10 @@
       document.getElementById('releaseTitleInput').value = '';
       document.getElementById('releaseDate').value = '';
       document.getElementById('producerInput').value = '';
-      document.getElementById('unreleased').checked = false;
       document.getElementById('remix').checked = false;
       document.getElementById('feature').checked = false;
       document.getElementById('versions').checked = false;
+      document.getElementById('singlePack').checked = false;
       document.getElementById('featuredArtistsList').innerHTML = '';
       document.getElementById('featuredArtistsSection').style.display = 'none';
     };
@@ -896,7 +902,6 @@
               artist: song.artist || '',
               coverUrl: song.coverUrl,
               explicit: song.explicit,
-              unreleased: song.unreleased,
               tracks: []
             };
           }
@@ -952,7 +957,7 @@
             <div class="release-info">
               <div class="release-header">
                 <div class="release-title">${release.title}${release.explicit ? ' 🄴' : ''}</div>
-                <div class="release-meta">${release.artist} • ${metaInfo}${release.unreleased ? ' • UNRELEASED' : ''}</div>
+                <div class="release-meta">${release.artist} • ${metaInfo}</div>
               </div>
               ${showButton ? `<button class="collapse-btn" onclick="toggleTrackList('${releaseId}')">▼ Show Tracks (${trackCount})</button>` : ''}
               <div class="track-list ${isCollapsed ? 'collapsed' : ''}" id="${releaseId}">
