@@ -7,7 +7,7 @@
   <link rel="icon" href="favicon.ico">
   <style>
     @font-face {
-      font-family: 'sitefont';
+      font-family: 'beyoncefont';
       src: url('beyoncefont.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
@@ -16,7 +16,7 @@
     html, body {
       height: 100%;
       width: 100%;
-      font-family: 'sitefont', monospace;
+      font-family: 'beyoncefont', monospace;
       background-color: black;
       color: white;
       text-transform: uppercase;
@@ -47,21 +47,17 @@
     .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
     .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
     .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: black;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      border-right: 1px solid #333;
-      overflow-y: auto;
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
       position: fixed;
       left: 0;
       top: 0;
-      box-sizing: border-box;
-      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
     .profile-img {
       width: 120px; height: 120px;
@@ -71,59 +67,44 @@
       border: 2px solid #fff;
     }
     .name {
-      font-size: 24px;
+      font-size: 22px;
+      letter-spacing: 3px;
       margin-bottom: 40px;
-      text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
     }
     .buttons {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 100%;
+      gap: 12px;
     }
     .button {
-      background-color: black;
-      border: 1px solid #666;
-      color: white;
-      padding: 15px;
+      padding: 14px;
       text-align: center;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 14px;
-      letter-spacing: 1px;
-      transition: border-color 0.3s ease;
-      text-transform: uppercase;
       text-decoration: none;
-      display: block;
-      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: 0.3s;
     }
-    .button:hover { border-color: #999; }
+    .button:hover { background: rgba(255,255,255,0.1); border-color: white; }
     .footer {
+      margin-top: auto;
       font-size: 10px;
-      text-align: center;
       opacity: 0.7;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-      width: 100%;
+      text-align: center;
     }
     .footer a {
       color: white;
       text-decoration: none;
-      font-size: 10px;
-      transition: opacity 0.3s ease;
     }
     .footer a:hover { opacity: 0.5; }
     .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
     .main {
-      margin-left: 250px;
+      margin-left: 260px;
       flex: 1;
       padding: 30px;
       overflow-y: auto;
@@ -144,11 +125,63 @@
       max-width: 800px;
       box-sizing: border-box;
     }
+    .upload-section {
+      margin-bottom: 28px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    #releaseTitleInput {
+      grid-column: 1/-1;
+    }
+    .file-upload-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .file-upload-area label {
+      flex: 1;
+      min-width: 150px;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
     }
     input, select {
       background: transparent;
@@ -156,9 +189,10 @@
       color: white;
       padding: 12px;
       border-radius: 6px;
-      font-family: inherit;
+      font-family: 'beyoncefont', monospace;
       font-size: 14px;
       box-sizing: border-box;
+      text-transform: uppercase;
     }
     input::placeholder { color: #777; }
     .checkbox-row {
@@ -182,6 +216,8 @@
       font-size: 14px;
       letter-spacing: 1px;
       margin: 12px 0;
+      font-family: 'beyoncefont', monospace;
+      text-transform: uppercase;
     }
     .primary-btn:hover { background: #00cc77; }
     .secondary-btn {
@@ -195,7 +231,7 @@
     #queue { margin: 20px 0; width: 100%; }
     .queue-item {
       display: grid;
-      grid-template-columns: 40px 70px 1fr 100px 160px;
+      grid-template-columns: 40px 1fr 100px 160px;
       gap: 8px;
       align-items: center;
       background: #111;
@@ -250,17 +286,105 @@
       font-size: 24px;
       margin: 0 0 20px 0;
     }
-    .song-item {
+    .release-card {
       background: #111;
       border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+    }
+    .release-cover {
+      width: 120px;
+      min-width: 120px;
+      height: 120px;
+      object-fit: cover;
       border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 12px;
+      border: 1px solid #444;
+    }
+    .release-info {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
     }
-    .song-item audio { width: 100%; margin-top: 8px; }
+    .release-header {
+      margin-bottom: 12px;
+    }
+    .release-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .release-meta {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .track-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .track-list.collapsed {
+      display: none;
+    }
+    .collapse-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin-top: 8px;
+      text-align: left;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .collapse-btn:hover {
+      opacity: 1;
+    }
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #333;
+      font-size: 13px;
+    }
+    .track-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .track-title {
+      font-size: 13px;
+    }
+    .track-duration {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .track-delete {
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-left: 8px;
+    }
+    @media (max-width: 768px) {
+      .release-card {
+        flex-direction: column;
+      }
+      .release-cover {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+      }
+    }
 
     @media (max-width: 768px) {
       body { flex-direction: column; }
@@ -308,7 +432,7 @@
   </div>
 
   <div class="sidebar">
-    <img class="profile-img" src="IMG_6877.jpeg" alt="JAE LAURENT" />
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
     <h1 class="name">JAE LAURENT</h1>
     <div class="buttons">
       <a href="https://k1llajay.com/database-upload" class="button">Music Database</a>
@@ -332,53 +456,82 @@
     <h1>Upload to Music Player</h1>
 
     <div class="upload-box">
-      <div class="form-grid">
-        <select id="releaseType">
-          <option value="">Auto</option>
-          <option>Album</option>
-          <option>EP</option>
-          <option>Single</option>
-          <option>Compilation</option>
-        </select>
-        <input type="text" id="releaseTitleInput" placeholder="Release Title (Album/EP/etc)" style="display:none; grid-column:1/-1;" />
-
-        <input type="text" id="defaultTitle" placeholder="Default Song Title (fallback)" />
-        <input type="text" id="artist" placeholder="Artist Name" value="Jae Laurent" />
-
-        <input type="date" id="releaseDate" />
-        <input type="number" id="yearInput" placeholder="Year (optional)" min="1900" />
+      <div class="upload-section">
+        <h4>Release Settings</h4>
+        <div class="form-grid">
+          <select id="releaseType">
+            <option>Album</option>
+            <option>EP</option>
+            <option>Single</option>
+            <option>Compilation</option>
+          </select>
+          <div></div>
+          <input type="text" id="releaseTitleInput" placeholder="Release Title (Album/EP/etc)" style="display:none;" />
+        </div>
       </div>
 
-      <div style="margin:20px 0;">
-        <label class="primary-btn" style="cursor:pointer;">
-          Choose Audio Files
-          <input type="file" id="fileInput" accept="audio/mpeg,audio/wav,audio/mp4" multiple style="display:none;"/>
-        </label>
-        <label class="primary-btn secondary-btn" style="cursor:pointer; margin-left:12px;">
-          Choose Cover (optional)
-          <input type="file" id="coverInput" accept="image/*" style="display:none;" />
-        </label>
+      <div class="upload-section">
+        <h4>Metadata</h4>
+        <div class="form-grid">
+          <input type="text" id="artist" placeholder="Artist Name" value="Jae Laurent" />
+          <input type="text" id="defaultTitle" placeholder="Default Song Title (fallback)" />
+          <input type="date" id="releaseDate" />
+          <input type="text" id="producerInput" placeholder="Producer (optional)" />
+        </div>
       </div>
 
-      <img id="coverPreview" class="thumb" />
-
-      <div class="checkbox-row">
-        <input type="checkbox" id="explicit"><label for="explicit">Explicit</label>
-        <input type="checkbox" id="unreleased" style="margin-left:30px;"><label for="unreleased">Unreleased</label>
+      <div class="upload-section">
+        <h4>Files</h4>
+        <div class="file-upload-area">
+          <label class="primary-btn" style="cursor:pointer; flex: 1;">
+            ⬆ Choose Audio Files
+            <input type="file" id="fileInput" accept="audio/mpeg,audio/wav,audio/mp4" multiple style="display:none;"/>
+          </label>
+          <label id="coverBtn" class="primary-btn secondary-btn" style="cursor:pointer;">
+            🖼 Cover Art
+            <input type="file" id="coverInput" accept="image/*" style="display:none;" required />
+          </label>
+        </div>
+        <img id="coverPreview" class="thumb" />
       </div>
 
-      <h3 style="margin:30px 0 10px;">Queue — Up/Down to reorder</h3>
-      <div id="queue">
-        <div style="text-align:center; opacity:0.6; padding:30px;">No files selected</div>
+      <div class="upload-section">
+        <h4>Options</h4>
+        <div class="options-row">
+          <div class="option-group">
+            <input type="checkbox" id="explicit">
+            <label for="explicit">Explicit</label>
+          </div>
+          <div class="option-group">
+            <input type="checkbox" id="unreleased">
+            <label for="unreleased">Unreleased</label>
+          </div>
+          <div class="option-group">
+            <input type="checkbox" id="remix">
+            <label for="remix">Remix</label>
+          </div>
+          <div class="option-group" id="versionsGroup" style="display:none;">
+            <input type="checkbox" id="versions">
+            <label for="versions">Versions</label>
+          </div>
+        </div>
       </div>
 
-      <div style="margin-top:20px;">
-        <button id="uploadAll" class="primary-btn">Upload All to Player</button>
-        <button id="clearQueue" class="primary-btn secondary-btn">Clear Queue</button>
+      <div class="upload-section">
+        <h4>Queue — Use ⬆ ⬇ to reorder</h4>
+        <div id="queue">
+          <div style="text-align:center; opacity:0.6; padding:30px;">No files selected</div>
+        </div>
       </div>
 
-      <progress id="progress" max="100" value="0"></progress>
-      <div id="status" style="margin-top:12px; font-size:14px;"></div>
+      <div class="upload-section">
+        <div class="action-buttons">
+          <button id="uploadAll" class="primary-btn">✓ Upload All</button>
+          <button id="clearQueue" class="primary-btn secondary-btn">✕ Clear All</button>
+        </div>
+        <progress id="progress" max="100" value="0"></progress>
+        <div id="status" style="margin-top:12px; font-size:14px;"></div>
+      </div>
     </div>
 
     <h1 style="margin-top:80px;">Recently Uploaded</h1>
@@ -411,7 +564,13 @@
     document.getElementById('releaseType').onchange = function() {
       const show = ['album','ep','single','compilation'].includes(this.value.toLowerCase());
       document.getElementById('releaseTitleInput').style.display = show ? 'block' : 'none';
+      
+      // Show versions option only for Compilation
+      const showVersions = this.value.toLowerCase() === 'compilation';
+      document.getElementById('versionsGroup').style.display = showVersions ? 'flex' : 'none';
     };
+    // Trigger on page load to show initial state
+    document.getElementById('releaseType').onchange();
 
     // Cover preview
     document.getElementById('coverInput').onchange = e => {
@@ -419,6 +578,7 @@
       if (file) {
         document.getElementById('coverPreview').src = URL.createObjectURL(file);
         document.getElementById('coverPreview').style.display = 'block';
+        document.getElementById('coverBtn').style.display = 'none';
       }
     };
 
@@ -438,11 +598,13 @@
         ? '<div style="text-align:center;opacity:0.6;padding:30px;">No files selected</div>'
         : '';
       queue.forEach((item, i) => {
+        // Auto-assign track number based on position
+        item.track = i + 1;
+        
         const div = document.createElement('div');
         div.className = 'queue-item';
         div.innerHTML = `
           <div style="opacity:0.6;text-align:center">${i+1}</div>
-          <input type="number" min="1" value="${item.track}" style="width:60px" onchange="queue[${i}].track=+this.value">
           <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value">
           <div style="opacity:0.8">${formatTime(item.duration)}</div>
           <progress max="100" value="0" data-id="${i}"></progress>
@@ -483,13 +645,21 @@
       if (!queue.length) return alert('Add at least one track');
 
       const coverFile = document.getElementById('coverInput').files[0];
+      if (!coverFile) return alert('Cover art is required');
       const artist = document.getElementById('artist').value.trim() || 'Jae Laurent';
-      const releaseTitle = document.getElementById('releaseTitleInput').value.trim();
+      let releaseTitle = document.getElementById('releaseTitleInput').value.trim();
       const releaseType = document.getElementById('releaseType').value || 'Single';
-      const year = document.getElementById('yearInput').value ||
-        (document.getElementById('releaseDate').value ? new Date(document.getElementById('releaseDate').value).getFullYear() : '');
+      
+      // Add type suffix for Single and EP
+      if ((releaseType === 'Single' || releaseType === 'EP') && releaseTitle) {
+        releaseTitle = `${releaseTitle} - ${releaseType}`;
+      }
+      
+      const producer = document.getElementById('producerInput').value.trim();
       const explicit = document.getElementById('explicit').checked;
       const unreleased = document.getElementById('unreleased').checked;
+      const remix = document.getElementById('remix').checked;
+      const versions = document.getElementById('versions').checked;
 
       let coverUrl = null, coverPath = null;
       if (coverFile) {
@@ -534,10 +704,12 @@
           group: releaseTitle || '',
           trackNumber: Number(item.track) || null,
           releaseType: releaseType,
-          year: year || '',
+          producer: producer || '',
           mediaType: 'audio',
           explicit,
           unreleased: !!unreleased,
+          remix: !!remix,
+          versions: !!versions,
           createdAt: ts
         };
 
@@ -558,30 +730,107 @@
       document.getElementById('fileInput').value = '';
       document.getElementById('coverInput').value = '';
       document.getElementById('coverPreview').style.display = 'none';
+      document.getElementById('coverBtn').style.display = 'block';
+      document.getElementById('releaseType').value = 'Album';
+      document.getElementById('releaseType').onchange();
+      document.getElementById('releaseTitleInput').value = '';
+      document.getElementById('defaultTitle').value = '';
+      document.getElementById('releaseDate').value = '';
+      document.getElementById('producerInput').value = '';
+      document.getElementById('explicit').checked = false;
+      document.getElementById('unreleased').checked = false;
+      document.getElementById('remix').checked = false;
+      document.getElementById('versions').checked = false;
     };
 
     // Load recent songs
     function loadSongs() {
-      db.ref('songs').limitToLast(20).on('value', snap => {
+      db.ref('songs').limitToLast(100).on('value', snap => {
         const data = snap.val() || {};
         const list = document.getElementById('songList');
         list.innerHTML = '';
-        Object.entries(data).reverse().forEach(([key, song]) => {
-          const div = document.createElement('div');
-          div.className = 'song-item';
-          div.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <strong>${song.title} — ${song.artist}</strong>
-              <button class="danger" style="padding:6px 12px;font-size:12px;" onclick="del('${key}','${song.audioPath}')">Delete</button>
-            </div>
-            <audio controls src="${song.audioUrl}"></audio>
-            ${song.coverUrl ? `<img src="${song.coverUrl}" style="width:120px;border-radius:8px;margin-top:8px;">` : ''}
-            <small style="opacity:0.7;">${song.releaseTitle || 'Single'} • ${song.year || '—'}</small>
-          `;
-          list.appendChild(div);
+
+        // Group songs by release
+        const releases = {};
+        Object.entries(data).forEach(([key, song]) => {
+          const releaseKey = song.releaseTitle || song.group || `single-${song.title}-${song.createdAt}`;
+          if (!releases[releaseKey]) {
+            releases[releaseKey] = {
+              title: song.releaseTitle || song.title,
+              type: song.releaseType || 'Single',
+              year: song.year || '',
+              artist: song.artist || '',
+              coverUrl: song.coverUrl,
+              explicit: song.explicit,
+              unreleased: song.unreleased,
+              tracks: []
+            };
+          }
+          releases[releaseKey].tracks.push({ key, ...song });
         });
-        if (!Object.keys(data).length) {
-          list.innerHTML = '<div style="opacity:0.6;text-align:center;padding:40px;">No songs uploaded yet</div>';
+
+        // Sort tracks within each release
+        Object.keys(releases).forEach(releaseKey => {
+          releases[releaseKey].tracks.sort((a, b) => {
+            const aTrack = Number(a.trackNumber) || 999;
+            const bTrack = Number(b.trackNumber) || 999;
+            return aTrack - bTrack;
+          });
+        });
+
+        // Render release cards
+        const sortedReleases = Object.entries(releases).sort((a, b) => {
+          const aTime = Math.max(...a[1].tracks.map(t => t.createdAt || 0));
+          const bTime = Math.max(...b[1].tracks.map(t => t.createdAt || 0));
+          return bTime - aTime;
+        });
+
+        sortedReleases.forEach(([releaseKey, release]) => {
+          const card = document.createElement('div');
+          card.className = 'release-card';
+          
+          const coverHtml = release.coverUrl 
+            ? `<img src="${release.coverUrl}" class="release-cover" alt="${release.title}"/>`
+            : `<div class="release-cover" style="background:#222;display:flex;align-items:center;justify-content:center;"><div style="opacity:0.4;text-align:center;font-size:11px;">No Cover</div></div>`;
+
+          const trackListHtml = release.tracks.map(track => `
+            <div class="track-item">
+              <div class="track-info">
+                <div class="track-title">${track.trackNumber ? track.trackNumber + '. ' : ''}${track.title}${track.explicit ? ' 🄴' : ''}</div>
+                <div class="track-duration">${formatTime(track.duration)}</div>
+              </div>
+              <button class="danger track-delete" onclick="del('${track.key}','${track.audioPath}')">Delete</button>
+            </div>
+          `).join('');
+
+          const metaInfo = [
+            release.type,
+            release.year || '—'
+          ].filter(Boolean).join(' • ');
+
+          const releaseId = `release-${Math.random().toString(36).substr(2, 9)}`;
+          const trackCount = release.tracks.length;
+          const showButton = trackCount > 3;
+          const isCollapsed = showButton;
+          
+          card.innerHTML = `
+            ${coverHtml}
+            <div class="release-info">
+              <div class="release-header">
+                <div class="release-title">${release.title}${release.explicit ? ' 🄴' : ''}</div>
+                <div class="release-meta">${release.artist} • ${metaInfo}${release.unreleased ? ' • UNRELEASED' : ''}</div>
+              </div>
+              ${showButton ? `<button class="collapse-btn" onclick="toggleTrackList('${releaseId}')">▼ Show Tracks (${trackCount})</button>` : ''}
+              <div class="track-list ${isCollapsed ? 'collapsed' : ''}" id="${releaseId}">
+                ${trackListHtml}
+              </div>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+
+        if (!sortedReleases.length) {
+          list.innerHTML = '<div style="opacity:0.6;text-align:center;padding:40px;">No releases uploaded yet</div>';
         }
       });
     }
@@ -590,6 +839,14 @@
       if (!confirm('Permanently delete this song?')) return;
       try { await storage.ref(path).delete(); } catch(e) {}
       await db.ref('songs/' + key).remove();
+    };
+
+    window.toggleTrackList = (releaseId) => {
+      const trackList = document.getElementById(releaseId);
+      const btn = trackList.previousElementSibling;
+      const trackCount = trackList.querySelectorAll('.track-item').length;
+      const isCollapsed = trackList.classList.toggle('collapsed');
+      btn.textContent = isCollapsed ? `▶ Show Tracks (${trackCount})` : `▼ Hide Tracks (${trackCount})`;
     };
 
     // Mobile menu toggle
