@@ -402,6 +402,9 @@
         font-size: 12px;
         text-align: center;
       }
+      .detail-head > div > div[style*="display:flex; gap:16px"] {
+        justify-content: center !important;
+      }
       .chips {
         flex-wrap: wrap;
         gap: 8px;
@@ -558,7 +561,7 @@
           <div class="chips">
             <span id="detailYear" class="chip" style="margin-bottom:10px; background:none; border:1px solid #555; backdrop-filter: blur(9px);">2025</span>
           </div>
-          <div style="display:flex; gap:16px; margin:20px 0; justify-content: center;">
+          <div style="display:flex; gap:16px; margin:20px 0;">
             <button id="playAllBtn" class="btn" style="margin-bottom:10px; background:none; border:1px solid #555; backdrop-filter: blur(9px); font-family:'sitefont', monospace; text-transform:uppercase;">Play All</button>
             <button id="shuffleBtn" class="btn alt" style="margin-bottom:10px; background:none; border:1px solid #555; backdrop-filter: blur(9px); font-family:'sitefont', monospace; text-transform:uppercase;">Shuffle</button>
           </div>
