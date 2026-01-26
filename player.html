@@ -633,6 +633,17 @@
       const track = LIB[QUEUE[INDEX]];
       nowPlayingTitle.textContent = `${track.title} • ${track.artist}`;
       document.title = `${track.title} • ${track.artist}`;
+      updateMediaSession(track);
+    }
+    function updateMediaSession(track) {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: track.title,
+          artist: track.artist,
+          album: track.releaseTitle || 'Jae Laurent',
+          artwork: track.coverUrl ? [{ src: track.coverUrl, sizes: '256x256', type: 'image/jpeg' }] : []
+        });
+      }
     }
     function updatePlayIcon() {
       playPauseBtn.innerHTML = audio.paused ? '▶' : '⏸';
@@ -696,6 +707,17 @@
       if (INDEX < QUEUE.length - 1) playIndex(INDEX + 1);
       else { audio.pause(); updatePlayIcon(); }
     });
+
+    // Media Session API for native iOS controls
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.setActionHandler('play', () => audio.play());
+      navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        if (audio.currentTime > 3) audio.currentTime = 0;
+        else playIndex(INDEX - 1);
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => playIndex(INDEX + 1));
+    }
 
     function createCard(release) {
       // Regular album/single card
