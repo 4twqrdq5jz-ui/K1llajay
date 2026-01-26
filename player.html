@@ -447,10 +447,16 @@
       <div id="gridAlbums" class="grid"></div>
 
       <div class="section-header">
-        <h2 class="section">Singles &amp; EPs</h2>
+        <h2 class="section">Singles</h2>
         <button class="show-more-btn" data-target="gridSingles">Show More</button>
       </div>
       <div id="gridSingles" class="grid"></div>
+
+      <div class="section-header">
+        <h2 class="section">EPs</h2>
+        <button class="show-more-btn" data-target="gridEPs">Show More</button>
+      </div>
+      <div id="gridEPs" class="grid"></div>
 
       <div class="section-header" id="compHeader" style="display:none">
         <h2 class="section">Compilations</h2>
@@ -639,19 +645,22 @@
       const grids = {
         gridAlbums: document.getElementById('gridAlbums'),
         gridSingles: document.getElementById('gridSingles'),
+        gridEPs: document.getElementById('gridEPs'),
         gridCompilations: document.getElementById('gridCompilations'),
       };
-      const albums = [], singlesEPs = [], videos = [], compilations = [];
+      const albums = [], singles = [], eps = [], compilations = [];
       Object.values(GROUPS).forEach(rel => {
         if (rel.type === 'Compilation') compilations.push(rel);
-        else if (['Single', 'EP'].includes(rel.type)) singlesEPs.push(rel);
+        else if (rel.type === 'Single') singles.push(rel);
+        else if (rel.type === 'EP') eps.push(rel);
         else albums.push(rel);
       });
       const sortNewest = (a, b) => (b.releaseTs || 0) - (a.releaseTs || 0);
-      [albums, singlesEPs, compilations].forEach(arr => arr.sort(sortNewest));
+      [albums, singles, eps, compilations].forEach(arr => arr.sort(sortNewest));
 
       limitGrid(grids.gridAlbums, albums, document.querySelector('[data-target="gridAlbums"]'));
-      limitGrid(grids.gridSingles, singlesEPs, document.querySelector('[data-target="gridSingles"]'));
+      limitGrid(grids.gridSingles, singles, document.querySelector('[data-target="gridSingles"]'));
+      limitGrid(grids.gridEPs, eps, document.querySelector('[data-target="gridEPs"]'));
       limitGrid(grids.gridCompilations, compilations, document.querySelector('[data-target="gridCompilations"]'));
 
       const hasComp = compilations.length > 0;
