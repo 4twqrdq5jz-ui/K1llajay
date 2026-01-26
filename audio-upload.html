@@ -497,6 +497,7 @@
             🖼 Cover Art
             <input type="file" id="coverInput" accept="image/*" style="display:none;" required />
           </label>
+          <button id="removeCoverBtn" class="primary-btn secondary-btn" style="cursor:pointer; display:none;">✕ Remove Cover</button>
         </div>
         <img id="coverPreview" class="thumb" />
       </div>
@@ -643,7 +644,15 @@
         document.getElementById('coverPreview').src = URL.createObjectURL(file);
         document.getElementById('coverPreview').style.display = 'block';
         document.getElementById('coverBtn').style.display = 'none';
+        document.getElementById('removeCoverBtn').style.display = 'block';
       }
+    };
+    
+    document.getElementById('removeCoverBtn').onclick = () => {
+      document.getElementById('coverInput').value = '';
+      document.getElementById('coverPreview').style.display = 'none';
+      document.getElementById('coverBtn').style.display = 'block';
+      document.getElementById('removeCoverBtn').style.display = 'none';
     };
 
     // Add files to queue
@@ -781,8 +790,19 @@
       
       let releaseTitle = document.getElementById('releaseTitleInput').value.trim();
       
+      // Add remix type if remix is checked
+      const hasRemix = document.getElementById('remix').checked;
+      let remixType = '';
+      if (hasRemix && queue.length > 0) {
+        // Use the first track's remix type as the overall remix type
+        remixType = queue[0].remixType || '';
+        if (releaseTitle && remixType) {
+          releaseTitle = `${releaseTitle} (${remixType})`;
+        }
+      }
+      
       // Add type suffix for Single and EP
-      if ((releaseType === 'Single' || releaseType === 'EP') && releaseTitle) {
+      if ((releaseType === 'Single' || releaseType === 'EP') && releaseTitle && !releaseTitle.includes(' - ')) {
         releaseTitle = `${releaseTitle} - ${releaseType}`;
       }
       
@@ -850,9 +870,15 @@
             }
           }
         }
+        
+        // Format track title with remix type if applicable
+        let trackTitle = item.title.trim();
+        if (remix && item.remixType) {
+          trackTitle = `${trackTitle} (${item.remixType})`;
+        }
 
         const songData = {
-          title: item.title.trim(),
+          title: trackTitle,
           artist: trackArtist,
           duration: item.duration || 0,
           audioUrl,
@@ -868,6 +894,7 @@
           mediaType: 'audio',
           explicit: item.explicit || false,
           remix: !!remix,
+          remixType: item.remixType || '',
           versions: !!versions,
           createdAt: ts
         };
@@ -890,6 +917,7 @@
       document.getElementById('coverInput').value = '';
       document.getElementById('coverPreview').style.display = 'none';
       document.getElementById('coverBtn').style.display = 'block';
+      document.getElementById('removeCoverBtn').style.display = 'none';
       document.getElementById('releaseTitleInput').value = '';
       document.getElementById('releaseDate').value = '';
       document.getElementById('producerInput').value = '';
