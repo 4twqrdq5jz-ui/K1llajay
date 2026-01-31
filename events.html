@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Events - K1LLAJAY</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+<style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
+
+.button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.button.active {
+  background: rgba(255,255,255,0.2);
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
+
+/* ================= MAIN CONTENT ================= */
+.main-content {
+  margin-left: 260px;
+  height: 100dvh;
+  overflow-y: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+.page-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 30px;
+  letter-spacing: 4px;
+  margin-bottom: 5px;
+}
+
+.calendar-toggle {
+  padding: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.4);
+  transition: 0.3s;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'sitefont', monospace;
+  display: none;
+}
+
+.calendar-toggle:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.calendar-close {
+  align-self: flex-end;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 8px 12px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: 0.3s;
+  font-family: 'sitefont', monospace;
+  display: none;
+}
+
+.calendar-close:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.event-card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 24px;
+  transition: 0.3s;
+}
+
+.event-card:hover {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Event Type Colors */
+.event-card.type-collaboration {
+  border-left: 4px solid #C7B3E5;
+}
+
+.event-card.type-release {
+  border-left: 4px solid #F38181;
+}
+
+.event-card.type-other {
+  border-left: 4px solid #90E0EF;
+}
+
+.event-date {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.event-title {
+  font-size: 24px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.event-location {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.event-description {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.event-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 2px;
+  transition: 0.3s;
+}
+
+.event-link:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: white;
+}
+
+.no-events {
+  text-align: center;
+  opacity: 0.7;
+  padding: 60px 20px;
+  font-size: 18px;
+}
+
+/* ================= FLOATING SIDEBAR ================= */
+.floating-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100dvh;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: 100;
+}
+
+.floating-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.calendar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.calendar-title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.calendar {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.calendar-month {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-nav-button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 14px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 4px;
+}
+
+.calendar-nav-button:hover:not(:disabled) {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.calendar-nav-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.calendar-day:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.calendar-day.past-day {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.calendar-day.today {
+  background: rgba(255,255,255,0.2);
+  border-color: white;
+  font-weight: bold;
+}
+
+@keyframes april21glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 1);
+  }
+}
+
+.calendar-day.april21 {
+  animation: april21glow 1.5s infinite;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.calendar-day.april21.past-birthday {
+  opacity: 0.5;
+}
+
+.previous-event-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previous-event-title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.previous-event-card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+}
+
+/* Previous Event Type Colors */
+.previous-event-card.type-collaboration {
+  border-left: 3px solid #C7B3E5;
+}
+
+.previous-event-card.type-release {
+  border-left: 3px solid #F38181;
+}
+
+.previous-event-card.type-other {
+  border-left: 3px solid #90E0EF;
+}
+
+.previous-event-date {
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.previous-event-name {
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.previous-event-location {
+  font-size: 11px;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+    padding-top: 50px;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 1500;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .sidebar {
+    display: none;
+    top: 50px;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    z-index: 1400;
+    overflow-y: auto;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .main-content {
+    margin-left: 0;
+    height: calc(100dvh - 50px);
+    padding: 20px;
+  }
+
+  .floating-sidebar {
+    display: none;
+  }
+
+  .calendar-toggle {
+    display: inline-block;
+  }
+
+  .calendar-close {
+    display: inline-block;
+  }
+
+  body.calendar-open .floating-sidebar {
+    display: flex;
+    top: 50px;
+    height: calc(100dvh - 50px);
+    width: 100%;
+    right: 0;
+    z-index: 1400;
+  }
+
+  .event-card {
+    padding: 18px;
+  }
+
+  .event-description {
+    font-size: 12px;
+  }
+
+  .page-title {
+    font-size: 32px;
+  }
+
+  .event-title {
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">EVENTS</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+  <div class="name">
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
+  </div>
+
+  <div class="buttons">
+    <a href="https://k1llajay.com" class="button">Gallery</a>
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
+    <a href="https://k1llajay.com/events" class="button">Events</a>
+    <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
+  </div>
+
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div class="page-title-row">
+    <h1 class="page-title">Upcoming Events</h1>
+    <button class="calendar-toggle" id="calendarToggle">Calendar</button>
+  </div>
+  
+  <div class="events-container" id="events-container">
+    <div class="no-events">No upcoming events at this time. Check back soon!</div>
+  </div>
+</div>
+
+<!-- FLOATING SIDEBAR -->
+<div class="floating-sidebar">
+  <button class="calendar-close" id="calendarClose">X</button>
+  <div class="calendar-section">
+    <div class="calendar-title">Calendar</div>
+    <div class="calendar">
+      <div class="calendar-month">
+        <button class="calendar-nav-button" id="prev-month">◀</button>
+        <span id="calendar-month-text">January 2026</span>
+        <button class="calendar-nav-button" id="next-month">▶</button>
+      </div>
+      <div class="calendar-weekdays">
+        <div class="calendar-day-header">SUN</div>
+        <div class="calendar-day-header">MON</div>
+        <div class="calendar-day-header">TUE</div>
+        <div class="calendar-day-header">WED</div>
+        <div class="calendar-day-header">THU</div>
+        <div class="calendar-day-header">FRI</div>
+        <div class="calendar-day-header">SAT</div>
+      </div>
+      <div class="calendar-days" id="calendar-days"></div>
+    </div>
+  </div>
+
+  <div class="previous-event-section">
+    <div class="previous-event-title">Past Events</div>
+    <div id="previous-events-container"></div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js" async defer></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+  authDomain: "mainsite-eb919.firebaseapp.com",
+  databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+  projectId: "mainsite-eb919",
+  storageBucket: "mainsite-eb919.firebasestorage.app",
+  messagingSenderId: "799554641103",
+  appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+let db;
+try {
+  db = firebase.database(app, { forceLongPolling: true });
+} catch (e) {
+  db = firebase.database(app);
+}
+const eventsContainer = document.getElementById("events-container");
+
+// === CALENDAR GENERATION ===
+const getTodayStart = () => {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+};
+
+const normalizeDate = (rawDate) => {
+  if (!rawDate) return '';
+  const value = String(rawDate).trim();
+  if (value.includes('-')) return value;
+  if (value.includes('/')) {
+    const parts = value.split('/').map(p => p.trim());
+    if (parts.length === 3) {
+      const [y, m, d] = parts;
+      const year = y.length === 4 ? y : `20${y}`;
+      const month = String(m).padStart(2, '0');
+      const day = String(d).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+  }
+  return value;
+};
+
+let displayMonth = getTodayStart().getMonth();
+let displayYear = getTodayStart().getFullYear();
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+
+const MIN_YEAR = 2023;
+const MIN_MONTH = 11; // December
+const MAX_YEAR = 2030;
+const MAX_MONTH = 11; // December
+
+let allEvents = {};
+
+// === GET EVENT TYPE COLOR ===
+function getEventTypeClass(event) {
+  const eventType = (event.type || "").toLowerCase();
+  
+  const typeMap = {
+    'collaboration': 'type-collaboration',
+    'release': 'type-release'
+  };
+  
+  return typeMap[eventType] || 'type-other';
+}
+
+function getEventTypeColor(event) {
+  const eventType = (event.type || "").toLowerCase();
+  
+  const colorMap = {
+    'collaboration': '#C7B3E5',
+    'release': '#F38181'
+  };
+  
+  return colorMap[eventType] || '#90E0EF';
+}
+
+function groupEventsByTitle(events) {
+  const map = new Map();
+  events.forEach(event => {
+    const key = (event.title || 'Event').toLowerCase();
+    if (!map.has(key)) {
+      map.set(key, event);
+    }
+  });
+  return Array.from(map.values());
+}
+
+function getEventsForMonth(year, monthIndex) {
+  const events = [];
+  Object.keys(allEvents).forEach(dateKey => {
+    const parts = dateKey.split('-');
+    if (parts.length === 3) {
+      const [y, m] = parts;
+      if (Number(y) === year && Number(m) === monthIndex + 1) {
+        events.push(...allEvents[dateKey]);
+      }
+    }
+  });
+  return events;
+}
+
+function renderMonthEventsList(label, events) {
+  const previousEventsContainer = document.getElementById("previous-events-container");
+  const previousEventTitle = document.querySelector(".previous-event-title");
+  const mergedEvents = groupEventsByTitle(events);
+
+  if (label === 'Future Events' && displayMonth === 3) {
+    const birthdayDate = `${displayYear}-04-21`;
+    mergedEvents.unshift({
+      date: birthdayDate,
+      title: `Jae Laurent's ${displayYear - 2004} Birthday`,
+      isBirthday: true
+    });
+  }
+
+  previousEventTitle.textContent = label;
+  previousEventsContainer.innerHTML = "";
+
+  if (mergedEvents.length === 0) {
+    previousEventsContainer.innerHTML = `<div style="opacity: 0.6; font-size: 12px;">No ${label.toLowerCase()} this month</div>`;
+    return;
+  }
+
+  mergedEvents.forEach(event => {
+    const eventCard = document.createElement("div");
+    eventCard.className = `previous-event-card ${getEventTypeClass(event)}`;
+    eventCard.innerHTML = `
+      <div class="previous-event-date">${event.date || "TBA"}</div>
+      <div class="previous-event-name">${event.title || "Event"}</div>
+    `;
+    previousEventsContainer.appendChild(eventCard);
+  });
+}
+
+function renderSidebarForDisplayedMonth() {
+  const today = getTodayStart();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+
+  const isPastMonth = displayYear < currentYear || (displayYear === currentYear && displayMonth < currentMonth);
+  const isFutureMonth = displayYear > currentYear || (displayYear === currentYear && displayMonth > currentMonth);
+
+  if (isPastMonth) {
+    const events = getEventsForMonth(displayYear, displayMonth);
+    renderMonthEventsList('Past Events', events);
+    return;
+  }
+
+  if (isFutureMonth) {
+    const events = getEventsForMonth(displayYear, displayMonth);
+    renderMonthEventsList('Future Events', events);
+    return;
+  }
+
+  renderPastEventsThisMonth();
+}
+
+function generateCalendar() {
+  const today = getTodayStart();
+  const currentDay = today.getDate();
+  document.getElementById("calendar-month-text").textContent = `${monthNames[displayMonth]} ${displayYear}`;
+
+  const firstDay = new Date(displayYear, displayMonth, 1).getDay();
+  const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+  const calendarDays = document.getElementById("calendar-days");
+  
+  calendarDays.innerHTML = "";
+
+  for (let i = 0; i < firstDay; i++) {
+    const emptyDay = document.createElement("div");
+    emptyDay.className = "calendar-day";
+    emptyDay.style.opacity = "0.2";
+    calendarDays.appendChild(emptyDay);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayElement = document.createElement("div");
+    dayElement.className = "calendar-day";
+    dayElement.textContent = day;
+    
+    // Check if this day has events and apply color
+    const dateString = `${displayYear}-${String(displayMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const hasEvents = allEvents[dateString] && allEvents[dateString].length > 0;
+    if (hasEvents) {
+      const eventColor = getEventTypeColor(allEvents[dateString][0]);
+      dayElement.style.borderLeftColor = eventColor;
+      dayElement.style.borderLeftWidth = '3px';
+    }
+    
+    const isBirthday = displayMonth === 3 && day === 21;
+    const isToday = displayYear === today.getFullYear() && displayMonth === today.getMonth() && day === currentDay;
+    const dayDate = new Date(displayYear, displayMonth, day);
+    const isPastDate = dayDate < today;
+    if (isBirthday) {
+      dayElement.classList.add("april21");
+      if (isPastDate) {
+        dayElement.classList.add("past-birthday");
+      }
+    } else if (isToday) {
+      dayElement.classList.add("today");
+    }
+
+    if (isPastDate) {
+      dayElement.classList.add("past-day");
+    } else if (!hasEvents && !isBirthday && (displayYear < today.getFullYear() || (displayYear === today.getFullYear() && displayMonth < today.getMonth()) || (displayYear === today.getFullYear() && displayMonth === today.getMonth() && day < currentDay))) {
+      dayElement.classList.add("past-day");
+    }
+    
+    // Add click handler for days with events, birthday, or today (not past)
+    if (!isPastDate && (hasEvents || isBirthday || isToday)) {
+      dayElement.style.cursor = "pointer";
+      dayElement.onclick = () => {
+        const clickedDate = new Date(displayYear, displayMonth, day);
+        displayEventsForDate(clickedDate);
+      };
+    }
+    
+    calendarDays.appendChild(dayElement);
+  }
+  
+  updateNavButtonStates();
+}
+
+function updateNavButtonStates() {
+  const prevBtn = document.getElementById("prev-month");
+  const nextBtn = document.getElementById("next-month");
+  
+  prevBtn.disabled = (displayYear === MIN_YEAR && displayMonth === MIN_MONTH);
+  nextBtn.disabled = (displayYear === MAX_YEAR && displayMonth === MAX_MONTH);
+}
+
+document.getElementById("prev-month").onclick = () => {
+  if (displayMonth === 0) {
+    displayMonth = 11;
+    displayYear--;
+  } else {
+    displayMonth--;
+  }
+  generateCalendar();
+  renderSidebarForDisplayedMonth();
+};
+
+document.getElementById("next-month").onclick = () => {
+  if (displayMonth === 11) {
+    displayMonth = 0;
+    displayYear++;
+  } else {
+    displayMonth++;
+  }
+  generateCalendar();
+  renderSidebarForDisplayedMonth();
+};
+
+// === LOAD ALL EVENTS AND BUILD DATE MAP ===
+db.ref("events").once("value").then(snap => {
+  const data = snap.val() || {};
+  allEvents = {};
+  
+  Object.keys(data).forEach(k => {
+    const event = data[k];
+    if (event.date) {
+      const normalizedDate = normalizeDate(event.date);
+      if (!allEvents[normalizedDate]) {
+        allEvents[normalizedDate] = [];
+      }
+      allEvents[normalizedDate].push(event);
+    }
+  });
+  
+  generateCalendar();
+  renderSidebarForDisplayedMonth();
+});
+
+// === DISPLAY EVENTS FOR SELECTED DATE ===
+function displayEventsForDate(selectedDate) {
+  const previousEventsContainer = document.getElementById("previous-events-container");
+  const previousEventTitle = document.querySelector(".previous-event-title");
+  
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  
+  const dateString = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+  
+  const today = getTodayStart();
+  const selectedStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+
+  if (selectedStart.getTime() === today.getTime()) {
+    previousEventTitle.textContent = 'Past Events';
+    renderPastEventsThisMonth();
+    return;
+  }
+
+  db.ref("events").once("value").then(snap => {
+    const data = snap.val();
+    previousEventsContainer.innerHTML = "";
+    
+    const dayEvents = [];
+    
+    // Add birthday event if April 21st
+    if (selectedDate.getMonth() === 3 && selectedDate.getDate() === 21) {
+      const age = selectedDate.getFullYear() - 2004;
+      dayEvents.push({
+        date: dateString,
+        title: `Jae Laurent's ${age} Birthday`,
+        location: "Birthday",
+        isBirthday: true
+      });
+    }
+    
+    if (data) {
+      Object.keys(data).forEach(k => {
+        const event = data[k];
+        if (normalizeDate(event.date) === dateString) {
+          dayEvents.push(event);
+        }
+      });
+    }
+    
+    previousEventTitle.textContent = selectedStart < today
+      ? 'Past Events'
+      : selectedStart > today
+        ? 'Future Events'
+        : `${monthNames[selectedDate.getMonth()]} ${selectedDate.getDate()}`;
+    
+    const mergedDayEvents = groupEventsByTitle(dayEvents);
+
+    if (mergedDayEvents.length === 0) {
+      previousEventsContainer.innerHTML = '<div style="opacity: 0.6; font-size: 12px;">No events on this day</div>';
+      return;
+    }
+    
+    mergedDayEvents.forEach(event => {
+      const eventCard = document.createElement("div");
+      eventCard.className = `previous-event-card ${getEventTypeClass(event)}`;
+      
+      eventCard.innerHTML = `
+        <div class="previous-event-date">${event.date || "TBA"}</div>
+        <div class="previous-event-name">${event.title || "Event"}</div>
+      `;
+      
+      previousEventsContainer.appendChild(eventCard);
+    });
+  });
+}
+
+db.ref("events").once("value").then(snap => {
+  const data = snap.val();
+  
+  if (!data || Object.keys(data).length === 0) {
+    eventsContainer.innerHTML = '<div class="no-events">No upcoming events at this time. Check back soon!</div>';
+    return;
+  }
+
+  const today = getTodayStart();
+  const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const upcomingEvents = [];
+  
+  Object.keys(data).forEach(k => {
+    const event = data[k];
+    const eventDate = new Date(normalizeDate(event.date) + 'T00:00:00');
+    
+    if (eventDate > today && eventDate < nextMonthStart) {
+      upcomingEvents.push(event);
+    }
+  });
+  
+  const mergedUpcomingEvents = groupEventsByTitle(upcomingEvents);
+
+  if (mergedUpcomingEvents.length === 0) {
+    eventsContainer.innerHTML = '<div class="no-events">No upcoming events at this time. Check back soon!</div>';
+    return;
+  }
+
+  eventsContainer.innerHTML = "";
+
+  mergedUpcomingEvents.forEach(event => {
+    const eventCard = document.createElement("div");
+    eventCard.className = `event-card ${getEventTypeClass(event)}`;
+    
+    eventCard.innerHTML = `
+      <div class="event-date">${event.date || "TBA"}</div>
+      <div class="event-title">${event.title || "Event"}</div>
+      ${event.type !== 'release' && event.description ? `<div class="event-description">${event.description}</div>` : ""}
+    `;
+    
+    eventsContainer.appendChild(eventCard);
+  });
+});
+
+// === PAST EVENTS (THIS MONTH) ===
+function renderPastEventsThisMonth() {
+  const today = getTodayStart();
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const previousEventsContainer = document.getElementById("previous-events-container");
+
+  db.ref("events").once("value").then(snap => {
+    const data = snap.val();
+    
+    if (!data) {
+      return;
+    }
+
+    const pastWeekEvents = [];
+    
+    Object.keys(data).forEach(k => {
+      const event = data[k];
+      const eventDate = new Date(normalizeDate(event.date) + 'T00:00:00');
+      
+      if (eventDate >= monthStart && eventDate < monthEnd) {
+        pastWeekEvents.push(event);
+      }
+    });
+    
+    const mergedPastEvents = groupEventsByTitle(pastWeekEvents);
+
+    if (mergedPastEvents.length === 0) {
+      previousEventsContainer.innerHTML = '<div style="opacity: 0.6; font-size: 12px;">No past events this month</div>';
+      return;
+    }
+    
+    previousEventsContainer.innerHTML = "";
+    mergedPastEvents.forEach(event => {
+      const eventCard = document.createElement("div");
+      eventCard.className = "previous-event-card";
+      
+      eventCard.innerHTML = `
+        <div class="previous-event-date">${event.date || "TBA"}</div>
+        <div class="previous-event-name">${event.title || "Event"}</div>
+      `;
+      
+      previousEventsContainer.appendChild(eventCard);
+    });
+  });
+}
+
+renderPastEventsThisMonth();
+
+/* === MOBILE SIDEBAR === */
+document.querySelector(".hamburger").onclick = () =>
+  document.querySelector(".sidebar").classList.toggle("active");
+
+const calendarToggle = document.getElementById("calendarToggle");
+if (calendarToggle) {
+  calendarToggle.onclick = () => {
+    document.body.classList.toggle("calendar-open");
+  };
+}
+
+const calendarClose = document.getElementById("calendarClose");
+if (calendarClose) {
+  calendarClose.onclick = () => {
+    document.body.classList.remove("calendar-open");
+  };
+}
+</script>
+
+</body>
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
