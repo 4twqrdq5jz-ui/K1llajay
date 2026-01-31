@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Audio — Music Player</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'beyoncefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'beyoncefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 15px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      height: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      box-sizing: border-box;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
+    .sidebar {
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+    }
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+    .button:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
+    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
+
+    .upload-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    .upload-section {
+      margin-bottom: 28px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    #releaseTitleInput {
+      grid-column: 1/-1;
+    }
+    .file-upload-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .file-upload-area label {
+      flex: 1;
+      min-width: 150px;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
+    }
+    input, select {
+      background: transparent;
+      border: 1px solid #444;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'beyoncefont', monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+    input::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
+
+    .primary-btn {
+      background: #00ff99;
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'beyoncefont', monospace;
+      text-transform: uppercase;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn {
+      background: #222;
+      border: 1px solid #666;
+      color: white;
+      margin-left: 10px;
+    }
+    .secondary-btn:hover { border-color: #999; }
+
+    #queue { margin: 20px 0; width: 100%; }
+    .queue-item {
+      display: grid;
+      grid-template-columns: 40px 1fr 100px 50px 160px;
+      gap: 8px;
+      align-items: center;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+    }
+    .queue-item input {
+      background: rgba(255,255,255,0.05);
+      padding: 6px;
+      font-size: 12px;
+    }
+    .queue-item .controls button {
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #555;
+      margin: 0 2px;
+    }
+    .danger { background: #ff3333 !important; border-color: #ff3333 !important; }
+
+    progress {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      margin: 16px 0;
+      display: none;
+    }
+    progress::-webkit-progress-value { background: #00ff99; }
+    progress::-moz-progress-bar { background: #00ff99; }
+
+    .thumb {
+      width: 100%;
+      max-width: 250px;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 16px 0;
+      border: 1px solid #333;
+      display: none;
+    }
+
+    .song-list {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .song-list h2 {
+      font-size: 24px;
+      margin: 0 0 20px 0;
+    }
+    .release-card {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+    }
+    .release-cover {
+      width: 120px;
+      min-width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #444;
+    }
+    .release-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .release-header {
+      margin-bottom: 12px;
+    }
+    .release-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .release-meta {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .track-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .track-list.collapsed {
+      display: none;
+    }
+    .collapse-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin-top: 8px;
+      text-align: left;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .collapse-btn:hover {
+      opacity: 1;
+    }
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #333;
+      font-size: 13px;
+    }
+    .track-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .track-title {
+      font-size: 13px;
+    }
+    .track-duration {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .track-delete {
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-left: 8px;
+    }
+    @media (max-width: 768px) {
+      .release-card {
+        flex-direction: column;
+      }
+      .release-cover {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .topbar { display: flex; }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 50px);
+        padding: 15px;
+        z-index: 999;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+      .sidebar.active { display: flex; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 20px;
+        height: auto;
+        min-height: calc(100vh - 50px);
+      }
+      .form-grid { grid-template-columns: 1fr; }
+      .queue-item {
+        grid-template-columns: 35px 1fr;
+      }
+      .queue-item input,
+      .queue-item .controls,
+      .queue-item div:nth-child(4),
+      .queue-item div:nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">EDITOR</div>
+  </div>
+
+  <div class="sidebar">
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+    <h1 class="name">JAE LAURENT</h1>
+    <div class="buttons">
+      <a href="https://k1llajay.com/edit-database_editor" class="button">Upload To Database</a>
+      <a href="https://k1llajay.com/edit-player_editor" class="button">Upload To Player</a>
+      <a href="https://k1llajay.com/edit-events_editor" class="button">Upload To Events</a>
+      <a href="https://k1llajay.com/edit-podcast_editor" class="button">Upload To Podcast</a>
+      <a href="https://k1llajay.com/edit-portfolio_editor" class="button">Upload To Portfolio</a>
+      <a href="https://k1llajay.com/edit-home_editor" class="button">Upload To Home</a>
+    </div>
+    <div class="footer">
+      <a href="https://k1llajay.com">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Upload to Music Player</h1>
+
+    <div class="upload-box">
+      <div class="upload-section">
+        <h4>Release Settings</h4>
+        <div class="form-grid">
+          <select id="releaseType">
+            <option>Album</option>
+            <option>EP</option>
+            <option>Single</option>
+            <option>Compilation</option>
+          </select>
+          <div></div>
+          <input type="text" id="releaseTitleInput" placeholder="Release Title (Album/EP/etc)" style="display:none;" />
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <h4>Metadata</h4>
+        <div class="form-grid">
+          <input type="text" id="artist" placeholder="Artist Name" value="Jae Laurent" />
+          <input type="date" id="releaseDate" />
+          <input type="text" id="producerInput" placeholder="Producer (optional)" />
+        </div>
+        <div id="featuredArtistsSection" style="display:none; margin-top:12px;">
+          <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; opacity:0.6; margin-bottom:12px; font-weight:700;">Featured Artists</div>
+          <div id="featuredArtistsList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
+          <button type="button" id="addFeatureBtn" class="primary-btn secondary-btn" style="width:auto; padding:8px 16px; font-size:12px;">+ Add Featured Artist</button>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <h4>Files</h4>
+        <div class="file-upload-area">
+          <label class="primary-btn" style="cursor:pointer; flex: 1;">
+            ⬆ Choose Audio Files
+            <input type="file" id="fileInput" accept="audio/mpeg,audio/wav,audio/mp4" multiple style="display:none;"/>
+          </label>
+          <label id="coverBtn" class="primary-btn secondary-btn" style="cursor:pointer;">
+            🖼 Cover Art
+            <input type="file" id="coverInput" accept="image/*" style="display:none;" required />
+          </label>
+          <button id="removeCoverBtn" class="primary-btn secondary-btn" style="cursor:pointer; display:none;">✕ Remove Cover</button>
+        </div>
+        <img id="coverPreview" class="thumb" />
+      </div>
+
+      <div class="upload-section">
+        <h4>Options</h4>
+        <div class="options-row">
+          <div class="option-group">
+            <input type="checkbox" id="remix">
+            <label for="remix">Remix</label>
+          </div>
+          <div class="option-group" id="featureGroup" style="display:none;">
+            <input type="checkbox" id="feature">
+            <label for="feature">Feature</label>
+          </div>
+          <div class="option-group" id="versionsGroup" style="display:none;">
+            <input type="checkbox" id="versions">
+            <label for="versions">Versions</label>
+          </div>
+          <div class="option-group" id="singlePackGroup" style="display:none;">
+            <input type="checkbox" id="singlePack">
+            <label for="singlePack">Single Pack</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <h4>Queue — Use ⬆ ⬇ to reorder</h4>
+        <div id="queue">
+          <div style="text-align:center; opacity:0.6; padding:30px;">No files selected</div>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <div class="action-buttons">
+          <button id="uploadAll" class="primary-btn">✓ Upload All</button>
+          <button id="clearQueue" class="primary-btn secondary-btn">✕ Clear All</button>
+        </div>
+        <progress id="progress" max="100" value="0"></progress>
+        <div id="status" style="margin-top:12px; font-size:14px;"></div>
+      </div>
+    </div>
+
+    <h1 style="margin-top:80px;">Recently Uploaded</h1>
+    <div id="songList" class="song-list"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-storage-compat.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js" async defer></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const db = firebase.database();
+
+    const queue = [];
+    const queueEl = document.getElementById('queue');
+    const statusEl = document.getElementById('status');
+    const progEl = document.getElementById('progress');
+
+    // Show release title when needed
+    document.getElementById('releaseType').onchange = function() {
+      const show = ['album','ep','single','compilation'].includes(this.value.toLowerCase());
+      document.getElementById('releaseTitleInput').style.display = show ? 'block' : 'none';
+      
+      const isSingle = this.value.toLowerCase() === 'single';
+      const isAlbumEpComp = ['album','ep','compilation'].includes(this.value.toLowerCase());
+      
+      // Show versions and Single Pack option only for Compilation
+      const showVersions = this.value.toLowerCase() === 'compilation';
+      document.getElementById('versionsGroup').style.display = showVersions ? 'flex' : 'none';
+      document.getElementById('singlePackGroup').style.display = showVersions ? 'flex' : 'none';
+      document.getElementById('singlePack').checked = false;
+      
+      // Show feature option for Single and Album/EP/Compilation
+      document.getElementById('featureGroup').style.display = (isSingle || isAlbumEpComp) ? 'flex' : 'none';
+      document.getElementById('feature').checked = false;
+      document.getElementById('featuredArtistsSection').style.display = 'none';
+      document.getElementById('featuredArtistsList').innerHTML = '';
+      
+      // Re-render queue if needed
+      renderQueue();
+    };
+    // Trigger on page load to show initial state
+    document.getElementById('releaseType').onchange();
+    
+    // Feature checkbox handling
+    document.getElementById('feature').onchange = function() {
+      const releaseType = document.getElementById('releaseType').value.toLowerCase();
+      const isSingle = releaseType === 'single';
+      
+      if (isSingle) {
+        // For Singles: show featured artists section in metadata
+        const section = document.getElementById('featuredArtistsSection');
+        section.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+          document.getElementById('featuredArtistsList').innerHTML = '';
+        } else {
+          addFeaturedArtistInput();
+        }
+      } else {
+        // For Album/EP/Compilation: re-render queue with featured artist inputs
+        renderQueue();
+      }
+    };
+    
+    // Add featured artist input
+    document.getElementById('addFeatureBtn').onclick = (e) => {
+      e.preventDefault();
+      addFeaturedArtistInput();
+    };
+    
+    function addFeaturedArtistInput() {
+      const list = document.getElementById('featuredArtistsList');
+      const index = list.children.length;
+      const inputDiv = document.createElement('div');
+      inputDiv.style.display = 'flex';
+      inputDiv.style.gap = '8px';
+      inputDiv.style.alignItems = 'center';
+      inputDiv.innerHTML = `
+        <input type="text" class="featured-artist" placeholder="Featured Artist ${index + 1}" style="flex:1;" />
+        <button type="button" class="primary-btn secondary-btn" onclick="removeFeaturedArtist(this)" style="padding:8px 12px; font-size:12px;">Remove</button>
+      `;
+      list.appendChild(inputDiv);
+    }
+    
+    window.removeFeaturedArtist = (btn) => {
+      btn.parentElement.remove();
+    };
+
+    // Cover preview
+    document.getElementById('coverInput').onchange = e => {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('coverPreview').src = URL.createObjectURL(file);
+        document.getElementById('coverPreview').style.display = 'block';
+        document.getElementById('coverBtn').style.display = 'none';
+        document.getElementById('removeCoverBtn').style.display = 'block';
+      }
+    };
+    
+    document.getElementById('removeCoverBtn').onclick = () => {
+      document.getElementById('coverInput').value = '';
+      document.getElementById('coverPreview').style.display = 'none';
+      document.getElementById('coverBtn').style.display = 'block';
+      document.getElementById('removeCoverBtn').style.display = 'none';
+    };
+
+    // Add files to queue
+    document.getElementById('fileInput').onchange = async e => {
+      const files = Array.from(e.target.files);
+      for (const file of files) {
+        const duration = await getDuration(file);
+        const title = file.name.replace(/\.[^/.]+$/, "");
+        queue.push({ file, title, duration, track: queue.length + 1 });
+      }
+      renderQueue();
+    };
+
+    function renderQueue() {
+      queueEl.innerHTML = queue.length === 0
+        ? '<div style="text-align:center;opacity:0.6;padding:30px;">No files selected</div>'
+        : '';
+      
+      const releaseType = document.getElementById('releaseType').value.toLowerCase();
+      const isAlbumEpComp = ['album','ep','compilation'].includes(releaseType);
+      const hasFeature = document.getElementById('feature').checked && isAlbumEpComp;
+      const hasRemix = document.getElementById('remix').checked;
+      
+      queue.forEach((item, i) => {
+        // Auto-assign track number based on position
+        item.track = i + 1;
+        if (!item.featuredArtists) item.featuredArtists = [];
+        if (!item.remixType) item.remixType = '';
+        
+        const div = document.createElement('div');
+        div.className = 'queue-item';
+        
+        let remixHtml = '';
+        if (hasRemix) {
+          remixHtml = `
+            <div style="margin-top:12px; padding-top:12px; border-top:1px solid #444;">
+              <div style="font-size:10px; opacity:0.6; margin-bottom:6px;">REMIX TYPE</div>
+              <input type="text" value="${item.remixType || ''}" placeholder="e.g. DJName Remix" style="width:100%; padding:6px; font-size:11px;" onchange="queue[${i}].remixType=this.value" />
+            </div>
+          `;
+        }
+        
+        let featuredArtistsHtml = '';
+        if (hasFeature) {
+          const featList = (item.featuredArtists || []).map((feat, fi) => `
+            <div style="display:flex; gap:6px; align-items:center; margin-top:6px;">
+              <input type="text" value="${feat}" placeholder="Featured ${fi + 1}" style="flex:1; padding:6px; font-size:11px;" onchange="queue[${i}].featuredArtists[${fi}]=this.value" />
+              <button type="button" class="primary-btn secondary-btn" onclick="queue[${i}].featuredArtists.splice(${fi},1); renderQueue()" style="padding:4px 8px; font-size:10px;">X</button>
+            </div>
+          `).join('');
+          
+          featuredArtistsHtml = `
+            <div style="margin-top:12px; padding-top:12px; border-top:1px solid #444;">
+              <div style="font-size:10px; opacity:0.6; margin-bottom:6px;">FEATURED</div>
+              ${featList}
+              <button type="button" class="primary-btn secondary-btn" onclick="queue[${i}].featuredArtists.push(''); renderQueue()" style="width:100%; padding:6px; font-size:10px; margin-top:6px;">+ Add Feature</button>
+            </div>
+          `;
+        }
+        
+        div.innerHTML = `
+          <div style="opacity:0.6;text-align:center">${i+1}</div>
+          <div>
+            <input type="text" value="${item.title}" onchange="queue[${i}].title=this.value" style="width:100%;">
+            ${remixHtml}
+            ${featuredArtistsHtml}
+          </div>
+          <div style="opacity:0.8">${formatTime(item.duration)}</div>
+          <div style="display:flex; align-items:center; justify-content:center;">
+            <input type="checkbox" ${item.explicit ? 'checked' : ''} onchange="queue[${i}].explicit=this.checked" style="cursor:pointer; accent-color:#00ff99;" title="Explicit">
+          </div>
+          <progress max="100" value="0" data-id="${i}"></progress>
+          <div class="controls">
+            <button onclick="move(${i},-1)">Up</button>
+            <button onclick="move(${i},1)">Down</button>
+            <button class="danger" onclick="queue.splice(${i},1);renderQueue()">Remove</button>
+          </div>
+        `;
+        queueEl.appendChild(div);
+      });
+    }
+
+    function move(i, dir) {
+      const ni = i + dir;
+      if (ni < 0 || ni >= queue.length) return;
+      [queue[i], queue[ni]] = [queue[ni], queue[i]];
+      renderQueue();
+    }
+
+    function formatTime(s) {
+      if (!s) return '0:00';
+      const m = Math.floor(s/60);
+      const sec = s % 60;
+      return `${m}:${sec.toString().padStart(2,'0')}`;
+    }
+
+    async function getDuration(file) {
+      return new Promise(res => {
+        const a = new Audio(URL.createObjectURL(file));
+        a.onloadedmetadata = () => res(Math.round(a.duration) || 0);
+        a.onerror = () => res(0);
+      });
+    }
+
+    // Upload everything — only writes to /songs
+    document.getElementById('uploadAll').onclick = async () => {
+      if (!queue.length) return alert('Add at least one track');
+
+      const coverFile = document.getElementById('coverInput').files[0];
+      if (!coverFile) return alert('Cover art is required');
+      
+      const baseArtist = document.getElementById('artist').value.trim() || 'Jae Laurent';
+      const releaseType = document.getElementById('releaseType').value || 'Single';
+      const isSingle = releaseType.toLowerCase() === 'single';
+      const isAlbumEpComp = ['album','ep','compilation'].includes(releaseType.toLowerCase());
+      
+      let artist = baseArtist;
+      
+      // Handle featured artists for Singles (global)
+      if (isSingle && document.getElementById('feature').checked) {
+        const featuredInputs = document.querySelectorAll('.featured-artist');
+        const featuredArtists = Array.from(featuredInputs)
+          .map(input => input.value.trim())
+          .filter(name => name);
+        
+        if (featuredArtists.length > 0) {
+          if (featuredArtists.length === 1) {
+            artist = `${baseArtist} & ${featuredArtists[0]}`;
+          } else {
+            const allButLast = featuredArtists.slice(0, -1).join(', ');
+            artist = `${baseArtist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
+          }
+        }
+      }
+      
+      let releaseTitle = document.getElementById('releaseTitleInput').value.trim();
+      
+      // Add remix type if remix is checked
+      const hasRemix = document.getElementById('remix').checked;
+      let remixType = '';
+      if (hasRemix && queue.length > 0) {
+        // Use the first track's remix type as the overall remix type
+        remixType = queue[0].remixType || '';
+        if (releaseTitle && remixType) {
+          releaseTitle = `${releaseTitle} (${remixType})`;
+        }
+      }
+      
+      // Add type suffix for Single and EP
+      if ((releaseType === 'Single' || releaseType === 'EP') && releaseTitle && !releaseTitle.includes(' - ')) {
+        releaseTitle = `${releaseTitle} - ${releaseType}`;
+      }
+      
+      // Add Single Pack suffix for Compilation if checked
+      const singlePack = document.getElementById('singlePack').checked;
+      if (releaseType === 'Compilation' && singlePack && releaseTitle) {
+        releaseTitle = `${releaseTitle} (Single Pack)`;
+      }
+      
+      // Add (Versions) suffix if versions checked
+      const versions = document.getElementById('versions').checked;
+      if (versions && releaseTitle) {
+        releaseTitle = `${releaseTitle} (Versions)`;
+      }
+      
+      const producer = document.getElementById('producerInput').value.trim();
+      const releaseDate = document.getElementById('releaseDate').value;
+      const year = releaseDate ? releaseDate.split('-')[0] : '';
+      const remix = document.getElementById('remix').checked;
+
+      let coverUrl = null, coverPath = null;
+      if (coverFile) {
+        const name = `${Date.now()}-cover-${coverFile.name}`;
+        const folder = 'covers';
+        coverPath = `${folder}/${name}`;
+        const ref = storage.ref(coverPath);
+        await ref.put(coverFile);
+        coverUrl = await ref.getDownloadURL();
+      }
+
+      progEl.style.display = 'block';
+      statusEl.textContent = 'Uploading...';
+
+      for (let i = 0; i < queue.length; i++) {
+        const item = queue[i];
+        const prog = document.querySelector(`progress[data-id="${i}"]`);
+        const ts = Date.now();
+        const audioName = `${ts}-${item.file.name}`;
+        const audioFolder = 'songs';
+        const audioPath = `${audioFolder}/${audioName}`;
+
+        const audioRef = storage.ref(audioPath);
+        const task = audioRef.put(item.file);
+
+        task.on('state_changed', snap => {
+          prog.value = (snap.bytesTransferred / snap.totalBytes) * 100;
+        });
+
+        await task;
+        const audioUrl = await audioRef.getDownloadURL();
+        
+        // Format artist for this track (for Album/EP/Compilation with features)
+        let trackArtist = artist;
+        if (isAlbumEpComp && document.getElementById('feature').checked) {
+          const featuredArtists = (item.featuredArtists || [])
+            .map(f => f.trim())
+            .filter(f => f);
+          
+          if (featuredArtists.length > 0) {
+            if (featuredArtists.length === 1) {
+              trackArtist = `${baseArtist} & ${featuredArtists[0]}`;
+            } else {
+              const allButLast = featuredArtists.slice(0, -1).join(', ');
+              trackArtist = `${baseArtist}, ${allButLast} & ${featuredArtists[featuredArtists.length - 1]}`;
+            }
+          }
+        }
+        
+        // Format track title with remix type if applicable
+        let trackTitle = item.title.trim();
+        if (remix && item.remixType) {
+          trackTitle = `${trackTitle} (${item.remixType})`;
+        }
+
+        const songData = {
+          title: trackTitle,
+          artist: trackArtist,
+          duration: item.duration || 0,
+          audioUrl,
+          audioPath,
+          coverUrl,
+          coverPath,
+          releaseTitle: releaseTitle || null,
+          group: releaseTitle || '',
+          trackNumber: Number(item.track) || null,
+          releaseType: releaseType,
+          year: year || '',
+          producer: producer || '',
+          mediaType: 'audio',
+          explicit: item.explicit || false,
+          remix: !!remix,
+          remixType: item.remixType || '',
+          versions: !!versions,
+          createdAt: ts
+        };
+
+        await db.ref('songs').push(songData);
+        statusEl.textContent = `Uploaded ${i + 1}/${queue.length}`;
+      }
+
+      statusEl.textContent = 'Upload complete!';
+      progEl.style.display = 'none';
+      queue.length = 0;
+      renderQueue();
+      loadSongs();
+    };
+
+    document.getElementById('clearQueue').onclick = () => {
+      queue.length = 0;
+      renderQueue();
+      document.getElementById('fileInput').value = '';
+      document.getElementById('coverInput').value = '';
+      document.getElementById('coverPreview').style.display = 'none';
+      document.getElementById('coverBtn').style.display = 'block';
+      document.getElementById('removeCoverBtn').style.display = 'none';
+      document.getElementById('releaseTitleInput').value = '';
+      document.getElementById('releaseDate').value = '';
+      document.getElementById('producerInput').value = '';
+      document.getElementById('remix').checked = false;
+      document.getElementById('feature').checked = false;
+      document.getElementById('versions').checked = false;
+      document.getElementById('singlePack').checked = false;
+      document.getElementById('featuredArtistsList').innerHTML = '';
+      document.getElementById('featuredArtistsSection').style.display = 'none';
+    };
+
+    // Load recent songs
+    function loadSongs() {
+      db.ref('songs').limitToLast(100).on('value', snap => {
+        const data = snap.val() || {};
+        const list = document.getElementById('songList');
+        list.innerHTML = '';
+
+        // Group songs by release
+        const releases = {};
+        Object.entries(data).forEach(([key, song]) => {
+          const releaseKey = song.releaseTitle || song.group || `single-${song.title}-${song.createdAt}`;
+          if (!releases[releaseKey]) {
+            releases[releaseKey] = {
+              title: song.releaseTitle || song.title,
+              type: song.releaseType || 'Single',
+              year: song.year || '',
+              artist: song.artist || '',
+              coverUrl: song.coverUrl,
+              explicit: song.explicit,
+              tracks: []
+            };
+          }
+          releases[releaseKey].tracks.push({ key, ...song });
+        });
+
+        // Sort tracks within each release
+        Object.keys(releases).forEach(releaseKey => {
+          releases[releaseKey].tracks.sort((a, b) => {
+            const aTrack = Number(a.trackNumber) || 999;
+            const bTrack = Number(b.trackNumber) || 999;
+            return aTrack - bTrack;
+          });
+        });
+
+        // Render release cards
+        const sortedReleases = Object.entries(releases).sort((a, b) => {
+          const aTime = Math.max(...a[1].tracks.map(t => t.createdAt || 0));
+          const bTime = Math.max(...b[1].tracks.map(t => t.createdAt || 0));
+          return bTime - aTime;
+        });
+
+        sortedReleases.forEach(([releaseKey, release]) => {
+          const card = document.createElement('div');
+          card.className = 'release-card';
+          
+          const coverHtml = release.coverUrl 
+            ? `<img src="${release.coverUrl}" class="release-cover" alt="${release.title}"/>`
+            : `<div class="release-cover" style="background:#222;display:flex;align-items:center;justify-content:center;"><div style="opacity:0.4;text-align:center;font-size:11px;">No Cover</div></div>`;
+
+          const trackListHtml = release.tracks.map(track => `
+            <div class="track-item">
+              <div class="track-info">
+                <div class="track-title">${track.trackNumber ? track.trackNumber + '. ' : ''}${track.title}${track.explicit ? ' 🄴' : ''}</div>
+                <div class="track-duration">${formatTime(track.duration)}</div>
+              </div>
+              <button class="danger track-delete" onclick="del('${track.key}','${track.audioPath}')">Delete</button>
+            </div>
+          `).join('');
+
+          const metaInfo = [
+            release.type,
+            release.year || '—'
+          ].filter(Boolean).join(' • ');
+
+          const releaseId = `release-${Math.random().toString(36).substr(2, 9)}`;
+          const trackCount = release.tracks.length;
+          const showButton = trackCount > 3;
+          const isCollapsed = showButton;
+          
+          card.innerHTML = `
+            ${coverHtml}
+            <div class="release-info">
+              <div class="release-header">
+                <div class="release-title">${release.title}${release.explicit ? ' 🄴' : ''}</div>
+                <div class="release-meta">${release.artist} • ${metaInfo}</div>
+              </div>
+              ${showButton ? `<button class="collapse-btn" onclick="toggleTrackList('${releaseId}')">▼ Show Tracks (${trackCount})</button>` : ''}
+              <div class="track-list ${isCollapsed ? 'collapsed' : ''}" id="${releaseId}">
+                ${trackListHtml}
+              </div>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+
+        if (!sortedReleases.length) {
+          list.innerHTML = '<div style="opacity:0.6;text-align:center;padding:40px;">No releases uploaded yet</div>';
+        }
+      });
+    }
+
+    window.del = async (key, path) => {
+      if (!confirm('Permanently delete this song?')) return;
+      try { await storage.ref(path).delete(); } catch(e) {}
+      await db.ref('songs/' + key).remove();
+    };
+
+    window.toggleTrackList = (releaseId) => {
+      const trackList = document.getElementById(releaseId);
+      const btn = trackList.previousElementSibling;
+      const trackCount = trackList.querySelectorAll('.track-item').length;
+      const isCollapsed = trackList.classList.toggle('collapsed');
+      btn.textContent = isCollapsed ? `▶ Show Tracks (${trackCount})` : `▼ Hide Tracks (${trackCount})`;
+    };
+
+    // Mobile menu toggle
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+
+    // Start loading songs immediately
+    loadSongs();
+  </script>
+</body>
+</html>
