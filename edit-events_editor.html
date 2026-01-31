@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events Editor</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 15px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      height: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      box-sizing: border-box;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
+    .sidebar {
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+    .button:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
+    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
+
+    .upload-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    .upload-section {
+      margin-bottom: 28px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    #eventTitleInput {
+      grid-column: 1/-1;
+    }
+    #eventDescriptionInput {
+      grid-column: 1/-1;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="radio"] {
+      cursor: pointer;
+      accent-color: #00ff99;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
+    }
+    input, select, textarea {
+      background: transparent;
+      border: 1px solid #444;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'sitefont', monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+    textarea {
+      text-transform: none;
+      resize: vertical;
+      min-height: 80px;
+    }
+    input::placeholder, textarea::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn {
+      background: #00ff99;
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn {
+      background: #222;
+      border: 1px solid #666;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    .secondary-btn:hover { border-color: #999; }
+
+    #eventsDatabase { margin-top: 40px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      letter-spacing: 4px;
+      opacity: 0.85;
+      margin: 10px 0;
+    }
+    .section-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header button {
+      font-family: inherit;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: white;
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+    .section-header button:hover { background: #444; }
+    .entry {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 14px;
+      text-align: left;
+      border-left: 4px solid #90E0EF;
+    }
+    .entry.type-collaboration {
+      border-left-color: #C7B3E5;
+    }
+    .entry.type-release {
+      border-left-color: #F38181;
+    }
+    .entry.type-other {
+      border-left-color: #90E0EF;
+    }
+    .entry h2 { font-size: 16px; margin: 0 0 8px 0; }
+    .entry p { font-size: 12px; opacity: 0.8; margin: 3px 0; }
+    .edit-delete-btn {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .edit-btn, .delete-btn {
+      background: #333; border: 1px solid #555; color: white; padding: 6px 12px;
+      border-radius: 4px; cursor: pointer; font-size: 12px; flex: 1;
+    }
+    .delete-btn { border-color: #884444; }
+    .edit-btn:hover { background: #444; }
+    .delete-btn:hover { background: #662222; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .topbar { display: flex; }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 50px);
+        padding: 15px;
+        z-index: 999;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+      .sidebar.active { display: flex; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 20px;
+        height: auto;
+        min-height: calc(100vh - 50px);
+      }
+      .form-grid { grid-template-columns: 1fr; }
+      #eventsDatabase { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">EDITOR</div>
+  </div>
+
+  <div class="sidebar">
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+    <h1 class="name">JAE LAURENT</h1>
+    <div class="buttons">
+      <a href="https://k1llajay.com/edit-database_editor" class="button">Upload To Database</a>
+      <a href="https://k1llajay.com/edit-player_editor" class="button">Upload To Player</a>
+      <a href="https://k1llajay.com/edit-events_editor" class="button">Upload To Events</a>
+      <a href="https://k1llajay.com/edit-podcast_editor" class="button">Upload To Podcast</a>
+      <a href="https://k1llajay.com/edit-portfolio_editor" class="button">Upload To Portfolio</a>
+      <a href="https://k1llajay.com/edit-home_editor" class="button">Upload To Home</a>
+    </div>
+    <div class="footer">
+      <a href="https://k1llajay.com">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Upload to Events</h1>
+    <div class="upload-box">
+      <div class="upload-section">
+        <h4>Event Details</h4>
+        <div class="form-grid">
+          <input id="eventTitleInput" type="text" placeholder="Event Title" />
+          <input id="eventDateInput" type="date" />
+          <textarea id="eventDescriptionInput" placeholder="Event Description (Optional)"></textarea>
+        </div>
+      </div>
+      <div class="upload-section">
+        <h4>Event Type</h4>
+        <div class="radio-group">
+          <div class="option-group">
+            <input type="radio" id="typeCollaboration" name="eventType" value="collaboration" />
+            <label for="typeCollaboration">Collaboration</label>
+          </div>
+          <div class="option-group">
+            <input type="radio" id="typeRelease" name="eventType" value="release" />
+            <label for="typeRelease">Release</label>
+          </div>
+          <div class="option-group">
+            <input type="radio" id="typeOther" name="eventType" value="other" checked />
+            <label for="typeOther">Other</label>
+          </div>
+        </div>
+      </div>
+      <button id="addUpdateBtn" class="primary-btn">Add Event</button>
+      <button id="importBtn" class="secondary-btn">Import from Database</button>
+    </div>
+    <div id="eventsDatabase"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.js" async defer></script>
+  <script>
+    if (!window.firebase) {
+      alert('Firebase failed to load. Please check your network connection or firewall settings.');
+      throw new Error('Firebase failed to load');
+    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('events');
+
+    let entries = [];
+    let keys = [];
+    let editing = null;
+    let showAllUpcoming = false;
+    let showAllPast = false;
+
+    function formatDateMMDDYYYY(dateValue) {
+      if (!dateValue) return '';
+      const date = new Date(dateValue + 'T00:00:00');
+      if (isNaN(date)) return dateValue;
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    }
+
+    function getEventTypeClass(event) {
+      const eventType = (event.type || "").toLowerCase();
+      const typeMap = {
+        'collaboration': 'type-collaboration',
+        'release': 'type-release'
+      };
+      return typeMap[eventType] || 'type-other';
+    }
+
+    function render() {
+      const container = document.getElementById('eventsDatabase');
+      container.innerHTML = '';
+      
+      const today = new Date(2026, 0, 30);
+      const upcoming = entries.filter((e, i) => {
+        const eDate = new Date(e.date + 'T00:00:00');
+        return eDate >= today;
+      });
+      
+      const past = entries.filter((e, i) => {
+        const eDate = new Date(e.date + 'T00:00:00');
+        return eDate < today;
+      });
+
+      const sortByDate = (a, b) => {
+        const da = a.date ? new Date(a.date + 'T00:00:00') : new Date();
+        const db = b.date ? new Date(b.date + 'T00:00:00') : new Date();
+        return da - db;
+      };
+
+      upcoming.sort(sortByDate);
+      past.sort((a, b) => sortByDate(b, a)); // Reverse sort for past events
+
+      const upcomingToShow = showAllUpcoming ? upcoming : upcoming.slice(0, 3);
+      const pastToShow = showAllPast ? past : past.slice(0, 3);
+
+      // UPCOMING EVENTS SECTION
+      if (upcoming.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">UPCOMING EVENTS</div>
+            <button onclick="toggleUpcoming()">${showAllUpcoming ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        upcomingToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          container.innerHTML += `
+            <div class="entry ${getEventTypeClass(e)}">
+              <h2>${e.title}</h2>
+              ${e.date ? `<p>DATE: ${formatDateMMDDYYYY(e.date)}</p>` : '<p>DATE: TBA</p>'}
+              ${e.description ? `<p style="margin-top: 8px; opacity: 0.9; text-transform: none; font-size: 13px;">${e.description}</p>` : ''}
+              <div class="edit-delete-btn">
+                <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+                <button onclick="deleteEvent(${actualIndex})" class="delete-btn">Delete</button>
+              </div>
+            </div>`;
+        });
+      }
+
+      // PAST EVENTS SECTION
+      if (past.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">PAST EVENTS</div>
+            <button onclick="togglePast()">${showAllPast ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        pastToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          container.innerHTML += `
+            <div class="entry ${getEventTypeClass(e)}">
+              <h2>${e.title}</h2>
+              ${e.date ? `<p>DATE: ${formatDateMMDDYYYY(e.date)}</p>` : '<p>DATE: TBA</p>'}
+              ${e.description ? `<p style="margin-top: 8px; opacity: 0.9; text-transform: none; font-size: 13px;">${e.description}</p>` : ''}
+              <div class="edit-delete-btn">
+                <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+                <button onclick="deleteEvent(${actualIndex})" class="delete-btn">Delete</button>
+              </div>
+            </div>`;
+        });
+      }
+
+      if (!upcoming.length && !past.length) {
+        container.innerHTML += `<div class="section-title">No events</div>`;
+      }
+    }
+
+    function toggleUpcoming() {
+      showAllUpcoming = !showAllUpcoming;
+      render();
+    }
+
+    function togglePast() {
+      showAllPast = !showAllPast;
+      render();
+    }
+
+    function save() {
+      const title = document.getElementById('eventTitleInput').value.trim();
+      const date = document.getElementById('eventDateInput').value;
+      const description = document.getElementById('eventDescriptionInput').value.trim();
+      const type = document.querySelector('input[name="eventType"]:checked').value;
+
+      if (!title) return alert('Title required');
+      if (!date) return alert('Date required');
+
+      const data = { title, date, description, type };
+
+      if (editing !== null) {
+        dbRef.child(keys[editing]).set(data).then(reset);
+      } else {
+        dbRef.push(data);
+        reset();
+      }
+    }
+
+    window.edit = i => {
+      const e = entries[i];
+      document.getElementById('eventTitleInput').value = e.title;
+      document.getElementById('eventDateInput').value = e.date || '';
+      document.getElementById('eventDescriptionInput').value = e.description || '';
+      document.querySelector(`input[value="${e.type || 'other'}"]`).checked = true;
+      editing = i;
+      document.getElementById('addUpdateBtn').textContent = 'Update Event';
+    };
+
+    window.deleteEvent = i => {
+      if (confirm('Delete this event?')) {
+        dbRef.child(keys[i]).remove();
+      }
+    };
+
+    function reset() {
+      document.getElementById('eventTitleInput').value = '';
+      document.getElementById('eventDateInput').value = '';
+      document.getElementById('eventDescriptionInput').value = '';
+      document.getElementById('typeOther').checked = true;
+      editing = null;
+      document.getElementById('addUpdateBtn').textContent = 'Add Event';
+    }
+
+    dbRef.on('value', snap => {
+      const val = snap.val() || {};
+      entries = Object.values(val);
+      keys = Object.keys(val);
+      render();
+    });
+
+    document.getElementById('addUpdateBtn').onclick = save;
+
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+
+    // === IMPORT FROM DATABASE ===
+    document.getElementById('importBtn').onclick = () => {
+      const importBtn = document.getElementById('importBtn');
+      importBtn.disabled = true;
+      importBtn.textContent = 'Importing...';
+
+      const cleanupMusicApp = () => {
+        try {
+          const app = firebase.app('musicDB');
+          try {
+            firebase.database(app).goOffline();
+          } catch (e) {}
+          setTimeout(() => {
+            app.delete().catch(() => {});
+          }, 250);
+        } catch (e) {}
+      };
+
+      const normalizeDate = (rawDate) => {
+        if (!rawDate) return '';
+        const value = String(rawDate).trim();
+        if (value.includes('-')) return value;
+        if (value.includes('/')) {
+          const parts = value.split('/').map(p => p.trim());
+          if (parts.length === 3) {
+            const [y, m, d] = parts;
+            const year = y.length === 4 ? y : `20${y}`;
+            const month = String(m).padStart(2, '0');
+            const day = String(d).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+          }
+        }
+        return value;
+      };
+
+      const slugify = (text) => {
+        return String(text || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 120);
+      };
+
+      const chunkObjectEntries = (obj, size) => {
+        const entries = Object.entries(obj);
+        const chunks = [];
+        for (let i = 0; i < entries.length; i += size) {
+          chunks.push(entries.slice(i, i + size));
+        }
+        return chunks;
+      };
+
+      const musicDbConfig = {
+        apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+        authDomain: "music-database-3ee0a.firebaseapp.com",
+        databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+        projectId: "music-database-3ee0a",
+        storageBucket: "music-database-3ee0a.firebasestorage.app",
+        messagingSenderId: "148257189959",
+        appId: "1:148257189959:web:3e52404367191d5835c162"
+      };
+
+      cleanupMusicApp();
+
+      const musicApp = firebase.initializeApp(musicDbConfig, 'musicDB');
+      const musicDbRefExternal = firebase.database(musicApp).ref('musicDatabase');
+
+      Promise.all([
+        musicDbRefExternal.once('value'),
+        dbRef.once('value')
+      ]).then(([musicSnap, eventsSnap]) => {
+        const musicData = musicSnap.val() || {};
+        const existingEvents = eventsSnap.val() || {};
+
+        const existingIds = new Set(Object.keys(existingEvents));
+
+        const updates = {};
+        let skippedNoDate = 0;
+        let skippedDuplicate = 0;
+
+        Object.values(musicData).forEach(track => {
+          if (!track.releaseDate) {
+            skippedNoDate++;
+            return;
+          }
+
+          const date = normalizeDate(track.releaseDate);
+          const title = track.title || 'Untitled';
+          const artist = track.artist || 'Jae Laurent';
+          const fullTitle = `${title} — ${artist}`;
+          const eventId = `${date}_${slugify(fullTitle)}`;
+
+          if (existingIds.has(eventId)) {
+            skippedDuplicate++;
+            return;
+          }
+
+          existingIds.add(eventId);
+
+          const isCollaboration = artist.toLowerCase().includes('&') || artist.toLowerCase().includes('feat');
+          const eventType = isCollaboration ? 'collaboration' : 'release';
+
+          updates[eventId] = {
+            title: fullTitle,
+            date: date,
+            description: '',
+            type: eventType
+          };
+        });
+
+        const updateEntries = Object.entries(updates);
+        if (!updateEntries.length) {
+          cleanupMusicApp();
+          importBtn.disabled = false;
+          importBtn.textContent = 'Import from Database';
+          alert('No new events to import (all duplicates or missing dates).');
+          return;
+        }
+
+        const chunks = chunkObjectEntries(updates, 100);
+        let chunkIndex = 0;
+
+        const runNext = () => {
+          if (chunkIndex >= chunks.length) {
+            dbRef.once('value').then(snap => {
+              const val = snap.val() || {};
+              entries = Object.values(val);
+              keys = Object.keys(val);
+              render();
+            });
+            cleanupMusicApp();
+            importBtn.disabled = false;
+            importBtn.textContent = 'Import from Database';
+            alert(`Imported ${updateEntries.length} events!\nSkipped duplicates: ${skippedDuplicate}\nSkipped missing dates: ${skippedNoDate}`);
+            return;
+          }
+
+          const chunkUpdates = Object.fromEntries(chunks[chunkIndex]);
+          dbRef.update(chunkUpdates).then(() => {
+            chunkIndex++;
+            runNext();
+          }).catch(err => {
+            cleanupMusicApp();
+            importBtn.disabled = false;
+            importBtn.textContent = 'Import from Database';
+            alert('Import failed: ' + err.message);
+          });
+        };
+
+        runNext();
+      }).catch(err => {
+        cleanupMusicApp();
+        importBtn.disabled = false;
+        importBtn.textContent = 'Import from Database';
+        alert('Import failed: ' + err.message);
+      });
+    };
+  </script>
+</body>
+</html>
