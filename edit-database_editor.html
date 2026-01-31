@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Database</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 15px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      height: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      box-sizing: border-box;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
+    .sidebar {
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+    .button:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
+    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
+
+    .upload-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    .upload-section {
+      margin-bottom: 28px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    #releaseTitleInput {
+      grid-column: 1/-1;
+    }
+    .file-upload-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .file-upload-area label {
+      flex: 1;
+      min-width: 150px;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
+    }
+    input, select {
+      background: transparent;
+      border: 1px solid #444;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'beyoncefont', monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+    input::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
+
+    .primary-btn {
+      background: #00ff99;
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'beyoncefont', monospace;
+      text-transform: uppercase;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn {
+      background: #222;
+      border: 1px solid #666;
+      color: white;
+      margin-left: 10px;
+    }
+    .secondary-btn:hover { border-color: #999; }
+
+    #musicDatabase { margin-top: 40px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      letter-spacing: 4px;
+      opacity: 0.85;
+      margin: 10px 0;
+    }
+    .section-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header button {
+      font-family: inherit;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: white;
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+    .section-header button:hover { background: #444; }
+    .entry {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 14px;
+      text-align: center;
+    }
+    .entry h2 { font-size: 16px; margin: 0 0 8px 0; }
+    .entry p { font-size: 12px; opacity: 0.8; margin: 3px 0; }
+    .edit-btn {
+      background: #333; border: 1px solid #555; color: white; padding: 6px 12px;
+      border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 10px;
+    }
+    .edit-btn:hover { background: #444; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .topbar { display: flex; }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 50px);
+        padding: 15px;
+        z-index: 999;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+      .sidebar.active { display: flex; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 20px;
+        height: auto;
+        min-height: calc(100vh - 50px);
+      }
+      .form-grid { grid-template-columns: 1fr; }
+      #musicDatabase { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">EDITOR</div>
+  </div>
+
+  <div class="sidebar">
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+    <h1 class="name">JAE LAURENT</h1>
+    <div class="buttons">
+      <a href="https://k1llajay.com/edit-database_editor" class="button">Upload To Database</a>
+      <a href="https://k1llajay.com/edit-player_editor" class="button">Upload To Player</a>
+      <a href="https://k1llajay.com/edit-events_editor" class="button">Upload To Events</a>
+      <a href="https://k1llajay.com/edit-podcast_editor" class="button">Upload To Podcast</a>
+      <a href="https://k1llajay.com/edit-portfolio_editor" class="button">Upload To Portfolio</a>
+      <a href="https://k1llajay.com/edit-home_editor" class="button">Upload To Home</a>
+    </div>
+    <div class="footer">
+      <a href="https://k1llajay.com">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Upload to Music Database</h1>
+    <div class="upload-box">
+      <div class="upload-section">
+        <h4>Music Entry</h4>
+        <div class="form-grid">
+          <input id="songTitle" type="text" placeholder="Album/Song Title" />
+          <input id="artistName" type="text" placeholder="Artist Name" />
+          <input id="upc" type="text" placeholder="UPC (Optional)" />
+          <input id="isrc" type="text" placeholder="ISRC (Optional)" />
+          <input id="releaseDate" type="date" placeholder="Release Date" />
+          <select id="tracks" class="glass p-2 w-1/4 min-w-[150px] text-white">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3 (SINGLE)</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6 (EP)</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="23">23</option>
+          <option value="24">24</option>
+          <option value="25">25</option>
+          <option value="26">26</option>
+          <option value="27">27</option>
+          <option value="28">28</option>
+          <option value="29">29</option>
+          <option value="30">30</option>
+          <option value="31">31</option>
+          <option value="32">32</option>
+          <option value="33">33</option>
+          <option value="34">34</option>
+          <option value="35">35</option>
+          <option value="36">36</option>
+          <option value="37">37</option>
+          <option value="38">38</option>
+          <option value="39">39</option>
+          <option value="40">40</option>
+          <option value="41">41</option>
+          <option value="42">42</option>
+          <option value="43">43</option>
+          <option value="44">44</option>
+          <option value="45">45</option>
+          <option value="46">46</option>
+          <option value="47">47</option>
+          <option value="48">48</option>
+          <option value="49">49</option>
+          <option value="50">50</option>
+      </select>
+        </div>
+      </div>
+      <div class="upload-section">
+        <div class="checkbox-row">
+          <input type="checkbox" id="unreleased" />
+          <label for="unreleased">Unreleased</label>
+        </div>
+        <button id="addUpdateBtn" class="primary-btn">Add to Database</button>
+      </div>
+    </div>
+    <div id="musicDatabase"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.js" async defer></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+      authDomain: "music-database-3ee0a.firebaseapp.com",
+      databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+      projectId: "music-database-3ee0a",
+      storageBucket: "music-database-3ee0a.firebasestorage.app",
+      messagingSenderId: "148257189959",
+      appId: "1:148257189959:web:3e52404367191d5835c162"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('musicDatabase');
+
+    let entries = [];
+    let keys = [];
+    let editing = null;
+    let showAllReleased = false;
+    let showAllUnreleased = false;
+
+    function formatDateMMDDYYYY(dateValue) {
+      if (!dateValue) return '';
+      const date = new Date(dateValue);
+      if (isNaN(date)) return dateValue;
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    }
+
+    function render() {
+      const container = document.getElementById('musicDatabase');
+      container.innerHTML = '';
+      
+      const released = entries.filter((e, i) => !e.unreleased);
+      const unreleased = entries.filter((e, i) => e.unreleased);
+
+      const sortByDate = (a, b) => {
+        const da = a.releaseDate ? new Date(a.releaseDate) : 0;
+        const db = b.releaseDate ? new Date(b.releaseDate) : 0;
+        return da - db;
+      };
+
+      released.sort(sortByDate);
+      unreleased.sort(sortByDate);
+
+      const releasedToShow = showAllReleased ? released : released.slice(-3).reverse();
+      const unreleasedToShow = showAllUnreleased ? unreleased : unreleased.slice(-3).reverse();
+
+      // Released section
+      if (released.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">RELEASED</div>
+            <button onclick="toggleReleased()">${showAllReleased ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        releasedToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          const tag = '';
+          container.innerHTML += `
+            <div class="entry">
+              <h2>${e.title} — ${e.artist}${tag}</h2>
+              ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+              ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+              ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              <p>Tracks: ${e.tracks || '—'}</p>
+              <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+            </div>`;
+        });
+      }
+
+      // Unreleased section
+      if (unreleased.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">UNRELEASED</div>
+            <button onclick="toggleUnreleased()">${showAllUnreleased ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        unreleasedToShow.forEach((e, i) => {
+          const actualIndex = entries.indexOf(e);
+          const tag = ' <span style="color:#ff0">(Unreleased)</span>';
+          container.innerHTML += `
+            <div class="entry">
+              <h2>${e.title} — ${e.artist}${tag}</h2>
+              ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
+              ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
+              ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              <p>Tracks: ${e.tracks || '—'}</p>
+              <button onclick="edit(${actualIndex})" class="edit-btn">Edit</button>
+            </div>`;
+        });
+      }
+    }
+
+    function toggleReleased() {
+      showAllReleased = !showAllReleased;
+      render();
+    }
+
+    function toggleUnreleased() {
+      showAllUnreleased = !showAllUnreleased;
+      render();
+    }
+
+    function save() {
+  const title = document.getElementById('songTitle').value.trim();
+  const artist = document.getElementById('artistName').value.trim() || 'Jae Laurent';
+  const upc = document.getElementById('upc').value.trim();
+  const isrc = document.getElementById('isrc').value.trim();
+  const tracks = document.getElementById('tracks').value;
+  const unreleased = document.getElementById('unreleased').checked;
+  const releaseDate = document.getElementById('releaseDate').value; // <-- new
+
+  if (!title) return alert('Title required');
+
+  const data = { title, artist, upc, isrc, tracks, unreleased, releaseDate };
+
+  if (editing !== null) {
+    dbRef.child(keys[editing]).set(data).then(reset);
+  } else {
+    dbRef.push(data);
+    reset();
+  }
+}
+
+    window.edit = i => {
+  const e = entries[i];
+  document.getElementById('songTitle').value = e.title;
+  document.getElementById('artistName').value = e.artist;
+  document.getElementById('upc').value = e.upc || '';
+  document.getElementById('isrc').value = e.isrc || '';
+  document.getElementById('releaseDate').value = e.releaseDate || ''; // <-- new
+  document.getElementById('tracks').value = e.tracks;
+  document.getElementById('unreleased').checked = e.unreleased;
+  editing = i;
+  document.getElementById('addUpdateBtn').textContent = 'Update Entry';
+};
+
+
+    function reset() {
+  document.getElementById('songTitle').value = '';
+  document.getElementById('artistName').value = '';
+  document.getElementById('upc').value = '';
+  document.getElementById('isrc').value = '';
+  document.getElementById('releaseDate').value = ''; // <-- new
+  document.getElementById('tracks').value = '1';
+  document.getElementById('unreleased').checked = false;
+  editing = null;
+  document.getElementById('addUpdateBtn').textContent = 'Add to Database';
+}
+
+
+    dbRef.on('value', snap => {
+      const val = snap.val() || {};
+      entries = Object.values(val);
+      keys = Object.keys(val);
+      render();
+    });
+
+    document.getElementById('addUpdateBtn').onclick = save;
+
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+  </script>
+</body>
+</html>
