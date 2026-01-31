@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>K1LLAJAY</title>
 <link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
 <style>
 @font-face {
   font-family: 'sitefont';
   src: url('beyoncefont.ttf') format('truetype');
+  font-display: swap;
 }
 
 /* ================= RESET ================= */
@@ -287,7 +290,7 @@ body {
 <div class="sidebar">
   <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
   <div class="name">
-    <a href="https://k1llajay.com/yaeyadir" style="color:white;text-decoration:none;">JAE LAURENT</a>
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
   </div>
 
   <div class="buttons">
@@ -301,7 +304,7 @@ body {
 
   <div class="footer">
     <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/database-upload">Upload</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
     <a href="https://k1llajay.com/terms">Terms</a> •
     <a href="https://k1llajay.com/privacy">Privacy</a>
     <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
@@ -318,8 +321,8 @@ body {
 </div>
 
 <!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js" async defer></script>
 
 <script>
 const firebaseConfig = {
