@@ -278,9 +278,11 @@ main.content {
             margin-left: 0;
             height: auto;
             overflow: visible;
+            padding: 16px;
         }
         #musicDatabase {
-            grid-template-columns: 1fr; /* 1 column on mobile */
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+            gap: 12px;
         }
     }
   </style>
