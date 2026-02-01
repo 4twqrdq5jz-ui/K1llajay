@@ -200,16 +200,10 @@
         font-size: 7px;
         margin-top: 5px;
       }
-      .main-content {
-        margin-left: 0;
-        padding: 20px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: minmax(200px, auto);
-        gap: 10px;
-        overflow-y: auto;
-        height: auto;
-        min-height: calc(100vh - 50px);
+      main.content {
+        min-height: calc(100vh - 50px); /* below topbar */
+        justify-content: center;
+        padding: 40px 16px;
       }
     }
     .main-content {
@@ -353,8 +347,8 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <script>
 // Firebase setup is fine
