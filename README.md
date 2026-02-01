@@ -2,6 +2,34 @@
 
 Official portfolio and media hub for **JAE LAURENT** — Artist, Producer, and Creator.
 
+## 🎙️ Upcoming Album
+
+SOUTH OF SOMEWHERE - OUT MARCH 13, 2026
+
+### Singles
+
+Singles from the album are... Jerk (12/28/2026), HIIT A LICK (Up Style) [1/23/2026], & learn2love With 4MIR (2/14/2026)
+
+### Tracklist & Features
+
+1. south of somewhere With Amari2x [intro]
+2. hiit a lick (up style)
+3. rivalry
+4. somber
+5. hurts [interlude]
+6. lost mentality
+7. gt3 With T.GAZZZE
+8. riot
+9. loss With Amari2x [interlude]
+10. vogue pt.2
+11. left4dead
+12. heated
+13. reclamation [interlude]
+14. kontrol With Nae Ka$h
+15. learn2love With 4MIR
+16. jerk
+17. encore [outro]
+
 ## 🌐 Website Overview
 
 K1llajay is a modern, full-featured web platform showcasing music, events, podcast content, and creative portfolio. Built with Firebase real-time database integration and optimized for maximum performance.
