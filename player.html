@@ -152,9 +152,17 @@
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
     .main-content::-webkit-scrollbar { display: none; }
-    .main-content { -ms-overflow-style: none; scrollbar-width: none;
-      margin-left: 260px; flex: 1; overflow-y: auto; overflow-x: hidden;
-      padding: 20px; height: calc(100dvh - 35px); scroll-behavior: smooth; }
+    .main-content {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      margin-left: 260px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 20px;
+      min-height: calc(100dvh - 35px);
+      scroll-behavior: smooth;
+    }
 
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 16px; }
     h2.section { font-size: 20px; letter-spacing: .18em; opacity: .9; margin: 0; }
@@ -327,7 +335,7 @@
         position: fixed;
         top: 35px;
         left: 0;
-        z-index: 2000;
+        z-index: 2101;
         backdrop-filter: blur(9px);
       }
 
@@ -551,14 +559,14 @@
   </style>
 </head>
 <body>
-  <!-- BLACK HISTORY MONTH BANNER -->
-  <div class="bhm-banner">
-    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
-  </div>
-
   <div class="topbar">
     <span class="hamburger">&#9776;</span>
     <h1 class="top-name">PLAYER</h1>
+  </div>
+
+  <!-- BLACK HISTORY MONTH BANNER -->
+  <div class="bhm-banner">
+    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
   </div>
 
   <div class="sidebar">
