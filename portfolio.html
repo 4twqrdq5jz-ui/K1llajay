@@ -197,7 +197,7 @@
 
   .main-content {
       margin-left: 0px;
-      margin-top: 105px;
+      margin-top: 75px;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -207,7 +207,12 @@
       height: calc(100dvh - 85px);
       position: relative;
       z-index: 1;
+      box-sizing: border-box;
     }
+
+  .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
     .grid-item { 
       backdrop-filter: blur(9px); 
       border: 1px solid #333; 
