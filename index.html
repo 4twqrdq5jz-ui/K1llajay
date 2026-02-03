@@ -386,6 +386,10 @@ body {
       position: relative;
       z-index: 1;
     }
+
+  .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
     .grid-item { 
       backdrop-filter: blur(9px); 
       border: 1px solid #333; 
