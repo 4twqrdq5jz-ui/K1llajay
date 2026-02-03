@@ -327,16 +327,20 @@ body {
 @media (max-width: 768px) {
   body {
     flex-direction: column;
-    padding-top: 35px;
+    padding-top: 0;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
   }
 
   .topbar {
     display: flex;
     position: fixed;
-    top: 35px;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: 35px;
     padding: 0 15px;
     padding-top: max(0px, env(safe-area-inset-top));
     align-items: center;
@@ -360,10 +364,10 @@ body {
   .sidebar {
     display: none;
     position: fixed;
-    top: 85px;
+    top: 35px;
     left: 0;
     width: 100%;
-    height: calc(100dvh - 85px);
+    height: calc(100dvh - 35px);
     z-index: 1900;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -375,14 +379,14 @@ body {
 
   .main-content {
       margin-left: 0px;
-      margin-top: 85px;
+      margin-top: 35px;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-auto-rows: minmax(250px, auto);
       gap: 10px;
       overflow-y: auto;
-      height: calc(100dvh - 85px);
+      height: calc(100dvh - 35px);
       position: relative;
       z-index: 1;
     }
@@ -593,6 +597,7 @@ const modalImg = document.getElementById("img01");
 grid.onclick = e => {
   if (e.target.tagName === "IMG") {
     document.querySelector(".sidebar").classList.remove("active");
+    document.body.classList.remove("sidebar-open");
     modal.classList.add("open");
     modalImg.src = e.target.src;
   }
@@ -605,8 +610,10 @@ modal.onclick = e =>
   e.target === modal && modal.classList.remove("open");
 
 /* === MOBILE SIDEBAR === */
-document.querySelector(".hamburger").onclick = () =>
+document.querySelector(".hamburger").onclick = () => {
   document.querySelector(".sidebar").classList.toggle("active");
+  document.body.classList.toggle("sidebar-open");
+};
 
 /* === INTRO === */
 const intro = document.getElementById("intro");
