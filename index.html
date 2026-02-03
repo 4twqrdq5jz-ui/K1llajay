@@ -488,12 +488,14 @@ body {
     padding: 15px;
     padding-bottom: max(40px, calc(15px + env(safe-area-inset-bottom)));
     overflow-y: auto;
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 
   .grid-item {
     aspect-ratio: 1;
+    border-radius: 8px;
   }
 
   .intro-content h1 {
