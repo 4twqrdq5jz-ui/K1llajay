@@ -436,10 +436,10 @@ body {
 
 @keyframes scrollBanner {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(-100vw);
   }
 }
 
@@ -448,8 +448,9 @@ body {
   z-index: 2;
   color: white;
   font-size: 20px;
-  animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  animation: scrollBanner 20s linear infinite;
   will-change: transform;
+  white-space: nowrap;
 }
 
 html, body {
