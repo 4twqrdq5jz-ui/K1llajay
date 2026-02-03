@@ -105,26 +105,41 @@ All assets and resources have been optimized for **100% faster loading**:
 ```
 K1llajay/
 ├── index.html                 # Home/Portfolio gallery
+├── 1.html                      # Album/Music showcase page
 ├── events.html                # Calendar & event management
 ├── music.html                 # Music player & tracks
 ├── player.html                # Alternative music player
 ├── podcast.html               # Podcast episodes
 ├── portfolio.html             # Nature photography gallery
+├── laurent-by-jae-laurent.html # Laurent storefront/boutique
 ├── music-database.html        # Database viewer
 ├── my-links.html              # Link aggregator
 ├── privacy.html               # Privacy policy
 ├── terms.html                 # Terms & conditions
 ├── maintenance.html           # Maintenance page
+├── 404.html                   # 404 error page
 ├── edit-events_editor.html    # Admin: Event management
 ├── edit-player_editor.html    # Admin: Music upload
 ├── edit-podcast_editor.html   # Admin: Podcast upload
 ├── edit-portfolio_editor.html # Admin: Image upload
 ├── edit-home_editor.html      # Admin: Slides/content upload
 ├── edit-database_editor.html  # Admin: Database manager
-├── beyoncefont.ttf            # Custom font
-├── IMG_3309.gif               # Background image
+├── backend/                   # Backend server files
+│   ├── index.js               # Main server application
+│   └── .env                   # Environment variables
+├── beyoncefont.ttf            # Custom font (primary)
+├── Andasia Personal Use Only.ttf # Alternative font
+├── IMG_3309.gif               # Black History Month banner image
 ├── IMG_3214.JPEG              # Profile image
+├── intro-gif-1.gif through intro-gif-5.gif # Intro animations
+├── Soulaan-flag-v0-26ghsv12s7cb1.webp # Featured image asset
+├── amazon.svg                 # Amazon logo
+├── apple.svg                  # Apple logo
+├── spotify.svg                # Spotify logo
+├── tidal.svg                  # Tidal logo
 ├── favicon.ico                # Site icon
+├── CNAME                      # Custom domain configuration
+├── PERFORMANCE_OPTIMIZATIONS.md # Performance documentation
 └── README.md                  # This file
 ```
 
@@ -231,7 +246,43 @@ K1llajay/
 
 ---
 
+## 🎉 Black History Month Celebration
+
+K1llajay features a dedicated **Black History Month Banner** celebrating Black excellence and culture throughout February. 
+
+**Banner Features:**
+- 🎬 Animated scrolling banner with celebratory text
+- 📍 Fixed positioning with highest z-index (2100) for visibility
+- 🎨 Dark overlay with backdrop blur effect
+- 📱 Fully responsive on all devices
+- 🔄 Smooth animations across the entire site
+
+The banner appears on all pages and is optimized for both desktop and mobile viewing, ensuring the celebration of Black History Month is prominent and accessible to all visitors.
+
+---
+
 ## 📊 Changelog
+
+### Version 2.1.0 - February 2, 2026
+
+#### Black History Month Banner Fixes
+- 🎉 **Banner Z-Index Enhancement**: Updated `.bhm-banner` z-index from 1 to 2100 across all pages for proper visibility
+- 📱 **Mobile Layout Optimization**: Fixed responsive positioning of banner, topbar, and sidebar on mobile devices
+- 🎯 **Stacking Context Fix**:
+  - Banner: z-index 2100 (highest priority)
+  - Topbar: z-index 2000, positioned at top: 35px (below banner)
+  - Sidebar: z-index 1900, positioned at top: 85px (below banner + topbar)
+  - Content: Proper margin adjustments for banner + topbar height
+- 📐 **Mobile Padding Adjustments**:
+  - Desktop: 35px padding (banner only)
+  - Mobile: 85px padding (banner 35px + topbar 50px)
+- ✅ **Pages Updated** (14 total):
+  - Content: 1.html, index.html, events.html, music.html, player.html, podcast.html, portfolio.html, my-links.html, privacy.html, terms.html, maintenance.html, music-database.html, laurent-by-jae-laurent.html
+  - Admin Editors: All 6 editor pages (edit-*_editor.html)
+- 🎨 **Result**: Seamless banner experience with no overlapping elements and proper mobile responsiveness
+
+#### New Pages
+- 🛍️ **Laurent Storefront** (laurent-by-jae-laurent.html): New boutique/storefront page showcasing products or services with full Black History Month banner integration and responsive mobile design
 
 ### Version 2.0.0 - January 31, 2026
 
