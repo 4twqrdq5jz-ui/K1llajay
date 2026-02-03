@@ -386,7 +386,7 @@ body {
 
   .main-content {
       margin-left: 0px;
-      margin-top: 75px;
+      margin-top: 0px;
       padding: 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -396,6 +396,7 @@ body {
       height: calc(100dvh - 85px);
       position: relative;
       z-index: 1;
+      box-sizing: border-box;
     }
 
   .sidebar.active ~ .main-content {
