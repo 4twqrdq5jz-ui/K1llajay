@@ -143,96 +143,88 @@
     }
      /* Mobile Styles */
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        justify-content: flex-start;
-        height: auto;
-        min-height: 100dvh;
-        padding-top: 85px;
-      }
-      /* Top bar */
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 0 15px;
-        padding-top: max(0px, env(safe-area-inset-top));
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        width: 100%;
-        height: 50px;
-        position: fixed;
-        top: 35px;
-        left: 0;
-        z-index: 2101;
-        backdrop-filter: blur(9px);
-      }
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-        color: white;
-        padding: 5px;
-      }
-      .top-name {
-        font-size: 16px;
-        margin: 0 auto;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        position: relative;
-        left: 0;
-      }
-      /* Sidebar */
-      .sidebar {
-        display: none;
-        position: fixed;
-        top: 85px;
-        left: 0;
-        width: 100%;
-        height: calc(100dvh - 85px);
-        padding: 15px;
-        z-index: 1900;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 1px solid #333;
-        backdrop-filter: blur(9px);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      .sidebar.active {
-        display: flex;
-      }
-      .profile-img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 10px;
-      }
-      .name {
-        font-size: 28px;
-        margin-bottom: 20px;
-      }
-      /* Footer */
-      .footer {
-        position: relative;
-        bottom: 0;
-        width: 100%;
-        padding: 10px;
-        background: rgba(0,0,0,0.200);
-        margin-top: auto;
-        font-size: 9px;
-        gap: 3px;
-      }
-      .footer a, .footer-dot { font-size: 9px; }
-      .copyright {
-        font-size: 7px;
-        margin-top: 5px;
-      }
-      main.content {
-        min-height: calc(100vh - 85px); /* below topbar */
-        justify-content: center;
-        padding: 40px 16px;
-      }
+  body {
+    flex-direction: column;
+    padding-top: 35px;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 2101;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 85px);
+    z-index: 1900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .main-content {
+      margin-left: 0px;
+      margin-top: 105px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(250px, auto);
+      gap: 10px;
+      overflow-y: auto;
+      height: calc(100dvh - 85px);
+      position: relative;
+      z-index: 1;
     }
+    .grid-item { 
+      backdrop-filter: blur(9px); 
+      border: 1px solid #333; 
+      overflow: hidden; 
+      cursor: pointer; 
+      border-radius: 8px; 
+    }
+    .grid-item img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      will-change: transform, filter;
+    }
+  }
     .main-content {
-      margin-left: 260px;
+      margin-left: 206px;
       flex: 1;
       padding: 20px;
       display: grid;
@@ -242,13 +234,24 @@
       overflow-y: auto; /* Correct element to have scroll */
       height: calc(100vh - 35px); /* Set a height to enable scrolling */
     }
-    .grid-item { backdrop-filter: blur(9px); border: 1px solid #333; overflow: hidden; cursor: pointer; border-radius: 8px; }
-    .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-    .grid-item img:hover { transform: scale(1.05); } /* Added a hover effect */
+    .grid-item { 
+      backdrop-filter: blur(9px); 
+      border: 1px solid #333; 
+      overflow: hidden; 
+      cursor: pointer; 
+      border-radius: 8px; 
+    }
+    .grid-item img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      will-change: transform, filter;
+    }
 
     /* 5. MODAL */
     .modal { 
-      display: none; 
+      display: none !important; 
       position: fixed; 
       z-index: 1000; 
       left: 0; 
@@ -257,6 +260,8 @@
       height: 100%; 
       backdrop-filter: blur(9px); 
       overflow: auto; /* Allow modal to scroll if content is too big */ 
+      transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: opacity, backdrop-filter;
     }
     .modal::before {
       content: "";
@@ -369,25 +374,21 @@
       letter-spacing: 4px;
       text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
       white-space: nowrap;
-      animation: scrollBanner 15s linear infinite;
+      animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
     }
 
     @keyframes scrollBanner {
       0% {
-        transform: translateX(100%);
-      }
-      100% {
         transform: translateX(-100%);
       }
-    }
-
-    html, body {
-      padding-top: 35px;
+      100% {
+        transform: translateX(100%);
+      }
     }
 
     @media (max-width: 768px) {
       html, body {
-        padding-top: 85px;
+        padding-top: 0;
       }
     }
   </style>
@@ -398,6 +399,7 @@
     <div class="hamburger" onclick="toggleSidebar()">☰</div>
     <h1 class="top-name">PORTFOLIO</h1>
   </div>
+
 
   <!-- BLACK HISTORY MONTH BANNER -->
   <div class="bhm-banner">
@@ -495,7 +497,9 @@ closeBtn.onclick = () => modal.style.display = "none";
 modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
 function toggleSidebar() {
-      document.querySelector('.sidebar').classList.toggle('active');
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
     }
 
     document.addEventListener('click', (e) => {
@@ -504,6 +508,7 @@ function toggleSidebar() {
         const topbar = document.querySelector('.topbar');
         if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
           sidebar.classList.remove('active');
+          document.body.classList.remove('sidebar-open');
         }
       }
     });
