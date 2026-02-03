@@ -148,7 +148,7 @@ body {
 /* ================= GRID (SCROLL CONTAINER) ================= */
 .main-content {
   margin-left: 260px;
-  height: calc(100dvh - 35px);
+  min-height: calc(100dvh - 35px);
   overflow-y: auto;
   padding: 20px;
   box-sizing: border-box;
@@ -328,7 +328,7 @@ body {
     align-items: center;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,0.15);
-    z-index: 2000;
+    z-index: 2101;
   }
 
   .hamburger {
@@ -446,11 +446,6 @@ html, body {
 
 <body>
 
-<!-- BLACK HISTORY MONTH BANNER -->
-<div class="bhm-banner">
-  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
-</div>
-
 <!-- INTRO -->
 <div class="intro" id="intro">
   <img class="intro-gif" id="introGif" src="" alt="Intro">
@@ -461,6 +456,11 @@ html, body {
 <div class="topbar">
   <div class="hamburger">☰</div>
   <div class="top-name">JAE LAURENT</div>
+</div>
+
+<!-- BLACK HISTORY MONTH BANNER -->
+<div class="bhm-banner">
+  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
 </div>
 
 <!-- SIDEBAR -->
