@@ -595,6 +595,7 @@ body {
         border: 1px solid rgba(255,255,255,0.2);
         backdrop-filter: blur(9px);
         margin: auto;
+        top: 40px;
       }
       .overlay-close {
         position: fixed;
@@ -777,6 +778,28 @@ html, body {
   <!-- Lyrics/Credits Overlay -->
   <aside id="overlay">
     <div id="overlayContent">
+      <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">X</button>
+      <div class="track-header">
+        <button id="prevTrackBtn" class="prev-track-btn" onclick="prevTrack()" disabled="">←</button>
+        <div class="track-info">
+          <h1 id="title" class="track-title">jerk</h1>
+          <h3 id="artist" class="track-artist">By Jae Laurent</h3>
+        </div>
+        <button id="nextTrackBtn" class="next-track-btn" onclick="nextTrack()">→</button>
+      </div>
+      <div class="sub-toggle">
+        <span id="lyricsTab" class="activeTab" onclick="switchTab('lyrics')">LYRICS</span>
+        <span id="creditsTab" onclick="switchTab('credits')">CREDITS</span>
+      </div>
+      <div id="lyrics" class="tab-content activeTab"><div>Bloom<br>I don't really know what to talk about, like<br>Pick up the phone xp quit playin'<br><br>Yeah, they talkin' all that mess<br>But I'm out here livin' blessed<br>Call me what you want, I don't give a fuck<br>I'm just out here stackin' up<br>I'm just out here stackin' up<br><br>They call me a jerk, but I don't give a damn<br>Stay in my lane, got my own game plan<br>Haters gonna hate, but I'm still the man<br>Living my life, doin' all I can<br><br>Walkin' through the city, got that swagger on lock<br>People talkin' shit, but I ain't gonna stop<br>Head held high, I'm a king on my throne<br>Hustle every day, yeah, I do it on my own<br>They call me a jerk, but they jealous as fuck<br>Wanna bring me down, I don't give a fuck<br>Keep my circle tight, no room for the fake<br>Risin' to the top, ain't takin' no breaks<br><br>They call me a jerk, I don't give a damn<br>Stay in my lane, got my own game plan<br>Haters gonna hate, but I'm still the man<br>Living my life, doin' all I can<br><br>Got a chip on my shoulder, attitude on blast<br>Movin' fast, can't catch me, I'm built to last<br>Talk behind my back, but they fear me in the light<br>I'm a star, shinin' bright, in the darkest night<br>They wanna see me fail, but I'm too damn strong<br>Playin' my cards right, can't do me wrong<br>They call me a jerk, but I'm confident as fuck<br>Doin' what I want, ain't got no regrets, bruh<br><br>They call me a jerk, I don't give a damn<br>Stay in my lane, got my own game plan<br>Haters gonna hate, but I'm still the man<br>Living my life, doin' all I can<br><br>Swagger on a hundred, got no time for lames<br>Focus on my goals, not playin' their games<br>Keep it real, stay true to my hustle<br>No matter what they say, I'm flexin' my muscle<br>They say I'm a jerk, but I'm just livin' free<br>Makin' moves, breakin' rules, ain't no stoppin' me<br>Goin' all out, yeah, I'm chasin' my dreams<br>In this game I'm the MVP<br><br>They call me a jerk, I don't give a damn<br>Stay in my lane, got my own game plan<br>Haters gonna hate, but I'm still the man<br>Living my life, doin' all I can (Pick up the phone xp quit playin')</div></div>
+      <div id="credits" class="tab-content"><p>PERFORMED BY Jae Laurent / WRITTEN BY JE'VEON JEFFERSON / MIXED BY Jae Laurent / RECORDED BY Jae Laurent</p></div>
+      <div class="service-logos">
+        <a id="link-apple" href="https://music.apple.com/us/album/jerk-single/1858763008" target="_blank"><img src="apple.svg" alt="Apple Music"></a>
+        <a id="link-spotify" href="https://open.spotify.com/album/5l8U7dc7jMVaqOOpSb8ErS?si=kdGiQgTKRIGFqdJCnn92cA" target="_blank"><img src="spotify.svg" alt="Spotify"></a>
+        <a id="link-amazon" href="https://music.amazon.com/albums/B0G56HRNSD?marketplaceId=ATVPDKIKX0DER&amp;musicTerritory=US&amp;ref=dm_sh_Nz2qsmMkxmmXTRgNHWyVOtaXw" target="_blank"><img src="amazon.svg" alt="Amazon Music"></a>
+        <a id="link-tidal" href="https://tidal.com/album/479046762/u" target="_blank"><img src="tidal.svg" alt="Tidal"></a>
+      </div>
+    </div>
       <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">X</button>
       <div class="track-header">
         <button id="prevTrackBtn" class="prev-track-btn" onclick="prevTrack()">←</button>
