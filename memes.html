@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>MEMES & VIDEOS — JAE LAURENT</title>
+<link rel="icon" href="favicon.ico">
+
+<style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
+
+html {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+  z-index: 3000;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: border-color, color;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  filter: brightness(0.4);
+  border-radius: inherit;
+  z-index: -1;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.button:hover::before {
+  filter: brightness(1);
+}
+
+.button:hover {
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
+
+/* ================= GRID (SCROLL CONTAINER) ================= */
+.main-content {
+  margin-left: 260px;
+  min-height: calc(100dvh - 35px);
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: 22px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 10px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+.grid-item {
+  backdrop-filter: blur(10px);
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, box-shadow;
+}
+
+.grid-item:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.grid-item:hover img {
+  filter: brightness(0.85);
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 255, 153, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: black;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.grid-item:hover .play-button {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: #00ff99;
+}
+
+.grid-item img {
+  /* Prevent Safari from unloading */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, backdrop-filter;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+.modal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+.modal.open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  padding-top: 50px;
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.close {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  font-size: 36px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+  z-index: 2001;
+}
+
+@media (max-width: 768px) {
+  .close {
+    top: 85px;
+  }
+}
+
+/* ================= INTRO GIF ================= */
+.intro {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.8);
+  opacity: 1;
+  z-index: 9999;
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, visibility;
+}
+
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+.intro-gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  animation: gifFadeIn 0.6s ease-in-out forwards;
+}
+
+.intro-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 3001;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: 2px;
+}
+
+@keyframes gifFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding-top: 35px;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 2101;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 85px);
+    z-index: 1900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .main-content {
+      margin-left: 0px;
+      margin-top: 35px;
+      padding: 20px;
+      padding-top: 68px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(250px, auto);
+      gap: 10px;
+      overflow-y: auto;
+      height: calc(100dvh - 85px);
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+  .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
+    .grid-item { 
+      backdrop-filter: blur(9px); 
+      border: 1px solid #333; 
+      overflow: hidden; 
+      cursor: pointer; 
+      border-radius: 8px; 
+    }
+    .grid-item img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      will-change: transform, filter;
+    }
+
+  .intro-content h1 {
+    font-size: 36px;
+  }
+
+  .intro-content p {
+    font-size: 13px;
+  }
+  .modal-content {
+      padding-top: 70px;
+      max-width: 90vw;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+}
+
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
+  </style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <img class="intro-gif" id="introGif" src="" alt="Intro">
+  <div class="intro-text">happy Black History Month</div>
+</div>
+
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+    <div class="top-name">MEMES & VIDEOS</div>
+<!-- BLACK HISTORY MONTH BANNER -->
+<div class="bhm-banner">
+  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+  <div class="name">
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
+  </div>
+
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/playe style="display:none;">
+  <video class="modal-content" id="vid01" style="display:none;" controls></videor" class="button">All Releases</a>
+    <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
+    <a href="https://k1llajay.com/events" class="button">Events</a>
+    <a href="https://k1llajay.com/memes" class="button">Memes & Videos</a>
+  </div>
+
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/edit-memes_editor">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="main-content" id="grid-container"></div>
+
+<!-- MODAL -->
+<div class="modal" id="myModal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+// Load both memes and memevideos
+Promise.all([
+  db.ref("memes").once("value"),
+  db.ref("memevideos").once("value")
+]).then(([memesSnap, videosSnap]) => {
+  const memesData = memesSnap.val() || {};
+  const videosData = videosSnap.val() || {};
+  
+  // Combine and sort by uploadedAt
+  const combined = [];
+  
+  Object.keys(memesData).forEach(k => {
+    combined.push({
+      url: memesData[k].url || memesData[k],
+      uploadedAt: memesData[k].uploadedAt || 0,
+      type: 'image'
+    });
+  });
+  
+  Object.keys(videosData).forEach(k => {
+    combined.push({
+      url: videosData[k].url || videosData[k],
+      uploadedAt: videosData[k].uploadedAt || 0,
+      type: 'video'
+    });
+const modalVid = document.getElementById("vid01");
+
+grid.onclick = e => {
+  if (e.target.tagName === "IMG" || e.target.classList.contains("play-button")) {
+    document.querySelector(".sidebar").classList.remove("active");
+    document.body.classList.remove("sidebar-open");
+    
+    const gridItem = e.target.closest(".grid-item");
+    const type = gridItem.dataset.type;
+    const src = gridItem.dataset.src;
+    
+    modal.classList.add("open");
+    
+    if (type === 'image') {
+      modalImg.src = src;
+      modalImg.style.display = 'block';
+      modalVid.style.display = 'none';
+      modalVid.src = '';
+    } else {
+      modalVid.src = src;
+      modalVid.style.display = 'block';
+      modalImg.style.display = 'none';
+    }
+  }
+};
+
+document.querySelector(".close").onclick = () => {
+  modal.classList.remove("open");
+  modalVid.pause();
+  modalVid.src = '';
+};
+
+modal.onclick = e => {
+  if (e.target === modal) {
+    modal.classList.remove("open");
+    modalVid.pause();
+    modalVid.src = '';
+  }
+}
+      const img = document.createElement("img");
+      img.src = item.url;
+      img.loading = "eager";
+      img.decoding = "sync";
+      img.fetchPriority = "high";
+      div.appendChild(img);
+    } else {
+      const img = document.createElement("img");
+      img.src = item.url;
+      img.loading = "eager";
+      img.decoding = "sync";
+      img.fetchPriority = "high";
+      
+      const playBtn = document.createElement("div");
+      playBtn.className = "play-button";
+      playBtn.textContent = "▶";
+      
+      div.appendChild(img);
+      div.appendChild(playBtn);
+    }
+    
+function preload(src) {
+  const img = new Image();
+  img.src = src;
+  preloadedImages.push(img);
+}
+
+db.ref("memes").once("value").then(snap => {
+  const data = snap.val();
+  if (!data) return;
+
+  Object.keys(data).reverse().forEach(k => {
+    const src = data[k].url || data[k];
+    preload(src);
+
+    const div = document.createElement("div");
+    div.className = "grid-item";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.loading = "eager";
+    img.decoding = "sync";
+    img.fetchPriority = "high";
+
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+});
+
+/* === MODAL === */
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
+
+grid.onclick = e => {
+  if (e.target.tagName === "IMG") {
+    document.querySelector(".sidebar").classList.remove("active");
+    document.body.classList.remove("sidebar-open");
+    modal.classList.add("open");
+    modalImg.src = e.target.src;
+  }
+};
+
+document.querySelector(".close").onclick = () =>
+  modal.classList.remove("open");
+
+modal.onclick = e =>
+  e.target === modal && modal.classList.remove("open");
+
+/* === MOBILE SIDEBAR === */
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
+
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
+
+/* === INTRO === */
+const intro = document.getElementById("intro");
+const introGif = document.getElementById("introGif");
+
+// Array of 6 GIFs with their durations in milliseconds
+const introGifs = [
+  { name: "intro-gif-1.GIF", duration: 2000 },
+  { name: "intro-gif-2.GIF", duration: 2000 },
+  { name: "intro-gif-3.gif", duration: 2000 },
+  { name: "intro-gif-4.gif", duration: 2000 },
+  { name: "intro-gif-5.gif", duration: 2000 },
+  { name: "intro-gif-6.gif", duration: 2000 }
+];
+
+// Randomly select one GIF
+const selectedGifObj = introGifs[Math.floor(Math.random() * introGifs.length)];
+introGif.src = selectedGifObj.name;
+
+// Calculate total time: duration × 2 plays + 600ms for fade out
+const totalDuration = (selectedGifObj.duration * 2) + 600;
+
+// Hide intro after 2 plays
+setTimeout(() => {
+  intro.style.opacity = "0";
+  intro.style.pointerEvents = "none";
+  intro.style.transition = "opacity 0.6s ease-in-out";
+  setTimeout(() => {
+    intro.style.display = "none";
+  }, 600);
+}, selectedGifObj.duration * 2);
+
+// Hide intro and banner outside of February and June
+function checkSeasonalVisibility() {
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-12
+  const day = now.getDate();
+  
+  const isBlackHistoryMonth = month === 2 && day <= 28;
+  const isPrideMonth = month === 6 && day <= 30;
+  const shouldShow = isBlackHistoryMonth || isPrideMonth;
+  
+  const intro = document.getElementById("intro");
+  const banner = document.querySelector(".bhm-banner");
+  
+  if (!shouldShow) {
+    if (intro) intro.style.display = "none";
+    if (banner) banner.style.display = "none";
+  }
+}
+
+checkSeasonalVisibility();
+</script>
+
+</body>
+</html>
