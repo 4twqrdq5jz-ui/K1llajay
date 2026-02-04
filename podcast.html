@@ -20,25 +20,39 @@
 
 html, body {
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   font-family: 'sitefont', monospace;
   text-transform: uppercase;
   color: white;
+}
+
+html {
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* ================= INFINITE BACKGROUND ================= */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
   z-index: -2;
 }
 
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: rgba(0,0,0,0.65);
   z-index: -1;
 }
@@ -136,9 +150,10 @@ body {
   text-decoration: none;
 }
 
-.footer a:hover { opacity: 0.5; }
-.footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-.copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
 
 /* ================= TOP BAR (MOBILE) ================= */
 .topbar {
@@ -150,12 +165,55 @@ body {
     .main-content {
       margin-left: 260px;    /* Same as sidebar width */
       flex: 1;
-      padding: 20px;
+      padding: 40px;
+      padding-top: 65px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      overflow-y: auto;
+      min-height: calc(100dvh - 35px);
+    }
+
+    /* Page Header */
+    .podcast-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .podcast-header h1 {
+      font-size: 40px;
+      letter-spacing: 4px;
+      margin: 0;
+    }
+
+    .podcast-header p {
+      font-size: 14px;
+      opacity: 0.8;
+      letter-spacing: 2px;
+    }
+
+    /* Podcast Section */
+    .podcast-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      letter-spacing: 3px;
+      opacity: 0.9;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 12px;
+    }
+
+    /* Episodes Grid */
+    .episodes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 20px;
-      overflow-y: auto;
-      min-height: calc(100dvh - 35px);
     }
 
     /* Episode tiles */
@@ -163,22 +221,70 @@ body {
       cursor:pointer; 
       color:white; 
       text-decoration:none; 
-      text-align:center; 
+      text-align:center;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
+
+    .episode-date:hover {
+      transform: translateY(-4px);
+    }
+
+    .episode-date:hover .square {
+      border-color: rgba(255,255,255,0.6);
+    }
+
     .square { 
       width:100%; 
       aspect-ratio:1;
       background-size:cover; 
       background-position:center; 
-      border-radius:5px; 
-      margin:0 auto 10px; 
+      border-radius:8px; 
+      margin:0 auto; 
       border: 1px solid rgba(255,255,255,0.2);
       backdrop-filter: blur(9px);
+      transition: border-color 0.3s ease;
     }
+
+    .episode-info {
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .date, .episode, .title, .action { 
-      margin:2px 0; 
+      margin:0; 
       font-size:10px; 
     }
+
+    .date {
+      opacity: 0.6;
+      letter-spacing: 1px;
+    }
+
+    .episode {
+      opacity: 0.7;
+      letter-spacing: 1px;
+      font-size: 9px;
+    }
+
+    .title {
+      font-size: 11px;
+      font-weight: bold;
+      opacity: 0.9;
+      line-height: 1.3;
+    }
+
+    .action {
+      margin-top: 4px;
+      opacity: 0.6;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
     .blurred { 
       filter: blur(5px) brightness(0.4);
     }
@@ -235,8 +341,8 @@ body {
       display: none;
     }
 
-    /* Mobile Styles */
-    @media (max-width: 768px) {
+    /* ================= MOBILE ================= */
+@media (max-width: 768px) {
   body {
     flex-direction: column;
     padding-top: 35px;
@@ -289,227 +395,143 @@ body {
     display: flex;
   }
 
-  .profile-img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 8px;
-  }
-
-  .name {
-    font-size: 18px;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
-  .buttons {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .button {
-    font-size: 12px;
-    letter-spacing: 1px;
-    padding: 8px;
-  }
-
   .main-content {
     margin-left: 0;
-    margin-top: 85px;
+    margin-top: 90px;
     width: 100%;
     padding: 16px;
     padding-bottom: max(16px, calc(16px + env(safe-area-inset-bottom)));
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    gap: 24px;
+  }
+  .sidebar.active ~ .main-content {
+    overflow: hidden;
   }
 
-  .footer {
-    font-size: 8px;
-    text-align: center;
-  }
-
-  body {
-    flex-direction: column;
-    padding-top: 85px;
-  }
-
-  .main-content {
-    margin-left: 0;
-    margin-top: 85px;
-    width: 100%;
-    height: auto;
-    min-height: calc(100dvh - 85px);
-    padding: 15px;
-    padding-bottom: max(40px, calc(15px + env(safe-area-inset-bottom)));
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .topbar {
-    display: flex;
-    position: fixed;
-    top: 35px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    padding-top: max(0px, env(safe-area-inset-top));
-    align-items: center;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    z-index: 2101;
-  }
-
-  .hamburger {
+  .podcast-header h1 {
     font-size: 28px;
-    cursor: pointer;
-    padding: 5px;
   }
 
-  .top-name {
-    margin: 0 auto;
-    font-size: 16px;
-    letter-spacing: 2px;
+  .podcast-header p {
+    font-size: 12px;
   }
 
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 85px;
-    left: 0;
-    width: 100%;
-    height: calc(100dvh - 85px);
-    z-index: 1900;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  .episodes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
   }
-
-  .sidebar.active {
-    display: flex;
-  }
-      .profile-img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 10px;
-      }
-      .name {
-        font-size: 28px;
-        margin-bottom: 20px;
-      }
-      /* Footer */
-      .footer {
-        position: relative;
-        bottom: 0;
-        width: 100%;
-        padding: 10px;
-        background: rgba(0,0,0,0.200);
-        margin-top: auto;
-        font-size: 9px;
-        gap: 3px;
-      }
-      .footer a, .footer-dot { font-size: 9px; }
-      .copyright {
-        font-size: 7px;
-        margin-top: 5px;
-      }
     }
 
     /* ================= BLACK HISTORY MONTH BANNER ================= */
-    .bhm-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 35px;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2100;
-      overflow: hidden;
-      box-shadow: none;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-    .bhm-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1;
-    }
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
 
-    .bhm-text {
-      position: relative;
-      z-index: 2;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-      animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
 
-    @keyframes scrollBanner {
-      0% {
-        transform: translateX(-100%);
-      } 
-      100% {
-        transform: translateX(100%);
-      }
-    }
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
 
-    @media (max-width: 768px) {
-      html, body {
-        padding-top: 0;
-      }
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- Mobile Top Bar -->
-  <div class="topbar">
-    <div class="hamburger">☰</div>
-    <h1 class="top-name">TREND TALK</h1>
+  <!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">JAE LAURENT</div>
+</div>
+
+<!-- BLACK HISTORY MONTH BANNER -->
+<div class="bhm-banner">
+  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+  <div class="name">
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
   </div>
 
-  <!-- BLACK HISTORY MONTH BANNER -->
-  <div class="bhm-banner">
-    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
+    <a href="https://k1llajay.com/events" class="button">Events</a>
+    <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
   </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img class="profile-img" src="IMG_3214.JPEG" alt="JAE LAURENT" />
-    <h1 class="name"><a href="https://k1llajay.com/mylinks" style="color: white; text-decoration: none;">JAE LAURENT</a></h1>
-    <div class="buttons">
-      <a href="https://k1llajay.com/" class="button">GALLERY</a>
-      <a href="https://k1llajay.com/music" class="button">LATEST ALBUM</a>
-      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
-      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
-      <a href="https://k1llajay.com/music-database" class="button">MUSIC DATABASE</a>
-      <a href="https://k1llajay.com/events" class="button">Events</a>
-      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
-    </div>
-    <div class="footer">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/edit-database_editor">UPLOAD</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/privacy">PRIVACY</a>
-      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
-    </div>
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
   </div>
+</div>
 
   <!-- Main content -->
-  <div class="main-content" id="grid-container"></div>
+  <div class="main-content">
+    <div class="podcast-header">
+      <h1>TREND TALK</h1>
+      <p>Exploring Culture & Entertainment</p>
+    </div>
+    <div id="grid-container"></div>
+  </div>
 
   <!-- Modal -->
   <div class="modal" id="modal">
@@ -546,25 +568,57 @@ body {
     onValue(episodesRef, (snapshot) => {
       gridContainer.innerHTML = "";
       const episodes = [];
+      const podcastMap = {};
+      
       snapshot.forEach(child => {
         const ep = child.val();
         if(ep.episodeTitle && ep.audioURL) episodes.push(ep);
       });
+      
       episodes.sort((a,b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+      
+      // Organize episodes by season
       episodes.forEach(ep => {
-        const div = document.createElement("div");
-        div.className = "episode-date";
-        div.title = ep.episodeTitle + " - " + ep.podcastName;
-        const cover = ep.coverURL || "default-cover.png";
-        div.innerHTML = `
-          <div class="square" style="background-image: url('${cover}');"></div>
-          <p class="date">${ep.releaseDate}</p>
-          <p class="episode">${ep.season ? `${ep.season} - Ep. ` : ""}${ep.episodeNumber}</p>
-          <p class="title">${ep.episodeTitle}</p>
-          <p class="action">LISTEN HERE</p>
-        `;
-        div.addEventListener("click", () => openModal(ep));
-        gridContainer.appendChild(div);
+        const season = ep.season || "Other Episodes";
+        if (!podcastMap[season]) {
+          podcastMap[season] = [];
+        }
+        podcastMap[season].push(ep);
+      });
+      
+      // Render sections for each season
+      Object.keys(podcastMap).forEach(season => {
+        const section = document.createElement("div");
+        section.className = "podcast-section";
+        
+        const title = document.createElement("h2");
+        title.className = "section-title";
+        title.textContent = season.toUpperCase();
+        section.appendChild(title);
+        
+        const grid = document.createElement("div");
+        grid.className = "episodes-grid";
+        
+        podcastMap[season].forEach(ep => {
+          const div = document.createElement("div");
+          div.className = "episode-date";
+          div.title = ep.episodeTitle + " - " + ep.podcastName;
+          const cover = ep.coverURL || "default-cover.png";
+          div.innerHTML = `
+            <div class="square" style="background-image: url('${cover}');"></div>
+            <div class="episode-info">
+              <p class="date">${ep.releaseDate}</p>
+              <p class="episode">${ep.season ? `${ep.season} - Ep. ` : ""}${ep.episodeNumber}</p>
+              <p class="title">${ep.episodeTitle}</p>
+              <p class="action">LISTEN HERE</p>
+            </div>
+          `;
+          div.addEventListener("click", () => openModal(ep));
+          grid.appendChild(div);
+        });
+        
+        section.appendChild(grid);
+        gridContainer.appendChild(section);
       });
     });
 
@@ -593,13 +647,14 @@ body {
     }
 
     // Hamburger toggle
-    const hamburger = document.querySelector('.hamburger');
-    const sidebar = document.querySelector('.sidebar');
-    const bodyElem = document.body;
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-      bodyElem.classList.toggle('sidebar-open');
-    });
+    const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
+
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
   </script>
 
   <script>
