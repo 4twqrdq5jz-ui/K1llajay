@@ -49,40 +49,6 @@
             min-height: 100dvh;
         }
 
-        /* ================= BLACK HISTORY MONTH BANNER ================= */
-        .bhm-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 35px;
-            background: url("IMG_3309.gif") center / cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2100;
-            overflow: hidden;
-            box-shadow: none;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .bhm-banner::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 1;
-        }
-
-        .bhm-text {
-            position: relative;
-            z-index: 2;
-            color: white;
-            font-size: 20px;
-        }
-
         html, body {
             padding-top: 35px;
         }
@@ -219,6 +185,7 @@
             padding: 10px 20px;
             border: 1px solid rgba(255,255,255,0.4);
             background: transparent;
+            backdrop-filter: blur(10px);
             color: white;
             cursor: pointer;
             transition: 0.3s;
@@ -228,22 +195,6 @@
             font-size: 12px;
             letter-spacing: 2px;
             z-index: 1;
-        }
-
-        .filter-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-            filter: brightness(0.2);
-            border-radius: inherit;
-            z-index: -1;
-            transition: filter 0.3s;
-        }
-
-        .filter-btn.active::before,
-        .filter-btn:hover::before {
-            filter: brightness(0.8);
         }
 
         .filter-btn.active,
@@ -344,6 +295,7 @@
 
         .add-to-cart-btn {
             background: transparent;
+            backdrop-filter: blur(10px);
             color: white;
             border: 1px solid rgba(255,255,255,0.4);
             padding: 6px 12px;
@@ -357,21 +309,6 @@
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
-        }
-
-        .add-to-cart-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-            filter: brightness(0.2);
-            border-radius: inherit;
-            z-index: -1;
-            transition: filter 0.3s;
-        }
-
-        .add-to-cart-btn:hover::before {
-            filter: brightness(0.6);
         }
 
         .add-to-cart-btn:hover {
@@ -426,15 +363,7 @@
             z-index: 2001;
         }
 
-        .cart-content::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-            filter: brightness(0.1);
-            border-radius: inherit;
-            z-index: -1;
-        }
+        .cart-content 
 
         .cart-header {
             display: flex;
@@ -490,7 +419,8 @@
         }
 
         .qty-btn {
-            background: rgba(255,255,255,0.1);
+            background: transparent;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
             width: 25px;
             height: 25px;
@@ -546,6 +476,7 @@
         .checkout-btn {
             width: 100%;
             background: transparent;
+            backdrop-filter: blur(10px);
             color: white;
             border: 1px solid rgba(255,255,255,0.4);
             padding: 10px;
@@ -559,21 +490,6 @@
             text-transform: uppercase;
             position: relative;
             z-index: 1;
-        }
-
-        .checkout-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-            filter: brightness(0.2);
-            border-radius: inherit;
-            z-index: -1;
-            transition: filter 0.3s;
-        }
-
-        .checkout-btn:hover::before {
-            filter: brightness(0.6);
         }
 
         .checkout-btn:hover {
@@ -844,26 +760,6 @@
             .sidebar.active {
                 display: flex;
             }
-            .profile-img {
-                width: 80px;
-                height: 80px;
-                margin-bottom: 8px;
-            }
-            .name {
-                font-size: 18px;
-                letter-spacing: 1px;
-                margin-bottom: 16px;
-                text-align: center;
-            }
-            .buttons {
-                width: 100%;
-                max-width: 280px;
-            }
-            .button {
-                font-size: 12px;
-                letter-spacing: 1px;
-                padding: 8px;
-            }
             .main-content {
                 margin-left: 0;
                 margin-top: 85px;
@@ -874,10 +770,9 @@
                 align-items: center;
                 justify-content: flex-start;
             }
-            .footer {
-                font-size: 8px;
-                text-align: center;
-            }
+            .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
             .content-header h1 {
                 font-size: 1.8rem;
                 margin-bottom: 0.5rem;
@@ -924,6 +819,68 @@
                 padding: 0.8rem 0;
             }
         }
+        
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
     </style>
 </head>
 <body>
@@ -946,13 +903,13 @@
         </div>
 
         <div class="buttons">
+            <a href="https://k1llajay.com" class="button">Home</a>
             <a href="https://k1llajay.com/music" class="button">Latest Release</a>
             <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
             <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
             <a href="https://k1llajay.com/player" class="button">All Releases</a>
             <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
             <a href="https://k1llajay.com/events" class="button">Events</a>
-            <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
         </div>
 
         <div class="footer">
@@ -1006,23 +963,48 @@ const API = "https://YOUR-BACKEND-URL"; // <-- backend URL
 let SHOP_ID = null;
 let products = [];
 let cart = [];
+let filteredCategory = "all";
 
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
-  const shops = await fetch(`${API}/shops`).then(r => r.json());
-  SHOP_ID = shops[0].id;
+  try {
+    const shops = await fetch(`${API}/shops`).then(r => r.json());
+    SHOP_ID = shops[0].id;
 
-  const data = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
-  products = data.data.map(p => ({
-    id: p.id,
-    name: p.title,
-    price: p.variants[0].price / 100,
-    image: p.images[0]?.src,
-    category: "fashion",
-    variants: p.variants
-  }));
+    const data = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
+    products = data.data.map(p => ({
+      id: p.id,
+      name: p.title,
+      price: p.variants[0].price / 100,
+      image: p.images[0]?.src,
+      category: "fashion",
+      variants: p.variants
+    }));
 
+    renderProducts();
+  } catch (error) {
+    console.error("Failed to load products:", error);
+    // Show sample products if API fails
+    products = [
+      { id: "1", name: "Sample Product", price: 99.99, image: "", category: "fashion", variants: [{ id: "v1", price: 9999 }] }
+    ];
+    renderProducts();
+  }
+}
+
+/* ================= FILTER PRODUCTS ================= */
+function filterProducts(category) {
+  filteredCategory = category;
+  const buttons = document.querySelectorAll(".filter-btn");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
   renderProducts();
+}
+
+/* ================= TOGGLE CART ================= */
+function toggleCart() {
+  const modal = document.getElementById("cart-modal");
+  modal.classList.toggle("active");
 }
 
 /* ================= RENDER ================= */
@@ -1030,7 +1012,12 @@ function renderProducts() {
   const grid = document.getElementById("products-grid");
   grid.innerHTML = "";
 
-  products.forEach(p => {
+  let filtered = products;
+  if (filteredCategory !== "all") {
+    filtered = products.filter(p => p.category === filteredCategory);
+  }
+
+  filtered.forEach(p => {
     grid.innerHTML += `
       <div class="product-card">
         <div class="product-image">
