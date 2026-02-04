@@ -6,143 +6,280 @@
   <title>Naturetography – JAE LAURENT</title>
   <link rel="icon" href="favicon.ico">
   <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-    }
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
- 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      font-family: 'sitefont', monospace;
-      text-transform: uppercase;
-      color: white;
-      min-height: 100%;
-    }
-    body.no-scroll { overflow: hidden; }
-    /* Background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      background-attachment: fixed;
-      z-index: -2;
-      -webkit-background-attachment: fixed;
-      width: 100vw;
-      height: 200vh;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-    }
-    body {
-      display: flex;
-    }
-    /* Sidebar (Desktop) */
-    .sidebar {
-      width: 260px;
-      height: 100dvh;
-      padding: 24px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(255,255,255,0.15);
-      z-index: 3000;
-    }
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 20px;
-    }
-    .name {
-      font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
-    }
-    .buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .button {
-      padding: 10px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      transition: 0.3s;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
 
-    .button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-      filter: brightness(0.4);
-      border-radius: inherit;
-      z-index: -1;
-      transition: filter 0.3s;
-    }
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .button:hover::before {
-      filter: brightness(1);
-    }
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
 
-    .button:hover {
-      border-color: white;
-    }
-    .footer {
-      margin-top: auto;
-      font-size: 10px;
-      opacity: 0.7;
-      text-align: center;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-    }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
-    
-    /* Mobile Top Bar (hidden on desktop) */
-    .topbar {
-      display: none;
-    }
-     /* Mobile Styles */
-    @media (max-width: 768px) {
+html {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+  z-index: 3000;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: border-color, color;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  filter: brightness(0.4);
+  border-radius: inherit;
+  z-index: -1;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.button:hover::before {
+  filter: brightness(1);
+}
+
+.button:hover {
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
+
+/* ================= GRID (SCROLL CONTAINER) ================= */
+.main-content {
+  margin-left: 260px;
+  min-height: calc(100dvh - 35px);
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: 22px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 10px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+.grid-item {
+  backdrop-filter: blur(10px);
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, box-shadow;
+}
+
+.grid-item:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.grid-item:hover img {
+  filter: brightness(0.85);
+}
+
+.grid-item img {
+  /* Prevent Safari from unloading */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, backdrop-filter;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  z-index: -2;
+}
+
+.modal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+.modal.open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  padding-top: 50px;
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.close {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  font-size: 36px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+  z-index: 2001;
+}
+
+@media (max-width: 768px) {
+  .close {
+    top: 85px;
+  }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
   body {
     flex-direction: column;
     padding-top: 35px;
@@ -197,8 +334,9 @@
 
   .main-content {
       margin-left: 0px;
-      margin-top: 75px;
+      margin-top: 35px;
       padding: 20px;
+      padding-top: 68px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-auto-rows: minmax(250px, auto);
@@ -227,175 +365,75 @@
       transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
       will-change: transform, filter;
     }
-  }
-    .main-content {
-      margin-left: 206px;
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-auto-rows: minmax(250px, auto);
-      gap: 10px;
-      overflow-y: auto; /* Correct element to have scroll */
-      height: calc(100vh - 35px); /* Set a height to enable scrolling */
-    }
-    .grid-item { 
-      backdrop-filter: blur(9px); 
-      border: 1px solid #333; 
-      overflow: hidden; 
-      cursor: pointer; 
-      border-radius: 8px; 
-    }
-    .grid-item img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-      will-change: transform, filter;
-    }
-
-    /* 5. MODAL */
-    .modal { 
-      display: none !important; 
-      position: fixed; 
-      z-index: 1000; 
-      left: 0; 
-      top: 0; 
-      width: 100%; 
-      height: 100%; 
-      backdrop-filter: blur(9px); 
-      overflow: auto; /* Allow modal to scroll if content is too big */ 
-      transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: opacity, backdrop-filter;
-    }
-    .modal::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      z-index: -2;
-    }
-    .modal::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
-    .modal.open {
-      display: flex;
-    }
-    .modal-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: inline-flex;           /* 🔑 shrink to image size */
-      align-items: center;
-      justify-content: center;
-      width: auto;                    /* 🔑 no forced width */
-      max-width: 90vw;
-      max-height: 90vh;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 12px;
-      backdrop-filter: blur(9px);
-    }
     .modal-content {
-      display: block;                 /* remove inline gaps */
+      padding-top: 70px;
       max-width: 90vw;
-      max-height: 90vh;
-      width: auto;
-      height: auto;
+      max-height: 70vh;
       object-fit: contain;
-      border-radius: 10px;            /* optional: match wrapper curve */
     }
-    .close {
-      position: fixed;          /* detached from wrapper */
-      top: 24px;
-      right: 24px;
-      color: white;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1000;            /* above modal + image */
-      width: 50px;              /* fixed square size */
-      height: 50px;             /* equal to width */
-      display: flex;            /* center the "×" */
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 4px;       /* small rounding for subtle effect */
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.4); /* optional: add background for better visibility */
-      transition: all 0.25s ease;
-    }
-    .close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
+}
 
-    @media (min-width: 769px) {
-        /* Desktop layout overrides */
-        body { flex-direction: row; }
-        .main-content { padding-left: 270px; /* Space for the fixed sidebar */ }
-        .sidebar { position: fixed; left: 0; top: 0; }
-    }
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-    /* ================= BLACK HISTORY MONTH BANNER ================= */
-    .bhm-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 35px;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2100;
-      overflow: hidden;
-      box-shadow: none;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
 
-    .bhm-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1;
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
 
-    .bhm-text {
-      position: relative;
-      z-index: 2;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-      animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-    }
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
 
-    @keyframes scrollBanner {
-      0% {
-        transform: translateX(-100%);
-      }
-      100% {
-        transform: translateX(100%);
-      }
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
 
-    @media (max-width: 768px) {
-      html, body {
-        padding-top: 0;
-      }
-    }
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
   </style>
 </head>
 <body>
@@ -416,7 +454,7 @@
     <img class="profile-img" src="IMG_3214.JPEG" alt="JAE LAURENT" />
     <h1 class="name"><a href="https://k1llajay.com/mylinks" style="color: white; text-decoration: none;">JAE LAURENT</a></h1>
     <div class="buttons">
-      <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com" class="button">Home</a>
       <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
       <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
       <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
@@ -433,14 +471,13 @@
     </div>
   </div>
 
+<!-- GRID -->
 <div class="main-content" id="grid-container"></div>
 
-<div id="myModal" class="modal">
-  <span class="close" id="closeModalBtn">&times;</span>
-
-  <div class="modal-wrapper">
-    <img class="modal-content" id="img01">
-  </div>
+<!-- MODAL -->
+<div class="modal" id="myModal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -485,38 +522,34 @@ db.ref("portfolio").once("value").then(snapshot => {
   });
 }).catch(err => console.error("Firebase error:", err));
 
-
-// Modal
+/* === MODAL === */
 const modal = document.getElementById("myModal");
 const modalImg = document.getElementById("img01");
-// Changed to an ID for clearer selection
-const closeBtn = document.getElementById("closeModalBtn"); 
 
-gridContainer.addEventListener("click", e => {
+gridContainer.onclick = e => {
   if (e.target.tagName === "IMG") {
-    modal.style.display = "flex"; // Use flex to center the content easily
+    document.querySelector(".sidebar").classList.remove("active");
+    document.body.classList.remove("sidebar-open");
+    modal.classList.add("open");
     modalImg.src = e.target.src;
   }
-});
-closeBtn.onclick = () => modal.style.display = "none";
-modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+};
 
-function toggleSidebar() {
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.classList.toggle('active');
-      document.body.classList.toggle('sidebar-open');
-    }
+document.querySelector(".close").onclick = () =>
+  modal.classList.remove("open");
 
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        const sidebar = document.querySelector('.sidebar');
-        const topbar = document.querySelector('.topbar');
-        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
-          sidebar.classList.remove('active');
-          document.body.classList.remove('sidebar-open');
-        }
-      }
-    });
+modal.onclick = e =>
+  e.target === modal && modal.classList.remove("open");
+
+/* === MOBILE SIDEBAR === */
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
+
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
   </script>
 
   <script>
