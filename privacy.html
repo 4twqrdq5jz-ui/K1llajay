@@ -140,7 +140,7 @@
       margin-left: 260px;          /* same as sidebar width */
       height: 100vh;
       overflow-y: auto;            /* ← scrolling happens here */
-      padding: 100px 40px 80px;
+      padding: 70px 40px 80px;
       max-width: none;
     }
     main.content h1 {
@@ -162,7 +162,7 @@
     }
     .back-btn {
       position: fixed;
-      top: 24px;
+      top: 55px;
       left: 280px; /* sidebar width (260) + spacing */
       z-index: 1000;
       font-size: 12px;
@@ -256,7 +256,7 @@
         letter-spacing: 1px;
         padding: 8px;
       }
-      .main-content {
+      main.content {
         margin-left: 0;
         margin-top: 85px;
         width: 100%;
@@ -272,100 +272,110 @@
       }
       .back-btn {
         left: 16px;
-        top: 120px;
+        top: 100px;
       }
-    }
+}
 
-    /* ================= BLACK HISTORY MONTH BANNER ================= */
-    .bhm-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 35px;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2100;
-      overflow: hidden;
-      box-shadow: none;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-    .bhm-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1;
-    }
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
 
-    .bhm-text {
-      position: relative;
-      z-index: 2;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-      animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
 
-    @keyframes scrollBanner {
-      0% {
-    transform: translateX(-100%);
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(100%);
-      }
-    }
+    transform: translateX(-100vw);
+  }
+}
 
-    @media (max-width: 768px) {
-      html, body {
-        padding-top: 0;
-      }
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- Mobile Top Bar -->
-  <div class="topbar">
-    <div class="hamburger" onclick="toggleSidebar()">☰</div>
-    <h1 class="top-name">Privacy</h1>
+<!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">JAE LAURENT</div>
+</div>
+
+<!-- BLACK HISTORY MONTH BANNER -->
+<div class="bhm-banner">
+  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+  <div class="name">
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
   </div>
 
-  <!-- BLACK HISTORY MONTH BANNER -->
-  <div class="bhm-banner">
-    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
+    <a href="https://k1llajay.com/events" class="button">Events</a>
+    <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
   </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img class="profile-img" src="IMG_3214.JPEG" alt="JAE LAURENT" />
-    <h1 class="name"><a href="https://k1llajay.com/mylinks" style="color: white; text-decoration: none;">JAE LAURENT</a></h1>
-    <div class="buttons">
-      <a href="https://k1llajay.com/index" class="button">GALLERY</a>
-      <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
-      <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
-      <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
-      <a href="https://k1llajay.com/player" class="button">ALL RELEASES</a>
-      <a href="https://k1llajay.com/music-database" class="button">MUSIC DATABASE</a>
-      <a href="https://k1llajay.com/events" class="button">Events</a>
-      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
-    </div>
-    <div class="footer">
-      <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/edit-database_editor">UPLOAD TO SITE</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/privacy">PRIVACY</a>
-      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
-    </div>
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
   </div>
+</div>
 
   <a href="javascript:history.back()" class="back-btn">← BACK</a>
 
@@ -466,23 +476,14 @@
   </main>
   
   <script>
-    function toggleSidebar() {
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.classList.toggle('active');
-      document.body.classList.toggle('sidebar-open');
-    }
+    const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
 
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        const sidebar = document.querySelector('.sidebar');
-        const topbar = document.querySelector('.topbar');
-        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !topbar.contains(e.target)) {
-          sidebar.classList.remove('active');
-          document.body.classList.remove('sidebar-open');
-          sidebar.classList.remove('active');
-        }
-      }
-    });
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
   </script>
 
   <script>
