@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Links • JAE LAURENT</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
+
+html {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
+  z-index: 3000;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: border-color, color;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  filter: brightness(0.4);
+  border-radius: inherit;
+  z-index: -1;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.button:hover::before {
+  filter: brightness(1);
+}
+
+.button:hover {
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
+
+    /* ---------- LINKTREE MAIN CONTENT ---------- */
+    .main-content::-webkit-scrollbar { display: none; }
+    .main-content { -ms-overflow-style: none; scrollbar-width: none; }
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .linktree-container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .lt-profile {
+      display: none;
+    }
+
+    .lt-name {
+      font-size: 28px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .lt-bio {
+      opacity: 0.8;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
+
+    .lt-button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.4);
+      text-decoration: none;
+      color: white;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      transition: 0.2s;
+      backdrop-filter: blur(9px);
+    }
+    .lt-button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: white;
+    }
+    /* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding-top: 35px;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 2101;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 85px);
+    z-index: 1900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+      .main-content {
+        margin-left: 0;
+        margin-top: 85px;
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
+      .lt-profile {
+        display: block;
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        border: 3px solid white;
+        object-fit: cover;
+        margin: 0 auto 25px;
+      }
+}
+
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- MOBILE TOP BAR -->
+<div class="topbar">
+  <div class="hamburger">☰</div>
+  <div class="top-name">JAE LAURENT</div>
+</div>
+
+<!-- BLACK HISTORY MONTH BANNER -->
+<div class="bhm-banner">
+  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+  <div class="name">
+    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
+  </div>
+
+  <div class="buttons">
+    <a href="https://k1llajay.com/music" class="button">Latest Release</a>
+    <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
+    <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
+    <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
+    <a href="https://k1llajay.com/events" class="button">Events</a>
+    <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
+  </div>
+
+  <div class="footer">
+    <a href="https://mystery.k1llajay.com">Mystery</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
+    <a href="https://k1llajay.com/terms">Terms</a> •
+    <a href="https://k1llajay.com/privacy">Privacy</a>
+    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
+  </div>
+</div>
+
+  <!-- LINKTREE MAIN AREA -->
+  <div class="main-content">
+    <div class="linktree-container">
+
+      <img class="lt-profile" src="IMG_3214.JPEG" alt="Profile">
+
+      <h1 class="lt-name">JAE LAURENT</h1>
+      <p class="lt-bio">All my links in one place.</p>
+
+      <!-- PLACEHOLDER LINKS -->
+      <a href="https://youtube.com/@k1llajay" class="lt-button">🎥 YouTube</a>
+      <a href="https://instagram.com/k1llajay" class="lt-button">📸 Instagram</a>
+      <a href="https://twitter.com/k1llajay_" class="lt-button">🐦 Twitter/X</a>
+      <a href="https://facebook.com/k1llajay" class="lt-button">👍🏽 Facebook</a>
+      <a href="https://tiktok.com/@k1llajay" class="lt-button">🎵 tiktok</a>
+      <a href="https://bsky.app/profile/k1llajay.com" class="lt-button">🌇 bluesky</a>
+      <a href="https://threads.com/@k1llajay" class="lt-button">🧵 threads</a>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
+
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
+  </script>
+
+  <script>
+    // Hide banner outside of February and June
+    function checkSeasonalVisibility() {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const day = now.getDate();
+      
+      const isBlackHistoryMonth = month === 2 && day <= 28;
+      const isPrideMonth = month === 6 && day <= 30;
+      const shouldShow = isBlackHistoryMonth || isPrideMonth;
+      
+      const banner = document.querySelector(".bhm-banner");
+      if (!shouldShow && banner) banner.style.display = "none";
+    }
+    
+    checkSeasonalVisibility();
+  </script>
+
+</body>
+</html>
