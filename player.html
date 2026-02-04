@@ -5,73 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Music • Jae Laurent</title>
   <link rel="icon" href="favicon.ico">
-  <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
+<style>
+@font-face {
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    html, body {
-      height: 100dvh;
-      min-height: 100dvh;
-      width: 100%;
-      font-family: 'sitefont', monospace;
-      text-transform: uppercase;
-      color: white;
-      overflow: hidden;
-    }
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      background-attachment: fixed;
-      -webkit-background-attachment: fixed;
-      z-index: -2;
-      width: 100vw;
-      height: 100dvh;
-    }
+html {
+  height: 100vh;
+  height: 100dvh;
+}
 
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-      width: 100vw;
-      height: 100dvh;
-    }
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  z-index: -2;
+}
 
-    body {
-      display: flex;
-    }
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
 
-    .sidebar {
-      width: 260px;
-      height: 100dvh;
-      padding: 24px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(255,255,255,0.15);
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
   z-index: 3000;
-      font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
-    }
+}
 
     .mini-player {
       width: 100%;
@@ -97,59 +103,86 @@
     .mini-btn:hover { opacity: 1; transform: scale(1.1); }
     .mini-btn.main { font-size: 32px; opacity: 1; }
 
-    .buttons {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
 
-    .button {
-      padding: 10px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      transition: all 0.3s ease;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
 
-    .button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-      filter: brightness(0.4);
-      border-radius: inherit;
-      z-index: -1;
-      transition: filter 0.3s;
-    }
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-    .button:hover::before {
-      filter: brightness(1);
-    }
+.button {
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: border-color, color;
+}
 
-    .button:hover {
-      border-color: white;
-    }
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  filter: brightness(0.4);
+  border-radius: inherit;
+  z-index: -1;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
 
-    .footer {
-      margin-top: auto;
-      font-size: 10px;
-      opacity: 0.7;
-      text-align: center;
-    }
+.button:hover::before {
+  filter: brightness(1);
+}
 
-    .footer a { color: white; text-decoration: none; }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+.button:hover {
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
 
     .main-content::-webkit-scrollbar { display: none; }
     .main-content {
@@ -305,82 +338,62 @@
 
     .topbar { display: none; }
 
-    /* ────────────────────── MOBILE ────────────────────── */
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        padding-top: 35px;
-      }
+    /* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding-top: 35px;
+  }
 
-      body.sidebar-open {
-        overflow: hidden;
-      }
+  body.sidebar-open {
+    overflow: hidden;
+  }
 
-      .topbar {
-        display: flex;
-        position: fixed;
-        top: 35px;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        padding: 0 15px;
-        padding-top: max(0px, env(safe-area-inset-top));
-        align-items: center;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        z-index: 2101;
-      }
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 2101;
+  }
 
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-        padding: 5px;
-      }
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+  }
 
-      .top-name {
-        margin: 0 auto;
-        font-size: 16px;
-        letter-spacing: 2px;
-      }
+  .top-name {
+    margin: 0 auto;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
 
-      .sidebar {
-        display: none;
-        position: fixed;
-        top: 85px;
-        left: 0;
-        width: 100%;
-        height: calc(100dvh - 85px);
-        z-index: 1900;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 85px);
+    z-index: 1900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
-      .sidebar.active {
-        display: flex;
-      }
-      .profile-img {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 8px;
-      }
-      .name {
-        font-size: 18px;
-        letter-spacing: 1px;
-        margin-bottom: 16px;
-        text-align: center;
-      }
-      .buttons {
-        width: 100%;
-        max-width: 280px;
-      }
-      .button {
-        font-size: 12px;
-        letter-spacing: 1px;
-        padding: 8px;
-      }
+  .sidebar.active {
+    display: flex;
+  }
       .main-content {
         margin-left: 0;
-        margin-top: 85px;
+        margin-top: 60px;
         width: 100%;
         padding: 16px;
         display: flex;
@@ -388,10 +401,9 @@
         align-items: center;
         justify-content: flex-start;
       }
-      .footer {
-        font-size: 8px;
-        text-align: center;
-      }
+      .sidebar.active ~ .main-content {
+    overflow: hidden;
+  }
       .section-header { margin: 20px 0 12px; flex-wrap: wrap; gap: 10px; }
       h2.section { font-size: 16px; letter-spacing: 0.1em; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
@@ -466,63 +478,66 @@
     }
 
     /* ================= BLACK HISTORY MONTH BANNER ================= */
-    .bhm-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 35px;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2100;
-      overflow: hidden;
-      box-shadow: none;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-    .bhm-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1;
-    }
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
 
-    .bhm-text {
-      position: relative;
-      z-index: 2;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-      animation: scrollBanner 15s linear infinite;
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
 
-    @keyframes scrollBanner {
-      0% {
-    transform: translateX(-100%);
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(-100vw);
   }
 }
 
-    html, body {
-      padding-top: 35px;
-    }
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
 
-    @media (max-width: 768px) {
-      html, body {
-        padding-top: 85px;
-      }
-    }
+html, body {
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    padding-top: 0;
+  }
+}
   </style>
 </head>
 <body>
@@ -550,7 +565,7 @@
     </div>
 
     <div class="buttons" style="margin-top: 16px;">
-      <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com" class="button">Home</a>
       <a href="https://k1llajay.com/music" class="button">LATEST ALBUM</a>
       <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
       <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
