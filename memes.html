@@ -210,29 +210,6 @@ body {
   filter: brightness(0.85);
 }
 
-.play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: rgba(0, 255, 153, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  color: black;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-
-.grid-item:hover .play-button {
-  transform: translate(-50%, -50%) scale(1.15);
-  background: #00ff99;
-}
-
 .grid-item img {
   /* Prevent Safari from unloading */
   transform: translateZ(0);
@@ -294,20 +271,54 @@ body {
   background: rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.4);
   z-index: 2001;
+  transition: all 0.3s ease;
+}
+
+.close:hover {
+  background: rgba(0,0,0,0.7);
+  border-color: white;
+}
+
+.modal-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 48px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.4);
+  z-index: 2001;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.modal-arrow:hover {
+  background: rgba(0,0,0,0.7);
+  border-color: white;
+}
+
+.modal-arrow.prev {
+  left: 280px;
+}
+
+.modal-arrow.next {
+  right: 20px;
+}
+
+@media (max-width: 768px) {
+  .modal-arrow.prev {
+    left: 20px;
+  }
 }
 
 @media (max-width: 768px) {
   .close {
     top: 85px;
-  }
-}
-
-@keyframes gifFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 
@@ -483,7 +494,9 @@ html, body {
 <!-- MOBILE TOP BAR -->
 <div class="topbar">
   <div class="hamburger">☰</div>
-    <div class="top-name">MEMES & VIDEOS</div>
+  <div class="top-name">JAE LAURENT</div>
+</div>
+
 <!-- BLACK HISTORY MONTH BANNER -->
 <div class="bhm-banner">
   <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
@@ -504,11 +517,12 @@ html, body {
     <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
     <a href="https://k1llajay.com/events" class="button">Events</a>
     <a href="https://k1llajay.com/memes" class="button">Memes & Videos</a>
+    <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
   </div>
 
   <div class="footer">
     <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/edit-memes_editor">Upload</a> •
+    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
     <a href="https://k1llajay.com/terms">Terms</a> •
     <a href="https://k1llajay.com/privacy">Privacy</a>
     <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
@@ -521,7 +535,10 @@ html, body {
 <!-- MODAL -->
 <div class="modal" id="myModal">
   <span class="close">&times;</span>
-  <img class="modal-content" id="img01">
+  <span class="modal-arrow prev" id="prevBtn">&lt;</span>
+  <span class="modal-arrow next" id="nextBtn">&gt;</span>
+  <img class="modal-content" id="img01" style="display:none;">
+  <video class="modal-content" id="vid01" style="display:none; width:auto; height:auto; max-width:90vw; max-height:90vh;" controls autoplay></video>
 </div>
 
 <!-- FIREBASE -->
@@ -529,10 +546,27 @@ html, body {
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <script>
+/* === FIREBASE INITIALIZATION === */
+const firebaseConfig = {
+  apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 /* === MODAL === */
 const modal = document.getElementById("myModal");
 const modalImg = document.getElementById("img01");
+const modalVid = document.getElementById("vid01");
 const grid = document.getElementById("grid-container");
+let gridItems = [];
+let currentIndex = -1;
 
 /* === MOBILE SIDEBAR === */
 const hamburger = document.querySelector(".hamburger");
@@ -550,40 +584,84 @@ db.ref("memes").once("value").then(snap => {
   if (!data) return;
 
   Object.keys(data).reverse().forEach(k => {
-    const src = data[k].url || data[k];
+    const item = data[k];
+    const src = item.url || item;
+    const isVideo = item.isVideo || src.includes('memevideo');
 
     const div = document.createElement("div");
     div.className = "grid-item";
-    div.dataset.type = "image";
+    div.dataset.type = isVideo ? "video" : "image";
     div.dataset.src = src;
+    gridItems.push({ type: div.dataset.type, src: src });
 
-    const img = document.createElement("img");
-    img.src = src;
-    img.loading = "eager";
-    img.decoding = "sync";
-    img.fetchPriority = "high";
+    if (isVideo) {
+      const vid = document.createElement("video");
+      vid.src = src;
+      vid.loading = "eager";
+      vid.autoplay = true;
+      vid.style.width = "100%";
+      vid.style.height = "100%";
+      vid.style.objectFit = "cover";
+      div.appendChild(vid);
+    } else {
+      const img = document.createElement("img");
+      img.src = src;
+      img.loading = "eager";
+      img.decoding = "sync";
+      img.fetchPriority = "high";
+      div.appendChild(img);
+    }
 
-    div.appendChild(img);
     grid.appendChild(div);
   });
 });
 
+/* === DISPLAY ITEM AT INDEX === */
+function displayItem(index) {
+  if (index < 0 || index >= gridItems.length) return;
+  
+  currentIndex = index;
+  const item = gridItems[index];
+  
+  if (item.type === 'image') {
+    modalImg.src = item.src;
+    modalImg.style.display = 'block';
+    modalVid.style.display = 'none';
+  } else if (item.type === 'video') {
+    modalVid.src = item.src;
+    modalVid.style.display = 'block';
+    modalImg.style.display = 'none';
+  }
+}
+
 /* === GRID CLICK HANDLER === */
 grid.onclick = e => {
-  if (e.target.tagName === "IMG" || e.target.classList.contains("play-button")) {
+  if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO" || e.target.classList.contains("play-button")) {
     document.querySelector(".sidebar").classList.remove("active");
     document.body.classList.remove("sidebar-open");
     
     const gridItem = e.target.closest(".grid-item");
-    const type = gridItem.dataset.type;
-    const src = gridItem.dataset.src;
+    const index = Array.from(grid.children).indexOf(gridItem);
     
     modal.classList.add("open");
-    
-    if (type === 'image') {
-      modalImg.src = src;
-      modalImg.style.display = 'block';
-    }
+    displayItem(index);
+  }
+};
+
+/* === NAVIGATION ARROWS === */
+document.getElementById("prevBtn").onclick = () => {
+  if (currentIndex > 0) {
+    displayItem(currentIndex - 1);
+  } else if (gridItems.length > 0) {
+    displayItem(gridItems.length - 1);
+  }
+};
+
+document.getElementById("nextBtn").onclick = () => {
+  if (currentIndex < gridItems.length - 1) {
+    displayItem(currentIndex + 1);
+  } else {
+    displayItem(0);
   }
 };
 
