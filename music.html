@@ -260,7 +260,7 @@ body {
     }
     #overlayContent {
       position: relative;
-      padding: 20px;
+      padding: 30px 20px;
       border-radius: 12px;
       max-width: 90%;
       width: 100%;
@@ -271,6 +271,7 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
     }
     #overlayContent h1 {
       font-size: 18px;
@@ -572,6 +573,46 @@ body {
         min-width: 44px;
         height: 44px;
         font-size: 16px;
+      }
+      #overlayContent {
+        position: relative;
+        padding: 60px 16px 20px;
+        border-radius: 8px;
+        max-width: 100%;
+        width: 100%;
+        max-height: calc(100dvh - 100px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid rgba(255,255,255,0.2);
+        backdrop-filter: blur(9px);
+      }
+      #overlayContent h1 {
+        font-size: 18px;
+      }
+      #overlayContent h3 {
+        font-size: 14px;
+      }
+      .overlay-close {
+        top: 12px;
+        right: 12px;
+      }
+      .sub-toggle {
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .sub-toggle span {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+      .tab-content {
+        font-size: 12px;
+        line-height: 1.6;
+        text-align: left;
+      }
+      .service-logos {
+        gap: 12px;
+        margin-top: auto;
+        margin-bottom: 16px;
       }
     }
 
