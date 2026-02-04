@@ -7,134 +7,169 @@
   <link rel="icon" href="favicon.ico">
   <style>
     @font-face {
-        font-family: 'sitefont';
-        src: url('beyoncefont.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+  font-family: 'sitefont';
+  src: url('beyoncefont.ttf') format('truetype');
+}
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    html, body {
-        height: 100%;
-        width: 100%;
-        font-family: 'sitefont', monospace;
-        text-transform: uppercase;
-        color: white;
-        overflow-x: hidden;
-        overflow: hidden; /* prevent page scroll */
-    }
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  text-transform: uppercase;
+  color: white;
+}
 
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: url("IMG_3309.gif") center / cover no-repeat;
-        z-index: -2;
-    }
+html {
+  height: 100vh;
+  height: 100dvh;
+}
 
-    body::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.65);
-        z-index: -1;
-    }
+/* ================= INFINITE BACKGROUND ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("IMG_3309.gif") center / cover no-repeat;
+  background-attachment: fixed;
+  z-index: -2;
+}
 
-    body {
-        display: flex;
-        flex-direction: row;
-        min-height: 100vh;
-    }
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
 
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      height: 100dvh;
-      padding: 24px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(255,255,255,0.15);
+/* ================= BODY ================= */
+body {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  height: 100dvh;
+  padding: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.15);
   z-index: 3000;
-        font-size: 22px;
-        letter-spacing: 3px;
-        margin-bottom: 40px;
-    }
+}
 
-    .buttons {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 20px;
+}
 
-    .button {
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: white;
-        font-size: 13px;
-        letter-spacing: 2px;
-        border: 1px solid rgba(255,255,255,0.4);
-        transition: 0.3s;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-    }
+.name {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
 
-    .button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
-      filter: brightness(0.4);
-      border-radius: inherit;
-      z-index: -1;
-      transition: filter 0.3s;
-    }
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-    .button:hover::before {
-      filter: brightness(1);
-    }
+.button {
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(255,255,255,0.4);
+  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: border-color, color;
+}
 
-    .button:hover {
-        border-color: white;
-    }
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  filter: brightness(0.4);
+  border-radius: inherit;
+  z-index: -1;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
 
-    .footer {
-      margin-top: auto;
-      font-size: 10px;
-      opacity: 0.7;
-      text-align: center;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-    }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+.button:hover::before {
+  filter: brightness(1);
+}
+
+.button:hover {
+  border-color: white;
+}
+
+.footer {
+  margin-top: auto;
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  font-size: 8px;
+  margin-top: 6px;
+}
+
+/* ================= TOP BAR (MOBILE) ================= */
+.topbar {
+  display: none;
+}
 
     /* Main Content */
     main.content {
-        margin-left: 260px;       /* make room for sidebar */
+        margin-left: 260px;
         height: 100vh;
         overflow-y: auto;         /* ONLY main scrolls */
         flex: 1;
         display: flex;
         justify-content: center;
         padding: 24px;
+        padding-top: 46px;
         align-items: flex-start;
     }
 
@@ -199,156 +234,137 @@ main.content {
   background: rgba(255,255,255,0.1);
         border-color: white;
 }
-
-    /* Mobile Top Bar */
-    .topbar {
-        display: none;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        padding-top: 35px;
-      }
-
-      body.sidebar-open {
-        overflow: hidden;
-      }
-
-      .topbar {
-        display: flex;
-        position: fixed;
-        top: 35px;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        padding: 0 15px;
-        padding-top: max(0px, env(safe-area-inset-top));
-        align-items: center;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        z-index: 2101;
-      }
-
-      .hamburger {
-        font-size: 28px;
-        cursor: pointer;
-        padding: 5px;
-      }
-
-      .top-name {
-        margin: 0 auto;
-        font-size: 16px;
-        letter-spacing: 2px;
-      }
-
-      .sidebar {
-        display: none;
-        position: fixed;
-        top: 85px;
-        left: 0;
-        width: 100%;
-        height: calc(100dvh - 85px);
-        z-index: 1900;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .sidebar.active {
-        display: flex;
-      }
-      .profile-img {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 8px;
-      }
-      .name {
-        font-size: 18px;
-        letter-spacing: 1px;
-        margin-bottom: 16px;
-        text-align: center;
-      }
-      .buttons {
-        width: 100%;
-        max-width: 280px;
-      }
-      .button {
-        font-size: 12px;
-        letter-spacing: 1px;
-        padding: 8px;
-      }
-      .main-content {
-        margin-left: 0;
-        margin-top: 85px;
-        width: 100%;
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-      }
-      .footer {
-        font-size: 8px;
-        text-align: center;
-      }
-      #musicDatabase {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-    }
-
-    /* ================= BLACK HISTORY MONTH BANNER ================= */
-    .bhm-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 35px;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2100;
-      overflow: hidden;
-      box-shadow: none;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .bhm-banner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 1;
-    }
-
-    .bhm-text {
-      position: relative;
-      z-index: 2;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-      animation: scrollBanner 18s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-    }
-
-    @keyframes scrollBanner {
-      0% {
-    transform: translateX(-100%);
+    /* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
   }
-  100% {
-    transform: translateX(100%);
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 2101;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .top-name {
+    margin: 0 auto;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    z-index: 1900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  main.content {
+    margin-left: 0;
+    margin-top: 50px;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+      
+  .sidebar.active ~ main.content {
+    overflow: hidden;
+  }
+
+  #musicDatabase {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
 
-    html, body {
-      padding-top: 35px;
-    }
+/* ================= BLACK HISTORY MONTH BANNER ================= */
+.bhm-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.bhm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+.bhm-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-size: 20px;
+  animation: scrollBanner 20s linear infinite;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+html, body {
+  padding-top: 0;
+}
+
   </style>
 </head>
 <body>
@@ -368,7 +384,7 @@ main.content {
     <img class="profile-img" src="IMG_3214.JPEG" alt="JAE LAURENT" />
     <h1 class="name"><a href="https://k1llajay.com/mylinks" style="color: white; text-decoration: none;">JAE LAURENT</a></h1>
     <div class="buttons">
-        <a href="https://k1llajay.com/" class="button">GALLERY</a>
+      <a href="https://k1llajay.com" class="button">Home</a>
       <a href="https://k1llajay.com/music" class="button">LATEST RELEASE</a>
       <a href="https://k1llajay.com/portfolio" class="button">PORTFOLIO</a>
       <a href="https://k1llajay.com/podcast" class="button">PODCAST</a>
