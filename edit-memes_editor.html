@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Upload Memes & Videos — JAE LAURENT</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 15px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      height: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      box-sizing: border-box;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
+    .sidebar {
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      z-index: 3000;
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+    }
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .button {
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+      filter: brightness(0.4);
+      border-radius: inherit;
+      z-index: -1;
+      transition: filter 0.3s;
+    }
+
+    .button:hover::before {
+      filter: brightness(1);
+    }
+
+    .button:hover { filter: brightness(1); border-color: white; }
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
+    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
+
+    .upload-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    .upload-section {
+      margin-bottom: 28px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    #releaseTitleInput {
+      grid-column: 1/-1;
+    }
+    .file-upload-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .file-upload-area label {
+      flex: 1;
+      min-width: 150px;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
+    }
+    input, select {
+      background: transparent;
+      border: 1px solid #444;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'beyoncefont', monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+    input::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
+
+    .primary-btn {
+      background: #00ff99;
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'beyoncefont', monospace;
+      text-transform: uppercase;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn {
+      background: #222;
+      border: 1px solid #666;
+      color: white;
+      margin-left: 10px;
+    }
+    .secondary-btn:hover { border-color: #999; }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+      width: 100%;
+    }
+    .preview-item {
+      position: relative;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .preview-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-item video {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-item-label {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #00ff99;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    .remove-btn {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: #ff3333;
+      border: none;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slides-list {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .slides-list h2 { font-size: 24px; margin: 0 0 20px 0; }
+    #slideList {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+    .slide-item {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide-item img {
+      width: 100%; height: 200px;
+      object-fit: cover;
+    }
+    .slide-item button {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-top: auto;
+    }
+    .slide-item button:hover { background: #cc0000; }
+
+    progress {
+      width: 100%; height: 10px; border-radius: 5px; margin: 20px 0; display: none;
+    }
+    progress::-webkit-progress-value { background: #00ff99; }
+    progress::-moz-progress-bar { background: #00ff99; }
+
+    .status { margin-top: 15px; font-size: 14px; opacity: 0.9; }
+
+    @media (max-width: 768px) {
+      body { 
+        flex-direction: column;
+        padding-top: 50px;
+      }
+      .topbar { 
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        padding: 0 15px;
+        padding-top: max(0px, env(safe-area-inset-top));
+        align-items: center;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        z-index: 2101;
+      }
+      .hamburger { 
+        font-size: 28px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      .top-name {
+        margin: 0 auto;
+        font-size: 16px;
+        letter-spacing: 2px;
+      }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100dvh - 50px);
+        max-height: none;
+        padding: 15px;
+        z-index: 1900;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .sidebar.active { display: flex; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 15px;
+        width: 100%;
+        height: auto;
+        min-height: calc(100dvh - 50px);
+        padding-bottom: max(40px, calc(15px + env(safe-area-inset-bottom)));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .preview-grid { grid-template-columns: 1fr; }
+      #slideList { grid-template-columns: 1fr; }
+      .slide-item button { width: 100%; margin-top: 8px; }
+    }
+
+    /* ================= BLACK HISTORY MONTH BANNER ================= */
+    .bhm-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 35px;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      overflow: hidden;
+      box-shadow: none;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .bhm-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1;
+    }
+
+    .bhm-text {
+      position: relative;
+      z-index: 2;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+      animation: scrollBanner 15s linear infinite;
+    }
+
+    @keyframes scrollBanner {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    html, body {
+      padding-top: 35px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">EDITOR</div>
+  </div>
+
+  <!-- BLACK HISTORY MONTH BANNER -->
+  <div class="bhm-banner">
+    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+  </div>
+
+  <div class="sidebar">
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+    <h1 class="name">JAE LAURENT</h1>
+    <div class="buttons">
+      <a href="https & Videos</h1>
+
+    <div class="upload-box">
+      <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none;" />
+      <button onclick="document.getElementById('fileInput').click()" class="primary-btn" style="width:100%; padding:20px; font-size:16px;">
+        Choose Images or Videos
+      </button>
+
+      <div id="previewGrid" class="preview-grid"></div>
+
+      <button id="uploadBtn" class="primary-btn" style="display:none;">Upload All Files</button>
+
+      <progress id="progress" max="100" value="0"></progress>
+      <div id="status" class="status">Select files to begin</div>
+    </div>
+
+    <div class="slides-list">
+      <h2 style="font-size:28px; margin:60px 0 30px;">Uploaded Memes & Video
+  </div>
+
+  <div class="main">
+    <h1>Upload Memes</h1>
+
+    <div class="upload-box">
+      <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
+      <button onclick="document.getElementById('fileInput').click()" class="primary-btn" style="width:100%; padding:20px; font-size:16px;">
+        Choose Images
+      </button>
+
+      <div id="previewGrid" class="preview-grid"></div>
+
+      <button id="uploadBtn" class="primary-btn" style="display:none;">Upload All Memes</button>
+
+      <progress id="progress" max="100" value="0"></progress>
+      <div id="status" class="status">Select images to begin</div>
+    </div>
+
+    <div class="slides-list">
+      <h2 style="font-size:28px; margin:60px 0 30px;">Uploaded Memes</h2>
+      <div id="slideList"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const db = firebase.database();
+
+    const fileInput = document.getElementById('fileInput');
+    const previewGrid = document.getElementById('previewGrid');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progress = document.getElementById('progress');
+    const status = document.getElementById('status');
+    const slideList = document.getElementById('slideList');
+
+    let filesQueue = [];
+
+    fileInput.onchange = () => {
+      const files = Array.from(fileInput.files);
+      filesQueue = [...filesQueue, ...files];
+      renderPreview();
+      uploadBtn.style.display = filesQueue.length ? 'block' : 'none';
+    };
+
+    function renderPreview() {
+      previewGrid.innerHTML = '';
+      filesQueue.forEach((file, i) => {
+        const div = document.createElement('div');
+        div.className = 'preview-item';
+        const isVideo = file.type.startsWith('video/');
+        
+        if (isVideo) {
+          const vid = document.createElement('video');
+          vid.src = URL.createObjectURL(file);
+          const label = document.createElement('div');
+          label.className = 'preview-item-label';
+          label.textContent = 'VIDEO';
+          div.appendChild(vid);
+          div.appendChild(label);
+        } else {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          const label = document.createElement('div');
+          label.className = 'preview-item-label';
+          label.textContent = 'IMAGE';
+          div.appendChild(img);
+          div.appendChild(label);
+        }
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.className = 'remove-btn';
+        removeBtn.onclick = () => {
+          filesQueue.splice(i, 1);
+          renderPreview();
+          uploadBtn.style.display = filesQueue.length ? 'block' : 'none';
+        };
+        div.appendChild(removeBtn);
+        previewGrid.appendChild(div);
+      });
+    }
+
+    uploadBtn.onclick = async () => {
+      uploadBtn.disabled = true;
+      progress.style.display = 'block';
+      
+      for (let i = 0; i < filesQueue.length; i++) {
+        const file = filesQueue[i];
+        const timestamp = Date.now();
+        const isVideo = file.type.startsWith('video/');
+        const prefix = isVideo ? 'memevideo' : 'meme';
+        const fileName = `${prefix}_${timestamp}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        const folderPath = isVideo ? 'memevideos' : 'memes';
+        const dbPath = isVideo ? 'memevideos' : 'memes';
+        
+        const ref = storage.ref(`${folderPath}/${fileName}`);
+
+        const task = ref.put(file);
+        task.on('state_changed', snap => {
+          progress.value = (snap.bytesTransferred / snap.totalBytes) * 100;
+        });
+
+        await task;
+        const url = await ref.getDownloadURL();
+
+        await db.ref(dbPath).push({
+          url,
+          uploadedAt: timestamp
+        });
+
+        status.textContent = `Uploaded ${i+1} of ${filesQueue.length}`;
+      }
+
+      status.textContent = 'All files uploaded successfully!';
+      progress.style.display = 'none';
+      filesQueue = [];
+      renderPreview();
+      uploadBtn.style.display = 'none';
+      uploadBtn.disabled = false;
+      loadSlides();
+    };
+
+    function loadSlides() {
+      db.ref('memes').orderByChild('uploadedAt').on('value', snap => {
+        const data = snap.val() || {};
+        slideList.innerHTML = '';
+        Object.values(data).reverse().forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'slide-item';
+          div.innerHTML = `
+            <img src="${item.url}">
+            <button onclick="deleteSlide('${item.url.split('/').pop().split('?')[0]}', this)">Delete</button>
+          `;
+          slideList.appendChild(div);
+        });
+        if (!Object.keys(data).length) {
+          slideList.innerHTML = '<p style="opacity:0.6;text-align:center;padding:60px; grid-column: 1/-1;">No memes uploaded yet</p>';
+        }
+      });
+    }
+
+    window.deleteSlide = async (fileName, btn) => {
+      if (!confirm('Delete this meme?')) return;
+      try {
+        await storage.ref(`memes/${fileName}`).delete();
+        btn.closest('.slide-item').remove();
+      } catch (e) {
+        alert('Failed to delete. File may have already been removed.');
+      }
+    };
+
+    // Mobile menu
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+
+    loadSlides();
+  </script>
+</body>
+</html>
