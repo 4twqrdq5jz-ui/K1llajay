@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>SOS – Jae Laurent</title>
   <link rel="icon" href="favicon.ico">
   <style>
@@ -26,9 +26,14 @@ html, body {
   color: white;
 }
 
+html, body {
+  padding-top: 18px;
+}
+
 html {
   height: 100vh;
   height: 100dvh;
+  padding-top: 18px;
 }
 
 /* ================= INFINITE BACKGROUND ================= */
@@ -61,6 +66,8 @@ body::after {
 body {
   display: flex;
   min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
 }
 
 /* ================= SIDEBAR ================= */
@@ -557,113 +564,18 @@ body {
       .song-modal .container {
         padding: 24px 16px;
       }
-      /* Lyrics/Credits Overlay */
-      #overlay {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        padding: 16px;
-      }
-      #overlay::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: url("IMG_3309.gif") center / cover no-repeat;
-        z-index: -2;
-      }
-      #overlay::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.65);
-        z-index: -1;
-      }
-      #overlay.active {
-        display: flex;
-      }
-      #overlayContent {
-        position: relative;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 100%;
-        width: 100%;
-        max-height: 70vh;
-        overflow-y: auto;
-        border: 1px solid rgba(255,255,255,0.2);
-        backdrop-filter: blur(9px);
-        margin: auto;
-        top: 40px;
-      }
-      .overlay-close {
-        position: fixed;
-        top: 50px;
-        right: 12px;
-        background: none;
-        border: none;
-        font-size: 28px;
-        color: white;
-        cursor: pointer;
-        opacity: 0.8;
-        z-index: 110;
-      }
-      .overlay-close:hover {
-        opacity: 1;
-      }
-      .song-modal .container {
-        position: relative;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 100%;
-        width: 100%;
-        max-height: 70vh;
-        overflow-y: auto;
-        border: 1px solid rgba(255,255,255,0.2);
-        backdrop-filter: blur(9px);
-        margin: auto;
-      }
-      .service-logos {
-        display: flex;
-        justify-content: center;
+      .track-header {
         flex-wrap: wrap;
-        gap: 16px;
-        margin-bottom: 16px;
-      }
-      .service-logos img {
-        height: 28px;
-      }
-      .sub-toggle {
-        display: flex;
-        justify-content: center;
         gap: 12px;
-        margin-bottom: 16px;
-        flex-wrap: wrap;
       }
-      .sub-toggle span {
-        font-size: 12px;
-        letter-spacing: 1px;
-        padding: 6px 12px;
-        cursor: pointer;
-        opacity: 0.6;
-        border-bottom: 2px solid transparent;
-      }
-      .sub-toggle span.activeTab {
-        opacity: 1;
-        border-bottom: 2px solid white;
-      }
-      .tab-content {
-        display: none;
-        line-height: 1.6;
-        font-size: 13px;
-      }
-      .tab-content.activeTab {
-        display: block;
+      .next-track-btn, .prev-track-btn {
+        min-width: 44px;
+        height: 44px;
+        font-size: 16px;
       }
     }
 
-   /* ================= BLACK HISTORY MONTH BANNER ================= */
+/* ================= BLACK HISTORY MONTH BANNER ================= */
 .bhm-banner {
   position: fixed;
   top: 0;
@@ -713,10 +625,6 @@ body {
   animation: scrollBanner 20s linear infinite;
   will-change: transform;
   white-space: nowrap;
-}
-
-html, body {
-  padding-top: 18px;
 }
 
 @media (max-width: 768px) {
@@ -798,28 +706,6 @@ html, body {
         <a id="link-spotify" href="https://open.spotify.com/album/5l8U7dc7jMVaqOOpSb8ErS?si=kdGiQgTKRIGFqdJCnn92cA" target="_blank"><img src="spotify.svg" alt="Spotify"></a>
         <a id="link-amazon" href="https://music.amazon.com/albums/B0G56HRNSD?marketplaceId=ATVPDKIKX0DER&amp;musicTerritory=US&amp;ref=dm_sh_Nz2qsmMkxmmXTRgNHWyVOtaXw" target="_blank"><img src="amazon.svg" alt="Amazon Music"></a>
         <a id="link-tidal" href="https://tidal.com/album/479046762/u" target="_blank"><img src="tidal.svg" alt="Tidal"></a>
-      </div>
-    </div>
-      <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">X</button>
-      <div class="track-header">
-        <button id="prevTrackBtn" class="prev-track-btn" onclick="prevTrack()">←</button>
-        <div class="track-info">
-          <h1 id="title" class="track-title">Loading Track Title...</h1>
-          <h3 id="artist" class="track-artist">Loading Artist...</h3>
-        </div>
-        <button id="nextTrackBtn" class="next-track-btn" onclick="nextTrack()">→</button>
-      </div>
-      <div class="sub-toggle">
-        <span id="lyricsTab" class="activeTab" onclick="switchTab('lyrics')">LYRICS</span>
-        <span id="creditsTab" onclick="switchTab('credits')">CREDITS</span>
-      </div>
-      <div id="lyrics" class="tab-content activeTab">Loading lyrics...</div>
-      <div id="credits" class="tab-content">Loading credits...</div>
-      <div class="service-logos">
-        <a id="link-apple" href="#" target="_blank"><img src="apple.svg" alt="Apple Music"></a>
-        <a id="link-spotify" href="#" target="_blank"><img src="spotify.svg" alt="Spotify"></a>
-        <a id="link-amazon" href="#" target="_blank"><img src="amazon.svg" alt="Amazon Music"></a>
-        <a id="link-tidal" href="#" target="_blank"><img src="tidal.svg" alt="Tidal"></a>
       </div>
     </div>
   </aside>
