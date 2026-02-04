@@ -302,60 +302,6 @@ body {
   }
 }
 
-/* ================= INTRO GIF ================= */
-.intro {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.8);
-  opacity: 1;
-  z-index: 9999;
-  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: opacity, visibility;
-}
-
-.intro::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  z-index: -2;
-}
-
-.intro::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-.intro-gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  box-shadow: none;
-  animation: gifFadeIn 0.6s ease-in-out forwards;
-}
-
-.intro-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 48px;
-  font-weight: bold;
-  text-align: center;
-  z-index: 3001;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-  letter-spacing: 2px;
-}
-
 @keyframes gifFadeIn {
   from {
     opacity: 0;
@@ -534,12 +480,6 @@ html, body {
 
 <body>
 
-<!-- INTRO -->
-<div class="intro" id="intro">
-  <img class="intro-gif" id="introGif" src="" alt="Intro">
-  <div class="intro-text">happy Black History Month</div>
-</div>
-
 <!-- MOBILE TOP BAR -->
 <div class="topbar">
   <div class="hamburger">☰</div>
@@ -560,8 +500,7 @@ html, body {
     <a href="https://k1llajay.com/music" class="button">Latest Release</a>
     <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
     <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
-    <a href="https://k1llajay.com/playe style="display:none;">
-  <video class="modal-content" id="vid01" style="display:none;" controls></videor" class="button">All Releases</a>
+    <a href="https://k1llajay.com/player" class="button">All Releases</a>
     <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
     <a href="https://k1llajay.com/events" class="button">Events</a>
     <a href="https://k1llajay.com/memes" class="button">Memes & Videos</a>
@@ -589,33 +528,47 @@ html, body {
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-// Load both memes and memevideos
-Promise.all([
-  db.ref("memes").once("value"),
-  db.ref("memevideos").once("value")
-]).then(([memesSnap, videosSnap]) => {
-  const memesData = memesSnap.val() || {};
-  const videosData = videosSnap.val() || {};
-  
-  // Combine and sort by uploadedAt
-  const combined = [];
-  
-  Object.keys(memesData).forEach(k => {
-    combined.push({
-      url: memesData[k].url || memesData[k],
-      uploadedAt: memesData[k].uploadedAt || 0,
-      type: 'image'
-    });
-  });
-  
-  Object.keys(videosData).forEach(k => {
-    combined.push({
-      url: videosData[k].url || videosData[k],
-      uploadedAt: videosData[k].uploadedAt || 0,
-      type: 'video'
-    });
-const modalVid = document.getElementById("vid01");
+<script>
+/* === MODAL === */
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
+const grid = document.getElementById("grid-container");
 
+/* === MOBILE SIDEBAR === */
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+const bodyElem = document.body;
+
+hamburger.onclick = () => {
+  sidebar.classList.toggle("active");
+  bodyElem.classList.toggle("sidebar-open");
+};
+
+/* === LOAD MEMES AND VIDEOS === */
+db.ref("memes").once("value").then(snap => {
+  const data = snap.val();
+  if (!data) return;
+
+  Object.keys(data).reverse().forEach(k => {
+    const src = data[k].url || data[k];
+
+    const div = document.createElement("div");
+    div.className = "grid-item";
+    div.dataset.type = "image";
+    div.dataset.src = src;
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.loading = "eager";
+    img.decoding = "sync";
+    img.fetchPriority = "high";
+
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+});
+
+/* === GRID CLICK HANDLER === */
 grid.onclick = e => {
   if (e.target.tagName === "IMG" || e.target.classList.contains("play-button")) {
     document.querySelector(".sidebar").classList.remove("active");
@@ -630,158 +583,20 @@ grid.onclick = e => {
     if (type === 'image') {
       modalImg.src = src;
       modalImg.style.display = 'block';
-      modalVid.style.display = 'none';
-      modalVid.src = '';
-    } else {
-      modalVid.src = src;
-      modalVid.style.display = 'block';
-      modalImg.style.display = 'none';
     }
   }
 };
 
+/* === CLOSE MODAL === */
 document.querySelector(".close").onclick = () => {
   modal.classList.remove("open");
-  modalVid.pause();
-  modalVid.src = '';
 };
 
 modal.onclick = e => {
   if (e.target === modal) {
     modal.classList.remove("open");
-    modalVid.pause();
-    modalVid.src = '';
-  }
-}
-      const img = document.createElement("img");
-      img.src = item.url;
-      img.loading = "eager";
-      img.decoding = "sync";
-      img.fetchPriority = "high";
-      div.appendChild(img);
-    } else {
-      const img = document.createElement("img");
-      img.src = item.url;
-      img.loading = "eager";
-      img.decoding = "sync";
-      img.fetchPriority = "high";
-      
-      const playBtn = document.createElement("div");
-      playBtn.className = "play-button";
-      playBtn.textContent = "▶";
-      
-      div.appendChild(img);
-      div.appendChild(playBtn);
-    }
-    
-function preload(src) {
-  const img = new Image();
-  img.src = src;
-  preloadedImages.push(img);
-}
-
-db.ref("memes").once("value").then(snap => {
-  const data = snap.val();
-  if (!data) return;
-
-  Object.keys(data).reverse().forEach(k => {
-    const src = data[k].url || data[k];
-    preload(src);
-
-    const div = document.createElement("div");
-    div.className = "grid-item";
-
-    const img = document.createElement("img");
-    img.src = src;
-    img.loading = "eager";
-    img.decoding = "sync";
-    img.fetchPriority = "high";
-
-    div.appendChild(img);
-    grid.appendChild(div);
-  });
-});
-
-/* === MODAL === */
-const modal = document.getElementById("myModal");
-const modalImg = document.getElementById("img01");
-
-grid.onclick = e => {
-  if (e.target.tagName === "IMG") {
-    document.querySelector(".sidebar").classList.remove("active");
-    document.body.classList.remove("sidebar-open");
-    modal.classList.add("open");
-    modalImg.src = e.target.src;
   }
 };
-
-document.querySelector(".close").onclick = () =>
-  modal.classList.remove("open");
-
-modal.onclick = e =>
-  e.target === modal && modal.classList.remove("open");
-
-/* === MOBILE SIDEBAR === */
-const hamburger = document.querySelector(".hamburger");
-const sidebar = document.querySelector(".sidebar");
-const bodyElem = document.body;
-
-hamburger.onclick = () => {
-  sidebar.classList.toggle("active");
-  bodyElem.classList.toggle("sidebar-open");
-};
-
-/* === INTRO === */
-const intro = document.getElementById("intro");
-const introGif = document.getElementById("introGif");
-
-// Array of 6 GIFs with their durations in milliseconds
-const introGifs = [
-  { name: "intro-gif-1.GIF", duration: 2000 },
-  { name: "intro-gif-2.GIF", duration: 2000 },
-  { name: "intro-gif-3.gif", duration: 2000 },
-  { name: "intro-gif-4.gif", duration: 2000 },
-  { name: "intro-gif-5.gif", duration: 2000 },
-  { name: "intro-gif-6.gif", duration: 2000 }
-];
-
-// Randomly select one GIF
-const selectedGifObj = introGifs[Math.floor(Math.random() * introGifs.length)];
-introGif.src = selectedGifObj.name;
-
-// Calculate total time: duration × 2 plays + 600ms for fade out
-const totalDuration = (selectedGifObj.duration * 2) + 600;
-
-// Hide intro after 2 plays
-setTimeout(() => {
-  intro.style.opacity = "0";
-  intro.style.pointerEvents = "none";
-  intro.style.transition = "opacity 0.6s ease-in-out";
-  setTimeout(() => {
-    intro.style.display = "none";
-  }, 600);
-}, selectedGifObj.duration * 2);
-
-// Hide intro and banner outside of February and June
-function checkSeasonalVisibility() {
-  const now = new Date();
-  const month = now.getMonth() + 1; // 1-12
-  const day = now.getDate();
-  
-  const isBlackHistoryMonth = month === 2 && day <= 28;
-  const isPrideMonth = month === 6 && day <= 30;
-  const shouldShow = isBlackHistoryMonth || isPrideMonth;
-  
-  const intro = document.getElementById("intro");
-  const banner = document.querySelector(".bhm-banner");
-  
-  if (!shouldShow) {
-    if (intro) intro.style.display = "none";
-    if (banner) banner.style.display = "none";
-  }
-}
-
-checkSeasonalVisibility();
 </script>
 
 </body>
