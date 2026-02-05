@@ -7,17 +7,27 @@ dotenv.config();
 
 const app = express();
 
-// Explicit CORS configuration
-const corsOptions = {
-  origin: true, // Allow all origins
-  credentials: true,
-  optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
+// Ultra-permissive CORS for production deployment
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, Origin");
+  res.header("Access-Control-Allow-Credentials", "false");
+  
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Pre-flight requests
+// Also use cors package as backup
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
 const PRINTIFY_API = "https://api.printify.com/v1";
