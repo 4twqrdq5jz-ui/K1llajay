@@ -1494,10 +1494,8 @@ html, body {
     </div>
 
     <script>
-// Dynamically use localhost on desktop, or computer IP on mobile
-const API = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-  ? "http://localhost:3000" 
-  : `http://${window.location.hostname}:3000`; 
+// Backend running on Railway
+const API = "https://k1llajay-production.up.railway.app"; 
 let SHOP_ID = null;
 let products = [];
 let cart = [];
