@@ -1495,16 +1495,39 @@ html, body {
 
     <script>
 // Dynamically set backend URL based on connection
-function getBackendURL() {
+async function getBackendURL() {
+  // Priority: Try localhost first for local development
+  const backendURLs = [
+    'http://localhost:3000',           // Local development
+    'http://127.0.0.1:3000',           // Loopback
+    'https://k1llajay-production.up.railway.app'  // Production
+  ];
+  
+  // If on a known domain, skip localhost attempts
   const hostname = window.location.hostname;
-  // Use localhost for local development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3000';
+  if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
+    // If it's a real domain (k1llajay.com, etc), skip localhost
+    return backendURLs[backendURLs.length - 1]; // Return Railway URL
   }
-  // Use Railway production backend for all other domains
-  return 'https://k1llajay-production.up.railway.app';
+  
+  // Otherwise, try localhost first
+  for (const url of backendURLs.slice(0, -1)) {
+    try {
+      const response = await fetch(`${url}/shops`, { 
+        method: 'HEAD',
+        mode: 'no-cors'
+      });
+      return url;
+    } catch (e) {
+      // Continue to next URL
+    }
+  }
+  
+  // Fallback to production
+  return backendURLs[backendURLs.length - 1];
 }
-const API = getBackendURL(); 
+
+let API = 'http://localhost:3000'; // Default, will be updated in initStore
 let SHOP_ID = null;
 let products = [];
 let cart = [];
@@ -1521,7 +1544,9 @@ let colorImageMapping = {}; // Mapping of color names to image indices
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
   try {
-    console.log("Attempting to connect to API:", API);
+    // First, detect the correct backend URL
+    API = await getBackendURL();
+    console.log("Using backend URL:", API);
     
     // Fetch all shops
     const shopsRes = await fetch(`${API}/shops`);
