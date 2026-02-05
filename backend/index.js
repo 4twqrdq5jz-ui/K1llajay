@@ -1,32 +1,26 @@
 import express from "express";
 import axios from "axios";
-import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
 
-// Ultra-permissive CORS for production deployment
+// CORS - Absolutely permissive middleware
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, Origin");
-  res.header("Access-Control-Allow-Credentials", "false");
+  // Set CORS headers for all requests
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, Origin");
+  res.setHeader("Access-Control-Max-Age", "86400");
   
-  // Handle preflight requests
+  // Respond to OPTIONS immediately
   if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    return res.sendStatus(204);
   }
+  
   next();
 });
-
-// Also use cors package as backup
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
 
 app.use(express.json());
 
