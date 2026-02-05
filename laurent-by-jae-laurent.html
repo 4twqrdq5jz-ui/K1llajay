@@ -1494,8 +1494,17 @@ html, body {
     </div>
 
     <script>
-// Backend running on Railway
-const API = "https://k1llajay-production.up.railway.app"; 
+// Dynamically set backend URL based on connection
+function getBackendURL() {
+  const hostname = window.location.hostname;
+  // Use localhost for local development, or the same IP for network access
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3000';
+  }
+  // For iPhone/other devices on the same network, use their IP
+  return `http://${hostname}:3000`;
+}
+const API = getBackendURL(); 
 let SHOP_ID = null;
 let products = [];
 let cart = [];
