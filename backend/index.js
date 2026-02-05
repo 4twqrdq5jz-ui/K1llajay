@@ -6,15 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors({
-  origin: [
-    "https://k1llajay.com",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    /^http:\/\/192\.168\./  // Allow local network IPs
-  ],
-  credentials: true
-}));
+app.use(cors()); // Allow all origins
 app.use(express.json());
 
 const PRINTIFY_API = "https://api.printify.com/v1";
