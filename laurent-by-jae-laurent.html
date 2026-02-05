@@ -1494,8 +1494,10 @@ html, body {
     </div>
 
     <script>
-// Change this to your backend URL when deployed
-const API = "http://localhost:3000"; 
+// Dynamically use localhost on desktop, or computer IP on mobile
+const API = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+  ? "http://localhost:3000" 
+  : `http://${window.location.hostname}:3000`; 
 let SHOP_ID = null;
 let products = [];
 let cart = [];
