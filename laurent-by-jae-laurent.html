@@ -1573,11 +1573,12 @@ async function initStore() {
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'omit' // Don't include credentials for cross-origin
+      credentials: 'omit',
+      timeout: 10000
     });
     
     if (!shopsRes.ok) {
-      throw new Error(`Failed to fetch shops: ${shopsRes.status} ${shopsRes.statusText}`);
+      throw new Error(`HTTP ${shopsRes.status}: ${shopsRes.statusText}`);
     }
     const shops = await shopsRes.json();
     SHOP_ID = shops[0].id;
@@ -1589,11 +1590,12 @@ async function initStore() {
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'omit'
+      credentials: 'omit',
+      timeout: 10000
     });
     
     if (!productsRes.ok) {
-      throw new Error(`Failed to fetch products: ${productsRes.status} ${productsRes.statusText}`);
+      throw new Error(`HTTP ${productsRes.status}: ${productsRes.statusText}`);
     }
     const productsData = await productsRes.json();
     
@@ -1614,17 +1616,26 @@ async function initStore() {
     renderProducts();
   } catch (error) {
     console.error("Failed to load products:", error);
-    const isCORSError = error.message.includes("fetch") || error.message.includes("CORS");
-    const helpText = isCORSError 
-      ? "It appears there's a connection issue with the backend. The backend needs to be deployed on Railway for production access."
-      : "Make sure your backend is running.";
+    
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    const isProduction = hostname === 'k1llajay.com';
+    
+    let helpText = '';
+    if (isProduction) {
+      helpText = `<br><strong>Production Site Issue:</strong> The Railway backend at ${API} is not responding.<br>Check the Railway dashboard to ensure the backend is active and the PRINTIFY_API_KEY is set.`;
+    } else if (isLocalhost) {
+      helpText = `<br><strong>Local Development:</strong> Make sure the backend is running with: <code>cd backend && node index.js</code>`;
+    } else {
+      helpText = `<br><strong>Network Note:</strong> Backend detected as: ${API}`;
+    }
     
     // Show fallback message
     document.getElementById("products-grid").innerHTML = 
-      `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center;">
-        Unable to load products. ${helpText}<br>
-        <small>Backend: ${API}</small><br>
-        <small>Error: ${error.message}</small>
+      `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 20px;">
+        <strong>Unable to load products.</strong><br>
+        ${helpText}<br>
+        <small>${error.message}</small>
       </p>`;
   }
 }
