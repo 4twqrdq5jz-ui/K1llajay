@@ -1521,13 +1521,39 @@ let colorImageMapping = {}; // Mapping of color names to image indices
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
   try {
-    // Fetch all shops
-    const shopsRes = await fetch(`${API}/shops`).then(r => r.json());
+    // Try multiple backend URLs in order
+    const backendURLs = [
+      `http://${window.location.hostname}:3000`, // Same machine
+      'http://localhost:3000', // Fallback to localhost
+      'http://127.0.0.1:3000'  // Fallback to loopback
+    ];
+    
+    let shopsRes = null;
+    let successURL = null;
+    
+    for (const url of backendURLs) {
+      try {
+        const response = await fetch(`${url}/shops`, { timeout: 3000 });
+        if (response.ok) {
+          shopsRes = await response.json();
+          successURL = url;
+          break;
+        }
+      } catch (e) {
+        // Continue to next URL
+        continue;
+      }
+    }
+    
+    if (!shopsRes || !successURL) {
+      throw new Error('Could not connect to backend on any URL');
+    }
+    
     SHOP_ID = shopsRes[0].id;
     console.log("Shop ID:", SHOP_ID);
 
     // Fetch products for this shop
-    const productsRes = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
+    const productsRes = await fetch(`${successURL}/products/${SHOP_ID}`).then(r => r.json());
     
     products = productsRes.data.map(p => ({
       id: p.id,
@@ -1549,7 +1575,8 @@ async function initStore() {
     // Show fallback message
     document.getElementById("products-grid").innerHTML = 
       `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center;">
-        Unable to load products. Make sure your backend is running at ${API}
+        Unable to load products. Make sure your backend is running at http://localhost:3000<br>
+        <small>Error: ${error.message}</small>
       </p>`;
   }
 }
