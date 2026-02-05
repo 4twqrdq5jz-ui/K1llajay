@@ -1498,26 +1498,14 @@ html, body {
 async function getBackendURL() {
   const hostname = window.location.hostname;
   
-  // Build list of URLs to try
-  let backendURLs = [];
+  // Always try localhost first (works for all scenarios)
+  const backendURLs = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://k1llajay-production.up.railway.app'
+  ];
   
-  // If on localhost, try localhost first
-  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
-    backendURLs = [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      'https://k1llajay-production.up.railway.app'
-    ];
-  } else {
-    // On a real domain - try Railway first, then fallback to localhost
-    backendURLs = [
-      'https://k1llajay-production.up.railway.app',
-      'http://localhost:3000',  // Local fallback if Railway is down
-      'http://127.0.0.1:3000'
-    ];
-  }
-  
-  // Try each URL
+  // Try each URL with timeout
   for (const url of backendURLs) {
     try {
       console.log(`Attempting to connect to: ${url}`);
@@ -1527,7 +1515,7 @@ async function getBackendURL() {
           headers: { 'Content-Type': 'application/json' }
         }),
         new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), 5000)
+          setTimeout(() => reject(new Error('Timeout')), 3000)
         )
       ]);
       
@@ -1536,14 +1524,12 @@ async function getBackendURL() {
         return url;
       }
     } catch (e) {
-      console.log(`✗ Failed to connect to ${url}: ${e.message}`);
-      // Continue to next URL
+      console.log(`✗ Failed: ${url}`);
     }
   }
   
-  // If all fail, return Railway as default (better error message)
-  console.warn('All backend URLs failed. Returning Railway URL as default.');
-  return 'https://k1llajay-production.up.railway.app';
+  // Default to localhost if all fail
+  return 'http://localhost:3000';
 }
 
 let API = 'http://localhost:3000'; // Default, will be updated in initStore
@@ -1619,15 +1605,12 @@ async function initStore() {
     
     const hostname = window.location.hostname;
     const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-    const isProduction = hostname === 'k1llajay.com';
     
-    let helpText = '';
-    if (isProduction) {
-      helpText = `<br><strong>Production Site Issue:</strong> The Railway backend at ${API} is not responding.<br>Check the Railway dashboard to ensure the backend is active and the PRINTIFY_API_KEY is set.`;
-    } else if (isLocalhost) {
-      helpText = `<br><strong>Local Development:</strong> Make sure the backend is running with: <code>cd backend && node index.js</code>`;
+    let helpText = `Backend tried: ${API}`;
+    if (!isLocalhost) {
+      helpText += `<br><br><strong>Solution for Testing:</strong><br>1. Run backend locally: <code>cd backend && node index.js</code><br>2. Access site at: <code>http://localhost</code> (not https)<br><br>Local backend works perfectly! ✓`;
     } else {
-      helpText = `<br><strong>Network Note:</strong> Backend detected as: ${API}`;
+      helpText += `<br>Make sure backend is running: <code>node backend/index.js</code>`;
     }
     
     // Show fallback message
