@@ -1521,15 +1521,25 @@ let colorImageMapping = {}; // Mapping of color names to image indices
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
   try {
+    console.log("Attempting to connect to API:", API);
+    
     // Fetch all shops
-    const shopsRes = await fetch(`${API}/shops`).then(r => r.json());
-    SHOP_ID = shopsRes[0].id;
+    const shopsRes = await fetch(`${API}/shops`);
+    if (!shopsRes.ok) {
+      throw new Error(`Failed to fetch shops: ${shopsRes.status} ${shopsRes.statusText}`);
+    }
+    const shops = await shopsRes.json();
+    SHOP_ID = shops[0].id;
     console.log("Shop ID:", SHOP_ID);
 
     // Fetch products for this shop
-    const productsRes = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
+    const productsRes = await fetch(`${API}/products/${SHOP_ID}`);
+    if (!productsRes.ok) {
+      throw new Error(`Failed to fetch products: ${productsRes.status} ${productsRes.statusText}`);
+    }
+    const productsData = await productsRes.json();
     
-    products = productsRes.data.map(p => ({
+    products = productsData.data.map(p => ({
       id: p.id,
       name: p.title,
       price: p.variants[0]?.price / 100 || 0,
@@ -1549,7 +1559,7 @@ async function initStore() {
     // Show fallback message
     document.getElementById("products-grid").innerHTML = 
       `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center;">
-        Unable to load products. Make sure your backend is running at http://localhost:3000<br>
+        Unable to load products. Make sure your backend is running at ${API}<br>
         <small>Error: ${error.message}</small>
       </p>`;
   }
