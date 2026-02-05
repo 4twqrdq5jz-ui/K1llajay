@@ -1497,12 +1497,12 @@ html, body {
 // Dynamically set backend URL based on connection
 function getBackendURL() {
   const hostname = window.location.hostname;
-  // Use localhost for local development, or the same IP for network access
+  // Use localhost for local development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return 'http://localhost:3000';
   }
-  // For iPhone/other devices on the same network, use their IP
-  return `http://${hostname}:3000`;
+  // Use Railway production backend for all other domains
+  return 'https://k1llajay-production.up.railway.app';
 }
 const API = getBackendURL(); 
 let SHOP_ID = null;
@@ -1521,39 +1521,13 @@ let colorImageMapping = {}; // Mapping of color names to image indices
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
   try {
-    // Try multiple backend URLs in order
-    const backendURLs = [
-      `http://${window.location.hostname}:3000`, // Same machine
-      'http://localhost:3000', // Fallback to localhost
-      'http://127.0.0.1:3000'  // Fallback to loopback
-    ];
-    
-    let shopsRes = null;
-    let successURL = null;
-    
-    for (const url of backendURLs) {
-      try {
-        const response = await fetch(`${url}/shops`, { timeout: 3000 });
-        if (response.ok) {
-          shopsRes = await response.json();
-          successURL = url;
-          break;
-        }
-      } catch (e) {
-        // Continue to next URL
-        continue;
-      }
-    }
-    
-    if (!shopsRes || !successURL) {
-      throw new Error('Could not connect to backend on any URL');
-    }
-    
+    // Fetch all shops
+    const shopsRes = await fetch(`${API}/shops`).then(r => r.json());
     SHOP_ID = shopsRes[0].id;
     console.log("Shop ID:", SHOP_ID);
 
     // Fetch products for this shop
-    const productsRes = await fetch(`${successURL}/products/${SHOP_ID}`).then(r => r.json());
+    const productsRes = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
     
     products = productsRes.data.map(p => ({
       id: p.id,
