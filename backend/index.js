@@ -6,7 +6,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors()); // Allow all origins
+
+// Explicit CORS configuration
+const corsOptions = {
+  origin: true, // Allow all origins
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Pre-flight requests
 app.use(express.json());
 
 const PRINTIFY_API = "https://api.printify.com/v1";
