@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Laurent Store Admin - Product & Order Management</title>
+    <link rel="icon" href="favicon.ico">
+    <style>
+        @font-face {
+            font-family: 'sitefont';
+            src: url('beyoncefont.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'sitefont', monospace;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url("IMG_3309.gif") center / cover no-repeat;
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: -1;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100dvh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .panel {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .panel h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 0.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.6rem;
+            border-radius: 3px;
+            font-family: 'sitefont', monospace;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        button {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 0.8rem 1.2rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'sitefont', monospace;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        button:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .item {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+
+        .item h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .item-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+        }
+
+        .item-value {
+            color: white;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 3px;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .status-fulfilled {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: rgba(76, 175, 80, 0.6);
+        }
+
+        .status-pending {
+            background: rgba(255, 152, 0, 0.3);
+            border-color: rgba(255, 152, 0, 0.6);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .action-btns button {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            padding: 2rem 0;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>LAURENT STORE ADMIN</h1>
+        <p>MANAGE PRODUCTS & ORDERS</p>
+    </div>
+
+    <div class="container">
+        <!-- PRODUCTS PANEL -->
+        <div class="panel">
+            <h2>MANAGE PRODUCTS</h2>
+            
+            <div class="form-group">
+                <label>PRODUCT NAME</label>
+                <input type="text" id="productName" placeholder="Enter product name">
+            </div>
+
+            <div class="form-group">
+                <label>PRICE</label>
+                <input type="number" id="productPrice" placeholder="Enter price" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label>DESCRIPTION</label>
+                <textarea id="productDescription" placeholder="Enter product description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>CATEGORY</label>
+                <select id="productCategory">
+                    <option value="fashion">FASHION</option>
+                    <option value="electronics">ELECTRONICS</option>
+                    <option value="accessories">ACCESSORIES</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>IMAGE URL</label>
+                <input type="text" id="productImage" placeholder="Enter image URL">
+            </div>
+
+            <button class="btn-primary" onclick="addProduct()">ADD PRODUCT</button>
+
+            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 1.5rem 0;">
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1rem;">PRODUCTS LIST</h3>
+            <div id="productsList" class="empty-message">No products yet. Add one to get started.</div>
+        </div>
+
+        <!-- ORDERS PANEL -->
+        <div class="panel">
+            <h2>ORDERS</h2>
+            
+            <div id="ordersList" class="empty-message">No orders yet.</div>
+
+            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 1.5rem 0;">
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1rem;">EXPORT DATA</h3>
+            
+            <button onclick="exportProducts()" style="width: 100%; margin-bottom: 0.5rem;">EXPORT PRODUCTS</button>
+            <button onclick="exportOrders()" style="width: 100%;">EXPORT ORDERS</button>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:3000";
+        let SHOP_ID = null;
+        let products = [];
+        let orders = [];
+
+        async function initAdmin() {
+            try {
+                const shopsRes = await fetch(`${API}/shops`).then(r => r.json());
+                SHOP_ID = shopsRes[0].id;
+
+                await loadProducts();
+                await loadOrders();
+            } catch (error) {
+                console.error("Failed to initialize admin:", error);
+                alert("Error connecting to backend. Make sure it's running at " + API);
+            }
+        }
+
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API}/products/${SHOP_ID}`).then(r => r.json());
+                products = res.data.map(p => ({
+                    id: p.id,
+                    name: p.title,
+                    price: p.variants[0]?.price / 100 || 0,
+                    image: p.images[0]?.src || "",
+                    description: p.description || "",
+                    category: p.tags?.includes("fashion") ? "fashion" : 
+                              p.tags?.includes("electronics") ? "electronics" : 
+                              p.tags?.includes("accessories") ? "accessories" : "fashion"
+                }));
+                renderProducts();
+            } catch (error) {
+                console.error("Failed to load products:", error);
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const res = await fetch(`${API}/orders/${SHOP_ID}`).then(r => r.json());
+                orders = res.data || [];
+                renderOrders();
+            } catch (error) {
+                console.error("Failed to load orders:", error);
+            }
+        }
+
+        function renderProducts() {
+            const list = document.getElementById("productsList");
+            
+            if (products.length === 0) {
+                list.innerHTML = '<div class="empty-message">No products yet. Add one to get started.</div>';
+                return;
+            }
+
+            list.innerHTML = products.map(p => `
+                <div class="item">
+                    <h4>${p.name}</h4>
+                    <div class="item-row">
+                        <div>
+                            <div class="item-label">PRICE</div>
+                            <div class="item-value">$${p.price.toFixed(2)}</div>
+                        </div>
+                        <div>
+                            <div class="item-label">CATEGORY</div>
+                            <div class="item-value">${p.category}</div>
+                        </div>
+                    </div>
+                    <div class="item-row">
+                        <div style="grid-column: 1/-1;">
+                            <div class="item-label">DESCRIPTION</div>
+                            <div class="item-value" style="font-size: 0.8rem;">${p.description.substring(0, 100)}...</div>
+                        </div>
+                    </div>
+                    <div class="action-btns">
+                        <button onclick="editProduct('${p.id}')">EDIT</button>
+                        <button onclick="deleteProduct('${p.id}')">DELETE</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderOrders() {
+            const list = document.getElementById("ordersList");
+            
+            if (orders.length === 0) {
+                list.innerHTML = '<div class="empty-message">No orders yet.</div>';
+                return;
+            }
+
+            list.innerHTML = orders.map(order => `
+                <div class="item">
+                    <h4>ORDER #${order.id}</h4>
+                    <div class="item-row">
+                        <div>
+                            <div class="item-label">STATUS</div>
+                            <div class="item-value"><span class="status-badge ${order.status === 'fulfilled' ? 'status-fulfilled' : 'status-pending'}">${order.status}</span></div>
+                        </div>
+                        <div>
+                            <div class="item-label">TOTAL</div>
+                            <div class="item-value">$${(order.total / 100).toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="item-row">
+                        <div>
+                            <div class="item-label">CUSTOMER</div>
+                            <div class="item-value">${order.customer_name || 'N/A'}</div>
+                        </div>
+                        <div>
+                            <div class="item-label">DATE</div>
+                            <div class="item-value">${new Date(order.created_at).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                    <div class="action-btns">
+                        <button onclick="viewOrder('${order.id}')">VIEW</button>
+                        <button onclick="updateOrderStatus('${order.id}')">UPDATE</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addProduct() {
+            const name = document.getElementById("productName").value;
+            const price = parseFloat(document.getElementById("productPrice").value);
+            const description = document.getElementById("productDescription").value;
+            const category = document.getElementById("productCategory").value;
+            const image = document.getElementById("productImage").value;
+
+            if (!name || !price || !description) {
+                alert("Please fill in all required fields");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/products/${SHOP_ID}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        title: name,
+                        description: description,
+                        price: price * 100,
+                        image: image,
+                        category: category
+                    })
+                }).then(r => r.json());
+
+                alert("Product added successfully!");
+                document.getElementById("productName").value = "";
+                document.getElementById("productPrice").value = "";
+                document.getElementById("productDescription").value = "";
+                document.getElementById("productImage").value = "";
+                
+                await loadProducts();
+            } catch (error) {
+                console.error("Error adding product:", error);
+                alert("Failed to add product");
+            }
+        }
+
+        function editProduct(id) {
+            alert("Edit functionality coming soon for product: " + id);
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm("Are you sure you want to delete this product?")) return;
+            
+            try {
+                await fetch(`${API}/products/${id}`, { method: "DELETE" });
+                alert("Product deleted!");
+                await loadProducts();
+            } catch (error) {
+                console.error("Error deleting product:", error);
+                alert("Failed to delete product");
+            }
+        }
+
+        function viewOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                alert(`Order #${order.id}\nStatus: ${order.status}\nTotal: $${(order.total / 100).toFixed(2)}`);
+            }
+        }
+
+        async function updateOrderStatus(id) {
+            const newStatus = prompt("Enter new status (fulfilled/pending):");
+            if (!newStatus) return;
+
+            try {
+                await fetch(`${API}/orders/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                alert("Order updated!");
+                await loadOrders();
+            } catch (error) {
+                console.error("Error updating order:", error);
+                alert("Failed to update order");
+            }
+        }
+
+        function exportProducts() {
+            const csv = "NAME,PRICE,CATEGORY,DESCRIPTION\n" + 
+                products.map(p => `"${p.name}","${p.price}","${p.category}","${p.description}"`).join("\n");
+            downloadCSV(csv, "products.csv");
+        }
+
+        function exportOrders() {
+            const csv = "ORDER_ID,STATUS,TOTAL,CUSTOMER,DATE\n" + 
+                orders.map(o => `"${o.id}","${o.status}","${(o.total / 100).toFixed(2)}","${o.customer_name || 'N/A'}","${new Date(o.created_at).toLocaleDateString()}"`).join("\n");
+            downloadCSV(csv, "orders.csv");
+        }
+
+        function downloadCSV(csv, filename) {
+            const link = document.createElement("a");
+            link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+            link.download = filename;
+            link.click();
+        }
+
+        initAdmin();
+    </script>
+</body>
+</html>
