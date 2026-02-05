@@ -306,12 +306,12 @@
         // Dynamically set backend URL based on connection
         function getBackendURL() {
           const hostname = window.location.hostname;
-          // Use localhost for local development, or the same IP for network access
+          // Use localhost for local development
           if (hostname === 'localhost' || hostname === '127.0.0.1') {
             return 'http://localhost:3000';
           }
-          // For iPhone/other devices on the same network, use their IP
-          return `http://${hostname}:3000`;
+          // Use Railway production backend for all other domains
+          return 'https://k1llajay-production.up.railway.app';
         }
         const API = getBackendURL();
         let SHOP_ID = null;
