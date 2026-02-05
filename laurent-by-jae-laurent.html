@@ -1496,35 +1496,54 @@ html, body {
     <script>
 // Dynamically set backend URL based on connection
 async function getBackendURL() {
-  // Priority: Try localhost first for local development
-  const backendURLs = [
-    'http://localhost:3000',           // Local development
-    'http://127.0.0.1:3000',           // Loopback
-    'https://k1llajay-production.up.railway.app'  // Production
-  ];
-  
-  // If on a known domain, skip localhost attempts
   const hostname = window.location.hostname;
-  if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
-    // If it's a real domain (k1llajay.com, etc), skip localhost
-    return backendURLs[backendURLs.length - 1]; // Return Railway URL
+  
+  // Build list of URLs to try
+  let backendURLs = [];
+  
+  // If on localhost, try localhost first
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+    backendURLs = [
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'https://k1llajay-production.up.railway.app'
+    ];
+  } else {
+    // On a real domain - try Railway first, then fallback to localhost
+    backendURLs = [
+      'https://k1llajay-production.up.railway.app',
+      'http://localhost:3000',  // Local fallback if Railway is down
+      'http://127.0.0.1:3000'
+    ];
   }
   
-  // Otherwise, try localhost first
-  for (const url of backendURLs.slice(0, -1)) {
+  // Try each URL
+  for (const url of backendURLs) {
     try {
-      const response = await fetch(`${url}/shops`, { 
-        method: 'HEAD',
-        mode: 'no-cors'
-      });
-      return url;
+      console.log(`Attempting to connect to: ${url}`);
+      const response = await Promise.race([
+        fetch(`${url}/shops`, { 
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 5000)
+        )
+      ]);
+      
+      if (response && response.ok) {
+        console.log(`✓ Connected to: ${url}`);
+        return url;
+      }
     } catch (e) {
+      console.log(`✗ Failed to connect to ${url}: ${e.message}`);
       // Continue to next URL
     }
   }
   
-  // Fallback to production
-  return backendURLs[backendURLs.length - 1];
+  // If all fail, return Railway as default (better error message)
+  console.warn('All backend URLs failed. Returning Railway URL as default.');
+  return 'https://k1llajay-production.up.railway.app';
 }
 
 let API = 'http://localhost:3000'; // Default, will be updated in initStore
