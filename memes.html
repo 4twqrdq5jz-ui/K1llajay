@@ -538,7 +538,7 @@ html, body {
   <span class="modal-arrow prev" id="prevBtn">&lt;</span>
   <span class="modal-arrow next" id="nextBtn">&gt;</span>
   <img class="modal-content" id="img01" style="display:none;">
-  <video class="modal-content" id="vid01" style="display:none; width:auto; height:auto; max-width:90vw; max-height:90vh;" controls autoplay></video>
+  <video class="modal-content" id="vid01" controls></video>
 </div>
 
 <!-- FIREBASE -->
@@ -595,15 +595,31 @@ db.ref("memes").once("value").then(snap => {
     gridItems.push({ type: div.dataset.type, src: src });
 
     if (isVideo) {
-      const vid = document.createElement("video");
-      vid.src = src;
-      vid.loading = "eager";
-      vid.autoplay = true;
-      vid.style.width = "100%";
-      vid.style.height = "100%";
-      vid.style.objectFit = "cover";
-      div.appendChild(vid);
-    } else {
+  const img = document.createElement("img");
+
+  // Use thumbnail if you have one, otherwise fallback
+  img.src = item.thumbnail || src + "#t=0.1";
+
+  img.loading = "eager";
+  img.style.objectFit = "cover";
+
+  div.appendChild(img);
+
+  // Optional play icon overlay
+  const play = document.createElement("div");
+  play.innerHTML = "▶";
+  play.style.position = "absolute";
+  play.style.top = "50%";
+  play.style.left = "50%";
+  play.style.transform = "translate(-50%, -50%)";
+  play.style.fontSize = "40px";
+  play.style.color = "white";
+  play.style.pointerEvents = "none";
+
+  div.style.position = "relative";
+  div.appendChild(play);
+}
+ else {
       const img = document.createElement("img");
       img.src = src;
       img.loading = "eager";
@@ -622,15 +638,21 @@ function displayItem(index) {
   
   currentIndex = index;
   const item = gridItems[index];
+
+  modalVid.pause();
+  modalVid.src = "";
   
   if (item.type === 'image') {
     modalImg.src = item.src;
     modalImg.style.display = 'block';
     modalVid.style.display = 'none';
-  } else if (item.type === 'video') {
+  } else {
     modalVid.src = item.src;
     modalVid.style.display = 'block';
     modalImg.style.display = 'none';
+
+    modalVid.currentTime = 0;
+    modalVid.play();
   }
 }
 
@@ -666,13 +688,19 @@ document.getElementById("nextBtn").onclick = () => {
 };
 
 /* === CLOSE MODAL === */
-document.querySelector(".close").onclick = () => {
+function closeModal() {
   modal.classList.remove("open");
-};
+
+  modalVid.pause();
+  modalVid.currentTime = 0;
+  modalVid.src = "";
+}
+
+document.querySelector(".close").onclick = closeModal;
 
 modal.onclick = e => {
   if (e.target === modal) {
-    modal.classList.remove("open");
+    closeModal();
   }
 };
 </script>
