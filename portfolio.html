@@ -243,17 +243,24 @@ body {
   z-index: -1;
 }
 
+/* Desktop modal: leave space for sidebar */
 .modal.open {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 260px;
+  width: calc(100vw - 260px);
 }
 
+/* Modal image: never under sidebar, always with space on right */
 .modal-content {
   padding-top: 50px;
-  max-width: 90vw;
+  max-width: calc(100vw - 320px); /* 260px sidebar + 30px left + 30px right */
   max-height: 90vh;
   object-fit: contain;
+  margin-left: 30px;
+  margin-right: 30px;
+  box-sizing: border-box;
 }
 
 .close {
@@ -275,6 +282,20 @@ body {
 @media (max-width: 768px) {
   .close {
     top: 85px;
+  }
+
+  .modal.open {
+    margin-left: 0;
+    width: 100vw;
+    justify-content: center;
+  }
+
+  .modal-content {
+    padding-top: 70px;
+    max-width: 90vw;
+    max-height: 70vh;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -465,7 +486,7 @@ html, body {
     </div>
     <div class="footer">
       <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot">•</span>
-      <a href="https://k1llajay.com/edit-database_editor">UPLOAD</a><span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/edit-portfolio_editor">UPLOAD</a><span class="footer-dot">•</span>
       <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot">•</span>
       <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
