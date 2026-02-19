@@ -97,6 +97,44 @@ body {
       letter-spacing: 1px;
     }
 
+    .mini-progress {
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    .audio-bar {
+      width: 100%;
+      height: 4px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.25);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .audio-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.35);
+    }
+
+    .audio-bar::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.35);
+    }
+
+    .audio-bar::-moz-range-track {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.25);
+    }
+
     .mini-controls { display: flex; justify-content: center; gap: 20px; align-items: center; }
     .mini-btn { background: none; border: none; color: #fff; font-size: 20px;
       cursor: pointer; padding: 4px; opacity: 0.8; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform, opacity; }
@@ -195,6 +233,36 @@ body {
       padding: 20px;
       min-height: calc(100dvh - 35px);
       scroll-behavior: smooth;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .main-content::before {
+      content: "";
+      position: fixed;
+      top: -12vh;
+      right: -12vw;
+      bottom: -12vh;
+      left: -12vw;
+      background-image: var(--selected-cover, none);
+      background-size: cover;
+      background-position: center;
+      filter: blur(26px) brightness(0.45);
+      transform: scale(1.08);
+      transform-origin: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .main-content.selected-release::before {
+      opacity: 1;
+    }
+
+    .main-content > * {
+      position: relative;
+      z-index: 1;
     }
 
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 16px; }
@@ -401,6 +469,10 @@ body {
         align-items: center;
         justify-content: flex-start;
       }
+
+      .main-content::before {
+        left: 0;
+      }
       .sidebar.active ~ .main-content {
     overflow: hidden;
   }
@@ -472,6 +544,7 @@ body {
         padding-bottom: calc(10px + env(safe-area-inset-bottom));
       }
       .now-playing-title { font-size: 10px; }
+      .mini-progress { margin-top: 0; }
       .mini-controls { gap: 16px; }
       .mini-btn { font-size: 16px; }
       .mini-btn.main { font-size: 24px; }
@@ -557,6 +630,9 @@ html, body {
 
     <div class="mini-player">
       <div class="now-playing-title" id="nowPlayingTitle">No track playing</div>
+      <div class="mini-progress">
+        <input id="miniSeekBar" class="audio-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Mini player progress" />
+      </div>
       <div class="mini-controls">
         <button id="prevBtn" class="mini-btn">⏮</button>
         <button id="playPauseBtn" class="mini-btn main">▶︎</button>
@@ -577,7 +653,7 @@ html, body {
 
     <div class="footer">
       <a href="https://mystery.k1llajay.com">MYSTERY</a><span class="footer-dot"> • </span>
-      <a href="https://k1llajay.com/edit-database_editor">UPLOAD</a><span class="footer-dot"> • </span>
+      <a href="https://k1llajay.com/edit-player_editor">UPLOAD</a><span class="footer-dot"> • </span>
       <a href="https://k1llajay.com/terms">TERMS</a><span class="footer-dot"> • </span>
       <a href="https://k1llajay.com/privacy">PRIVACY</a>
       <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
@@ -670,9 +746,11 @@ html, body {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+    const miniSeekBar = document.getElementById('miniSeekBar');
     const playAllBtn = document.getElementById('playAllBtn');
     const shuffleBtn = document.getElementById('shuffleBtn');
     const backBtn = document.getElementById('backBtn');
+    const mainContentEl = document.querySelector('.main-content');
 
     let LIB = [], GROUPS = {}, CURRENT_RELEASE = null, QUEUE = [], INDEX = 0;
 
@@ -732,6 +810,16 @@ html, body {
       playPauseBtn.innerHTML = audio.paused ? '▶' : '⏸';
     }
 
+    function updateSeekBars() {
+      const duration = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 0;
+      const currentTime = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+      [miniSeekBar].forEach(bar => {
+        if (!bar) return;
+        bar.max = duration || 100;
+        bar.value = duration ? Math.min(currentTime, duration) : 0;
+      });
+    }
+
     function playIndex(idx, auto = true) {
       if (!QUEUE.length) return;
       INDEX = (idx + QUEUE.length) % QUEUE.length;
@@ -786,14 +874,32 @@ html, body {
     backBtn.onclick = () => {
       document.getElementById('viewDetail').classList.remove('active');
       document.getElementById('viewLibrary').classList.add('active');
+      if (mainContentEl) {
+        mainContentEl.classList.remove('selected-release');
+        mainContentEl.style.removeProperty('--selected-cover');
+      }
     };
 
     audio.addEventListener('play', updatePlayIcon);
     audio.addEventListener('pause', updatePlayIcon);
+    audio.addEventListener('timeupdate', updateSeekBars);
+    audio.addEventListener('loadedmetadata', updateSeekBars);
+    audio.addEventListener('durationchange', updateSeekBars);
     audio.addEventListener('ended', () => {
       if (INDEX < QUEUE.length - 1) playIndex(INDEX + 1);
       else { audio.pause(); updatePlayIcon(); }
     });
+
+    function bindSeekBar(bar) {
+      if (!bar) return;
+      bar.addEventListener('input', () => {
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        if (!duration) return;
+        audio.currentTime = Number(bar.value);
+      });
+    }
+
+    bindSeekBar(miniSeekBar);
 
     if ('mediaSession' in navigator) {
       navigator.mediaSession.setActionHandler('play', () => audio.play().catch(() => {}));
@@ -896,7 +1002,7 @@ html, body {
       document.getElementById('detailArt').src = rel.coverUrl || '';
       document.getElementById('detailTitle').textContent = rel.name || '—';
       document.getElementById('detailYear').textContent = rel.year || (rel.releaseTs ? new Date(rel.releaseTs).getUTCFullYear() : '');
-      document.getElementById('detailDate').textContent = rel.releaseTs ? new Date(rel.releaseTs).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+      document.getElementById('detailDate').textContent = rel.releaseDateText || (rel.releaseTs ? new Date(rel.releaseTs).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '');
       document.getElementById('detailNote').textContent = `${rel.tracks.length} song${rel.tracks.length === 1 ? '' : 's'}`;
       document.getElementById('detailFoot').textContent = `© ${rel.year || new Date().getFullYear()} Jefferson Records LLC • Owned by Je’Veon Jefferson`;
 
@@ -924,13 +1030,25 @@ html, body {
 
       document.getElementById('viewLibrary').classList.remove('active');
       document.getElementById('viewDetail').classList.add('active');
+      if (mainContentEl && rel.coverUrl) {
+        const safeCoverUrl = rel.coverUrl.replace(/"/g, '\\"');
+        mainContentEl.style.setProperty('--selected-cover', `url("${safeCoverUrl}")`);
+        mainContentEl.classList.add('selected-release');
+      } else if (mainContentEl) {
+        mainContentEl.classList.remove('selected-release');
+        mainContentEl.style.removeProperty('--selected-cover');
+      }
+      updateSeekBars();
       highlightPlayingTrack();
     }
 
     async function hydrateTrack(raw) {
       const audioUrl = await resolveUrlMaybe(raw.audioUrl || raw.audioPath || raw.storagePath);
       const coverUrl = await resolveUrlMaybe(raw.coverUrl || raw.coverPath);
-      const releaseTs = raw.releaseDate ? Date.parse(raw.releaseDate) : Number(raw.createdAt || 0);
+      const releaseDateRaw = (raw.releaseDate || '').trim();
+      const parsedReleaseTs = releaseDateRaw ? Date.parse(releaseDateRaw) : NaN;
+      const createdAt = Number(raw.createdAt || 0);
+      const releaseTs = Number.isFinite(parsedReleaseTs) ? parsedReleaseTs : createdAt;
       return {
         title: raw.title || raw.name || 'Untitled',
         artist: raw.artist || 'Jae Laurent',
@@ -946,7 +1064,12 @@ html, body {
         remix: raw.remix || false,
         remixType: raw.remixType || '',
         versions: raw.versions || false,
-        producer: raw.producer || ''
+        producer: raw.producer || '',
+        releaseDateRaw,
+        releaseDateText: Number.isFinite(parsedReleaseTs)
+          ? new Date(parsedReleaseTs).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+          : '',
+        createdAt
       };
     }
 
@@ -979,12 +1102,18 @@ html, body {
       for (const idxs of merged.values()) {
         idxs.sort((a, b) => (LIB[a].trackNumber || 0) - (LIB[b].trackNumber || 0) || LIB[a].createdAt - LIB[b].createdAt);
         const coverUrl = LIB[idxs.find(i => LIB[i].coverUrl)]?.coverUrl || '';
-        const releaseTs = Math.max(...idxs.map(i => LIB[i].releaseTs || 0));
+        const datedTrackIndex = idxs.find(i => LIB[i].releaseDateRaw);
+        const releaseTs = datedTrackIndex !== undefined
+          ? (LIB[datedTrackIndex].releaseTs || 0)
+          : Math.max(...idxs.map(i => LIB[i].releaseTs || 0));
+        const releaseDateText = datedTrackIndex !== undefined
+          ? (LIB[datedTrackIndex].releaseDateText || '')
+          : '';
         const year = LIB[idxs.find(i => LIB[i].year)]?.year || (releaseTs ? new Date(releaseTs).getUTCFullYear() : '');
         const type = ['Video', 'Compilation', 'Album', 'EP', 'Single'].find(t => idxs.some(i => LIB[i].releaseType === t)) || (idxs.length > 6 ? 'Album' : 'EP');
         const name = [...new Set(idxs.map(i => LIB[i].releaseTitle).filter(Boolean))][0] || 'Untitled Release';
         const key = `${name}__${year}__${coverUrl.split('/').pop() || 'nocover'}`;
-        GROUPS[key] = { key, name, type, year, artist: 'Jae Laurent', coverUrl, tracks: idxs, releaseTs };
+        GROUPS[key] = { key, name, type, year, artist: 'Jae Laurent', coverUrl, tracks: idxs, releaseTs, releaseDateText };
       }
     }
 
