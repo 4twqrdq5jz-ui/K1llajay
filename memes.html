@@ -206,7 +206,17 @@ body {
   will-change: filter;
 }
 
-.grid-item:hover img {
+.grid-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter;
+}
+
+.grid-item:hover img,
+.grid-item:hover video {
   filter: brightness(0.85);
 }
 
@@ -402,7 +412,8 @@ body {
       cursor: pointer; 
       border-radius: 8px; 
     }
-    .grid-item img { 
+    .grid-item img,
+    .grid-item video { 
       width: 100%; 
       height: 100%; 
       object-fit: cover; 
@@ -522,7 +533,7 @@ html, body {
 
   <div class="footer">
     <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/edit-database_editor">Upload</a> •
+    <a href="https://k1llajay.com/edit-memes_editor">Upload</a> •
     <a href="https://k1llajay.com/terms">Terms</a> •
     <a href="https://k1llajay.com/privacy">Privacy</a>
     <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
@@ -595,31 +606,43 @@ db.ref("memes").once("value").then(snap => {
     gridItems.push({ type: div.dataset.type, src: src });
 
     if (isVideo) {
-  const img = document.createElement("img");
+      div.style.position = "relative";
 
-  // Use thumbnail if you have one, otherwise fallback
-  img.src = item.thumbnail || src + "#t=0.1";
+      if (item.thumbnail) {
+        const img = document.createElement("img");
+        img.src = item.thumbnail;
+        img.loading = "eager";
+        div.appendChild(img);
+      } else {
+        const thumbVideo = document.createElement("video");
+        thumbVideo.src = src;
+        thumbVideo.muted = true;
+        thumbVideo.playsInline = true;
+        thumbVideo.preload = "metadata";
+        thumbVideo.setAttribute("webkit-playsinline", "");
+        thumbVideo.disablePictureInPicture = true;
+        thumbVideo.controls = false;
+        thumbVideo.addEventListener("loadedmetadata", () => {
+          const seekTime = Number.isFinite(thumbVideo.duration) && thumbVideo.duration > 0.1 ? 0.1 : 0;
+          try { thumbVideo.currentTime = seekTime; } catch (e) {}
+        });
+        thumbVideo.addEventListener("seeked", () => {
+          thumbVideo.pause();
+        });
+        div.appendChild(thumbVideo);
+      }
 
-  img.loading = "eager";
-  img.style.objectFit = "cover";
-
-  div.appendChild(img);
-
-  // Optional play icon overlay
-  const play = document.createElement("div");
-  play.innerHTML = "▶";
-  play.style.position = "absolute";
-  play.style.top = "50%";
-  play.style.left = "50%";
-  play.style.transform = "translate(-50%, -50%)";
-  play.style.fontSize = "40px";
-  play.style.color = "white";
-  play.style.pointerEvents = "none";
-
-  div.style.position = "relative";
-  div.appendChild(play);
-}
- else {
+      const play = document.createElement("div");
+      play.innerHTML = "▶";
+      play.style.position = "absolute";
+      play.style.top = "50%";
+      play.style.left = "50%";
+      play.style.transform = "translate(-50%, -50%)";
+      play.style.fontSize = "40px";
+      play.style.color = "white";
+      play.style.pointerEvents = "none";
+      div.appendChild(play);
+    } else {
       const img = document.createElement("img");
       img.src = src;
       img.loading = "eager";
@@ -658,16 +681,15 @@ function displayItem(index) {
 
 /* === GRID CLICK HANDLER === */
 grid.onclick = e => {
-  if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO" || e.target.classList.contains("play-button")) {
-    document.querySelector(".sidebar").classList.remove("active");
-    document.body.classList.remove("sidebar-open");
-    
-    const gridItem = e.target.closest(".grid-item");
-    const index = Array.from(grid.children).indexOf(gridItem);
-    
-    modal.classList.add("open");
-    displayItem(index);
-  }
+  const gridItem = e.target.closest(".grid-item");
+  if (!gridItem) return;
+
+  document.querySelector(".sidebar").classList.remove("active");
+  document.body.classList.remove("sidebar-open");
+
+  const index = Array.from(grid.children).indexOf(gridItem);
+  modal.classList.add("open");
+  displayItem(index);
 };
 
 /* === NAVIGATION ARROWS === */
