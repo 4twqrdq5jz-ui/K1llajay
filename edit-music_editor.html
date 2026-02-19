@@ -1,0 +1,904 @@
+<!-- New editor page: edit-sos_editor.html (based on edit-database_editor.html styles) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Album Editor</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'sitefont', monospace;
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .topbar {
+      display: none;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px 15px;
+      background-color: black;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      height: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+      box-sizing: border-box;
+    }
+    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
+    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
+    .sidebar {
+      width: 260px;
+      height: 100dvh;
+      padding: 24px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      z-index: 3000;
+    }
+    .profile-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 2px solid #fff;
+    }
+    .name {
+      font-size: 24px;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .button {
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+      filter: brightness(0.4);
+      border-radius: inherit;
+      z-index: -1;
+      transition: filter 0.3s;
+    }
+
+    .button:hover::before {
+      filter: brightness(1);
+    }
+
+    .button:hover { border-color: white; }
+    .footer {
+      margin-top: auto;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { opacity: 0.5; }
+    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
+    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      min-height: 100vh;
+      height: auto;
+      max-height: none;
+      margin-top: 10px;
+    }
+    .main::-webkit-scrollbar { display: none; }
+    .main { -ms-overflow-style: none; scrollbar-width: none; }
+    .main h1 { font-size: 28px; margin: 0 0 10px 0; letter-spacing: 1px; }
+
+    .upload-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-sizing: border-box;
+    }
+    .upload-section {
+      margin-bottom: 0px;
+    }
+    .upload-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      grid-auto-flow: row;
+    }
+    .track-title-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      grid-column: 1 / -1;
+      height: 56px;
+      margin-bottom: 0;
+    }
+    .track-title-row #trackNumber {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      z-index: 2;
+    }
+    .track-title-row #trackTitle {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-50%);
+      margin: auto;
+      width: 80%;
+      min-width: 180px;
+      max-width: 400px;
+      text-align: center;
+      display: block;
+      z-index: 1;
+    }
+    /* Remove margin-left/right auto from #trackTitle for this context */
+    #trackTitle {
+      margin-left: unset;
+      margin-right: unset;
+    }
+    #trackNumber {
+      width: 48px;
+      min-width: 48px;
+      max-width: 48px;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+      text-align: center;
+      padding: 0;
+      margin-right: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border-radius: 6px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    #trackTitle {
+      width: 80%;
+      min-width: 180px;
+      max-width: 400px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    #trackFeature {
+      grid-column: 1 / -1;
+      width: 80%;
+      min-width: 180px;
+      max-width: 400px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    #releaseTitleInput {
+      grid-column: 1/-1;
+    }
+    .file-upload-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .file-upload-area label {
+      flex: 1;
+      min-width: 150px;
+    }
+    .options-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .option-group input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .option-group label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      flex: 1;
+      min-width: 140px;
+    }
+    input, select, textarea {
+      background: transparent;
+      border: 1px solid #444;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'sitefont', monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+
+    #trackNumber {
+      width: 48px;
+      min-width: 48px;
+      max-width: 48px;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+      text-align: center;
+      padding: 0;
+      margin-right: 8px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border-radius: 6px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    textarea {
+      min-height: 100px;
+      resize: none;
+      width: 100%;
+      grid-column: 1 / -1;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: inherit;
+    }
+    input::placeholder { color: #777; }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
+
+    .primary-btn {
+      background: #00ff99;
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+    }
+    .primary-btn:hover { background: #00cc77; }
+    .secondary-btn {
+      background: #222;
+      border: 1px solid #666;
+      color: white;
+      margin-left: 10px;
+    }
+    .secondary-btn:hover { border-color: #999; }
+
+    #albumDatabase { margin-top: 14px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      letter-spacing: 4px;
+      opacity: 0.85;
+      margin: 10px 0;
+    }
+    .section-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header button {
+      font-family: inherit;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: white;
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+    .section-header button:hover { background: #444; }
+    .entry {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 14px;
+      text-align: center;
+    }
+    .entry h2 { font-size: 16px; margin: 0 0 8px 0; }
+    .entry p { font-size: 12px; opacity: 0.8; margin: 3px 0; }
+    .edit-btn {
+      background: #333; border: 1px solid #555; color: white; padding: 6px 12px;
+      border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 10px;
+    }
+    .edit-btn:hover { background: #444; }
+
+    /* ================= CUSTOM CHECKBOX ================= */
+    .custom-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .custom-checkbox-wrapper input[type="checkbox"] {
+      display: none;
+    }
+    .custom-checkbox-wrapper label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    .custom-checkbox-wrapper label::before {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border: 2px solid #666;
+      border-radius: 4px;
+      background: transparent;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .custom-checkbox-wrapper input[type="checkbox"]:checked + label::before {
+      background: #ff3333;
+      border-color: #ff3333;
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+    }
+    .custom-checkbox-wrapper input[type="checkbox"]:checked + label::after {
+      content: "✓";
+      position: absolute;
+      margin-left: 7px;
+      margin-top: -1px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .custom-checkbox-wrapper input[type="checkbox"]:hover:not(:checked) + label::before {
+      border-color: #999;
+    }
+
+    /* ================= DELETE BUTTON ================= */
+    .delete-btn {
+      background: #ff3333;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin: 12px 0;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+    .delete-btn:hover {
+      background: #cc0000;
+      box-shadow: 0 0 12px rgba(255, 51, 51, 0.6);
+    }
+    .delete-btn:active {
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 768px) {
+      body { 
+        flex-direction: column;
+        padding-top: 50px;
+      }
+      .topbar { 
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        padding: 0 15px;
+        padding-top: max(0px, env(safe-area-inset-top));
+        align-items: center;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        z-index: 2101;
+      }
+      .hamburger { 
+        font-size: 28px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      .top-name {
+        margin: 0 auto;
+        font-size: 16px;
+        letter-spacing: 2px;
+      }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100dvh - 50px);
+        max-height: none;
+        padding: 15px;
+        z-index: 1900;
+        background: black;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .sidebar.active { display: flex; }
+      .main {
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 15px;
+        width: 100%;
+        height: auto;
+        min-height: calc(100dvh - 50px);
+        padding-bottom: max(40px, calc(15px + env(safe-area-inset-bottom)));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .form-grid { grid-template-columns: 1fr; }
+      #albumDatabase { grid-template-columns: 1fr; }
+    }
+
+    /* ================= BLACK HISTORY MONTH BANNER ================= */
+    .bhm-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 35px;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      overflow: hidden;
+      box-shadow: none;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .bhm-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1;
+    }
+
+    .bhm-text {
+      position: relative;
+      z-index: 2;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+      animation: scrollBanner 15s linear infinite;
+    }
+
+    @keyframes scrollBanner {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="hamburger">&#9776;</span>
+    <div class="top-name">EDITOR</div>
+  </div>
+
+  <!-- BLACK HISTORY MONTH BANNER -->
+  <div class="bhm-banner">
+    <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
+  </div>
+
+  <div class="sidebar">
+    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+    <h1 class="name">JAE LAURENT</h1>
+    <div class="buttons">
+      <a href="https://k1llajay.com/edit-player_editor" class="button">Upload To Player</a>
+      <a href="https://k1llajay.com/edit-events_editor" class="button">Edit Events</a>
+      <a href="https://k1llajay.com/edit-podcast_editor" class="button">Upload Episode</a>
+      <a href="https://k1llajay.com/edit-portfolio_editor" class="button">Upload To Portfolio</a>
+      <a href="https://k1llajay.com/edit-home_editor" class="button">Upload To Homepage</a>
+      <a href="https://k1llajay.com/edit-memes_editor" class="button">Upload Memes</a>
+    </div>
+    <div class="footer">
+      <a href="https://k1llajay.com">Main Site</a>
+      <span class="footer-dot">•</span>
+      <a href="https://mystery.k1llajay.com">MYSTERY</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/terms">TERMS</a>
+      <span class="footer-dot">•</span>
+      <a href="https://k1llajay.com/privacy">PRIVACY</a>
+      <div class="copyright">© 2025 JEFFERSON ENTERTAINMENT LLC</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Edit Album Info</h1>
+    <div class="upload-box">
+      <div class="upload-section">
+        <h4>Album Details</h4>
+        <div class="form-grid">
+          <input id="albumTitle" type="text" placeholder="Album Title" />
+          <input id="albumArtist" type="text" placeholder="Album Artist" />
+        </div>
+        <button id="updateAlbumBtn" class="primary-btn">Update Album</button>
+      </div>
+      <div class="upload-section">
+        <h4>Track Entry</h4>
+        <div class="form-grid">
+          <div class="track-title-row">
+            <select id="trackNumber"></select>
+            <input id="trackTitle" type="text" placeholder="Track Title" />
+          </div>
+          <div class="track-feature-row" style="position: relative; display: flex; align-items: center; justify-content: center; grid-column: 1 / -1; height: 56px; margin-bottom: 0;">
+            <div style="position: absolute; left: 0; top: 0; bottom: 0; display: flex; align-items: center;">
+              <div class="custom-checkbox-wrapper">
+                <input type="checkbox" id="explicitToggle" />
+                <label for="explicitToggle">Explicit</label>
+              </div>
+            </div>
+            <input id="trackFeature" type="text" placeholder="Track Feature(s)" style="position: absolute; left: 50%; top: 0; bottom: 0; transform: translateX(-50%); width: 80%; min-width: 180px; max-width: 400px; text-align: center; display: block; z-index: 1;" />
+          </div>
+          <div class="release-date-row" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+            <input id="releaseDate" type="date" placeholder="Release Date" style="width: 80%; min-width: 180px; max-width: 400px; text-align: center; font-family: 'sitefont', monospace;" />
+          </div>
+          <textarea id="trackLyrics" placeholder="Lyrics" oninput="autoResizeLyrics(this)"></textarea>
+            <script>
+            function autoResizeLyrics(textarea) {
+              textarea.style.height = 'auto';
+              textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+            // Auto-resize on load/edit
+            document.addEventListener('DOMContentLoaded', function() {
+              var lyrics = document.getElementById('trackLyrics');
+              if (lyrics) autoResizeLyrics(lyrics);
+            });
+            // Also auto-resize when editing a track
+            const origEditTrack = window.editTrack;
+            window.editTrack = function(i) {
+              origEditTrack(i);
+              var lyrics = document.getElementById('trackLyrics');
+              if (lyrics) autoResizeLyrics(lyrics);
+            };
+            </script>
+        </div>
+      </div>
+      <div class="upload-section">
+        <h4>Credits</h4>
+        <div class="form-grid">
+          <input id="creditPerformed" type="text" placeholder="Performed By" />
+          <input id="creditWritten" type="text" placeholder="Written By" />
+          <input id="creditMixed" type="text" placeholder="Mixed By" />
+          <input id="creditRecorded" type="text" placeholder="Recorded By" />
+          <input id="creditProduced" type="text" placeholder="Produced By" />
+          <input id="creditSampled" type="text" placeholder="Sampled From" />
+        </div>
+      </div>
+      <div class="upload-section">
+        <h4>Services</h4>
+        <div class="form-grid">
+          <input id="linkApple" type="text" placeholder="Apple Music Link" />
+          <input id="linkSpotify" type="text" placeholder="Spotify Link" />
+          <input id="linkAmazon" type="text" placeholder="Amazon Music Link" />
+          <input id="linkTidal" type="text" placeholder="Tidal Link" />
+        </div>
+      </div>
+      <div class="upload-section" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+        <button id="addUpdateTrackBtn" class="primary-btn">Add/Update Track</button>
+        <button id="deleteTrackBtn" class="delete-btn" style="display:none;">Delete Track</button>
+      </div>
+    </div>
+    <div id="albumDatabase"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+      authDomain: "music-database-3ee0a.firebaseapp.com",
+      databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+      projectId: "music-database-3ee0a",
+      storageBucket: "music-database-3ee0a.firebasestorage.app",
+      messagingSenderId: "148257189959",
+      appId: "1:148257189959:web:3e52404367191d5835c162"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const albumRef = db.ref('album');
+    const tracksRef = db.ref('tracks');
+
+    let tracks = [];
+    let keys = [];
+    let editingTrack = null;
+    let showAll = false;
+
+    function render() {
+      const container = document.getElementById('albumDatabase');
+      container.innerHTML = '';
+      
+      const tracksToShow = showAll ? tracks : tracks.slice(-3).reverse();
+
+      if (tracks.length) {
+        container.innerHTML += `
+          <div class="section-header">
+            <div class="section-title">TRACKS</div>
+            <button onclick="toggleShowAll()">${showAll ? 'Hide All' : 'Show All'}</button>
+          </div>
+        `;
+        
+        tracksToShow.forEach((e, i) => {
+          const actualIndex = tracks.indexOf(e);
+          const explicitSymbol = e.explicit ? ' 🄴' : '';
+          container.innerHTML += `
+            <div class="entry">
+              <h2>${e.number}. ${e.title}${explicitSymbol} — ${e.artist}</h2>
+              <p>Lyrics Preview: ${e.lyrics.substring(0, 50)}...</p>
+              <button onclick="editTrack(${actualIndex})" class="edit-btn">Edit</button>
+            </div>`;
+        });
+      }
+    }
+
+    function toggleShowAll() {
+      showAll = !showAll;
+      render();
+    }
+
+    function updateAlbum() {
+      const title = document.getElementById('albumTitle').value.trim();
+      const artist = document.getElementById('albumArtist').value.trim() || 'Jae Laurent';
+      if (!title) return alert('Title required');
+      // Gather all track credits for album credits
+      tracksRef.once('value', snap => {
+        const val = snap.val() || {};
+        let allCredits = Object.values(val).map(t => t.credits).filter(Boolean).join('<br>');
+        const data = { title, credits: allCredits, artist };
+        albumRef.set(data).then(() => {
+          document.getElementById('albumTitle').value = '';
+          document.getElementById('albumArtist').value = '';
+        });
+      });
+    }
+
+    function saveTrack() {
+      const number = parseInt(document.getElementById('trackNumber').value);
+      const title = document.getElementById('trackTitle').value.trim();
+      const feature = document.getElementById('trackFeature').value.trim();
+      const explicit = document.getElementById('explicitToggle').checked;
+      const albumArtist = document.getElementById('albumArtist').value.trim() || 'Jae Laurent';
+      let artist = albumArtist;
+      if (feature) {
+        if (feature.includes('&')) {
+          // Multiple features, show as "albumArtist, feature1 & feature2"
+          artist = albumArtist + ', ' + feature;
+        } else {
+          // Single feature, show as "albumArtist & feature"
+          artist = albumArtist + ' & ' + feature;
+        }
+      }
+      const creditPerformed = document.getElementById('creditPerformed').value.trim() || 'Jae Laurent';
+      const creditWritten = document.getElementById('creditWritten').value.trim() || 'Jae Laurent';
+      const creditMixed = document.getElementById('creditMixed').value.trim() || 'Jae Laurent';
+      const creditRecorded = document.getElementById('creditRecorded').value.trim() || 'Jae Laurent';
+      const creditProduced = document.getElementById('creditProduced').value.trim() || 'Jae Laurent';
+      const creditSampled = document.getElementById('creditSampled').value.trim();
+      const lyrics = document.getElementById('trackLyrics').value.trim();
+      // ...existing code...
+      const links = {
+        apple: document.getElementById('linkApple').value.trim(),
+        spotify: document.getElementById('linkSpotify').value.trim(),
+        amazon: document.getElementById('linkAmazon').value.trim(),
+        tidal: document.getElementById('linkTidal').value.trim()
+      };
+
+      if (!title || isNaN(number)) return alert('Title and Number required');
+
+      // Generate slug from title
+      function slugify(str) {
+        return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      }
+      const slug = slugify(title);
+
+      // Build credits string for preview/legacy
+      let creditsArr = [];
+      if (creditPerformed) creditsArr.push(`PERFORMED BY ${creditPerformed}`);
+      if (creditWritten) creditsArr.push(`WRITTEN BY ${creditWritten}`);
+      if (creditMixed) creditsArr.push(`MIXED BY ${creditMixed}`);
+      if (creditRecorded) creditsArr.push(`RECORDED BY ${creditRecorded}`);
+      if (creditProduced) creditsArr.push(`PRODUCED BY ${creditProduced}`);
+      if (creditSampled) creditsArr.push(`SAMPLED FROM ${creditSampled}`);
+      const credits = `<p>${creditsArr.join(' / ')}</p>`;
+
+      const data = { number, title, artist, feature, explicit, lyrics, credits, links,
+        creditPerformed, creditWritten, creditMixed, creditRecorded, creditProduced, creditSampled };
+
+      tracksRef.child(slug).set(data).then(resetTrackForm);
+    }
+
+    function deleteTrack() {
+      if (editingTrack !== null && confirm('Delete this track?')) {
+        tracksRef.child(keys[editingTrack]).remove().then(resetTrackForm);
+      }
+    }
+
+    window.editTrack = i => {
+      const e = tracks[i];
+      document.getElementById('trackNumber').value = e.number;
+      document.getElementById('trackTitle').value = e.title;
+      document.getElementById('trackFeature').value = e.feature || '';
+      document.getElementById('explicitToggle').checked = e.explicit || false;
+      document.getElementById('trackLyrics').value = e.lyrics;
+      document.getElementById('creditPerformed').value = e.creditPerformed || 'Jae Laurent';
+      document.getElementById('creditWritten').value = e.creditWritten || 'Jae Laurent';
+      document.getElementById('creditMixed').value = e.creditMixed || 'Jae Laurent';
+      document.getElementById('creditRecorded').value = e.creditRecorded || 'Jae Laurent';
+      document.getElementById('creditProduced').value = e.creditProduced || 'Jae Laurent';
+      document.getElementById('creditSampled').value = e.creditSampled || '';
+      document.getElementById('linkApple').value = e.links.apple || '';
+      document.getElementById('linkSpotify').value = e.links.spotify || '';
+      document.getElementById('linkAmazon').value = e.links.amazon || '';
+      document.getElementById('linkTidal').value = e.links.tidal || '';
+      editingTrack = i;
+      document.getElementById('addUpdateTrackBtn').textContent = 'Update Track';
+      document.getElementById('deleteTrackBtn').style.display = 'inline-block';
+    };
+    // Populate track number dropdown
+    function populateTrackNumberDropdown() {
+      const select = document.getElementById('trackNumber');
+      if (!select) return;
+      for (let i = 1; i <= 50; i++) {
+        select.innerHTML += `<option value="${i}">${i}</option>`;
+      }
+    }
+    populateTrackNumberDropdown();
+
+    function resetTrackForm() {
+      document.getElementById('trackNumber').value = '';
+      document.getElementById('trackTitle').value = '';
+      document.getElementById('trackFeature').value = '';
+      document.getElementById('explicitToggle').checked = false;
+      document.getElementById('trackLyrics').value = '';
+      document.getElementById('creditPerformed').value = '';
+      document.getElementById('creditWritten').value = '';
+      document.getElementById('creditMixed').value = '';
+      document.getElementById('creditRecorded').value = '';
+      document.getElementById('creditProduced').value = '';
+      document.getElementById('creditSampled').value = '';
+      document.getElementById('linkApple').value = '';
+      document.getElementById('linkSpotify').value = '';
+      document.getElementById('linkAmazon').value = '';
+      document.getElementById('linkTidal').value = '';
+      editingTrack = null;
+      document.getElementById('addUpdateTrackBtn').textContent = 'Add Track';
+      document.getElementById('deleteTrackBtn').style.display = 'none';
+    }
+
+    // Load album data into form for editing
+    albumRef.once('value', snap => {
+      const data = snap.val() || {};
+      document.getElementById('albumTitle').value = data.title || '';
+      document.getElementById('albumArtist').value = data.artist || '';
+    });
+
+    tracksRef.on('value', snap => {
+      const val = snap.val() || {};
+      // Sort both keys and tracks by track number
+      const entries = Object.entries(val).map(([k, v]) => [k, v]);
+      entries.sort((a, b) => (a[1].number || 0) - (b[1].number || 0));
+      keys = entries.map(([k]) => k);
+      tracks = entries.map(([, v]) => v);
+      render();
+    });
+
+    document.getElementById('updateAlbumBtn').onclick = updateAlbum;
+    document.getElementById('addUpdateTrackBtn').onclick = saveTrack;
+    document.getElementById('deleteTrackBtn').onclick = deleteTrack;
+
+    document.querySelector('.hamburger').onclick = () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    };
+  </script>
+</body>
+</html>
