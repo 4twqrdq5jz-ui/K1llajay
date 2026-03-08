@@ -262,6 +262,15 @@
       flex-wrap: wrap;
       align-items: center;
     }
+    .inline-controls-row {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
     .option-group {
       display: flex;
       align-items: center;
@@ -643,6 +652,13 @@
           <div class="release-date-row" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
             <input id="releaseDate" type="date" placeholder="Release Date" style="width: 80%; min-width: 180px; max-width: 400px; text-align: center; font-family: 'sitefont', monospace;" />
           </div>
+          <div class="inline-controls-row">
+            <div class="custom-checkbox-wrapper">
+              <input type="checkbox" id="scheduleToggle" />
+              <label for="scheduleToggle">Schedule Track</label>
+            </div>
+            <input id="scheduleDate" type="date" placeholder="Schedule Date" style="width: 260px; max-width: 100%; text-align: center; font-family: 'sitefont', monospace;" />
+          </div>
           <textarea id="trackLyrics" placeholder="Lyrics" oninput="autoResizeLyrics(this)"></textarea>
             <script>
             function autoResizeLyrics(textarea) {
@@ -731,10 +747,12 @@
         tracksToShow.forEach((e, i) => {
           const actualIndex = tracks.indexOf(e);
           const explicitSymbol = e.explicit ? ' 🄴' : '';
+          const scheduleLabel = e.scheduleEnabled && e.scheduleDate ? ` | SCHEDULED: ${e.scheduleDate}` : '';
           container.innerHTML += `
             <div class="entry">
               <h2>${e.number}. ${e.title}${explicitSymbol} — ${e.artist}</h2>
               <p>Lyrics Preview: ${e.lyrics.substring(0, 50)}...</p>
+              <p>Release: ${e.releaseDate || 'N/A'}${scheduleLabel}</p>
               <button onclick="editTrack(${actualIndex})" class="edit-btn">Edit</button>
             </div>`;
         });
@@ -767,6 +785,9 @@
       const title = document.getElementById('trackTitle').value.trim();
       const feature = document.getElementById('trackFeature').value.trim();
       const explicit = document.getElementById('explicitToggle').checked;
+      const releaseDate = document.getElementById('releaseDate').value;
+      const scheduleEnabled = document.getElementById('scheduleToggle').checked;
+      const scheduleDate = document.getElementById('scheduleDate').value;
       const albumArtist = document.getElementById('albumArtist').value.trim() || 'Jae Laurent';
       let artist = albumArtist;
       if (feature) {
@@ -811,7 +832,7 @@
       if (creditSampled) creditsArr.push(`SAMPLED FROM ${creditSampled}`);
       const credits = `<p>${creditsArr.join(' / ')}</p>`;
 
-      const data = { number, title, artist, feature, explicit, lyrics, credits, links,
+      const data = { number, title, artist, feature, explicit, releaseDate, scheduleEnabled, scheduleDate, lyrics, credits, links,
         creditPerformed, creditWritten, creditMixed, creditRecorded, creditProduced, creditSampled };
 
       tracksRef.child(slug).set(data).then(resetTrackForm);
@@ -829,6 +850,9 @@
       document.getElementById('trackTitle').value = e.title;
       document.getElementById('trackFeature').value = e.feature || '';
       document.getElementById('explicitToggle').checked = e.explicit || false;
+      document.getElementById('releaseDate').value = e.releaseDate || '';
+      document.getElementById('scheduleToggle').checked = e.scheduleEnabled || false;
+      document.getElementById('scheduleDate').value = e.scheduleDate || '';
       document.getElementById('trackLyrics').value = e.lyrics;
       document.getElementById('creditPerformed').value = e.creditPerformed || 'Jae Laurent';
       document.getElementById('creditWritten').value = e.creditWritten || 'Jae Laurent';
@@ -836,10 +860,10 @@
       document.getElementById('creditRecorded').value = e.creditRecorded || 'Jae Laurent';
       document.getElementById('creditProduced').value = e.creditProduced || 'Jae Laurent';
       document.getElementById('creditSampled').value = e.creditSampled || '';
-      document.getElementById('linkApple').value = e.links.apple || '';
-      document.getElementById('linkSpotify').value = e.links.spotify || '';
-      document.getElementById('linkAmazon').value = e.links.amazon || '';
-      document.getElementById('linkTidal').value = e.links.tidal || '';
+      document.getElementById('linkApple').value = e.links?.apple || '';
+      document.getElementById('linkSpotify').value = e.links?.spotify || '';
+      document.getElementById('linkAmazon').value = e.links?.amazon || '';
+      document.getElementById('linkTidal').value = e.links?.tidal || '';
       editingTrack = i;
       document.getElementById('addUpdateTrackBtn').textContent = 'Update Track';
       document.getElementById('deleteTrackBtn').style.display = 'inline-block';
@@ -859,6 +883,9 @@
       document.getElementById('trackTitle').value = '';
       document.getElementById('trackFeature').value = '';
       document.getElementById('explicitToggle').checked = false;
+      document.getElementById('releaseDate').value = '';
+      document.getElementById('scheduleToggle').checked = false;
+      document.getElementById('scheduleDate').value = '';
       document.getElementById('trackLyrics').value = '';
       document.getElementById('creditPerformed').value = '';
       document.getElementById('creditWritten').value = '';
