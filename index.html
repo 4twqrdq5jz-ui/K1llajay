@@ -123,7 +123,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+  background: rgba(255,255,255,0.02);
   filter: brightness(0.4);
   border-radius: inherit;
   z-index: -1;
@@ -300,69 +300,6 @@ body {
   }
 }
 
-/* ================= INTRO GIF ================= */
-.intro {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.8);
-  opacity: 1;
-  z-index: 9999;
-  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: opacity, visibility;
-}
-
-.intro::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  z-index: -2;
-}
-
-.intro::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-.intro-gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  box-shadow: none;
-  animation: gifFadeIn 0.6s ease-in-out forwards;
-}
-
-.intro-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 48px;
-  font-weight: bold;
-  text-align: center;
-  z-index: 3001;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-  letter-spacing: 2px;
-}
-
-@keyframes gifFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
   body {
@@ -451,69 +388,12 @@ body {
       will-change: transform, filter;
     }
 
-  .intro-content h1 {
-    font-size: 36px;
-  }
-
-  .intro-content p {
-    font-size: 13px;
-  }
   .modal-content {
       padding-top: 70px;
       max-width: 90vw;
       max-height: 70vh;
       object-fit: contain;
     }
-}
-
-/* ================= BLACK HISTORY MONTH BANNER ================= */
-.bhm-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2100;
-  overflow: hidden;
-  box-shadow: none;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  /* Remove any background so blur works */
-  background: transparent;
-}
-
-.bhm-text {
-  position: relative;
-  z-index: 2;
-  color: white;
-  font-size: 20px;
-}
-
-@keyframes scrollBanner {
-  0% {
-    transform: translateX(100vw);
-  }
-  100% {
-    transform: translateX(-100vw);
-  }
-}
-
-.bhm-text {
-  position: relative;
-  z-index: 2;
-  color: white;
-  font-size: 20px;
-  animation: scrollBanner 20s linear infinite;
-  will-change: transform;
-  white-space: nowrap;
-}
-
-html, body {
-  padding-top: 18px;
 }
 
 @media (max-width: 768px) {
@@ -526,23 +406,11 @@ html, body {
 
 <body>
 
-<!-- INTRO -->
-<div class="intro" id="intro">
-  <img class="intro-gif" id="introGif" src="" alt="Intro">
-  <div class="intro-text">happy Black History Month</div>
-</div>
-
 <!-- MOBILE TOP BAR -->
 <div class="topbar">
   <div class="hamburger">☰</div>
   <div class="top-name">JAE LAURENT</div>
 </div>
-
-<!-- BLACK HISTORY MONTH BANNER -->
-<div class="bhm-banner">
-  <div class="bhm-text">HAPPY BLACK HISTORY MONTH!!!!!!!!!!</div>
-</div>
-
 <!-- SIDEBAR -->
 <div class="sidebar">
   <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
@@ -658,57 +526,6 @@ hamburger.onclick = () => {
   bodyElem.classList.toggle("sidebar-open");
 };
 
-/* === INTRO === */
-const intro = document.getElementById("intro");
-const introGif = document.getElementById("introGif");
-
-// Array of 6 GIFs with their durations in milliseconds
-const introGifs = [
-  { name: "intro-gif-1.GIF", duration: 2000 },
-  { name: "intro-gif-2.GIF", duration: 2000 },
-  { name: "intro-gif-3.gif", duration: 2000 },
-  { name: "intro-gif-4.gif", duration: 2000 },
-  { name: "intro-gif-5.gif", duration: 2000 },
-  { name: "intro-gif-6.gif", duration: 2000 }
-];
-
-// Randomly select one GIF
-const selectedGifObj = introGifs[Math.floor(Math.random() * introGifs.length)];
-introGif.src = selectedGifObj.name;
-
-// Calculate total time: duration × 2 plays + 600ms for fade out
-const totalDuration = (selectedGifObj.duration * 2) + 600;
-
-// Hide intro after 2 plays
-setTimeout(() => {
-  intro.style.opacity = "0";
-  intro.style.pointerEvents = "none";
-  intro.style.transition = "opacity 0.6s ease-in-out";
-  setTimeout(() => {
-    intro.style.display = "none";
-  }, 600);
-}, selectedGifObj.duration * 2);
-
-// Hide intro and banner outside of February and June
-function checkSeasonalVisibility() {
-  const now = new Date();
-  const month = now.getMonth() + 1; // 1-12
-  const day = now.getDate();
-  
-  const isBlackHistoryMonth = month === 2 && day <= 28;
-  const isPrideMonth = month === 6 && day <= 30;
-  const shouldShow = isBlackHistoryMonth || isPrideMonth;
-  
-  const intro = document.getElementById("intro");
-  const banner = document.querySelector(".bhm-banner");
-  
-  if (!shouldShow) {
-    if (intro) intro.style.display = "none";
-    if (banner) banner.style.display = "none";
-  }
-}
-
-checkSeasonalVisibility();
 </script>
 
 </body>
