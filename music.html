@@ -1057,6 +1057,23 @@ body {
       document.title = `${title} – K1llajay`;
     }
 
+    function parseLocalDate(dateStr) {
+      if (!dateStr) return null;
+      const parts = dateStr.split('-').map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+
+    function shouldShowTrack(track) {
+      if (!track || !track.scheduleEnabled) return true;
+      const scheduledFor = parseLocalDate(track.scheduleDate);
+      if (!scheduledFor) return true;
+
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return scheduledFor <= today;
+    }
+
 
     // Load album data
     albumRef.on('value', snap => {
@@ -1073,9 +1090,12 @@ body {
       // Sort both keys and tracks by track number
       const entries = Object.entries(val).map(([k, v]) => [k, v]);
       entries.sort((a, b) => (a[1].number || 0) - (b[1].number || 0));
-      trackKeys = entries.map(([k]) => k);
+
+      const visibleEntries = entries.filter(([, v]) => shouldShowTrack(v));
+
+      trackKeys = visibleEntries.map(([k]) => k);
       trackData = {};
-      entries.forEach(([k, v]) => { trackData[k] = v; });
+      visibleEntries.forEach(([k, v]) => { trackData[k] = v; });
       renderAlbumCreditsFromTracks();
       renderTracklist();
     });
