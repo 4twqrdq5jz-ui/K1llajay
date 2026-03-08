@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Black History Visuals Archive</title>
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    @font-face {
+      font-family: 'sitefont';
+      src: url('beyoncefont.ttf') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
+      font-family: 'sitefont', monospace;
+      text-transform: uppercase;
+      color: white;
+      background: #000;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url("IMG_3309.gif") center / cover no-repeat;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: -1;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .banner {
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.45);
+      padding: 14px;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .button {
+      padding: 12px;
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: border-color 0.35s ease;
+      position: relative;
+      text-align: center;
+      z-index: 1;
+      display: block;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('Soulaan-flag-v0-26ghsv12s7cb1.webp') center / cover no-repeat;
+      filter: brightness(0.4);
+      z-index: -1;
+      transition: filter 0.35s ease;
+    }
+
+    .button:hover::before {
+      filter: brightness(1);
+    }
+
+    .button:hover {
+      border-color: white;
+    }
+
+    .intro {
+      position: relative;
+      height: min(70dvh, 600px);
+      border: 1px solid rgba(255,255,255,0.2);
+      overflow: hidden;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .intro-gif {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .intro-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(24px, 4vw, 48px);
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="banner">Black History Visuals Archive</div>
+
+    <div class="buttons">
+      <a class="button" href="#">Example Button Style</a>
+      <a class="button" href="#">Example Button Style</a>
+      <a class="button" href="#">Example Button Style</a>
+    </div>
+
+    <section class="intro" id="intro">
+      <img class="intro-gif" id="introGif" src="intro-gif-1.GIF" alt="Intro" />
+      <div class="intro-text">welcome</div>
+    </section>
+  </main>
+
+  <script>
+    const introGif = document.getElementById('introGif');
+    const introGifs = [
+      'intro-gif-1.GIF',
+      'intro-gif-2.GIF',
+      'intro-gif-3.gif',
+      'intro-gif-4.gif',
+      'intro-gif-5.gif',
+      'intro-gif-6.gif'
+    ];
+
+    const selected = introGifs[Math.floor(Math.random() * introGifs.length)];
+    introGif.src = selected;
+  </script>
+</body>
+</html>
