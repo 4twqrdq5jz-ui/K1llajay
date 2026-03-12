@@ -1,10 +1,20 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
+
+// Serve static HTML files
+app.use(express.static(path.join(__dirname, "..")));
+
+// CORS middleware...
 
 // CORS - Absolutely permissive middleware
 app.use((req, res, next) => {
@@ -25,10 +35,14 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 const PRINTIFY_API = "https://api.printify.com/v1";
-const API_KEY = process.env.PRINTIFY_API_KEY;
+const PRINTIFY_API_KEY = process.env.PRINTIFY_API_KEY;
 
-// Log to verify API key is loaded
-console.log("API_KEY loaded:", API_KEY ? "✓ Yes" : "✗ No - Check your .env file!");
+const PODBASE_API = "https://open-api.podbase.com";
+const PODBASE_API_KEY = process.env.PODBASE_API_KEY;
+
+// Log to verify API keys are loaded
+console.log("PRINTIFY_API_KEY loaded:", PRINTIFY_API_KEY ? "✓ Yes" : "✗ No - Check your .env file!");
+console.log("PODBASE_API_KEY loaded:", PODBASE_API_KEY ? "✓ Yes" : "✗ No - Check your .env file!");
 
 /* ================= COLOR-TO-IMAGE MAPPINGS ================= */
 // Customize per product - maps color names to image indices (0-based)
@@ -50,12 +64,12 @@ const COLOR_IMAGE_MAPPINGS = {
 /* ================= GET SHOPS ================= */
 app.get("/shops", async (req, res) => {
   try {
-    if (!API_KEY) {
-      return res.status(400).json({ error: "API_KEY not configured in .env file" });
+    if (!PRINTIFY_API_KEY) {
+      return res.status(400).json({ error: "PRINTIFY_API_KEY not configured in .env file" });
     }
     
     const r = await axios.get(`${PRINTIFY_API}/shops.json`, {
-      headers: { Authorization: `Bearer ${API_KEY}` }
+      headers: { Authorization: `Bearer ${PRINTIFY_API_KEY}` }
     });
     res.json(r.data);
   } catch (e) {
@@ -69,7 +83,7 @@ app.get("/products/:shopId", async (req, res) => {
   try {
     const r = await axios.get(
       `${PRINTIFY_API}/shops/${req.params.shopId}/products.json`,
-      { headers: { Authorization: `Bearer ${API_KEY}` } }
+      { headers: { Authorization: `Bearer ${PRINTIFY_API_KEY}` } }
     );
     res.json(r.data);
   } catch (e) {
@@ -82,7 +96,7 @@ app.get("/product/:shopId/:productId", async (req, res) => {
   try {
     const r = await axios.get(
       `${PRINTIFY_API}/shops/${req.params.shopId}/products/${req.params.productId}.json`,
-      { headers: { Authorization: `Bearer ${API_KEY}` } }
+      { headers: { Authorization: `Bearer ${PRINTIFY_API_KEY}` } }
     );
     res.json(r.data);
   } catch (e) {
@@ -95,7 +109,7 @@ app.get("/product/:shopId/:productId/options", async (req, res) => {
   try {
     const productRes = await axios.get(
       `${PRINTIFY_API}/shops/${req.params.shopId}/products/${req.params.productId}.json`,
-      { headers: { Authorization: `Bearer ${API_KEY}` } }
+      { headers: { Authorization: `Bearer ${PRINTIFY_API_KEY}` } }
     );
     
     const product = productRes.data;
@@ -394,6 +408,139 @@ app.post("/shipping/:shopId/:orderId", async (req, res) => {
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
+});
+
+/* ================= PODBASE API ENDPOINTS ================= */
+
+/* Get all Podbase products */
+app.get("/podbase/products", async (req, res) => {
+  try {
+    if (!PODBASE_API_KEY) {
+      return res.status(400).json({ error: "PODBASE_API_KEY not configured in .env file" });
+    }
+    
+    const response = await axios.get(`${PODBASE_API}/products`, {
+      headers: { 
+        "Authorization": `Bearer ${PODBASE_API_KEY}`,
+        "Content-Type": "application/json"
+      }
+    });
+    
+    res.json(response.data);
+  } catch (e) {
+    console.error("Podbase products API Error:", e.response?.data || e.message);
+    res.status(500).json({ error: e.response?.data || e.message });
+  }
+});
+
+/* Get single Podbase product */
+app.get("/podbase/products/:productId", async (req, res) => {
+  try {
+    if (!PODBASE_API_KEY) {
+      return res.status(400).json({ error: "PODBASE_API_KEY not configured" });
+    }
+    
+    const response = await axios.get(
+      `${PODBASE_API}/products/${req.params.productId}`,
+      {
+        headers: { 
+          "Authorization": `Bearer ${PODBASE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (e) {
+    console.error("Podbase product detail API Error:", e.response?.data || e.message);
+    res.status(500).json({ error: e.response?.data || e.message });
+  }
+});
+
+/* Get Podbase product inventory/stock */
+app.get("/podbase/inventory/:productId", async (req, res) => {
+  try {
+    if (!PODBASE_API_KEY) {
+      return res.status(400).json({ error: "PODBASE_API_KEY not configured" });
+    }
+    
+    const response = await axios.get(
+      `${PODBASE_API}/products/${req.params.productId}/inventory`,
+      {
+        headers: { 
+          "Authorization": `Bearer ${PODBASE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (e) {
+    console.error("Podbase inventory API Error:", e.response?.data || e.message);
+    res.status(500).json({ error: e.response?.data || e.message });
+  }
+});
+
+/* Create Podbase order */
+app.post("/podbase/orders", async (req, res) => {
+  try {
+    if (!PODBASE_API_KEY) {
+      return res.status(400).json({ error: "PODBASE_API_KEY not configured" });
+    }
+    
+    const response = await axios.post(
+      `${PODBASE_API}/orders`,
+      req.body,
+      {
+        headers: { 
+          "Authorization": `Bearer ${PODBASE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (e) {
+    console.error("Podbase order creation API Error:", e.response?.data || e.message);
+    res.status(500).json({ error: e.response?.data || e.message });
+  }
+});
+
+/* Get Podbase order status */
+app.get("/podbase/orders/:orderId", async (req, res) => {
+  try {
+    if (!PODBASE_API_KEY) {
+      return res.status(400).json({ error: "PODBASE_API_KEY not configured" });
+    }
+    
+    const response = await axios.get(
+      `${PODBASE_API}/orders/${req.params.orderId}`,
+      {
+        headers: { 
+          "Authorization": `Bearer ${PODBASE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (e) {
+    console.error("Podbase order status API Error:", e.response?.data || e.message);
+    res.status(500).json({ error: e.response?.data || e.message });
+  }
+});
+
+/* ================= CATCH-ALL: SERVE HTML FILES ================= */
+/* This allows accessing /page to serve page.html */
+app.get("/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const filepath = path.join(__dirname, "..", `${filename}.html`);
+  
+  res.sendFile(filepath, (err) => {
+    if (err) {
+      res.status(404).json({ error: `File not found: ${filename}` });
+    }
+  });
 });
 
 const PORT = process.env.PORT || 3000;
