@@ -6,6 +6,7 @@
   <title>Naturetography – JAE LAURENT</title>
   <link rel="icon" href="favicon.ico">
   <script src="device-optimization.js"></script>
+  <script src="anti-lag-optimization.js"></script>
   <style>
 @font-face {
   font-family: 'sitefont';
@@ -123,16 +124,17 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.02);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(30, 144, 255, 0.15));
   filter: brightness(0.4);
   border-radius: inherit;
   z-index: -1;
-  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: filter;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter, background;
 }
 
 .button:hover::before {
-  filter: brightness(1);
+  filter: brightness(1.2);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(30, 144, 255, 0.3));
 }
 
 .button:hover {
@@ -304,7 +306,6 @@ body {
 @media (max-width: 768px) {
   body {
     flex-direction: column;
-    padding-top: 35px;
   }
 
   body.sidebar-open {
@@ -356,7 +357,6 @@ body {
 
   .main-content {
       margin-left: 0px;
-      margin-top: 35px;
       padding: 20px;
       padding-top: 68px;
       display: grid;
@@ -468,38 +468,52 @@ db.ref("portfolio").once("value").then(snapshot => {
   // Reverse the items for newest first
   const items = Object.values(data).reverse();
 
+  // Batch create all elements (prevents multiple reflows)
+  const fragment = document.createDocumentFragment();
+  
   items.forEach(item => {
     if (!item || !item.imageUrl) return; // Make sure imageUrl exists
     const gridItem = document.createElement("div");
     gridItem.className = "grid-item";
 
     const img = document.createElement("img");
-    img.src = item.imageUrl;  // <-- Use imageUrl property
+    img.src = item.imageUrl;
     img.alt = "PORTFOLIO IMAGE";
+    img.loading = "lazy"; // Add lazy loading
+    img.decoding = "async"; // Non-blocking decode
 
     gridItem.appendChild(img);
-    gridContainer.appendChild(gridItem);
+    fragment.appendChild(gridItem); // Add to fragment first
   });
+  
+  // Append all items at once (single reflow)
+  gridContainer.appendChild(fragment);
 }).catch(err => console.error("Firebase error:", err));
 
 /* === MODAL === */
 const modal = document.getElementById("myModal");
 const modalImg = document.getElementById("img01");
 
-gridContainer.onclick = e => {
+// Use passive listener for better performance
+AntiLagOptimization.addPassiveListener(gridContainer, 'click', (e) => {
   if (e.target.tagName === "IMG") {
     document.querySelector(".sidebar").classList.remove("active");
     document.body.classList.remove("sidebar-open");
     modal.classList.add("open");
     modalImg.src = e.target.src;
   }
+});
+
+document.querySelector(".close").onclick = () => {
+  AntiLagOptimization.closeModalOptimal(modal);
 };
 
-document.querySelector(".close").onclick = () =>
-  modal.classList.remove("open");
-
-modal.onclick = e =>
-  e.target === modal && modal.classList.remove("open");
+// Use passive listener for modal background click
+AntiLagOptimization.addPassiveListener(modal, 'click', (e) => {
+  if (e.target === modal) {
+    AntiLagOptimization.closeModalOptimal(modal);
+  }
+});
 
 /* === MOBILE SIDEBAR === */
 const hamburger = document.querySelector(".hamburger");
