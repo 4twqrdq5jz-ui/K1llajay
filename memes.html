@@ -6,7 +6,7 @@
 <title>MEMES & VIDEOS — JAE LAURENT</title>
 <link rel="icon" href="favicon.ico">
 <script src="device-optimization.js"></script>
-
+<script src="anti-lag-optimization.js"></script>
 <style>
 @font-face {
   font-family: 'sitefont';
@@ -124,16 +124,17 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.02);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(30, 144, 255, 0.15));
   filter: brightness(0.4);
   border-radius: inherit;
   z-index: -1;
-  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: filter;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter, background;
 }
 
 .button:hover::before {
-  filter: brightness(1);
+  filter: brightness(1.2);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(30, 144, 255, 0.3));
 }
 
 .button:hover {
@@ -337,7 +338,6 @@ body {
 @media (max-width: 768px) {
   body {
     flex-direction: column;
-    padding-top: 35px;
   }
 
   body.sidebar-open {
@@ -389,7 +389,6 @@ body {
 
   .main-content {
       margin-left: 0px;
-      margin-top: 35px;
       padding: 20px;
       padding-top: 68px;
       display: grid;
@@ -533,6 +532,9 @@ db.ref("memes").once("value").then(snap => {
   const data = snap.val();
   if (!data) return;
 
+  // Batch create all elements first (prevents multiple reflows)
+  const itemsToAdd = [];
+  
   Object.keys(data).reverse().forEach(k => {
     const item = data[k];
     const src = item.url || item;
@@ -550,7 +552,8 @@ db.ref("memes").once("value").then(snap => {
       if (item.thumbnail) {
         const img = document.createElement("img");
         img.src = item.thumbnail;
-        img.loading = "eager";
+        img.loading = "lazy"; // Changed from "eager" to "lazy"
+        img.decoding = "async"; // Changed from "sync" to "async"
         div.appendChild(img);
       } else {
         const thumbVideo = document.createElement("video");
@@ -564,10 +567,10 @@ db.ref("memes").once("value").then(snap => {
         thumbVideo.addEventListener("loadedmetadata", () => {
           const seekTime = Number.isFinite(thumbVideo.duration) && thumbVideo.duration > 0.1 ? 0.1 : 0;
           try { thumbVideo.currentTime = seekTime; } catch (e) {}
-        });
+        }, { once: true }); // Added { once: true } to remove listener after firing
         thumbVideo.addEventListener("seeked", () => {
           thumbVideo.pause();
-        });
+        }, { once: true }); // Added { once: true } to remove listener after firing
         div.appendChild(thumbVideo);
       }
 
@@ -584,14 +587,20 @@ db.ref("memes").once("value").then(snap => {
     } else {
       const img = document.createElement("img");
       img.src = src;
-      img.loading = "eager";
-      img.decoding = "sync";
-      img.fetchPriority = "high";
+      img.loading = "lazy"; // Changed from "eager" to "lazy"
+      img.decoding = "async"; // Changed from "sync" to "async" for non-blocking decode
+      // Removed img.fetchPriority = "high" as it's not needed for all images
       div.appendChild(img);
     }
 
-    grid.appendChild(div);
+    itemsToAdd.push(div);
   });
+  
+  // Batch append all items at once (single reflow instead of many)
+  AntiLagOptimization.batchAppendElements([], () => {}, grid);
+  const fragment = document.createDocumentFragment();
+  itemsToAdd.forEach(item => fragment.appendChild(item));
+  grid.appendChild(fragment);
 });
 
 /* === DISPLAY ITEM AT INDEX === */
@@ -650,20 +659,17 @@ document.getElementById("nextBtn").onclick = () => {
 
 /* === CLOSE MODAL === */
 function closeModal() {
-  modal.classList.remove("open");
-
-  modalVid.pause();
-  modalVid.currentTime = 0;
-  modalVid.src = "";
+  AntiLagOptimization.closeModalOptimal(modal);
 }
 
 document.querySelector(".close").onclick = closeModal;
 
-modal.onclick = e => {
+// Use passive listener for modal background click
+AntiLagOptimization.addPassiveListener(modal, 'click', (e) => {
   if (e.target === modal) {
     closeModal();
   }
-};
+});
 </script>
 
 </body>
