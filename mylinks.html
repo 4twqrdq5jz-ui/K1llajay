@@ -6,6 +6,7 @@
   <title>Links • JAE LAURENT</title>
   <link rel="icon" href="favicon.ico">
   <script src="device-optimization.js"></script>
+  <script src="anti-lag-optimization.js"></script>
   <style>
 @font-face {
   font-family: 'sitefont';
@@ -123,16 +124,17 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.02);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(30, 144, 255, 0.15));
   filter: brightness(0.4);
   border-radius: inherit;
   z-index: -1;
-  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: filter;
+  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: filter, background;
 }
 
 .button:hover::before {
-  filter: brightness(1);
+  filter: brightness(1.2);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(30, 144, 255, 0.3));
 }
 
 .button:hover {
@@ -220,7 +222,6 @@ body {
 @media (max-width: 768px) {
   body {
     flex-direction: column;
-    padding-top: 35px;
   }
 
   body.sidebar-open {
@@ -271,7 +272,6 @@ body {
   }
       .main-content {
         margin-left: 0;
-        margin-top: 85px;
         width: 100%;
         padding: 16px;
         display: flex;
