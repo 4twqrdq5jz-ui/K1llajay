@@ -6,6 +6,7 @@
   <title>Events Editor</title>
   <link rel="icon" href="favicon.ico">
   <script src="device-optimization.js"></script>
+  <script src="anti-lag-optimization.js"></script>
   <style>
     @font-face {
       font-family: 'sitefont';
@@ -101,15 +102,17 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(255,255,255,0.02);
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(30, 144, 255, 0.15));
       filter: brightness(0.4);
       border-radius: inherit;
       z-index: -1;
-      transition: filter 0.3s;
+      transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: filter, background;
     }
 
     .button:hover::before {
-      filter: brightness(1);
+      filter: brightness(1.2);
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(30, 144, 255, 0.3));
     }
 
     .button:hover { border-color: white; }
