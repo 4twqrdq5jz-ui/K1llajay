@@ -126,17 +126,14 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(30, 144, 255, 0.15));
-  filter: brightness(0.4);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: inherit;
   z-index: -1;
-  transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: filter, background;
+  transition: background 0.2s ease;
 }
 
 .button:hover::before {
-  filter: brightness(1.2);
-  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(30, 144, 255, 0.3));
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .button:hover {
