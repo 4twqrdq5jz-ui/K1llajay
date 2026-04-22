@@ -7,6 +7,7 @@
   <link rel="icon" href="favicon.ico">
   <script src="device-optimization.js"></script>
   <script src="anti-lag-optimization.js"></script>
+  <script src="viewport-image-loader.js"></script>
   <style>
 @font-face {
   font-family: 'sitefont';
@@ -451,6 +452,12 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const gridContainer = document.getElementById("grid-container");
 
+// Initialize viewport loader
+const viewportLoader = new ViewportImageLoader({
+  loadThreshold: '100px',
+  unloadThreshold: '150px'
+});
+
 db.ref("portfolio").once("value").then(snapshot => {
   const data = snapshot.val();
   if (!data) return;
@@ -467,10 +474,10 @@ db.ref("portfolio").once("value").then(snapshot => {
     gridItem.className = "grid-item";
 
     const img = document.createElement("img");
-    img.src = item.imageUrl;
     img.alt = "PORTFOLIO IMAGE";
     img.loading = "lazy"; // Add lazy loading
     img.decoding = "async"; // Non-blocking decode
+    img.dataset.src = item.imageUrl; // Store src in data attribute
 
     gridItem.appendChild(img);
     fragment.appendChild(gridItem); // Add to fragment first
@@ -478,6 +485,9 @@ db.ref("portfolio").once("value").then(snapshot => {
   
   // Append all items at once (single reflow)
   gridContainer.appendChild(fragment);
+  
+  // Initialize viewport loading
+  viewportLoader.observeContainer(gridContainer);
 }).catch(err => console.error("Firebase error:", err));
 
 /* === MODAL === */
@@ -490,7 +500,8 @@ AntiLagOptimization.addPassiveListener(gridContainer, 'click', (e) => {
     document.querySelector(".sidebar").classList.remove("active");
     document.body.classList.remove("sidebar-open");
     modal.classList.add("open");
-    modalImg.src = e.target.src;
+    // Use dataset.src if img.src is empty (viewport loader unloaded it)
+    modalImg.src = e.target.src || e.target.dataset.src;
   }
 });
 
