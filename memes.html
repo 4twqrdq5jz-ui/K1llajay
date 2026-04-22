@@ -7,6 +7,7 @@
 <link rel="icon" href="favicon.ico">
 <script src="device-optimization.js"></script>
 <script src="anti-lag-optimization.js"></script>
+<script src="viewport-image-loader.js"></script>
 <style>
 @font-face {
   font-family: 'sitefont';
@@ -506,6 +507,12 @@ const grid = document.getElementById("grid-container");
 let gridItems = [];
 let currentIndex = -1;
 
+// Initialize viewport loader
+const viewportLoader = new ViewportImageLoader({
+  loadThreshold: '100px',
+  unloadThreshold: '150px'
+});
+
 /* === MOBILE SIDEBAR === */
 const hamburger = document.querySelector(".hamburger");
 const sidebar = document.querySelector(".sidebar");
@@ -540,26 +547,19 @@ db.ref("memes").once("value").then(snap => {
 
       if (item.thumbnail) {
         const img = document.createElement("img");
-        img.src = item.thumbnail;
-        img.loading = "lazy"; // Changed from "eager" to "lazy"
-        img.decoding = "async"; // Changed from "sync" to "async"
+        img.dataset.src = item.thumbnail;
+        img.loading = "lazy";
+        img.decoding = "async";
         div.appendChild(img);
       } else {
         const thumbVideo = document.createElement("video");
-        thumbVideo.src = src;
+        thumbVideo.dataset.src = src;
         thumbVideo.muted = true;
         thumbVideo.playsInline = true;
-        thumbVideo.preload = "metadata";
+        thumbVideo.preload = "none";
         thumbVideo.setAttribute("webkit-playsinline", "");
         thumbVideo.disablePictureInPicture = true;
         thumbVideo.controls = false;
-        thumbVideo.addEventListener("loadedmetadata", () => {
-          const seekTime = Number.isFinite(thumbVideo.duration) && thumbVideo.duration > 0.1 ? 0.1 : 0;
-          try { thumbVideo.currentTime = seekTime; } catch (e) {}
-        }, { once: true }); // Added { once: true } to remove listener after firing
-        thumbVideo.addEventListener("seeked", () => {
-          thumbVideo.pause();
-        }, { once: true }); // Added { once: true } to remove listener after firing
         div.appendChild(thumbVideo);
       }
 
@@ -575,10 +575,9 @@ db.ref("memes").once("value").then(snap => {
       div.appendChild(play);
     } else {
       const img = document.createElement("img");
-      img.src = src;
-      img.loading = "lazy"; // Changed from "eager" to "lazy"
-      img.decoding = "async"; // Changed from "sync" to "async" for non-blocking decode
-      // Removed img.fetchPriority = "high" as it's not needed for all images
+      img.dataset.src = src;
+      img.loading = "lazy";
+      img.decoding = "async";
       div.appendChild(img);
     }
 
@@ -586,10 +585,12 @@ db.ref("memes").once("value").then(snap => {
   });
   
   // Batch append all items at once (single reflow instead of many)
-  AntiLagOptimization.batchAppendElements([], () => {}, grid);
   const fragment = document.createDocumentFragment();
   itemsToAdd.forEach(item => fragment.appendChild(item));
   grid.appendChild(fragment);
+  
+  // Initialize viewport loading after all items are in DOM
+  viewportLoader.observeContainer(grid);
 });
 
 /* === DISPLAY ITEM AT INDEX === */
@@ -607,6 +608,7 @@ function displayItem(index) {
     modalImg.style.display = 'block';
     modalVid.style.display = 'none';
   } else {
+    // Force load video from gridItems (bypass viewport loader cache)
     modalVid.src = item.src;
     modalVid.style.display = 'block';
     modalImg.style.display = 'none';
