@@ -11,6 +11,11 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Redirect all requests to maintenance page
+app.use((req, res) => {
+  res.redirect(301, "https://k1llajay.com/maintenance");
+});
+
 // Serve static HTML files
 app.use(express.static(path.join(__dirname, "..")));
 
