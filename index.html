@@ -7,6 +7,7 @@
 <link rel="icon" href="favicon.ico">
 <script src="device-optimization.js"></script>
 <script src="anti-lag-optimization.js"></script>
+<script src="viewport-image-loader.js"></script>
 
 <style>
 @font-face {
@@ -119,13 +120,14 @@ body {
   justify-content: center;
   z-index: 1;
   will-change: border-color, color;
+  backdrop-filter: blur(10px);
 }
 
 .button::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 6);
   border-radius: inherit;
   z-index: -1;
   transition: background 0.2s ease;
@@ -465,34 +467,40 @@ const db = firebase.database();
 const grid = document.getElementById("grid-container");
 
 /* === KEEP IMAGES PINNED IN MEMORY (iOS FIX) === */
-const preloadedImages = [];
-
-function preload(src) {
-  const img = new Image();
-  img.src = src;
-  preloadedImages.push(img);
-}
+// Initialize viewport loader
+const viewportLoader = new ViewportImageLoader({
+  loadThreshold: '100px',
+  unloadThreshold: '150px'
+});
 
 db.ref("slides").once("value").then(snap => {
   const data = snap.val();
   if (!data) return;
 
+  // Batch create all elements
+  const fragment = document.createDocumentFragment();
+  
   Object.keys(data).reverse().forEach(k => {
     const src = data[k].url || data[k];
-    preload(src);
 
     const div = document.createElement("div");
     div.className = "grid-item";
 
     const img = document.createElement("img");
-    img.src = src;
-    img.loading = "eager";
-    img.decoding = "sync";
-    img.fetchPriority = "high";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.dataset.src = src; // Store src in data attribute
+    img.alt = "Gallery image";
 
     div.appendChild(img);
-    grid.appendChild(div);
+    fragment.appendChild(div);
   });
+  
+  // Batch append all at once
+  grid.appendChild(fragment);
+  
+  // Initialize viewport loading
+  viewportLoader.observeContainer(grid);
 });
 
 /* === MODAL === */
@@ -504,7 +512,8 @@ grid.onclick = e => {
     document.querySelector(".sidebar").classList.remove("active");
     document.body.classList.remove("sidebar-open");
     modal.classList.add("open");
-    modalImg.src = e.target.src;
+    // Use dataset.src if img.src is empty (viewport loader unloaded it)
+    modalImg.src = e.target.src || e.target.dataset.src;
   }
 };
 
