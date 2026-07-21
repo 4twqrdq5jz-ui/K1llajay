@@ -14,7 +14,7 @@ html,body{width:100%;height:100dvh;font-family:'sitefont',monospace;color:#ffe60
 .btn-reset a, a{color:inherit;text-decoration:none}
 a:hover, a:focus{text-decoration:none}
 /* Hamburger button */
-.menu-btn{position:fixed;left:18px;top:18px;width:40px;height:32px;padding:6px;display:flex;flex-direction:column;justify-content:space-between;z-index:6;background:transparent;border:0;cursor:pointer}
+.menu-btn{position:fixed;left:18px;top:18px;width:40px;height:32px;padding:6px;display:flex;flex-direction:column;justify-content:space-between;z-index:999;background:rgba(0,0,0,0.3);border:1px solid rgba(255,230,0,0.4);border-radius:10px;cursor:pointer}
 .menu-btn span{display:block;height:3px;background:#ffe600;border-radius:2px}
 .menu-btn:focus{outline:2px solid rgba(255,230,0,0.25)}
 /* Sidebar */
@@ -29,10 +29,10 @@ a:hover, a:focus{text-decoration:none}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.7));z-index:1}
 .container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:center;gap:24px}
 .brand{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
-.brand .title{font-size:96px;line-height:0.9;color:#ffe600;letter-spacing:6px;text-align:center;display:inline-flex;flex-direction:column;align-items:center;gap:0}
+.brand .title{font-size:96px;line-height:1;color:#ffe600;letter-spacing:6px;text-align:center;display:inline-flex;flex-direction:column;align-items:center;gap:0}
 .brand .subtitle{display:none}
-.title-row{display:inline-flex;align-items:baseline;justify-content:center;gap:8px}
-.title-second{display:block;margin-top:-22px}
+.title-row{display:inline-flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:16px}
+.title-second{display:block;margin-top:-12px}
 .subtitle-inline{font-size:14px;margin-left:6px;display:inline-block;vertical-align:baseline;position:relative;top:0;opacity:0.95;letter-spacing:0}
 .title .letter-special{font-family:'specialfont';opacity:0.95}
 .title .alt-font{font-family:'altfont';opacity:0.95}
