@@ -13,20 +13,20 @@ body{overflow-x:hidden}
 .header-hero{position:relative;height:55vh;min-height:420px;display:flex;align-items:center}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(0px) saturate(1);z-index:0}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.7));z-index:1}
-.container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:center;gap:24px}
-.brand{display:flex;flex-direction:column;align-items:center}
-.brand .title{font-size:96px;line-height:0.9;color:#ffe600;letter-spacing:6px;text-align:center;display:inline-block}
+.container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;gap:24px}
+.brand{flex:1}
+.brand .title{font-size:96px;line-height:0.9;color:#ffe600;letter-spacing:6px}
 .brand .subtitle{margin-top:8px;color:#ffe600;opacity:0.95;font-size:14px;letter-spacing:4px}
-.cta{display:flex;flex-direction:column;gap:12px;align-items:center}
-.title .word-jae{display:inline-block;transform:translateX(-10px)}
+.cta{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
 .title .letter-special{font-family:'Courier New',Courier,monospace;opacity:0.95}
 .cta .listen{background:transparent;border:2px solid #ffe600;color:#ffe600;padding:12px 20px;border-radius:28px;font-weight:700}
-.grid-section{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:1200px;margin:40px auto}
-.left-block{background:#071123;color:#ffe600;padding:48px}
-.left-block h2{font-size:28px;margin-bottom:14px}
-.left-block p{color:#ffe600;opacity:0.9}
-.right-block{display:grid;grid-template-columns:1fr 1fr}
-.right-block .tile{min-height:240px;background-size:cover;background-position:center}
+.grid-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1200px;margin:40px auto}
+.tile{min-height:320px;background-size:cover;background-position:center;border-radius:16px;overflow:hidden}
+.card{background:#071123;color:#ffe600;padding:48px;border-radius:16px;display:flex;flex-direction:column;justify-content:center;gap:20px;min-height:320px}
+.card h2{font-size:28px;margin-bottom:14px}
+.card p{color:#ffe600;opacity:0.9}
+.card a{color:#ffe600;text-decoration:none}
+.card a:hover{text-decoration:underline}
 .footer{max-width:1200px;margin:40px auto;color:#fff;padding:24px}
 @media(max-width:900px){
   .brand .title{font-size:48px}
@@ -47,28 +47,25 @@ body{overflow-x:hidden}
       <div class="subtitle">MUSICIAN • PRODUCER • VLOGGER</div>
     </div>
     <div class="cta">
-      <button class="listen">Listen Now →</button>
       <div style="font-size:13px;opacity:0.8">Latest Release<br><strong style="display:block;margin-top:6px">On My Block</strong></div>
+      <a class="listen" href="https://rnd.fm/on-my-block-ncpi8a/">Listen Now →</a>
     </div>
   </div>
 </header>
 
 <section class="grid-section">
-  <div class="left-block">
+  <div class="tile" style="background-image:url('https://picsum.photos/800/800?random=2')"></div>
+  <div class="card">
     <h2>SCHEDULED LIVES</h2>
     <p>None Available</p>
-
-    <div style="height:40px"></div>
+  </div>
+  <div class="card">
     <h2>CONNECT & FOLLOW</h2>
-    <p>Stream all tracks on: Spotify • Apple Music • SoundCloud</p>
-    <p style="margin-top:18px">Stay connected: Instagram • Twitter • TikTok • YouTube</p>
-
-    <p style="margin-top:22px;opacity:0.9">Contact: booking@example.com</p>
+    <p>Stream all tracks on: <a href="https://open.spotify.com/artist/7FECUKRSQSao4tari6oa3J?si=vpxOYs9aTPWH8xRuw_nSkA&utm_source=copy-link/" target="_blank" rel="noreferrer noopener">Spotify</a> • <a href="https://music.apple.com/us/artist/yae-yadir/1722020367/" target="_blank" rel="noreferrer noopener">Apple Music</a> • <a href="https://soundcloud.com/k1llajayyyyy" target="_blank" rel="noreferrer noopener">SoundCloud</a></p>
+    <p>Stay connected: <a href="https://instagram.com/k1llajay/" target="_blank" rel="noreferrer noopener">Instagram</a> • <a href="https://twitter.com/k1llajay_" target="_blank" rel="noreferrer noopener">Twitter</a> • <a href="https://www.tiktok.com/@k1llajay" target="_blank" rel="noreferrer noopener">TikTok</a> • <a href="https://www.youtube.com/@k1llajay" target="_blank" rel="noreferrer noopener">YouTube</a></p>
+    <p style="margin-top:22px;opacity:0.9">Contact: <a href="mailto:southofsomewhere@icloud.com">southofsomewhere@icloud.com</a></p>
   </div>
-  <div class="right-block">
-    <div class="tile" style="background-image:url('https://picsum.photos/800/800?random=2')"></div>
-    <div class="tile" style="background-image:url('https://picsum.photos/800/800?random=3')"></div>
-  </div>
+  <div class="tile" style="background-image:url('https://picsum.photos/800/800?random=3')"></div>
 </section>
 
 <footer class="footer">
