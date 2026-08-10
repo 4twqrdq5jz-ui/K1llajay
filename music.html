@@ -32,7 +32,11 @@ html {
 }
 
 .sidebar {
-  display: none !important;
+  display: flex !important;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .top-bar {
@@ -97,7 +101,7 @@ body.menu-open .menu-btn {
 
 .sidebar {
   position: fixed;
-  left: -300px;
+  left: 0;
   top: 0;
   width: 280px;
   height: 100%;
@@ -105,11 +109,17 @@ body.menu-open .menu-btn {
   color: #ffe600;
   padding: 24px;
   box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
-  transition: left .26s ease;
+  transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
   z-index: 30;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
-.sidebar.active{left:0;display:flex !important}
+.sidebar.active{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
 .sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
 .sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
 .sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
@@ -189,6 +199,23 @@ body {
   gap: 10px;
 }
 
+.album-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.album-title-toggle {
+  background: transparent;
+  border: none;
+  color: #ffe600;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
 .album-heading .album-label {
   font-size: 58px;
   font-weight: 900;
@@ -204,10 +231,22 @@ body {
   text-transform: uppercase;
 }
 
+.album-meta.collapsed .album-data-grid {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
 .album-data-grid {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
   gap: 18px;
+  overflow: hidden;
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.35s ease, opacity 0.28s ease, transform 0.35s ease;
 }
 
 .meta-column {
@@ -229,7 +268,7 @@ body {
   color: white;
   font-size: 14px;
   line-height: 1.8;
-  padding-left: 20px;
+  padding-left: 25px;
   display: grid;
   gap: 4px;
 }
@@ -302,7 +341,7 @@ body {
   color: white;
   font-size: 14px;
   line-height: 1.8;
-  padding-left: 10px;
+  padding-left: 0px;
   display: grid;
   gap: 4px;
 }
@@ -424,6 +463,7 @@ body {
 
   .album-card {
     padding: 24px;
+    padding-top: 28px;
     border-radius: 28px;
   }
 
@@ -514,7 +554,10 @@ body {
         </div>
         <div class="album-meta">
           <div class="album-heading">
-            <div id="album-label" class="album-label">SOS</div>
+            <div class="album-title-row">
+              <div id="album-label" class="album-label">SOS</div>
+              <button class="album-title-toggle" id="albumToggle" aria-label="Toggle album details" type="button">▾</button>
+            </div>
             <div id="album-artist" class="album-artist">Jae Laurent</div>
           </div>
           <div class="album-data-grid">
@@ -731,6 +774,9 @@ body {
 
     const menuButton = document.querySelector('.menu-btn');
     const sidebarEl = document.querySelector('.sidebar');
+    const albumMetaEl = document.querySelector('.album-meta');
+    const albumToggleBtn = document.getElementById('albumToggle');
+
     if (menuButton && sidebarEl) {
       menuButton.addEventListener('click', () => {
         sidebarEl.classList.toggle('active');
@@ -742,6 +788,14 @@ body {
       closeBtn.addEventListener('click', () => {
         sidebarEl.classList.remove('active');
         document.body.classList.remove('menu-open');
+      });
+    }
+
+    if (albumToggleBtn && albumMetaEl) {
+      albumToggleBtn.addEventListener('click', () => {
+        const isCollapsed = albumMetaEl.classList.toggle('collapsed');
+        albumToggleBtn.textContent = isCollapsed ? '▸' : '▾';
+        albumToggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
       });
     }
 
