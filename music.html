@@ -26,12 +26,97 @@ html, body {
   font-family: 'sitefont', monospace;
   text-transform: uppercase;
   color: white;
+  background: #01050f;
 }
 html {
   height: 100vh;
   height: 100dvh;
-  padding-top: 18px;
+  padding-top: 0;
 }
+
+.sidebar {
+  display: none !important;
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 76px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("IMG_4619.png") center / cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 20;
+}
+.top-bar .menu-btn {
+  position: absolute;
+  left: 24px;
+}
+.top-bar-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffe600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.menu-btn {
+  width: 44px;
+  height: 36px;
+  padding: 8px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 230, 0, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background-clip: padding-box;
+}
+.menu-btn span {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #ffe600;
+  border-radius: 999px;
+}
+.menu-btn:focus {
+  outline: 2px solid rgba(255, 230, 0, 0.35);
+}
+body.menu-open .menu-btn {
+  display: none !important;
+}
+
+.sidebar {
+  position: fixed;
+  left: -300px;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: #071123;
+  color: #ffe600;
+  padding: 24px;
+  box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
+  transition: left .26s ease;
+  z-index: 30;
+  overflow: auto;
+}
+.sidebar.active{left:0;display:flex !important}
+.sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
+.sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
+.sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
+.sidebar a:hover{text-decoration:underline}
 
 /* ================= INFINITE BACKGROUND ================= */
 body::before {
@@ -62,573 +147,291 @@ body::after {
 /* ================= BODY ================= */
 body {
   display: flex;
+  flex-direction: column;
   min-height: 100dvh;
   position: relative;
   overflow: hidden;
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-  width: 260px;
-  height: 100dvh;
-  padding: 24px;
-  position: fixed;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255,255,255,0.15);
-  z-index: 3000;
-}
-
-.profile-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  margin-bottom: 20px;
-}
-
-.name {
-  font-size: 22px;
-  letter-spacing: 3px;
-  margin-bottom: 40px;
-}
-
-.buttons {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.button {
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  font-size: 13px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  will-change: border-color, color;
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: inherit;
-  z-index: -1;
-  transition: background 0.2s ease;
-}
-
-.button:hover::before {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.button:hover {
-  border-color: white;
-}
-
-.footer {
-  margin-top: auto;
-  font-size: 10px;
-  opacity: 0.7;
-  text-align: center;
-}
-
-.footer a {
-  color: white;
-  text-decoration: none;
-}
-
-.copyright {
-  font-size: 8px;
-  margin-top: 6px;
-}
-
-/* ================= TOP BAR (MOBILE) ================= */
-.topbar {
-  display: none;
-}
-
-/* Main Content (Desktop) */
+/* ================= PAGE LAYOUT ================= */
 .main-content::-webkit-scrollbar { display: none; }
 .main-content { -ms-overflow-style: none; scrollbar-width: none; }
 .main-content {
-  margin-left: 260px;
   flex: 1;
-  min-height: calc(100dvh - 35px);
+  min-height: 100dvh;
   overflow-y: auto;
-  padding: 20px;      
+  padding: 110px 24px 80px;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  contain: none;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-#album-title-section {
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-direction: column;
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.page-title {
+  font-size: 72px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffe600;
   text-align: center;
-  margin-bottom: 60px;
 }
 
-#album-title {
-  font-size: 36px;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+.page-subtitle {
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: rgba(255,230,0,0.95);
+  align-items: start;
 }
 
-.credits-button {
-  display: inline-block;
-  padding: 10px 24px;
-  font-size: 12px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(18px);
+.album-cover {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.12);
 }
 
-.credits-button:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: white;
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.disc-header {
-  text-align: center;
+.album-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.album-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.album-heading .album-label {
+  font-size: 58px;
+  font-weight: 900;
+  color: #ffe600;
+  letter-spacing: 1.4px;
+}
+
+.album-heading .album-artist {
+  font-size: 28px;
+  line-height: 1.05;
+  letter-spacing: 1.8px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.album-data-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+  gap: 18px;
+}
+
+.meta-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-column h3 {
   font-size: 14px;
-  letter-spacing: 4px;
-  opacity: 0.7;
-  margin: 60px 0 30px;
+  letter-spacing: 3px;
+  color: #ffe600;
+  margin-bottom: 6px;
+}
+
+.meta-column ul,
+.meta-column ol {
+  list-style-position: outside;
+  color: white;
+  font-size: 14px;
+  line-height: 1.8;
+  padding-left: 20px;
+  display: grid;
+  gap: 4px;
+}
+
+.meta-column ul {
+  list-style-type: disc;
+}
+
+.meta-column ol {
+  list-style-type: decimal;
+}
+
+.meta-column ul li,
+.meta-column ol li {
+  opacity: 0.95;
+}
+
+.tracklist-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 28px;
+  padding: 32px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(320px, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.album-card {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 28px;
+  padding: 28px;
+}
+
+.album-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.album-data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.meta-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-column h3 {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #ffe600;
+  margin-bottom: 6px;
+}
+
+.meta-column ul {
+  list-style: none;
+  color: white;
+  font-size: 14px;
+  line-height: 1.8;
+  padding-left: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.meta-column ul li {
+  opacity: 0.95;
+}
+
+.tracklist-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.tracklist-header h2 {
+  font-size: 52px;
+  letter-spacing: 2px;
+  color: #ffe600;
+  margin: 0;
 }
 
 .tracklist {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 16px;
-  line-height: 2.4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .track {
-  display: flex;
+  display: grid;
+  grid-template-columns: 40px 1fr;
   gap: 20px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.track:hover {
-  opacity: 0.7;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .track-number {
-  width: 40px;
-  text-align: right;
-  opacity: 0.6;
-}
-
-.track-dash {
-  opacity: 0.6;
-}
-
-/* Lyrics/Credits Overlay */
-#overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 260px;
-  right: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 35px;
-}
-
-#overlay::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  z-index: -2;
-}
-
-#overlay::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-#overlay.active {
-  display: flex;
-}
-
-#overlayContent {
-  position: relative;
-  padding: 30px 20px;
-  border-radius: 12px;
-  max-width: 90%;
-  width: 100%;
-  height: 80vh;
-  overflow-y: auto;
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(9px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#overlayContent::-webkit-scrollbar {
-  display: none;
-}
-
-#overlayContent {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-#overlayContent h1 {
-  font-size: 18px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  line-height: 1.8;
-}
-
-#overlayContent h3 {
-  font-size: 17px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  line-height: 1.8;
-}
-
-.overlay-close {
-  position: sticky;
-  top: 10px;
-  right: 10px;
-  align-self: flex-end;
-  margin-bottom: -40px;
-  z-index: 12;
-  background: none;
-  border: none;
-  font-size: 28px;
-  color: white;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.overlay-close:hover {
-  opacity: 1;
-}
-
-.track-header {
-  position: sticky;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 0px;
-  width: 100%;
-  top: 0;
-  z-index: 10;
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
-.track-info {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.next-track-btn, .prev-track-btn {
-  padding: 12px 18px;
-  font-size: 18px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  background: rgba(0,0,0,0.4);
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.next-track-btn:hover, .prev-track-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: white;
-}
-
-.next-track-btn:disabled, .prev-track-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  background: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.2);
-}
-
-.next-track-btn:disabled:hover, .prev-track-btn:disabled:hover {
-  background: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.2);
-}
-
-.sub-toggle {
-  position: sticky;
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-bottom: 30px;
-  top: 95px;
-  z-index: 9;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.sub-toggle span {
-  font-size: 14px;
-  letter-spacing: 2px;
-  padding: 8px 16px;
-  cursor: pointer;
-  opacity: 0.6;
-  border-bottom: 2px solid transparent;
-}
-
-.sub-toggle span.activeTab {
-  opacity: 1;
-  border-bottom: 2px solid white;
-}
-
-.tab-content {
-  display: none;
-  line-height: 1.8;
   font-size: 16px;
-}
-
-#lyrics {
-  mask-image: linear-gradient(to bottom, transparent 0px, transparent 140px, black 180px, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0px, transparent 140px, black 180px, black 100%);
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  mask-position: 0 var(--tab-mask-offset, 0px);
-  -webkit-mask-position: 0 var(--tab-mask-offset, 0px);
-}
-
-.tab-content.activeTab {
-  display: block;
-}
-
-.service-logos {
-  margin-top: 30px;
-  padding-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.service-logos img {
-  height: 40px;
-  opacity: 0.8;
-  transition: opacity 0.3s;
-}
-
-.service-logos img:hover {
-  opacity: 1;
-}
-
-/* Full Album Credits Modal */
-.song-modal {
-  position: fixed;
-  top: 35px;
-  bottom: 20px;
-  left: 260px;
-  right: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 101;
-}
-
-.song-modal::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  z-index: -2;
-}
-
-.song-modal::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-.song-modal.open {
-  display: flex;
-}
-
-.song-modal .container {
-  position: relative;
-  padding: 50px;
-  max-width: calc(100% - 40px);
-  width: calc(100% - 40px);
-  max-height: 80vh;
-  overflow-y: auto;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 12px;
-  text-align: center;
-  backdrop-filter: blur(9px);
-}
-
-.song-modal .container::-webkit-scrollbar {
-  display: none;
-}
-
-.song-modal .container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.album-info-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-#album-credits-body {
-  mask-image: none;
-  -webkit-mask-image: none;
-}
-
-#album-credits-body.mask-active {
-  mask-image: linear-gradient(to bottom, transparent 0px, transparent 130px, black 170px, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0px, transparent 130px, black 170px, black 100%);
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  mask-position: 0 var(--album-mask-offset, 0px);
-  -webkit-mask-position: 0 var(--album-mask-offset, 0px);
-}
-
-#album-credits-body.no-mask {
-  mask-image: none;
-  -webkit-mask-image: none;
-}
-
-.song-modal h1 {
-  font-size: 25px;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-}
-
-.song-modal h3 {
-  font-size: 20px;
-  margin: 30px 0 15px;
-  letter-spacing: 1px;
-}
-
-.song-modal p {
-  font-size: 15px;
-  line-height: 1.8;
+  font-weight: 700;
   opacity: 0.9;
-  margin-bottom: 20px;
+  min-width: 28px;
 }
 
-.modal-close {
-  position: fixed;
-  top: 20px;
-  right: 30px;
-  z-index: 106;
-  background: none;
-  border: none;
-  font-size: 28px;
-  color: white;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.track-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 0px;
-  width: 100%;
-}
-
-.track-info {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.next-track-btn, .prev-track-btn {
-  padding: 12px 18px;
+.track-title {
   font-size: 18px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  background: rgba(0,0,0,0.4);
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  line-height: 1.3;
+  color: #ffe600;
 }
 
-.next-track-btn:hover, .prev-track-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: white;
+.track-extra {
+  font-size: 12px;
+  opacity: 0.65;
+  margin-top: 4px;
 }
 
-.next-track-btn:disabled, .prev-track-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  background: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.2);
+@media (max-width: 980px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .album-data-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.next-track-btn:disabled:hover, .prev-track-btn:disabled:hover {
-  background: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.2);
+@media (max-width: 640px) {
+  .main-content {
+    padding: 24px 16px 60px;
+  }
+
+  .page-title {
+    font-size: 32px;
+  }
+
+  .hero-grid {
+    gap: 20px;
+  }
+
+  .album-cover {
+    border-radius: 28px;
+  }
+
+  .album-heading .album-artist {
+    font-size: 32px;
+  }
+
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracklist-header h2 {
+    font-size: 36px;
+  }
 }
+
+
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -636,194 +439,56 @@ body {
     flex-direction: column;
   }
 
-  body.sidebar-open {
-    overflow: hidden;
-  }
-
-  .topbar {
-    display: flex;
-    position: fixed;
-    top: 35px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    padding-top: max(0px, env(safe-area-inset-top));
-    align-items: center;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    z-index: 2101;
-  }
-
-  .hamburger {
-    font-size: 28px;
-    cursor: pointer;
-    padding: 5px;
-  }
-
-  .top-name {
-    margin: 0 auto;
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
-
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 85px;
-    left: 0;
-    width: 100%;
-    height: calc(100dvh - 85px);
-    z-index: 1900;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .sidebar.active {
-    display: flex;
-  }
-
   .main-content {
-    margin-left: 0;
-    width: 100%;
-    height: auto;
-    min-height: calc(100dvh - 85px);
-    padding: 16px;
-    padding-top: 100px;
-    padding-bottom: max(40px, calc(16px + env(safe-area-inset-bottom)));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    padding: 24px 18px 60px;
   }
 
-  .main-content > * {
-    width: 100%;
-    max-width: 100%;
+  .page-title {
+    font-size: 36px;
   }
 
-  .sidebar.active ~ .main-content {
-    overflow: hidden;
-  }
-
-  #album-title-section {
-    margin-bottom: 24px;
-    text-align: center;
-    width: 100%;
-  }
-
-  #album-title {
-    margin-top: 20px;
-    font-size: 24px;
-  }
-
-  .disc-header {
-    margin: 20px 0 12px;
-    font-size: 12px;
-  }
-
-  .tracklist {
-    font-size: 13px;
-    line-height: 1.8;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .service-logos img {
-    height: 32px;
-  }
-
-  .song-modal .container {
-    padding: 24px 16px;
-  }
-
-  #album-credits-body.mask-active {
-    mask-image: linear-gradient(to bottom, transparent 0px, transparent 105px, black 140px, black 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0px, transparent 105px, black 140px, black 100%);
-  }
-
-  .song-modal {
-    top: 85px;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-  }
-
-  .song-modal .container {
-    max-width: calc(100% - 20px);
-    width: calc(100% - 20px);
-  }
-
-  .track-header {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .next-track-btn, .prev-track-btn {
-    min-width: 44px;
-    height: 44px;
+  .page-subtitle {
     font-size: 16px;
   }
 
-  #overlay {
-    left: 0;
-    margin-left: 10px;
-    margin-right: 10px;
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
-  #overlayContent {
-    position: relative;
-    padding: 20px 16px 20px;
-    border-radius: 8px;
-    max-width: 100%;
-    width: 100%;
-    max-height: calc(100dvh - 100px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    border: 1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(9px);
+  .album-card {
+    padding: 24px;
+    border-radius: 28px;
   }
 
-  #overlayContent h1 {
-    font-size: 18px;
+  .album-heading .album-label {
+    font-size: 42px;
   }
 
-  #overlayContent h3 {
-    font-size: 14px;
+  .album-heading .album-artist {
+    font-size: 22px;
   }
 
-  .overlay-close {
-    top: 8px;
-    right: 8px;
+  .meta-grid {
+    grid-template-columns: 1fr;
   }
 
-  .sub-toggle {
-    gap: 8px;
-    margin-bottom: 16px;
+  .tracklist-panel {
+    padding: 24px;
+    border-radius: 28px;
   }
 
-  .sub-toggle span {
-    font-size: 11px;
-    padding: 4px 8px;
+  .tracklist-header h2 {
+    font-size: 38px;
   }
 
-  .tab-content {
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: left;
+  .track {
+    gap: 14px;
   }
 
-  #lyrics {
-    mask-image: linear-gradient(to bottom, transparent 0px, transparent 100px, black 140px, black 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0px, transparent 100px, black 140px, black 100%);
-  }
-
-  .service-logos {
-    gap: 12px;
-    margin-top: auto;
-    margin-bottom: 16px;
+  .page-footer {
+    margin: 24px auto;
+    padding: 20px 12px;
   }
 }
 
@@ -832,91 +497,99 @@ body {
     padding-top: 0;
   }
 }
+
+.page-footer {
+  max-width: 1200px;
+  margin: 40px auto;
+  color: #fff;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.page-footer a {
+  color: #ffe600;
+  text-decoration: none;
+}
+
+.page-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .page-footer {
+    padding: 20px;
+    margin: 30px auto;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- MOBILE TOP BAR -->
-  <div class="topbar">
-    <div class="hamburger">☰</div>
-    <div class="top-name">JAE LAURENT</div>
+  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
+    <button class="close" aria-label="Close menu">×</button>
+    <nav aria-label="Main navigation">
+      <a href="https://k1llajay.com">Home</a>
+      <a href="https://k1llajay.com/music">Latest Album</a>
+      <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+      <a href="https://k1llajay.com/podcast">Trend Talk</a>
+      <a href="https://k1llajay.com/player">All Releases</a>
+      <a href="https://k1llajay.com/music-database">Music Database</a>
+      <a href="https://k1llajay.com/events">Events</a>
+      <a href="https://k1llajay.com/memes">Memes & Videos</a>
+      <a href="https://k1llajay.com/404">Coming Soon</a>
+    </nav>
+  </aside>
+  <div class="top-bar">
+    <button class="menu-btn" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div id="pageArtist" class="top-bar-title">JAE LAURENT</div>
   </div>
-<!-- SIDEBAR -->
-  <div class="sidebar">
-    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
-    <div class="name">
-      <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
-    </div>
-
-    <div class="buttons">
-      <a href="https://k1llajay.com" class="button">Home</a>
-      <a href="https://k1llajay.com/portfolio" class="button">Portfolio</a>
-      <a href="https://k1llajay.com/podcast" class="button">Podcast</a>
-      <a href="https://k1llajay.com/player" class="button">All Releases</a>
-      <a href="https://k1llajay.com/music-database" class="button">Music Database</a>
-      <a href="https://k1llajay.com/events" class="button">Events</a>
-      <a href="https://k1llajay.com/memes" class="button">Memes & Videos</a>
-      <a href="https://k1llajay.com/404" class="button">COMING SOON</a>
-    </div>
-
-    <div class="footer">
-      <a href="https://mystery.k1llajay.com">Mystery</a> •
-      <a href="https://k1llajay.com/edit-music_editor">Upload</a> •
-      <a href="https://k1llajay.com/terms">Terms</a> •
-      <a href="https://k1llajay.com/privacy">Privacy</a>
-      <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-    </div>
-  </div>
-
   <main class="main-content">
-    <section id="album-title-section">
-      <div id="album-title">Loading...</div>
-      <div class="credits-button" onclick="openCredits()">CREDITS</div>
-    </section>
+    <section class="hero-grid">
+      <article class="album-card">
+        <div class="album-cover">
+          <img src="Album Cover.PNG" alt="SOS album cover" />
+        </div>
+        <div class="album-meta">
+          <div class="album-heading">
+            <div id="album-label" class="album-label">SOS</div>
+            <div id="album-artist" class="album-artist">Jae Laurent</div>
+          </div>
+          <div class="album-data-grid">
+            <div class="meta-column">
+              <h3>PRODUCED BY</h3>
+              <ol id="producerList"></ol>
+            </div>
+            <div class="meta-column">
+              <div>
+                <h3>SAMPLES FROM</h3>
+                <ul id="sampleList"></ul>
+              </div>
+              <div class="feature-block" data-feature-block>
+                <h3>FEATURES</h3>
+                <ol id="featureList"></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
 
-    <div class="tracklist" id="tracklist">
-      <!-- Tracks loaded dynamically -->
-    </div>
+      <article class="tracklist-panel">
+        <div class="tracklist-header">
+          <h2>TRACKLIST</h2>
+        </div>
+        <div class="tracklist" id="tracklist">
+          <!-- Tracks loaded dynamically -->
+        </div>
+      </article>
+    </section>
   </main>
 
-  <!-- Lyrics/Credits Overlay -->
-  <aside id="overlay">
-    <div id="overlayContent">
-      <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">X</button>
-      <div class="track-header">
-        <button id="prevTrackBtn" class="prev-track-btn" onclick="prevTrack()" disabled>←</button>
-        <div class="track-info">
-          <h1 id="title" class="track-title">Loading...</h1>
-          <h3 id="artist" class="track-artist">By Loading...</h3>
-        </div>
-        <button id="nextTrackBtn" class="next-track-btn" onclick="nextTrack()">→</button>
-      </div>
-      <div class="sub-toggle">
-        <span id="lyricsTab" class="activeTab" onclick="switchTab('lyrics')">LYRICS</span>
-        <span id="creditsTab" onclick="switchTab('credits')">CREDITS</span>
-      </div>
-      <div id="lyrics" class="tab-content activeTab"><div>Loading...</div></div>
-      <div id="credits" class="tab-content"><p>Loading...</p></div>
-      <div class="service-logos">
-        <a id="link-apple" href="#" target="_blank"><img src="apple.svg" alt="Apple Music"></a>
-        <a id="link-spotify" href="#" target="_blank"><img src="spotify.svg" alt="Spotify"></a>
-        <a id="link-amazon" href="#" target="_blank"><img src="amazon.svg" alt="Amazon Music"></a>
-        <a id="link-tidal" href="#" target="_blank"><img src="tidal.svg" alt="Tidal"></a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Full Album Credits Modal -->
-  <aside class="song-modal" id="creditsModal" aria-hidden="true">
-    <div class="container" id="album-credits-container">
-      <button class="modal-close" onclick="closeCredits()" aria-label="Close credits">X</button>
-      <div class="album-info-header">
-        <h1 id="album-credits-title">Loading...</h1>
-        <h3 id="album-credits-artist">BY Loading...</h3>
-        <br><hr><br>
-      </div>
-      <div id="album-credits-body">Loading...</div>
-    </div>
-  </aside>
+  <footer class="page-footer">
+    © 2025 Jefferson Entertainment LLC • <a href="https://k1llajay.com/terms">Terms</a> • <a href="https://k1llajay.com/privacy">Privacy</a>
+  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -936,68 +609,25 @@ body {
     const db = firebase.database();
     const albumRef = db.ref('album');
     const tracksRef = db.ref('tracks');
-    const overlayContentEl = document.getElementById('overlayContent');
-    const albumCreditsContainerEl = document.getElementById('album-credits-container');
 
     let albumData = { title: 'SOS', artist: 'Jae Laurent' };
     let trackData = {};
     let trackKeys = [];
-    let currentTrackIndex = 0;
 
-    function renderAlbumCreditsFromTracks() {
-      const albumCreditsBodyEl = document.getElementById('album-credits-body');
-      const albumCreditsTitleEl = document.getElementById('album-credits-title');
-      if (!albumCreditsBodyEl) return;
-
-      albumCreditsBodyEl.classList.toggle('no-mask', trackKeys.length <= 1);
-      albumCreditsBodyEl.classList.remove('mask-active');
-
-      const hasExplicitTrack = trackKeys.some(key => Boolean(trackData[key]?.explicit));
-      const albumExplicitSymbol = hasExplicitTrack ? ' 🄴' : '';
-      if (albumCreditsTitleEl) {
-        albumCreditsTitleEl.textContent = `${albumData.title || 'SOS'}${albumExplicitSymbol}`;
-      }
-
-      if (!trackKeys.length) {
-        albumCreditsBodyEl.innerHTML = albumData.credits || '<p>No credits available</p>';
-        syncAlbumCreditsMaskToScroll();
-        return;
-      }
-
-      const html = trackKeys.map(key => {
-        const track = trackData[key] || {};
-        const trackNumber = track.number || '?';
-        const trackTitle = track.title || 'Untitled';
-        const explicitSymbol = track.explicit ? ' 🄴' : '';
-
-        let creditsHtml = '';
-        if (track.credits) {
-          creditsHtml = track.credits;
-        } else {
-          const creditsArr = [];
-          if (track.creditPerformed) creditsArr.push(`PERFORMED BY ${track.creditPerformed}`);
-          if (track.creditWritten) creditsArr.push(`WRITTEN BY ${track.creditWritten}`);
-          if (track.creditMixed) creditsArr.push(`MIXED BY ${track.creditMixed}`);
-          if (track.creditRecorded) creditsArr.push(`RECORDED BY ${track.creditRecorded}`);
-          if (track.creditProduced) creditsArr.push(`PRODUCED BY ${track.creditProduced}`);
-          if (track.creditSampled) creditsArr.push(`SAMPLED FROM ${track.creditSampled}`);
-          creditsHtml = creditsArr.length ? `<p>${creditsArr.join(' / ')}</p>` : '<p>No credits available</p>';
-        }
-
-        return `
-          <h3>${trackNumber}. ${trackTitle}${explicitSymbol}</h3>
-          ${creditsHtml}
-        `;
-      }).join('');
-
-      albumCreditsBodyEl.innerHTML = html;
-      syncAlbumCreditsMaskToScroll();
-    }
-
-    // Update page title dynamically
     function updatePageTitle() {
       const title = albumData.title || 'SOS';
       document.title = `${title} – K1llajay`;
+    }
+
+    function updateAlbumHeader() {
+      const labelEl = document.getElementById('album-label');
+      const artistEl = document.getElementById('album-artist');
+      const pageArtistEl = document.getElementById('pageArtist');
+      const pageAlbumEl = document.getElementById('pageAlbum');
+      if (labelEl) labelEl.textContent = albumData.title || 'SOS';
+      if (artistEl) artistEl.textContent = albumData.artist || 'Jae Laurent';
+      if (pageArtistEl) pageArtistEl.textContent = albumData.artist || 'Jae Laurent';
+      if (pageAlbumEl) pageAlbumEl.textContent = albumData.title || 'SOS';
     }
 
     function parseLocalDate(dateStr) {
@@ -1020,11 +650,9 @@ body {
 
     // Load album data
     albumRef.on('value', snap => {
-      albumData = snap.val() || { title: 'SOS', credits: '<p>Default credits...</p>', artist: 'Jae Laurent' };
-      document.getElementById('album-title').textContent = albumData.title;
-      document.getElementById('album-credits-artist').textContent = `BY ${albumData.artist}`;
-      renderAlbumCreditsFromTracks();
+      albumData = snap.val() || { title: 'SOS', artist: 'Jae Laurent' };
       updatePageTitle();
+      updateAlbumHeader();
     });
 
     // Load tracks (sort by number)
@@ -1039,9 +667,86 @@ body {
       trackKeys = visibleEntries.map(([k]) => k);
       trackData = {};
       visibleEntries.forEach(([k, v]) => { trackData[k] = v; });
-      renderAlbumCreditsFromTracks();
       renderTracklist();
     });
+
+    function parseListValues(rawValue) {
+      if (!rawValue) return [];
+      return String(rawValue)
+        .split(/[,&/;]+/)
+        .map(value => value.trim())
+        .filter(Boolean);
+    }
+
+    function dedupeValues(values) {
+      const seen = new Set();
+      return values.filter(value => {
+        const normalized = value.trim().toLowerCase();
+        if (!normalized || seen.has(normalized)) return false;
+        seen.add(normalized);
+        return true;
+      });
+    }
+
+    function populateMetadataLists() {
+      const producerList = document.getElementById('producerList');
+      const sampleList = document.getElementById('sampleList');
+      const featureList = document.getElementById('featureList');
+      const featureBlock = document.querySelector('[data-feature-block]');
+
+      const producedValues = [];
+      const sampledValues = [];
+      const featureValues = [];
+
+      trackKeys.forEach(key => {
+        const track = trackData[key] || {};
+        const rawProduced = track.creditProduced || albumData.artist || 'Jae Laurent';
+        const rawSampled = track.creditSampled || '';
+        const rawFeature = track.feature || '';
+
+        producedValues.push(...parseListValues(rawProduced));
+        sampledValues.push(...parseListValues(rawSampled));
+        featureValues.push(...parseListValues(rawFeature));
+      });
+
+      const uniqueProduced = dedupeValues(producedValues);
+      const uniqueSampled = dedupeValues(sampledValues);
+      const uniqueFeatures = dedupeValues(featureValues.filter(value => {
+        const normalized = value.toLowerCase();
+        return normalized !== 'undefined' && normalized !== 'unknown' && normalized !== String(albumData.artist || '').toLowerCase();
+      }));
+
+      if (producerList) {
+        producerList.innerHTML = '';
+        uniqueProduced.forEach(value => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          producerList.appendChild(item);
+        });
+      }
+
+      if (sampleList) {
+        sampleList.innerHTML = '';
+        uniqueSampled.forEach(value => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          sampleList.appendChild(item);
+        });
+      }
+
+      if (featureList) {
+        featureList.innerHTML = '';
+        uniqueFeatures.forEach(value => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          featureList.appendChild(item);
+        });
+      }
+
+      if (featureBlock) {
+        featureBlock.style.display = uniqueFeatures.length ? '' : 'none';
+      }
+    }
 
     function renderTracklist() {
       const tracklist = document.getElementById('tracklist');
@@ -1049,160 +754,35 @@ body {
       trackKeys.forEach(key => {
         const track = trackData[key];
         const explicitSymbol = track.explicit ? ' 🄴' : '';
+        const rawFeature = String(track.feature || '').trim();
+        const lowerFeature = rawFeature.toLowerCase();
+        const lowerAlbumArtist = String(albumData.artist || '').toLowerCase();
+        const validFeature = rawFeature && lowerFeature !== 'undefined' && lowerFeature !== 'unknown' && lowerFeature !== lowerAlbumArtist;
+        const featureText = validFeature ? ` With ${rawFeature}` : '';
         tracklist.innerHTML += `
           <div class="track">
             <div class="track-number">${track.number || '?' }.</div>
-            <div class="track-title track-item" data-song="${key}">${track.title || 'Untitled'}${explicitSymbol}</div>
-            <div class="track-dash"> - </div>
-            <div class="track-artist" data-song="${key}">${track.artist || 'Unknown'}</div>
+            <div class="track-title">${track.title || 'Untitled'}${featureText}${explicitSymbol}</div>
           </div>
         `;
       });
+      populateMetadataLists();
+    }
 
-      document.querySelectorAll('.track-item, .track-artist').forEach(el => {
-        el.addEventListener('click', () => {
-          const key = el.dataset.song;
-          if (key) openSongOverlay(key);
-        });
+    const menuButton = document.querySelector('.menu-btn');
+    const sidebarEl = document.querySelector('.sidebar');
+    if (menuButton && sidebarEl) {
+      menuButton.addEventListener('click', () => {
+        sidebarEl.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
       });
     }
-
-    function openSongOverlay(key) {
-      currentTrackIndex = trackKeys.indexOf(key);
-      updateOverlay(key);
-      updateNavButtons();
-      if (overlayContentEl) {
-        overlayContentEl.scrollTop = 0;
-      }
-      syncTabMaskToOverlayScroll();
-      document.getElementById('overlay').classList.add('active');
-      document.body.classList.add('no-scroll');
-      switchTab('lyrics');
-    }
-
-    function syncTabMaskToOverlayScroll() {
-      if (!overlayContentEl) return;
-      const lyricsEl = document.getElementById('lyrics');
-      if (lyricsEl) {
-        const maskOffset = overlayContentEl.scrollTop - lyricsEl.offsetTop;
-        lyricsEl.style.setProperty('--tab-mask-offset', `${maskOffset}px`);
-      }
-    }
-
-    function syncAlbumCreditsMaskToScroll() {
-      if (!albumCreditsContainerEl) return;
-      const albumCreditsBodyEl = document.getElementById('album-credits-body');
-      if (!albumCreditsBodyEl) return;
-
-      if (trackKeys.length <= 1 || albumCreditsBodyEl.classList.contains('no-mask')) {
-        albumCreditsBodyEl.classList.remove('mask-active');
-        albumCreditsBodyEl.style.setProperty('--album-mask-offset', '0px');
-        return;
-      }
-
-      const scrollTop = albumCreditsContainerEl.scrollTop;
-      if (scrollTop > 0) {
-        albumCreditsBodyEl.classList.add('mask-active');
-      } else {
-        albumCreditsBodyEl.classList.remove('mask-active');
-      }
-
-      const maskOffset = scrollTop - albumCreditsBodyEl.offsetTop;
-      albumCreditsBodyEl.style.setProperty('--album-mask-offset', `${maskOffset}px`);
-    }
-
-    function updateOverlay(key) {
-      const data = trackData[key] || { title: 'Unknown', artist: 'Unknown', lyrics: 'Lyrics coming soon...', credits: 'Credits coming soon...', links: {} };
-      const explicitSymbol = data.explicit ? ' 🄴' : '';
-      document.getElementById('title').textContent = data.title + explicitSymbol;
-      document.getElementById('artist').textContent = `By ${data.artist || 'Jae Laurent'}`;
-      document.getElementById('lyrics').innerHTML = `<div>${(data.lyrics || '').replace(/\n/g, '<br>')}</div>`;
-      // Show new credits structure if available
-      if (data.credits) {
-        document.getElementById('credits').innerHTML = data.credits;
-      } else {
-        let creditsArr = [];
-        const performed = data.creditPerformed || 'Jae Laurent';
-        const written = data.creditWritten || 'Jae Laurent';
-        const mixed = data.creditMixed || 'Jae Laurent';
-        const recorded = data.creditRecorded || 'Jae Laurent';
-        const produced = data.creditProduced || 'Jae Laurent';
-        if (performed) creditsArr.push(`PERFORMED BY ${performed}`);
-        if (written) creditsArr.push(`WRITTEN BY ${written}`);
-        if (mixed) creditsArr.push(`MIXED BY ${mixed}`);
-        if (recorded) creditsArr.push(`RECORDED BY ${recorded}`);
-        if (produced) creditsArr.push(`PRODUCED BY ${produced}`);
-        if (data.creditSampled) creditsArr.push(`SAMPLED FROM ${data.creditSampled}`);
-        document.getElementById('credits').innerHTML = creditsArr.length ? `<p>${creditsArr.join(' / ')}</p>` : '<p>No credits available</p>';
-      }
-      document.getElementById('link-apple').href = data.links?.apple || '#';
-      document.getElementById('link-spotify').href = data.links?.spotify || '#';
-      document.getElementById('link-amazon').href = data.links?.amazon || '#';
-      document.getElementById('link-tidal').href = data.links?.tidal || '#';
-    }
-
-    function prevTrack() {
-      if (currentTrackIndex > 0) {
-        currentTrackIndex--;
-        updateOverlay(trackKeys[currentTrackIndex]);
-        updateNavButtons();
-      }
-    }
-
-    function nextTrack() {
-      if (currentTrackIndex < trackKeys.length - 1) {
-        currentTrackIndex++;
-        updateOverlay(trackKeys[currentTrackIndex]);
-        updateNavButtons();
-      }
-    }
-
-    function updateNavButtons() {
-      document.getElementById('prevTrackBtn').disabled = currentTrackIndex === 0;
-      document.getElementById('nextTrackBtn').disabled = currentTrackIndex === trackKeys.length - 1;
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.sub-toggle span').forEach(el => el.classList.remove('activeTab'));
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('activeTab'));
-      document.getElementById(`${tab}Tab`).classList.add('activeTab');
-      document.getElementById(tab).classList.add('activeTab');
-      if (overlayContentEl) {
-        overlayContentEl.scrollTop = 0;
-      }
-      syncTabMaskToOverlayScroll();
-    }
-
-    function openCredits() {
-      document.getElementById('creditsModal').classList.add('open');
-      document.body.classList.add('no-scroll');
-      if (albumCreditsContainerEl) {
-        albumCreditsContainerEl.scrollTop = 0;
-      }
-      syncAlbumCreditsMaskToScroll();
-    }
-
-    function closeCredits() {
-      document.getElementById('creditsModal').classList.remove('open');
-      document.body.classList.remove('no-scroll');
-    }
-
-    function closeOverlay() {
-      document.getElementById('overlay').classList.remove('active');
-      document.body.classList.remove('no-scroll');
-    }
-
-    document.querySelector('.hamburger').onclick = () => {
-      document.querySelector('.sidebar').classList.toggle('active');
-      document.body.classList.toggle('sidebar-open');
-    };
-
-    if (overlayContentEl) {
-      overlayContentEl.addEventListener('scroll', syncTabMaskToOverlayScroll, { passive: true });
-    }
-
-    if (albumCreditsContainerEl) {
-      albumCreditsContainerEl.addEventListener('scroll', syncAlbumCreditsMaskToScroll, { passive: true });
+    const closeBtn = document.querySelector('.sidebar .close');
+    if (closeBtn && sidebarEl) {
+      closeBtn.addEventListener('click', () => {
+        sidebarEl.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      });
     }
 
     // Initial title (will be updated once data loads)
