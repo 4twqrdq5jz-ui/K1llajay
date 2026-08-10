@@ -22,7 +22,6 @@
       font-family: 'sitefont', monospace;
       background-color: black;
       color: white;
-      text-transform: uppercase;
       margin: 0;
       padding: 0;
     }
@@ -775,8 +774,18 @@
       if (creditWritten) creditsArr.push(`WRITTEN BY ${creditWritten}`);
       if (creditMixed) creditsArr.push(`MIXED BY ${creditMixed}`);
       if (creditRecorded) creditsArr.push(`RECORDED BY ${creditRecorded}`);
-      if (creditProduced) creditsArr.push(`PRODUCED BY ${creditProduced}`);
+      if (creditProduced) creditsArr.push(`${creditProduced}`);
       if (creditSampled) creditsArr.push(`SAMPLED FROM ${creditSampled}`);
+
+      // Deduplicate exact producer entries, keeping the first original value.
+      const seenCredits = new Set();
+      creditsArr = creditsArr.filter(entry => {
+        const normalized = entry.trim().toLowerCase();
+        if (seenCredits.has(normalized)) return false;
+        seenCredits.add(normalized);
+        return true;
+      });
+
       const credits = `<p>${creditsArr.join(' / ')}</p>`;
 
       const data = { number, title, artist, feature, explicit, releaseDate, scheduleEnabled, scheduleDate, lyrics, credits, links,
