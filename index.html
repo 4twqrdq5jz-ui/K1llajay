@@ -21,7 +21,6 @@ a:hover, a:focus{text-decoration:none}
 .compact-topbar .compact-menu-btn{position:absolute;left:24px;top:50%;transform:translateY(-50%)}
 .compact-topbar-title{font-size:22px;font-weight:800;letter-spacing:2px;color:#ffe600;text-align:center;white-space:nowrap;font-family:'altfont';text-transform:uppercase}
 body.header-compact .compact-topbar{transform:translateY(0);opacity:1;pointer-events:auto}
-body.header-compact .menu-btn:not(.compact-menu-btn){opacity:0;pointer-events:none}
 body.header-compact .header-hero{min-height:72px;height:72px;transform:translateY(-8px);opacity:0.96}
 body.header-compact .header-hero .container,body.header-compact .header-hero .hero-overlay,body.header-compact .header-hero .hero-bg{opacity:0;pointer-events:none}
 /* Sidebar */
@@ -242,8 +241,8 @@ body.menu-open .menu-btn{display:none !important}
     let lastScrollTop = window.scrollY || window.pageYOffset;
     function updateCompactHeader(){
       const currentScroll = window.scrollY || window.pageYOffset;
-      const scrollingUp = currentScroll < lastScrollTop - 4;
-      const shouldShow = currentScroll > 90 && scrollingUp;
+      const scrollingUp = currentScroll < lastScrollTop - 8;
+      const shouldShow = currentScroll > 60 && scrollingUp;
       document.body.classList.toggle('header-compact', shouldShow);
       lastScrollTop = currentScroll;
     }
