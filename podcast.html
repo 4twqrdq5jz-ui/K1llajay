@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>EPISODES</title>
+<title>EPISODES – TREND TALK</title>
 <link rel="icon" href="images/favicon.ico" />
 <script src="device-optimization.js"></script>
 <script src="anti-lag-optimization.js"></script>
-  <style>
-@font-face {
-  font-family: 'sitefont';
-  src: url('beyoncefont.ttf') format('truetype');
-}
+<style>
+@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('truetype');}
+@font-face {font-family: 'altfont'; src: url('font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');}
 
 /* ================= RESET ================= */
 * {
@@ -24,8 +22,8 @@ html, body {
   width: 100%;
   height: 100dvh;
   font-family: 'sitefont', monospace;
-  text-transform: uppercase;
   color: white;
+  background: #000000;
 }
 
 html {
@@ -33,438 +31,535 @@ html {
   height: 100dvh;
 }
 
-/* ================= INFINITE BACKGROUND ================= */
-body::before {
-  content: "";
+/* ================= TOP BAR ================= */
+.top-bar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  background-attachment: fixed;
-  z-index: -2;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-/* ================= BODY ================= */
-body {
+  right: 0;
+  height: 76px;
+  padding: 0 24px;
   display: flex;
-  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  background: url("images/IMG_4619.png") center / cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 20;
+}
+
+.top-bar .menu-btn {
+  position: absolute;
+  left: 24px;
+}
+
+.top-bar-title {
+  font-family: 'altfont', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #ffe600;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(255, 230, 0, 0.35);
+}
+
+/* Menu button */
+.menu-btn {
+  width: 44px;
+  height: 36px;
+  padding: 8px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 230, 0, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.menu-btn span {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #ffe600;
+  border-radius: 999px;
+}
+
+body.menu-open .menu-btn {
+  display: none !important;
 }
 
 /* ================= SIDEBAR ================= */
 .sidebar {
-  width: 260px;
-  height: 100dvh;
-  padding: 24px;
   position: fixed;
   left: 0;
   top: 0;
+  width: 280px;
+  height: 100%;
+  background: #071123;
+  color: #ffe600;
+  padding: 24px;
+  box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
+  transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
+  z-index: 30;
+  overflow: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255,255,255,0.15);
-  z-index: 3000;
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.profile-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  margin-bottom: 20px;
+.sidebar.active,
+.sidebar.open {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.name {
-  font-size: 22px;
-  letter-spacing: 3px;
-  margin-bottom: 40px;
+.sidebar .close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: transparent;
+  border: 0;
+  color: #ffe600;
+  font-size: 24px;
+  cursor: pointer;
 }
 
-.buttons {
-  width: 100%;
+.sidebar nav {
+  margin-top: 36px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.button {
-  padding: 10px;
-  text-align: center;
+.sidebar a {
+  color: #ffe600;
   text-decoration: none;
-  color: white;
-  font-size: 13px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  will-change: border-color, color;
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: inherit;
-  z-index: -1;
+  padding: 6px 8px;
+  border-radius: 6px;
   transition: background 0.2s ease;
 }
 
-.button:hover::before {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.button:hover {
-  border-color: white;
-}
-
-.footer {
-  margin-top: auto;
-  font-size: 10px;
-  opacity: 0.7;
-  text-align: center;
-}
-
-.footer a {
-  color: white;
+.sidebar a:hover {
+  background: rgba(255, 230, 0, 0.1);
   text-decoration: none;
 }
 
-.copyright {
-  font-size: 8px;
-  margin-top: 6px;
+/* ================= BODY ================= */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  background: #000;
 }
 
-/* ================= TOP BAR (MOBILE) ================= */
-.topbar {
+/* ================= MAIN CONTENT ================= */
+.main-content {
+  flex: 1;
+  padding: 100px 20px 50px;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Podcast header */
+.podcast-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.podcast-header h1 {
+  font-family: 'altfont', sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #ffe600;
+  text-shadow: 0 0 28px rgba(255, 230, 0, 0.4);
+  margin-bottom: 10px;
+}
+
+.podcast-header p {
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+}
+
+/* Season sections */
+.podcast-section {
+  margin-bottom: 56px;
+}
+
+.section-title {
+  font-family: 'altfont', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #ffe600;
+  margin-bottom: 20px;
+  border-left: 4px solid #ffe600;
+  padding-left: 14px;
+}
+
+/* Episodes grid – filmstrip style */
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+/* Episode card (film frame) */
+.episode-card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
+  box-shadow: 
+    0 6px 24px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Alternating film frames – desktop */
+.episode-card:nth-child(odd) {
+  border: 10px solid #000000;
+  padding: 6px;
+  background: #000000;
+}
+
+.episode-card:nth-child(even) {
+  border: 10px solid #0a1a3a;
+  padding: 6px;
+  background: #0a1a3a;
+}
+
+.episode-card .cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  background: #111;
+}
+
+.episode-card:hover {
+  transform: scale(1.04) translateY(-6px);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 230, 0, 0.25),
+    0 0 30px rgba(255, 230, 0, 0.12);
+}
+
+.episode-card:hover .cover {
+  opacity: 0.88;
+  transform: scale(1.05);
+}
+
+/* Overlay info on card */
+.episode-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 45%, transparent 100%);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.episode-card:hover .episode-info {
+  opacity: 1;
+}
+
+.episode-info .date {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(255,230,0,0.7);
+  margin-bottom: 4px;
+}
+
+.episode-info .episode {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 6px;
+}
+
+.episode-info .title {
+  font-family: 'altfont', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.episode-info .action {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #ffe600;
+  font-weight: 700;
+}
+
+/* Always-visible mini label (for touch devices) */
+.episode-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.episode-card:hover .episode-label {
+  opacity: 0;
+}
+
+.episode-label .title {
+  font-family: 'altfont', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ================= MODAL ================= */
+.modal {
   display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-    /* Main content */
-    .main-content::-webkit-scrollbar { display: none; }
-    .main-content { -ms-overflow-style: none; scrollbar-width: none; }
-    .main-content {
-      margin-left: 260px;    /* Same as sidebar width */
-      flex: 1;
-      padding: 40px;
-      padding-top: 65px;
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-      overflow-y: auto;
-      min-height: calc(100dvh - 35px);
-    }
 
-    /* Page Header */
-    .podcast-header {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+.modal.open {
+  display: flex;
+}
 
-    .podcast-header h1 {
-      font-size: 40px;
-      letter-spacing: 4px;
-      margin: 0;
-    }
+.modal-content {
+  background: #0a0f1a;
+  border: 2px solid rgba(255, 230, 0, 0.25);
+  border-radius: 16px;
+  padding: 32px 28px 28px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 230, 0, 0.08);
+  position: relative;
+}
 
-    .podcast-header p {
-      font-size: 14px;
-      opacity: 0.8;
-      letter-spacing: 2px;
-    }
+.modal-content h2 {
+  font-family: 'altfont', sans-serif;
+  font-size: 20px;
+  color: #ffe600;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  line-height: 1.3;
+  padding-right: 40px;
+}
 
-    /* Podcast Section */
-    .podcast-section {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+#audioPlayer {
+  width: 100%;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  outline: none;
+}
 
-    .section-title {
-      font-size: 18px;
-      letter-spacing: 3px;
-      opacity: 0.9;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 12px;
-    }
+#videoPlayer {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  border: none;
+  background: #000;
+}
 
-    /* Episodes Grid */
-    .episodes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 20px;
-    }
+.close-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 230, 0, 0.45);
+  color: #ffe600;
+  font-family: 'altfont', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
 
-    /* Episode tiles */
-    .episode-date { 
-      cursor:pointer; 
-      color:white; 
-      text-decoration:none; 
-      text-align:center;
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+.close-btn:hover {
+  background: rgba(255, 230, 0, 0.12);
+  border-color: #ffe600;
+}
 
-    .episode-date:hover {
-      transform: translateY(-4px);
-    }
+.modal .close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffe600;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 230, 0, 0.3);
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
 
-    .episode-date:hover .square {
-      border-color: rgba(255,255,255,0.6);
-    }
+.modal .close:hover {
+  background: rgba(255, 230, 0, 0.15);
+  transform: scale(1.08);
+}
 
-    .square { 
-      width:100%; 
-      aspect-ratio:1;
-      background-size:cover; 
-      background-position:center; 
-      border-radius:8px; 
-      margin:0 auto; 
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(9px);
-      transition: border-color 0.3s ease;
-    }
+/* ================= FOOTER ================= */
+.footer{max-width:1200px;width:100%;margin:20px 0 30px;color:#fff;padding:20px 24px;text-align:left!important;display:block;line-height:1.6;align-self:flex-start}
 
-    .episode-info {
-      padding-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1200px) {
+  .episodes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 
-    .date, .episode, .title, .action { 
-      margin:0; 
-      font-size:10px; 
-    }
+@media (max-width: 900px) {
+  .episodes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-    .date {
-      opacity: 0.6;
-      letter-spacing: 1px;
-    }
-
-    .episode {
-      opacity: 0.7;
-      letter-spacing: 1px;
-      font-size: 9px;
-    }
-
-    .title {
-      font-size: 11px;
-      font-weight: bold;
-      opacity: 0.9;
-      line-height: 1.3;
-    }
-
-    .action {
-      margin-top: 4px;
-      opacity: 0.6;
-      font-size: 9px;
-      letter-spacing: 2px;
-    }
-
-    .blurred { 
-      filter: blur(5px) brightness(0.4);
-    }
-
-    /* Modal */
-    .modal {
-      position:fixed; top:0; left:0;
-      width:100vw; height:100vh;
-      display:none;
-      justify-content:center; 
-      align-items:center;
-      z-index: 1000;
-      transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: opacity, backdrop-filter;
-    }
-    .modal::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("IMG_3309.gif") center / cover no-repeat;
-      z-index: -2;
-    }
-    .modal::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: -1;
-    }
-    .modal.active {
-      display: flex;
-    }
-    .modal-content {
-      max-width:600px; width:100%;
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(9px);
-      padding:20px;
-      border-radius:10px;
-      text-align:center;
-    }
-    .modal iframe, .modal audio { margin-top:15px; max-width:100%; }
-    .close-btn { 
-      margin-top:20px; 
-      background:transparent; 
-      border: 1px solid rgba(255,255,255,0.2);
-      color:white; 
-      padding:5px 10px; 
-      background: rgba(0,0,0,0.4);
-      cursor:pointer; 
-      font-family: 'sitefont', monospace;
-    }
-    /* Mobile Top Bar (hidden on desktop) */
-    .topbar {
-      display: none;
-    }
-
-    /* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-
-  body.sidebar-open {
-    overflow: hidden;
-  }
-
-  .topbar {
-    display: flex;
-    position: fixed;
-    top: 35px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    padding-top: max(0px, env(safe-area-inset-top));
-    align-items: center;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    z-index: 2101;
-  }
-
-  .hamburger {
-    font-size: 28px;
-    cursor: pointer;
-    padding: 5px;
-  }
-
-  .top-name {
-    margin: 0 auto;
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
-
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 85px;
-    left: 0;
-    width: 100%;
-    height: calc(100dvh - 85px);
-    z-index: 1900;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .sidebar.active {
-    display: flex;
-  }
-
   .main-content {
-    margin-left: 0;
-    margin-top: 90px;
-    width: 100%;
-    padding: 16px;
-    padding-bottom: max(16px, calc(16px + env(safe-area-inset-bottom)));
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  .sidebar.active ~ .main-content {
-    overflow: hidden;
-  }
-
-  .podcast-header h1 {
-    font-size: 28px;
-  }
-
-  .podcast-header p {
-    font-size: 12px;
+    padding: 92px 14px 30px;
   }
 
   .episodes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-    }
 
-@media (max-width: 768px) {
-  html, body {
-    padding-top: 0;
+  /* Reset desktop alternating */
+  .episode-card:nth-child(odd),
+  .episode-card:nth-child(even) {
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Mobile film pattern */
+  .episode-card:nth-child(4n+1),
+  .episode-card:nth-child(4n) {
+    border: 7px solid #000000;
+    padding: 4px;
+    background: #000000;
+    border-radius: 11px;
+  }
+
+  .episode-card:nth-child(4n+2),
+  .episode-card:nth-child(4n+3) {
+    border: 7px solid #0a1a3a;
+    padding: 4px;
+    background: #0a1a3a;
+    border-radius: 11px;
+  }
+
+  .top-bar-title {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .podcast-header h1 {
+    letter-spacing: 2px;
+  }
+
+  .modal-content {
+    padding: 24px 20px 20px;
   }
 }
-  </style>
+
+@media (max-width: 480px) {
+  .episodes-grid {
+    gap: 10px;
+  }
+
+  .episode-card:nth-child(4n+1),
+  .episode-card:nth-child(4n),
+  .episode-card:nth-child(4n+2),
+  .episode-card:nth-child(4n+3) {
+    border-width: 6px;
+    padding: 3px;
+  }
+}
+
+/* Blur effect when modal open */
+.main-content.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+}
+</style>
 </head>
 <body>
-  <!-- MOBILE TOP BAR -->
-<div class="topbar">
-  <div class="hamburger">☰</div>
-  <div class="top-name">JAE LAURENT</div>
-</div>
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
-  <div class="name">
-    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
-  </div>
+  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
+    <button class="close" aria-label="Close menu">×</button>
+    <nav aria-label="Main navigation">
+      <a href="https://k1llajay.com">Home</a>
+      <a href="https://k1llajay.com/music">Latest Album</a>
+      <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+      <a href="https://k1llajay.com/podcast">Trend Talk</a>
+      <a href="https://k1llajay.com/extras/music-database">Music Database</a>
+      <a href="https://k1llajay.com/extras/events">Events</a>
+      <a href="https://k1llajay.com/404">Coming Soon</a>
+    </nav>
+  </aside>
 
-  <div class="buttons">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
+  <div class="top-bar">
+    <button class="menu-btn" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div id="pageArtist" class="top-bar-title">JAE LAURENT</div>
   </div>
-
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
-</div>
 
   <!-- Main content -->
-  <div class="main-content">
+  <div class="main-content" id="mainContent">
     <div class="podcast-header">
       <h1>TREND TALK</h1>
       <p>Exploring Culture & Entertainment</p>
@@ -475,128 +570,257 @@ body {
   <!-- Modal -->
   <div class="modal" id="modal">
     <div class="modal-content">
+      <button class="close" aria-label="Close" onclick="closeModal()">×</button>
       <h2 id="episodeTitle">Episode Info</h2>
       <audio controls id="audioPlayer">
         <source id="audioSource" src="" type="audio/mpeg" />
         Your browser does not support HTML5 audio.
       </audio>
-      <iframe id="videoPlayer" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+      <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       <button class="close-btn" onclick="closeModal()">CLOSE</button>
     </div>
   </div>
+  
+  <footer class="footer">
+    © 2025 Jefferson Entertainment LLC • <a href="https://k1llajay.com/extras/terms" style="color:#ffe600;text-decoration:none">Terms</a> • <a href="https://k1llajay.com/extras/privacy" style="color:#ffe600;text-decoration:none">Privacy</a> <a href="https://k1llajay.com/editor/edit-homepage" style="color:#000000;text-decoration:none">___</a>
+  </footer>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getDatabase, ref, onValue, query, orderByChild } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+<script>
+  // ========== HARDCODED EPISODES ==========
+  const episodesData = {
+    "Season 1": [
+      {
+        season: "Season 1",
+        episodeNumber: "1",
+        releaseDate: "July 7, 2024",
+        episodeTitle: "Kamala, Beyonce, Etc.",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep1.mp3",
+        youtubeURL: "https://www.youtube.com/embed/C1KkjAxJ9nM"
+      },
+      {
+        season: "Season 1",
+        episodeNumber: "2",
+        releaseDate: "July 31, 2024",
+        episodeTitle: "VR, Influnecers, Etc.",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep2.mp3",
+        youtubeURL: "https://www.youtube.com/embed/tsxJqxddhXI?si=BPZgtc_Frj1Jq4d"
+      },
+      {
+        season: "Season 1",
+        episodeNumber: "3",
+        releaseDate: "August 3, 2024",
+        episodeTitle: "TikTok, AI, Fashion, Etc.",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep3.mp3",
+        youtubeURL: "https://www.youtube.com/embed/bPtFpiXp5k0?si=BRA7FqMTEqnJRJ4D"
+      },
+      {
+        season: "Season 1",
+        episodeNumber: "4",
+        releaseDate: "August 17, 2024",
+        episodeTitle: "Kamala Harris (Again), Youtube, Etc.",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep4.mp3",
+        youtubeURL: "https://www.youtube.com/embed/t6TSNPDrIw8?si=A5bJH-cAiRH-pdoX"
+      },
+      {
+        season: "Season 1",
+        episodeNumber: "5",
+        releaseDate: "September 28, 2024",
+        episodeTitle: "Unboxing My New iPhone, Latest Tech Trends, AI in Smartphones & More",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep5.mp3",
+        youtubeURL: "https://www.youtube.com/embed/A0ApXKuJtCc?si=5MhAC_rq-VyEYnhk"
+      },
+      {
+        season: "Season 1",
+        episodeNumber: "6",
+        releaseDate: "November 21, 2024",
+        episodeTitle: "Twitter Trends",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasonone.jpg",
+        audioFile: "audio/s1-ep6.mp3",
+        youtubeURL: "https://www.youtube.com/embed/DQCbVfHd5TI?si=OlBciRlbypIMiXqJ"
+      }
+    ],
+    "Season 2": [
+      {
+        season: "Season 2",
+        episodeNumber: "1",
+        releaseDate: "November 30, 2024",
+        episodeTitle: "New Season, New Topics",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasontwo.png",
+        audioFile: "audio/s2-ep1.mp3",
+        youtubeURL: ""
+      },
+      {
+        season: "Season 2",
+        episodeNumber: "2",
+        releaseDate: "May 18, 2025",
+        episodeTitle: "YN Apocalyspe & New Music",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasontwo.png",
+        audioFile: "audio/s2-ep2.mp3",
+        youtubeURL: "https://www.youtube.com/embed/VnEustIXGus?si"
+      },
+      {
+        season: "Season 2",
+        episodeNumber: "3",
+        releaseDate: "Jun 1, 2025",
+        episodeTitle: "Gay Steroptypes",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasontwo.png",
+        audioFile: "audio/s2-ep3.mp3",
+        youtubeURL: "https://www.youtube.com/embed/J7OCfrEu46o?si=Nj9S19efk_0dz5ht"
+      },
+      {
+        season: "Season 2",
+        episodeNumber: "4",
+        releaseDate: "Jun 15, 2025",
+        episodeTitle: "Pride Or Profit? The Truth About Brand Pridewear",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasontwo.png",
+        audioFile: "audio/s2-ep4.mp3",
+        youtubeURL: "https://www.youtube.com/embed/ttTthoXNjwo?si=6wUD0ASD2oO-df0-"
+      },
+      {
+        season: "Season 2",
+        episodeNumber: "5",
+        releaseDate: "Jun 29, 2025",
+        episodeTitle: "Comeback... FINALLY?",
+        podcastName: "Trend Talk",
+        coverURL: "images/seasontwo.png",
+        audioFile: "audio/s2-ep5.mp3",
+        youtubeURL: "https://www.youtube.com/embed/5U6UIKbV3To?si=4363gJtNOGauYrsk"
+      }
+    ]
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
-      authDomain: "mainsite-eb919.firebaseapp.com",
-      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
-      projectId: "mainsite-eb919",
-      storageBucket: "mainsite-eb919.firebasestorage.app",
-      messagingSenderId: "799554641103",
-      appId: "1:799554641103:web:f23b774cbb08e03aebebba",
-    };
+  const gridContainer = document.getElementById("grid-container");
+  const mainContent = document.getElementById("mainContent");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const gridContainer = document.getElementById("grid-container");
+  // Render episodes
+  Object.keys(episodesData).forEach(season => {
+    const section = document.createElement("div");
+    section.className = "podcast-section";
+    
+    const title = document.createElement("h2");
+    title.className = "section-title";
+    title.textContent = season.toUpperCase();
+    section.appendChild(title);
+    
+    const grid = document.createElement("div");
+    grid.className = "episodes-grid";
+    
+    episodesData[season].forEach(ep => {
+      const div = document.createElement("div");
+      div.className = "episode-card";
+      div.title = `${ep.episodeTitle} – ${ep.podcastName}`;
+      
+      const cover = ep.coverURL || "images/episode-placeholder.jpg";
+      
+      div.innerHTML = `
+        <img class="cover" src="${cover}" alt="${ep.episodeTitle}" loading="lazy" 
+             onerror="this.src='https://via.placeholder.com/400x533/111111/ffe600?text=TREND+TALK'" />
+        <div class="episode-info">
+          <p class="date">${ep.releaseDate}</p>
+          <p class="episode">${ep.season} · Ep. ${ep.episodeNumber}</p>
+          <p class="title">${ep.episodeTitle}</p>
+          <p class="action">LISTEN →</p>
+        </div>
+        <div class="episode-label">
+          <p class="title">${ep.episodeTitle}</p>
+        </div>
+      `;
+      
+      div.addEventListener("click", () => openModal(ep));
+      grid.appendChild(div);
+    });
+    
+    section.appendChild(grid);
+    gridContainer.appendChild(section);
+  });
 
-    const episodesRef = query(ref(db, "episodes"), orderByChild("releaseDate"));
-    onValue(episodesRef, (snapshot) => {
-      gridContainer.innerHTML = "";
-      const episodes = [];
-      const podcastMap = {};
-      
-      snapshot.forEach(child => {
-        const ep = child.val();
-        if(ep.episodeTitle && ep.audioURL) episodes.push(ep);
-      });
-      
-      episodes.sort((a,b) => new Date(b.releaseDate) - new Date(a.releaseDate));
-      
-      // Organize episodes by season
-      episodes.forEach(ep => {
-        const season = ep.season || "Other Episodes";
-        if (!podcastMap[season]) {
-          podcastMap[season] = [];
-        }
-        podcastMap[season].push(ep);
-      });
-      
-      // Render sections for each season
-      Object.keys(podcastMap).forEach(season => {
-        const section = document.createElement("div");
-        section.className = "podcast-section";
-        
-        const title = document.createElement("h2");
-        title.className = "section-title";
-        title.textContent = season.toUpperCase();
-        section.appendChild(title);
-        
-        const grid = document.createElement("div");
-        grid.className = "episodes-grid";
-        
-        podcastMap[season].forEach(ep => {
-          const div = document.createElement("div");
-          div.className = "episode-date";
-          div.title = ep.episodeTitle + " - " + ep.podcastName;
-          const cover = ep.coverURL || "default-cover.png";
-          div.innerHTML = `
-            <div class="square" style="background-image: url('${cover}');"></div>
-            <div class="episode-info">
-              <p class="date">${ep.releaseDate}</p>
-              <p class="episode">${ep.season ? `${ep.season} - Ep. ` : ""}${ep.episodeNumber}</p>
-              <p class="title">${ep.episodeTitle}</p>
-              <p class="action">LISTEN HERE</p>
-            </div>
-          `;
-          div.addEventListener("click", () => openModal(ep));
-          grid.appendChild(div);
-        });
-        
-        section.appendChild(grid);
-        gridContainer.appendChild(section);
-      });
+  // Modal
+  const modal = document.getElementById("modal");
+  const episodeTitleElem = document.getElementById("episodeTitle");
+  const audioPlayer = document.getElementById("audioPlayer");
+  const audioSource = document.getElementById("audioSource");
+  const videoPlayer = document.getElementById("videoPlayer");
+
+  window.openModal = function(ep) {
+    episodeTitleElem.textContent = `${ep.season} – ${ep.episodeTitle} (Ep. ${ep.episodeNumber})`;
+    audioSource.src = ep.audioFile || "";
+    audioPlayer.load();
+    
+    if (ep.youtubeURL) {
+      videoPlayer.src = ep.youtubeURL;
+      videoPlayer.style.display = "block";
+    } else {
+      videoPlayer.src = "";
+      videoPlayer.style.display = "none";
+    }
+    
+    modal.classList.add("open");
+    mainContent.classList.add("blurred");
+  };
+
+  window.closeModal = function() {
+    modal.classList.remove("open");
+    audioPlayer.pause();
+    audioSource.src = "";
+    audioPlayer.load();
+    videoPlayer.src = "";
+    mainContent.classList.remove("blurred");
+  };
+
+  // Sidebar logic
+  (function(){
+    const sidebar = document.getElementById('siteSidebar');
+    const close = sidebar && sidebar.querySelector('.close');
+    const menuButtons = Array.from(document.querySelectorAll('.menu-btn'));
+
+    function open(){
+      if (!sidebar) return;
+      sidebar.classList.add('open');
+      document.body.classList.add('menu-open');
+      sidebar.setAttribute('aria-hidden','false');
+    }
+
+    function closeMenu(){
+      if (!sidebar) return;
+      sidebar.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      sidebar.setAttribute('aria-hidden','true');
+    }
+
+    menuButtons.forEach(function(btn){
+      if (btn) btn.addEventListener('click', open);
     });
 
-    // Modal
-    const modal = document.getElementById("modal");
-    const episodeTitleElem = document.getElementById("episodeTitle");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const audioSource = document.getElementById("audioSource");
-    const videoPlayer = document.getElementById("videoPlayer");
+    if (close) close.addEventListener('click', closeMenu);
 
-    window.openModal = function(ep) {
-      episodeTitleElem.textContent = `${ep.season ? ep.season + " - " : ""}${ep.episodeTitle} (${ep.podcastName})`;
-      audioSource.src = ep.audioURL;
-      audioPlayer.load();
-      if(ep.youtubeURL) { videoPlayer.src = ep.youtubeURL; videoPlayer.style.display="block"; }
-      else { videoPlayer.src=""; videoPlayer.style.display="none"; }
-      modal.style.display="flex";
-      gridContainer.classList.add("blurred");
-    }
+    document.addEventListener('click', function(e){
+      if (!sidebar) return;
+      const clickedMenuButton = menuButtons.some(function(btn){ return btn && btn.contains(e.target); });
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !clickedMenuButton) closeMenu();
+    });
 
-    window.closeModal = function() {
-      modal.style.display="none";
-      audioPlayer.pause(); audioSource.src=""; audioPlayer.load();
-      videoPlayer.src="";
-      gridContainer.classList.remove("blurred");
-    }
-
-    // Hamburger toggle
-    const hamburger = document.querySelector(".hamburger");
-const sidebar = document.querySelector(".sidebar");
-const bodyElem = document.body;
-
-hamburger.onclick = () => {
-  sidebar.classList.toggle("active");
-  bodyElem.classList.toggle("sidebar-open");
-};
-  </script>
-
-  <script>
+    document.addEventListener('keydown', function(e){ 
+      if (e.key === 'Escape') {
+        closeMenu();
+        closeModal();
+      }
+    });
+  })();
 </script>
 </body>
 </html>
