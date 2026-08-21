@@ -546,12 +546,12 @@ body {
     <section class="hero-grid">
       <article class="album-card">
         <div class="album-cover">
-          <img src="images/Album Cover.PNG" alt="SOS album cover" />
+          <img src="images/Album Cover.PNG" alt="This Is For The Girls And The Gays album cover" />
         </div>
         <div class="album-meta">
           <div class="album-heading">
             <div class="album-title-row">
-              <div id="album-label" class="album-label">SOS</div>
+              <div id="album-label" class="album-label">This Is For The Girls And The Gays</div>
               <button class="album-title-toggle" id="albumToggle" aria-label="Toggle album details" type="button">▾</button>
             </div>
             <div id="album-artist" class="album-artist">Jae Laurent</div>
@@ -609,12 +609,12 @@ body {
     const albumRef = db.ref('album');
     const tracksRef = db.ref('tracks');
 
-    let albumData = { title: 'SOS', artist: 'Jae Laurent' };
+    let albumData = { title: 'This Is For The Girls And The Gays', artist: 'Jae Laurent' };
     let trackData = {};
     let trackKeys = [];
 
     function updatePageTitle() {
-      const title = albumData.title || 'SOS';
+      const title = albumData.title || 'This Is For The Girls And The Gays';
       document.title = `${title} – Jae Laurent`;
     }
 
@@ -623,10 +623,10 @@ body {
       const artistEl = document.getElementById('album-artist');
       const pageArtistEl = document.getElementById('pageArtist');
       const pageAlbumEl = document.getElementById('pageAlbum');
-      if (labelEl) labelEl.textContent = albumData.title || 'SOS';
+      if (labelEl) labelEl.textContent = albumData.title || 'This Is For The Girls And The Gays';
       if (artistEl) artistEl.textContent = albumData.artist || 'Jae Laurent';
       if (pageArtistEl) pageArtistEl.textContent = albumData.artist || 'Jae Laurent';
-      if (pageAlbumEl) pageAlbumEl.textContent = albumData.title || 'SOS';
+      if (pageAlbumEl) pageAlbumEl.textContent = albumData.title || 'This Is For The Girls And The Gays';
     }
 
     function parseLocalDate(dateStr) {
@@ -649,7 +649,7 @@ body {
 
     // Load album data
     albumRef.on('value', snap => {
-      albumData = snap.val() || { title: 'SOS', artist: 'Jae Laurent' };
+      albumData = snap.val() || { title: 'This Is For The Girls And The Gays', artist: 'Jae Laurent' };
       updatePageTitle();
       updateAlbumHeader();
     });
