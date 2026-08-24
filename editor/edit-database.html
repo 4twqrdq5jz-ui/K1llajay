@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Music Database</title>
+  <title>Catelog Database</title>
   <link rel="icon" href="images/favicon.ico">
   <script src="device-optimization.js"></script>
   <script src="anti-lag-optimization.js"></script>
@@ -97,7 +97,6 @@
       justify-content: center;
       z-index: 1;
     }
-
     .button::before {
       content: "";
       position: absolute;
@@ -107,11 +106,7 @@
       z-index: -1;
       transition: background 0.2s ease;
     }
-
-    .button:hover::before {
-      background: rgba(0, 0, 0, 0.3);
-    }
-
+    .button:hover::before { background: rgba(0, 0, 0, 0.3); }
     .button:hover { border-color: white; }
     .footer {
       margin-top: auto;
@@ -119,12 +114,8 @@
       opacity: 0.7;
       text-align: center;
     }
-    .footer a {
-      color: white;
-      text-decoration: none;
-    }
+    .footer a { color: white; text-decoration: none; }
     .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
     .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
 
     .main {
@@ -151,9 +142,7 @@
       max-width: 800px;
       box-sizing: border-box;
     }
-    .upload-section {
-      margin-bottom: 28px;
-    }
+    .upload-section { margin-bottom: 28px; }
     .upload-section h4 {
       font-size: 12px;
       text-transform: uppercase;
@@ -167,48 +156,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-bottom: 16px;
-      grid-auto-flow: row;
     }
-    #releaseTitleInput {
-      grid-column: 1/-1;
-    }
-    .file-upload-area {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .file-upload-area label {
-      flex: 1;
-      min-width: 150px;
-    }
-    .options-row {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .option-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-    }
-    .option-group input[type="checkbox"] {
-      cursor: pointer;
-    }
-    .option-group label {
-      cursor: pointer;
-      user-select: none;
-    }
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .action-buttons button {
-      flex: 1;
-      min-width: 140px;
-    }
+    #songTitle { grid-column: 1 / -1; }
+
     input, select {
       background: transparent;
       border: 1px solid #444;
@@ -221,6 +171,7 @@
       text-transform: uppercase;
     }
     input::placeholder { color: #777; }
+
     .checkbox-row {
       display: flex;
       align-items: center;
@@ -246,15 +197,73 @@
       text-transform: uppercase;
     }
     .primary-btn:hover { background: #00cc77; }
-    .secondary-btn {
-      background: #222;
-      border: 1px solid #666;
-      color: white;
-      margin-left: 10px;
-    }
-    .secondary-btn:hover { border-color: #999; }
 
-    #musicDatabase { margin-top: 40px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    /* ===== TRACK LIST UI ===== */
+    #trackListSection {
+      display: none;
+      margin-top: 20px;
+      border-top: 1px solid #333;
+      padding-top: 20px;
+    }
+    #trackListSection.visible { display: block; }
+
+    .track-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 1fr 40px;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    .track-row input {
+      padding: 10px;
+      font-size: 13px;
+    }
+    .track-row .track-num {
+      text-align: center;
+      background: #1a1a1a;
+    }
+    .remove-track-btn {
+      background: #333;
+      border: 1px solid #555;
+      color: #ff6666;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .remove-track-btn:hover { background: #444; border-color: #ff6666; }
+
+    .add-track-btn {
+      background: #222;
+      border: 1px dashed #555;
+      color: #00ff99;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-top: 8px;
+      width: 100%;
+      text-transform: uppercase;
+    }
+    .add-track-btn:hover {
+      border-color: #00ff99;
+      background: #1a1a1a;
+    }
+
+    #musicDatabase {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 800px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
     .section-title {
       grid-column: 1 / -1;
       font-size: 18px;
@@ -296,17 +305,12 @@
     .edit-btn:hover { background: #444; }
 
     @media (max-width: 768px) {
-      body { 
-        flex-direction: column;
-        padding-top: 50px;
-      }
-      .topbar { 
+      body { flex-direction: column; padding-top: 50px; }
+      .topbar {
         display: flex;
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
+        top: 0; left: 0;
+        width: 100%; height: 50px;
         padding: 0 15px;
         padding-top: max(0px, env(safe-area-inset-top));
         align-items: center;
@@ -314,29 +318,18 @@
         border-bottom: 1px solid rgba(255,255,255,0.15);
         z-index: 2101;
       }
-      .hamburger { 
-        font-size: 28px;
-        cursor: pointer;
-        padding: 5px;
-      }
-      .top-name {
-        margin: 0 auto;
-        font-size: 16px;
-        letter-spacing: 2px;
-      }
+      .hamburger { font-size: 28px; cursor: pointer; padding: 5px; }
+      .top-name { margin: 0 auto; font-size: 16px; letter-spacing: 2px; }
       .sidebar {
         display: none;
         position: fixed;
-        top: 50px;
-        left: 0;
+        top: 50px; left: 0;
         width: 100%;
         height: calc(100dvh - 50px);
-        max-height: none;
         padding: 15px;
         z-index: 1900;
         background: black;
         border-right: none;
-        border-bottom: 1px solid #333;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
       }
@@ -353,42 +346,42 @@
         -webkit-overflow-scrolling: touch;
       }
       .form-grid { grid-template-columns: 1fr; }
+      .track-row { grid-template-columns: 60px 1fr 1fr 36px; gap: 6px; }
       #musicDatabase { grid-template-columns: 1fr; }
     }
-
-</style>
+  </style>
 </head>
 <body>
   <div class="topbar">
     <span class="hamburger">&#9776;</span>
     <div class="top-name">EDITOR</div>
   </div>
-<div class="sidebar">
+
+  <div class="sidebar">
     <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
     <h1 class="name">JAE LAURENT</h1>
     <div class="buttons">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
+      <a href="https://k1llajay.com">Home</a>
+      <a href="https://k1llajay.com/music">Latest Album</a>
+      <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+      <a href="https://k1llajay.com/podcast">Trend Talk</a>
+      <a href="https://k1llajay.com/extras/player">All Releases</a>
+      <a href="https://k1llajay.com/extras/music-database">Music Database</a>
+      <a href="https://k1llajay.com/extras/events">Events</a>
+      <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
+      <a href="https://k1llajay.com/404">Coming Soon</a>
+    </div>
+    <div class="footer">
+      <a href="https://mystery.k1llajay.com">Mystery</a> •
+      <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
+      <a href="https://k1llajay.com/images/terms">Terms</a> •
+      <a href="https://k1llajay.com/images/privacy">Privacy</a>
+      <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
+    </div>
   </div>
-
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
-</div>
 
   <div class="main">
-    <h1>Upload to Music Database</h1>
+    <h1>Upload to Catelog Database</h1>
     <div class="upload-box">
       <div class="upload-section">
         <h4>Music Entry</h4>
@@ -396,62 +389,70 @@
           <input id="songTitle" type="text" placeholder="Album/Song Title" />
           <input id="artistName" type="text" placeholder="Artist Name" />
           <input id="upc" type="text" placeholder="UPC (Optional)" />
-          <input id="isrc" type="text" placeholder="ISRC (Optional)" />
-          <input id="releaseDate" type="date" placeholder="Release Date" />
-          <select id="tracks" class="glass p-2 w-1/4 min-w-[150px] text-white">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3 (SINGLE)</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6 (EP)</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="21">21</option>
-          <option value="22">22</option>
-          <option value="23">23</option>
-          <option value="24">24</option>
-          <option value="25">25</option>
-          <option value="26">26</option>
-          <option value="27">27</option>
-          <option value="28">28</option>
-          <option value="29">29</option>
-          <option value="30">30</option>
-          <option value="31">31</option>
-          <option value="32">32</option>
-          <option value="33">33</option>
-          <option value="34">34</option>
-          <option value="35">35</option>
-          <option value="36">36</option>
-          <option value="37">37</option>
-          <option value="38">38</option>
-          <option value="39">39</option>
-          <option value="40">40</option>
-          <option value="41">41</option>
-          <option value="42">42</option>
-          <option value="43">43</option>
-          <option value="44">44</option>
-          <option value="45">45</option>
-          <option value="46">46</option>
-          <option value="47">47</option>
-          <option value="48">48</option>
-          <option value="49">49</option>
-          <option value="50">50</option>
-      </select>
+          <input id="isrc" type="text" placeholder="ISRC (Optional – for singles)" />
+          <input id="releaseDate" type="date" />
+          <select id="tracks">
+            <option value="1">1 (SINGLE)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6 (EP)</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        <!-- Dynamic track list (appears when tracks ≥ 2) -->
+        <div id="trackListSection">
+          <h4>Track List (Number + Name + ISRC)</h4>
+          <div id="trackRows"></div>
+          <button type="button" class="add-track-btn" id="addTrackBtn">+ Add Track</button>
         </div>
       </div>
+
       <div class="upload-section">
         <div class="checkbox-row">
           <input type="checkbox" id="unreleased" />
@@ -460,6 +461,7 @@
         <button id="addUpdateBtn" class="primary-btn">Add to Database</button>
       </div>
     </div>
+
     <div id="musicDatabase"></div>
   </div>
 
@@ -484,6 +486,87 @@
     let showAllReleased = false;
     let showAllUnreleased = false;
 
+    /* ---------- Track list UI helpers ---------- */
+    function createTrackRow(num = '', title = '', isrc = '') {
+      const row = document.createElement('div');
+      row.className = 'track-row';
+      row.innerHTML = `
+        <input type="number" class="track-num" min="1" max="50" value="${num}" placeholder="#" />
+        <input type="text" class="track-title" value="${title}" placeholder="Track Name" />
+        <input type="text" class="track-isrc" value="${isrc}" placeholder="ISRC (optional)" />
+        <button type="button" class="remove-track-btn" title="Remove">−</button>
+      `;
+      row.querySelector('.remove-track-btn').onclick = () => {
+        row.remove();
+        renumberTracks();
+      };
+      return row;
+    }
+
+    function renumberTracks() {
+      const rows = document.querySelectorAll('#trackRows .track-row');
+      rows.forEach((row, i) => {
+        const numInput = row.querySelector('.track-num');
+        if (!numInput.value) numInput.value = i + 1;
+      });
+    }
+
+    function getTrackCountFromSelect() {
+      return parseInt(document.getElementById('tracks').value, 10) || 1;
+    }
+
+    function updateTrackListVisibility() {
+      const count = getTrackCountFromSelect();
+      const section = document.getElementById('trackListSection');
+      const rowsContainer = document.getElementById('trackRows');
+
+      if (count >= 2) {
+        section.classList.add('visible');
+
+        // Auto-create missing rows up to the selected count
+        const currentRows = rowsContainer.querySelectorAll('.track-row').length;
+        for (let i = currentRows; i < count; i++) {
+          rowsContainer.appendChild(createTrackRow(i + 1, '', ''));
+        }
+      } else {
+        section.classList.remove('visible');
+        // Keep the rows in DOM but hidden – they will be ignored on save
+      }
+    }
+
+    function collectTracklist() {
+      const count = getTrackCountFromSelect();
+      if (count < 2) return null;
+
+      const rows = document.querySelectorAll('#trackRows .track-row');
+      const list = [];
+      rows.forEach(row => {
+        const num = parseInt(row.querySelector('.track-num').value, 10) || list.length + 1;
+        const title = row.querySelector('.track-title').value.trim();
+        const isrc = row.querySelector('.track-isrc').value.trim();
+        if (title || isrc) {
+          list.push({ number: num, title: title || null, isrc: isrc || null });
+        }
+      });
+      return list.length ? list : null;
+    }
+
+    function populateTracklist(tracklist) {
+      const rowsContainer = document.getElementById('trackRows');
+      rowsContainer.innerHTML = '';
+      if (Array.isArray(tracklist) && tracklist.length) {
+        tracklist.forEach(t => {
+          rowsContainer.appendChild(createTrackRow(
+            t.number || t.track || '',
+            t.title || t.name || '',
+            t.isrc || ''
+          ));
+        });
+      }
+      updateTrackListVisibility();
+    }
+
+    /* ---------- Date helper ---------- */
     function formatDateMMDDYYYY(dateValue) {
       if (!dateValue) return '';
       const date = new Date(dateValue);
@@ -494,26 +577,27 @@
       return `${month}/${day}/${year}`;
     }
 
+    /* ---------- Render database list ---------- */
     function render() {
       const container = document.getElementById('musicDatabase');
       container.innerHTML = '';
-      
-      const released = entries.filter((e, i) => !e.unreleased);
-      const unreleased = entries.filter((e, i) => e.unreleased);
+
+      const released = entries.filter(e => !e.unreleased);
+      const unreleased = entries.filter(e => e.unreleased);
 
       const sortByDate = (a, b) => {
         const da = a.releaseDate ? new Date(a.releaseDate) : 0;
         const db = b.releaseDate ? new Date(b.releaseDate) : 0;
         return da - db;
       };
-
       released.sort(sortByDate);
       unreleased.sort(sortByDate);
 
       const releasedToShow = showAllReleased ? released : released.slice(-3).reverse();
-      const unreleasedToShow = showAllUnreleased ? unreleased : unreleased.slice(-3).reverse();
+      const unreleasedToShow = (showAllUnreleased || unreleased.length < 4)
+        ? unreleased
+        : unreleased.slice(-3).reverse();
 
-      // Released section
       if (released.length) {
         container.innerHTML += `
           <div class="section-header">
@@ -521,13 +605,11 @@
             <button onclick="toggleReleased()">${showAllReleased ? 'Hide All' : 'Show All'}</button>
           </div>
         `;
-        
-        releasedToShow.forEach((e, i) => {
+        releasedToShow.forEach(e => {
           const actualIndex = entries.indexOf(e);
-          const tag = '';
           container.innerHTML += `
             <div class="entry">
-              <h2>${e.title} — ${e.artist}${tag}</h2>
+              <h2>${e.title} — ${e.artist}</h2>
               ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
               ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
               ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
@@ -537,21 +619,19 @@
         });
       }
 
-      // Unreleased section
       if (unreleased.length) {
+        const showBtn = unreleased.length >= 4;
         container.innerHTML += `
           <div class="section-header">
             <div class="section-title">UNRELEASED</div>
-            <button onclick="toggleUnreleased()">${showAllUnreleased ? 'Hide All' : 'Show All'}</button>
+            ${showBtn ? `<button onclick="toggleUnreleased()">${showAllUnreleased ? 'Hide All' : 'Show All'}</button>` : ''}
           </div>
         `;
-        
-        unreleasedToShow.forEach((e, i) => {
+        unreleasedToShow.forEach(e => {
           const actualIndex = entries.indexOf(e);
-          const tag = ' <span style="color:#ff0">(Unreleased)</span>';
           container.innerHTML += `
             <div class="entry">
-              <h2>${e.title} — ${e.artist}${tag}</h2>
+              <h2>${e.title} — ${e.artist} <span style="color:#ff0">(Unreleased)</span></h2>
               ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
               ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
               ${e.isrc ? `<p>ISRC: ${e.isrc}</p>` : ''}
@@ -566,65 +646,85 @@
       showAllReleased = !showAllReleased;
       render();
     }
-
     function toggleUnreleased() {
       showAllUnreleased = !showAllUnreleased;
       render();
     }
 
+    /* ---------- Save / Edit / Reset ---------- */
     function save() {
-  const title = document.getElementById('songTitle').value.trim();
-  const artist = document.getElementById('artistName').value.trim() || 'Jae Laurent';
-  const upc = document.getElementById('upc').value.trim();
-  const isrc = document.getElementById('isrc').value.trim();
-  const tracks = document.getElementById('tracks').value;
-  const unreleased = document.getElementById('unreleased').checked;
-  const releaseDate = document.getElementById('releaseDate').value; // <-- new
+      const title = document.getElementById('songTitle').value.trim();
+      const artist = document.getElementById('artistName').value.trim() || 'Jae Laurent';
+      const upc = document.getElementById('upc').value.trim();
+      const isrc = document.getElementById('isrc').value.trim();
+      const tracks = document.getElementById('tracks').value;
+      const unreleased = document.getElementById('unreleased').checked;
+      const releaseDate = document.getElementById('releaseDate').value;
 
-  if (!title) return alert('Title required');
+      if (!title) return alert('Title required');
 
-  const data = { title, artist, upc, isrc, tracks, unreleased, releaseDate };
+      const data = {
+        title,
+        artist,
+        upc,
+        isrc,
+        tracks,
+        unreleased,
+        releaseDate
+      };
 
-  if (editing !== null) {
-    dbRef.child(keys[editing]).set(data).then(reset);
-  } else {
-    dbRef.push(data);
-    reset();
-  }
-}
+      // Attach structured tracklist when 2+ tracks
+      const tracklist = collectTracklist();
+      if (tracklist) {
+        data.tracklist = tracklist;
+      }
+
+      if (editing !== null) {
+        dbRef.child(keys[editing]).set(data).then(reset);
+      } else {
+        dbRef.push(data);
+        reset();
+      }
+    }
 
     window.edit = i => {
-  const e = entries[i];
-  document.getElementById('songTitle').value = e.title;
-  document.getElementById('artistName').value = e.artist;
-  document.getElementById('upc').value = e.upc || '';
-  document.getElementById('isrc').value = e.isrc || '';
-  document.getElementById('releaseDate').value = e.releaseDate || ''; // <-- new
-  document.getElementById('tracks').value = e.tracks;
-  document.getElementById('unreleased').checked = e.unreleased;
-  editing = i;
-  document.getElementById('addUpdateBtn').textContent = 'Update Entry';
-};
+      const e = entries[i];
+      document.getElementById('songTitle').value = e.title || '';
+      document.getElementById('artistName').value = e.artist || '';
+      document.getElementById('upc').value = e.upc || '';
+      document.getElementById('isrc').value = e.isrc || '';
+      document.getElementById('releaseDate').value = e.releaseDate || '';
+      document.getElementById('tracks').value = e.tracks || '1';
+      document.getElementById('unreleased').checked = !!e.unreleased;
 
+      // Load existing tracklist if present
+      populateTracklist(e.tracklist || e.tracksArray || e.trackList || null);
+
+      editing = i;
+      document.getElementById('addUpdateBtn').textContent = 'Update Entry';
+      updateTrackListVisibility();
+    };
 
     function reset() {
-  document.getElementById('songTitle').value = '';
-  document.getElementById('artistName').value = '';
-  document.getElementById('upc').value = '';
-  document.getElementById('isrc').value = '';
-  document.getElementById('releaseDate').value = ''; // <-- new
-  document.getElementById('tracks').value = '1';
-  document.getElementById('unreleased').checked = false;
-  editing = null;
-  document.getElementById('addUpdateBtn').textContent = 'Add to Database';
-}
+      document.getElementById('songTitle').value = '';
+      document.getElementById('artistName').value = '';
+      document.getElementById('upc').value = '';
+      document.getElementById('isrc').value = '';
+      document.getElementById('releaseDate').value = '';
+      document.getElementById('tracks').value = '1';
+      document.getElementById('unreleased').checked = false;
+      document.getElementById('trackRows').innerHTML = '';
+      document.getElementById('trackListSection').classList.remove('visible');
+      editing = null;
+      document.getElementById('addUpdateBtn').textContent = 'Add to Database';
+    }
 
+    /* ---------- Event listeners ---------- */
+    document.getElementById('tracks').addEventListener('change', updateTrackListVisibility);
 
-    dbRef.on('value', snap => {
-      const val = snap.val() || {};
-      entries = Object.values(val);
-      keys = Object.keys(val);
-      render();
+    document.getElementById('addTrackBtn').addEventListener('click', () => {
+      const rows = document.querySelectorAll('#trackRows .track-row').length;
+      document.getElementById('trackRows').appendChild(createTrackRow(rows + 1, '', ''));
     });
 
     document.getElementById('addUpdateBtn').onclick = save;
@@ -632,6 +732,17 @@
     document.querySelector('.hamburger').onclick = () => {
       document.querySelector('.sidebar').classList.toggle('active');
     };
+
+    // Initial load
+    dbRef.on('value', snap => {
+      const val = snap.val() || {};
+      entries = Object.values(val);
+      keys = Object.keys(val);
+      render();
+    });
+
+    // Start with correct visibility
+    updateTrackListVisibility();
   </script>
 </body>
 </html>
