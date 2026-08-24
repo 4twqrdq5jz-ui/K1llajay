@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Database - K1LLAJAY</title>
+  <link rel="icon" href="images/favicon.ico">
+<style>
+@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('truetype');}
+@font-face {font-family: 'altfont'; src: url('font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');}
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  color: white;
+  background: #000000;
+}
+html {
+  height: 100vh;
+  height: 100dvh;
+  padding-top: 0;
+}
+
+.sidebar {
+  display: flex !important;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 76px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("images/IMG_4619.png") center / cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 20;
+}
+.top-bar .menu-btn {
+  position: absolute;
+  left: 24px;
+}
+.top-bar-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffe600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.menu-btn {
+  width: 44px;
+  height: 36px;
+  padding: 8px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 230, 0, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background-clip: padding-box;
+}
+.menu-btn span {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #ffe600;
+  border-radius: 999px;
+}
+.menu-btn:focus {
+  outline: 2px solid rgba(255, 230, 0, 0.35);
+}
+body.menu-open .menu-btn {
+  display: none !important;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: #071123;
+  color: #ffe600;
+  padding: 24px;
+  box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
+  transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
+  z-index: 30;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.sidebar.active{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
+.sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
+.sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
+.sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
+.sidebar a:hover{text-decoration:underline}
+.footer{max-width:1200px;width:100%;margin:20px 0 30px;color:#fff;padding:20px 24px;text-align:left!important;display:block;line-height:1.6;align-self:flex-start}
+
+    /* ================= MAIN ================= */
+    .page {
+      min-height: 100dvh;
+      padding: 104px 22px 42px;
+    }
+
+    .database-shell {
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .database-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 4px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      margin-bottom: 22px;
+    }
+
+    .database-head h1 {
+      font-family: 'altfont', sans-serif;
+      font-size: clamp(26px, 4vw, 44px);
+      line-height: .95;
+      letter-spacing: 2px;
+      color: #ffe600;
+      text-shadow: 0 0 18px rgba(255,230,0,.14);
+    }
+
+    .database-head p {
+      max-width: 460px;
+      color: rgba(255,255,255,.58);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: right;
+      letter-spacing: 1px;
+    }
+
+    #musicDatabase {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    /* ================= SECTIONS ================= */
+    .section-header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 12px 0 2px;
+    }
+
+    .section-title {
+      font-family: 'altfont', sans-serif;
+      color: #ffe600;
+      font-size: 17px;
+      letter-spacing: 3px;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(255,230,0,.38),
+        rgba(255,255,255,.08),
+        transparent
+      );
+    }
+
+    .section-header button {
+      flex: 0 0 auto;
+      font-family: 'sitefont', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 11px;
+      cursor: pointer;
+      color: #ffe600;
+      background: rgba(7,17,35,.78);
+      border: 1px solid rgba(255,230,0,.38);
+      border-radius: 7px;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .section-header button:hover {
+      background: rgba(255,230,0,.10);
+      border-color: #ffe600;
+      transform: translateY(-1px);
+    }
+
+    /* ================= ENTRY CARDS ================= */
+    .entry {
+      position: relative;
+      min-height: 190px;
+      padding: 19px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 14px;
+      background:
+        linear-gradient(145deg, rgba(10, 26, 58, .92), rgba(4, 9, 20, .96));
+      box-shadow:
+        0 10px 32px rgba(0,0,0,.48),
+        inset 0 0 0 1px rgba(255,255,255,.018);
+      transition:
+        transform .28s cubic-bezier(.34,1.56,.64,1),
+        border-color .28s ease,
+        box-shadow .28s ease;
+    }
+
+    .entry::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,230,0,.075),
+          transparent 36%,
+          transparent 70%,
+          rgba(30,75,155,.10)
+        );
+      pointer-events: none;
+    }
+
+    .entry::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: #ffe600;
+      opacity: .75;
+    }
+
+    .entry:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,230,0,.42);
+      box-shadow:
+        0 18px 42px rgba(0,0,0,.68),
+        0 0 0 1px rgba(255,230,0,.08),
+        0 0 28px rgba(255,230,0,.08);
+    }
+
+    .entry h2 {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-family: 'altfont', sans-serif;
+      font-size: 19px;
+      line-height: 1.1;
+      letter-spacing: .6px;
+      margin-bottom: 16px;
+    }
+
+    .entry h2 .unreleased-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 3px 6px;
+      border: 1px solid rgba(255,230,0,.55);
+      border-radius: 999px;
+      color: #ffe600;
+      font-family: 'sitefont', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      vertical-align: middle;
+    }
+
+    .entry-meta {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .meta-label {
+      color: rgba(255,255,255,.44);
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      white-space: nowrap;
+    }
+
+    .meta-value {
+      color: rgba(255,255,255,.86);
+      font-size: 10px;
+      letter-spacing: .6px;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    /* ================= EMPTY STATE ================= */
+    .empty-state {
+      grid-column: 1 / -1;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(255,230,0,.18);
+      border-radius: 14px;
+      background: rgba(7,17,35,.45);
+      color: rgba(255,255,255,.42);
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 30px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 1200px) {
+      #musicDatabase {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      #musicDatabase {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .database-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .database-head p {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        height: 68px;
+        padding: 0 16px;
+      }
+
+      .top-bar .menu-btn {
+        left: 16px;
+      }
+
+      .top-bar-title {
+        font-size: 18px;
+        letter-spacing: 2px;
+      }
+
+      .page {
+        padding: 92px 12px 28px;
+      }
+
+      #musicDatabase {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .section-header {
+        margin-top: 8px;
+      }
+
+      .entry {
+        min-height: 0;
+        padding: 17px;
+      }
+
+      .entry h2 {
+        font-size: 18px;
+      }
+
+      .sidebar {
+        width: min(88vw, 300px);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .database-head h1 {
+        font-size: 27px;
+      }
+
+      .section-title {
+        font-size: 15px;
+        letter-spacing: 2px;
+      }
+
+      .section-header button {
+        padding: 7px 8px;
+        font-size: 8px;
+      }
+
+      .meta-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .meta-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
+  <button class="close" aria-label="Close menu">×</button>
+  <nav aria-label="Main navigation">
+    <a href="https://k1llajay.com">Home</a>
+    <a href="https://k1llajay.com/music">Latest Album</a>
+    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+    <a href="https://k1llajay.com/podcast">Trend Talk</a>
+    <a href="https://k1llajay.com/extras/database">Music Database</a>
+    <a href="https://k1llajay.com/extras/events">Events</a>
+    <a href="https://k1llajay.com/404">Coming Soon</a>
+  </nav>
+</aside>
+  <div class="top-bar">
+    <button class="menu-btn" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div id="pageArtist" class="top-bar-title" style="font-family:'altfont';text-transform: uppercase">JAE LAURENT</div>
+  </div>
+
+  <main class="page">
+    <div class="database-shell">
+      <header class="database-head">
+        <div>
+          <h1>MUSIC DATABASE</h1>
+        </div>
+        <p>
+          RELEASE ARCHIVE / CATALOG INFORMATION / UPC / ISRC / TRACK COUNTS
+        </p>
+      </header>
+
+      <div id="musicDatabase">
+        <div class="empty-state">LOADING DATABASE...</div>
+      </div>
+
+      <footer class="footer">
+        © 2025 Jefferson Entertainment LLC •
+        <a href="https://k1llajay.com/extras/terms">Terms</a> •
+        <a href="https://k1llajay.com/extras/privacy">Privacy</a>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    let showAllReleased = false;
+    let showAllUnreleased = false;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
+      authDomain: "music-database-3ee0a.firebaseapp.com",
+      databaseURL: "https://music-database-3ee0a-default-rtdb.firebaseio.com",
+      projectId: "music-database-3ee0a",
+      storageBucket: "music-database-3ee0a.firebasestorage.app",
+      messagingSenderId: "148257189959",
+      appId: "1:148257189959:web:3e52404367191d5835c162"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const dbRef = firebase.database().ref('musicDatabase');
+    const entries = [];
+
+    function escapeHTML(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatDateMMDDYYYY(dateValue) {
+      if (!dateValue) return '';
+
+      const date = new Date(dateValue);
+
+      if (isNaN(date)) return dateValue;
+
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    }
+
+    function entryMarkup(e) {
+      const title = escapeHTML(e.title || 'UNTITLED');
+      const artist = escapeHTML(e.artist || 'UNKNOWN ARTIST');
+
+      return `
+        <article class="entry">
+          <h2>
+            ${title} — ${artist}
+            ${e.unreleased ? '<span class="unreleased-tag">UNRELEASED</span>' : ''}
+          </h2>
+
+          <div class="entry-meta">
+            ${e.releaseDate ? `
+              <div class="meta-row">
+                <span class="meta-label">DATE</span>
+                <span class="meta-value">${escapeHTML(formatDateMMDDYYYY(e.releaseDate))}</span>
+              </div>
+            ` : ''}
+
+            ${e.upc ? `
+              <div class="meta-row">
+                <span class="meta-label">UPC</span>
+                <span class="meta-value">${escapeHTML(e.upc)}</span>
+              </div>
+            ` : ''}
+
+            ${e.isrc ? `
+              <div class="meta-row">
+                <span class="meta-label">ISRC</span>
+                <span class="meta-value">${escapeHTML(e.isrc)}</span>
+              </div>
+            ` : ''}
+
+            <div class="meta-row">
+              <span class="meta-label">TRACKS</span>
+              <span class="meta-value">${escapeHTML(e.tracks || '—')}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function sectionHeader(title, showAll, toggleFunctionName) {
+      return `
+        <div class="section-header">
+          <div class="section-title">${title}</div>
+          <div class="section-rule"></div>
+          <button type="button" onclick="${toggleFunctionName}()">
+            ${showAll ? 'Hide All' : 'Show All'}
+          </button>
+        </div>
+      `;
+    }
+
+    function render() {
+      const grid = document.getElementById('musicDatabase');
+      grid.innerHTML = '';
+
+      const released = entries.filter(e => !e.unreleased);
+      const unreleased = entries.filter(e => e.unreleased);
+
+      const sortByDate = (a, b) => {
+        const da = a.releaseDate ? new Date(a.releaseDate) : 0;
+        const db = b.releaseDate ? new Date(b.releaseDate) : 0;
+        return da - db;
+      };
+
+      released.sort(sortByDate);
+      unreleased.sort(sortByDate);
+
+      const releasedToShow = showAllReleased
+        ? released
+        : released.slice(-3).reverse();
+
+      const unreleasedToShow = showAllUnreleased
+        ? unreleased
+        : unreleased.slice(-3).reverse();
+
+      if (released.length) {
+        grid.innerHTML += sectionHeader(
+          'RELEASED',
+          showAllReleased,
+          'toggleReleased'
+        );
+
+        releasedToShow.forEach(e => {
+          grid.innerHTML += entryMarkup(e);
+        });
+      }
+
+      if (unreleased.length) {
+        grid.innerHTML += sectionHeader(
+          'UNRELEASED',
+          showAllUnreleased,
+          'toggleUnreleased'
+        );
+
+        unreleasedToShow.forEach(e => {
+          grid.innerHTML += entryMarkup(e);
+        });
+      }
+
+      if (!released.length && !unreleased.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            NO MUSIC ENTRIES FOUND.
+          </div>
+        `;
+      }
+    }
+
+    function toggleReleased() {
+      showAllReleased = !showAllReleased;
+      render();
+    }
+
+    function toggleUnreleased() {
+      showAllUnreleased = !showAllUnreleased;
+      render();
+    }
+
+    /* ================= SIDEBAR ================= */
+    (function() {
+      const sidebar = document.getElementById('siteSidebar');
+      const closeBtn = sidebar.querySelector('.close');
+      const menuBtn = document.querySelector('.menu-btn');
+
+      function openMenu() {
+        sidebar.classList.add('open', 'active');
+        document.body.classList.add('menu-open');
+        sidebar.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeMenu() {
+        sidebar.classList.remove('open', 'active');
+        document.body.classList.remove('menu-open');
+        sidebar.setAttribute('aria-hidden', 'true');
+      }
+
+      menuBtn.addEventListener('click', openMenu);
+      closeBtn.addEventListener('click', closeMenu);
+
+      document.addEventListener('click', function(e) {
+        if (
+          sidebar.classList.contains('open') &&
+          !sidebar.contains(e.target) &&
+          !menuBtn.contains(e.target)
+        ) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeMenu();
+      });
+    })();
+
+    /* ================= FIREBASE ================= */
+    dbRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+
+      entries.length = 0;
+
+      if (data) {
+        Object.values(data).forEach(item => entries.push(item));
+      }
+
+      render();
+    });
+  </script>
+</body>
+</html>

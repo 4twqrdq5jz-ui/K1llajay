@@ -155,27 +155,28 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <button class="sidebar-close" onclick="document.querySelector('.sidebar').classList.remove('active'); document.body.classList.remove('sidebar-open');">✕</button>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="music.html">Music</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="extras/memes.html">Memes</a></li>
-      <li><a href="podcast.html">Podcast</a></li>
-      <li><a href="extras/events.html">Events</a></li>
-      <li><a href="extras/terms.html">Terms</a></li>
-      <li><a href="extras/privacy.html">Privacy</a></li>
-    </ul>
+  <!-- Top navigation -->
+  <div class="top-bar">
+    <button class="menu-btn" aria-label="Open menu" type="button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="top-bar-title">JAE LAURENT</div>
   </div>
 
-  <!-- Hamburger Menu Button -->
-  <button class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
+  <button class="close" aria-label="Close menu">×</button>
+  <nav aria-label="Main navigation">
+    <a href="https://k1llajay.com">Home</a>
+    <a href="https://k1llajay.com/music">Latest Album</a>
+    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+    <a href="https://k1llajay.com/podcast">Trend Talk</a>
+    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
+    <a href="https://k1llajay.com/extras/events">Events</a>
+    <a href="https://k1llajay.com/404">Coming Soon</a>
+  </nav>
+</aside>
 
   <!-- Main Content -->
   <main class="main-content">
