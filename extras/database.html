@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Catelog Database – Jae Laurent</title>
+  <title>Catalog Database – Jae Laurent</title>
   <link rel="icon" href="images/favicon.ico">
   <script src="device-optimization.js"></script>
   <script src="anti-lag-optimization.js"></script>
@@ -15,7 +15,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'altfont';
   src: url('/font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');
@@ -24,50 +23,34 @@
   font-display: swap;
 }
 
-/* ================= RESET ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
   width: 100%;
   height: 100dvh;
-  font-family: 'sitefont', monospace;   /* sitefont on everything by default */
+  font-family: 'sitefont', monospace;
   color: white;
   background: #000000;
 }
-
-html {
-  height: 100vh;
-  height: 100dvh;
-}
+html { height: 100vh; height: 100dvh; }
 
 /* ================= TOP BAR ================= */
 .top-bar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 76px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-background: url("/images/IMG_4619.png") center / cover no-repeat;
+  background: url("/images/IMG_4619.png") center / cover no-repeat;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 20;
-  font-family: 'altfont', sans-serif;   /* altfont assigned to the whole top bar */
+  font-family: 'altfont', sans-serif;
 }
-
-.top-bar .menu-btn {
-  position: absolute;
-  left: 24px;
-}
-
+.top-bar .menu-btn { position: absolute; left: 24px; }
 .top-bar-title {
   font-family: 'altfont', sans-serif;
   font-size: 22px;
@@ -78,12 +61,8 @@ background: url("/images/IMG_4619.png") center / cover no-repeat;
   white-space: nowrap;
   text-shadow: 0 0 18px rgba(255, 230, 0, 0.35);
 }
-
-/* Menu button */
 .menu-btn {
-  width: 44px;
-  height: 36px;
-  padding: 8px;
+  width: 44px; height: 36px; padding: 8px;
   display: flex !important;
   flex-direction: column;
   justify-content: space-between;
@@ -96,26 +75,16 @@ background: url("/images/IMG_4619.png") center / cover no-repeat;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-
 .menu-btn span {
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: #ffe600;
-  border-radius: 999px;
+  display: block; width: 100%; height: 4px;
+  background: #ffe600; border-radius: 999px;
 }
-
-body.menu-open .menu-btn {
-  display: none !important;
-}
+body.menu-open .menu-btn { display: none !important; }
 
 /* ================= SIDEBAR ================= */
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 280px;
-  height: 100%;
+  position: fixed; left: 0; top: 0;
+  width: 280px; height: 100%;
   background: #071123;
   color: #ffe600;
   padding: 24px;
@@ -131,33 +100,23 @@ body.menu-open .menu-btn {
   pointer-events: none;
   font-family: 'sitefont', monospace;
 }
-
-.sidebar.active,
-.sidebar.open {
+.sidebar.active, .sidebar.open {
   transform: translateX(0);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
-
 .sidebar .close {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  background: transparent;
-  border: 0;
-  color: #ffe600;
-  font-size: 24px;
-  cursor: pointer;
+  position: absolute; right: 12px; top: 12px;
+  background: transparent; border: 0;
+  color: #ffe600; font-size: 24px; cursor: pointer;
 }
-
 .sidebar nav {
   margin-top: 36px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
 .sidebar a {
   color: #ffe600;
   text-decoration: none;
@@ -165,7 +124,6 @@ body.menu-open .menu-btn {
   border-radius: 6px;
   transition: background 0.2s ease;
 }
-
 .sidebar a:hover {
   background: rgba(255, 230, 0, 0.1);
   text-decoration: none;
@@ -190,11 +148,9 @@ body {
   width: 100%;
   font-family: 'sitefont', monospace;
 }
-
 .main-content::-webkit-scrollbar { display: none; }
 .main-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Database grid */
 #musicDatabase {
   width: 100%;
   display: grid;
@@ -209,7 +165,6 @@ body {
   gap: 16px;
   margin: 8px 0 4px;
 }
-
 .section-title {
   font-family: 'altfont', sans-serif;
   font-size: 18px;
@@ -217,7 +172,6 @@ body {
   color: #ffe600;
   text-shadow: 0 0 12px rgba(255, 230, 0, 0.25);
 }
-
 .section-header button {
   font-family: 'sitefont', monospace;
   font-size: 11px;
@@ -231,14 +185,13 @@ body {
   border-radius: 8px;
   transition: all 0.25s ease;
 }
-
 .section-header button:hover {
   background: rgba(255, 230, 0, 0.12);
   border-color: #ffe600;
   box-shadow: 0 0 18px rgba(255, 230, 0, 0.15);
 }
 
-/* Entry cards – filmstrip inspired */
+/* Entry cards */
 .entry {
   position: relative;
   border-radius: 14px;
@@ -252,12 +205,10 @@ body {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
   font-family: 'sitefont', monospace;
 }
-
 .entry:nth-child(odd) {
   background: #000000;
   border-color: #000000;
 }
-
 .entry:hover {
   transform: scale(1.03) translateY(-4px);
   box-shadow:
@@ -270,132 +221,115 @@ body {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  margin-bottom: 10px;
   color: #ffe600;
   line-height: 1.3;
+  margin: 0 0 10px 0;
 }
-
 .entry p {
   font-size: 12px;
   opacity: 0.85;
   margin: 5px 0;
   letter-spacing: 0.3px;
 }
-
 .entry .unreleased-tag {
   color: #ffe600;
   font-size: 11px;
   letter-spacing: 1px;
 }
 
-/* ===== TRACK ISRC DROPDOWN ===== */
-.track-isrc-wrap {
-  margin-top: 14px;
-  text-align: left;
-}
-
-.track-isrc-label {
-  display: block;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: rgba(255, 230, 0, 0.75);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  font-family: 'sitefont', monospace;
-}
-
-.track-isrc-select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 230, 0, 0.4);
-  border-radius: 8px;
-  color: #ffe600;
-  font-family: 'sitefont', monospace;
+/* ===== ISRC ROW + TOGGLE ===== */
+.isrc-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px 0;
   font-size: 12px;
-  padding: 9px 32px 9px 12px;
+  opacity: 0.85;
+  letter-spacing: 0.3px;
+}
+.isrc-label {
+  color: white;
+}
+.track-toggle-btn {
+  font-family: 'sitefont', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
   cursor: pointer;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffe600' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-}
-
-.track-isrc-select:hover,
-.track-isrc-select:focus {
-  border-color: #ffe600;
-  box-shadow: 0 0 12px rgba(255, 230, 0, 0.2);
-}
-
-.track-isrc-select option {
-  background: #0a1a3a;
   color: #ffe600;
-  padding: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 230, 0, 0.4);
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  line-height: 1.2;
+}
+.track-toggle-btn:hover {
+  background: rgba(255, 230, 0, 0.12);
+  border-color: #ffe600;
+}
+.track-toggle-btn.open {
+  background: rgba(255, 230, 0, 0.15);
+  border-color: #ffe600;
 }
 
-/* ================= FOOTER ================= */
+/* Expanded list – stays inside the card */
+.track-list {
+  display: none;
+  margin-top: 8px;
+  text-align: left;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 230, 0, 0.15);
+}
+.track-list.open {
+  display: block;
+}
+.track-list-item {
+  font-size: 11px;
+  color: #ffe600;
+  padding: 3px 0;
+  letter-spacing: 0.3px;
+  opacity: 0.95;
+}
+.track-list-item .from-single {
+  opacity: 0.55;
+  font-size: 10px;
+}
+
 /* ================= FOOTER ================= */
 .footer {
   max-width: 1200px;
   width: 100%;
-  margin: 10px 0 40px 0;          /* removed auto centering */
-  color: #ffffff;                 /* white text */
+  margin: 10px 0 40px 0;
+  color: #ffffff;
   padding: 20px 24px;
-  text-align: left;               /* left aligned */
+  text-align: left;
   font-size: 13px;
   letter-spacing: 0.5px;
   font-family: 'sitefont', monospace;
 }
-
 .footer a {
-  color: #ffe600;                 /* keep yellow links */
+  color: #ffe600;
   text-decoration: none;
 }
-
 .footer a:hover {
   text-decoration: underline;
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1100px) {
-  #musicDatabase {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  #musicDatabase { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 768px) {
-  .main-content {
-    padding: 92px 14px 30px;
-  }
-
-  #musicDatabase {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .top-bar-title {
-    font-size: 18px;
-    letter-spacing: 2px;
-  }
-
-  .entry {
-    border-width: 6px;
-    padding: 16px 14px;
-  }
-
-  .section-title {
-    font-size: 16px;
-    letter-spacing: 3px;
-  }
+  .main-content { padding: 92px 14px 30px; }
+  #musicDatabase { grid-template-columns: 1fr; gap: 14px; }
+  .top-bar-title { font-size: 18px; letter-spacing: 2px; }
+  .entry { border-width: 6px; padding: 16px 14px; }
+  .section-title { font-size: 16px; letter-spacing: 3px; }
 }
-
 @media (max-width: 480px) {
-  .entry {
-    border-width: 5px;
-    padding: 14px 12px;
-  }
+  .entry { border-width: 5px; padding: 14px 12px; }
 }
   </style>
 </head>
@@ -407,8 +341,10 @@ body {
       <a href="https://k1llajay.com/music">Latest Album</a>
       <a href="https://k1llajay.com/portfolio">Natural Photography</a>
       <a href="https://k1llajay.com/podcast">Trend Talk</a>
-      <a href="https://k1llajay.com/extras/database">Catelog Database</a>
+      <a href="https://k1llajay.com/extras/player">All Releases</a>
+      <a href="https://k1llajay.com/extras/music-database">Music Database</a>
       <a href="https://k1llajay.com/extras/events">Events</a>
+      <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
       <a href="https://k1llajay.com/404">Coming Soon</a>
     </nav>
   </aside>
@@ -423,19 +359,15 @@ body {
   </div>
 
   <div class="main-content">
-    <div id="musicDatabase">
-      <!-- Populated by JS -->
-    </div>
+    <div id="musicDatabase"></div>
   </div>
 
   <footer class="footer">
     © 2025 Jefferson Entertainment LLC •
     <a href="https://k1llajay.com/extras/terms">Terms</a> •
     <a href="https://k1llajay.com/extras/privacy">Privacy</a>
-    <a href="https://k1llajay.com/editor/edit-homepage" style="color:#000000;text-decoration:none">___</a>
   </footer>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script>
@@ -466,14 +398,9 @@ body {
       return `${month}/${day}/${year}`;
     }
 
-    /* ---------- helpers ---------- */
     function normalizeName(str) {
       if (!str) return '';
-      return String(str)
-        .toLowerCase()
-        .replace(/[^\w\s]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
+      return String(str).toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
     }
 
     function getTrackCount(e) {
@@ -497,11 +424,7 @@ body {
         Object.keys(map).forEach(key => {
           const num = Number(key);
           if (!isNaN(num) && map[key]) {
-            byNum[num] = {
-              trackNum: num,
-              title: null,
-              isrc: String(map[key]).trim()
-            };
+            byNum[num] = { trackNum: num, title: null, isrc: String(map[key]).trim() };
           }
         });
       }
@@ -533,11 +456,7 @@ body {
       }
 
       if (Object.keys(byNum).length === 0 && e.isrc) {
-        byNum[1] = {
-          trackNum: 1,
-          title: e.title || null,
-          isrc: String(e.isrc).trim()
-        };
+        byNum[1] = { trackNum: 1, title: e.title || null, isrc: String(e.isrc).trim() };
       }
 
       return Object.values(byNum).sort((a, b) => a.trackNum - b.trackNum);
@@ -550,13 +469,9 @@ body {
         const tracks = extractTracks(e);
         tracks.forEach(t => {
           const name = t.title || e.title;
-          if (name && t.isrc) {
-            map[normalizeName(name)] = t.isrc;
-          }
+          if (name && t.isrc) map[normalizeName(name)] = t.isrc;
         });
-        if (e.title && e.isrc) {
-          map[normalizeName(e.title)] = e.isrc;
-        }
+        if (e.title && e.isrc) map[normalizeName(e.title)] = e.isrc;
       });
       return map;
     }
@@ -570,44 +485,45 @@ body {
       const result = [];
       for (let i = 1; i <= count; i++) {
         let t = byNum[i] || { trackNum: i, title: null, isrc: null };
-
         if (!t.isrc && t.title && singleMap) {
           const key = normalizeName(t.title);
-          if (singleMap[key]) {
-            t = { ...t, isrc: singleMap[key], copiedFromSingle: true };
-          }
+          if (singleMap[key]) t = { ...t, isrc: singleMap[key], copiedFromSingle: true };
         }
-
         result.push(t);
       }
       return result;
     }
 
-    function buildTrackDropdown(e, singleMap) {
-      if (isSingle(e)) return '';
+    /* Returns the ISRC row + collapsible list (multi-track only) */
+    function buildIsrcBlock(e, singleMap) {
+      if (isSingle(e)) {
+        // Singles keep the simple line
+        return e.isrc ? `<p>ISRC: ${e.isrc}</p>` : '';
+      }
 
       const tracks = getAllTracks(e, singleMap);
-      if (!tracks.length) return '';
+      if (!tracks.length) {
+        return `
+          <div class="isrc-row">
+            <span class="isrc-label">ISRC:</span>
+          </div>
+        `;
+      }
 
-      const options = tracks
-        .map(t => {
-          const num = String(t.trackNum).padStart(2, '0');
-          const name = t.title || '—';
-          const isrcPart = t.isrc
-            ? ` — ${t.isrc}${t.copiedFromSingle ? ' (from single)' : ''}`
-            : ' — (no ISRC yet)';
-          return `<option value="${t.isrc || ''}">“${num}”. “${name}”${isrcPart}</option>`;
-        })
-        .join('');
+      const items = tracks.map(t => {
+        const num = t.trackNum;
+        const isrc = t.isrc
+          ? `${t.isrc}${t.copiedFromSingle ? ' <span class="from-single">(from single)</span>' : ''}`
+          : '(no ISRC yet)';
+        return `<div class="track-list-item">${num}. ${isrc}</div>`;
+      }).join('');
 
       return `
-        <div class="track-isrc-wrap">
-          <label class="track-isrc-label">Track ISRCs</label>
-          <select class="track-isrc-select" aria-label="Track ISRCs">
-            <option value="" disabled selected>Select a track…</option>
-            ${options}
-          </select>
+        <div class="isrc-row">
+          <span class="isrc-label">ISRC:</span>
+          <button type="button" class="track-toggle-btn" aria-expanded="false">▾</button>
         </div>
+        <div class="track-list">${items}</div>
       `;
     }
 
@@ -625,67 +541,54 @@ body {
         const db = b.releaseDate ? new Date(b.releaseDate) : 0;
         return da - db;
       };
-
       released.sort(sortByDate);
       unreleased.sort(sortByDate);
 
-      const releasedToShow = showAllReleased
-        ? released
-        : released.slice(-3).reverse();
-
+      const releasedToShow = showAllReleased ? released : released.slice(-3).reverse();
       const unreleasedToShow = (showAllUnreleased || unreleased.length < 4)
         ? unreleased
         : unreleased.slice(-3).reverse();
 
-      /* ================= RELEASED ================= */
+      /* RELEASED */
       if (released.length) {
         grid.innerHTML += `
           <div class="section-header">
             <div class="section-title">RELEASED</div>
-            <button onclick="toggleReleased()">
-              ${showAllReleased ? 'Hide All' : 'Show All'}
-            </button>
+            <button onclick="toggleReleased()">${showAllReleased ? 'Hide All' : 'Show All'}</button>
           </div>
         `;
-
         releasedToShow.forEach(e => {
           grid.innerHTML += `
             <div class="entry">
               <h2>${e.title} — ${e.artist}</h2>
               ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
               ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
-              ${e.isrc && isSingle(e) ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              ${buildIsrcBlock(e, singleMap)}
               <p>Tracks: ${getTrackCount(e)}</p>
-              ${buildTrackDropdown(e, singleMap)}
             </div>
           `;
         });
       }
 
-      /* ================= UNRELEASED ================= */
+      /* UNRELEASED */
       if (unreleased.length) {
         const showUnreleasedButton = unreleased.length >= 4;
-
         grid.innerHTML += `
           <div class="section-header">
             <div class="section-title">UNRELEASED</div>
             ${showUnreleasedButton ? `
-              <button onclick="toggleUnreleased()">
-                ${showAllUnreleased ? 'Hide All' : 'Show All'}
-              </button>
+              <button onclick="toggleUnreleased()">${showAllUnreleased ? 'Hide All' : 'Show All'}</button>
             ` : ''}
           </div>
         `;
-
         unreleasedToShow.forEach(e => {
           grid.innerHTML += `
             <div class="entry">
               <h2>${e.title} — ${e.artist} <span class="unreleased-tag">(Unreleased)</span></h2>
               ${e.releaseDate ? `<p>DATE: ${formatDateMMDDYYYY(e.releaseDate)}</p>` : ''}
               ${e.upc ? `<p>UPC: ${e.upc}</p>` : ''}
-              ${e.isrc && isSingle(e) ? `<p>ISRC: ${e.isrc}</p>` : ''}
+              ${buildIsrcBlock(e, singleMap)}
               <p>Tracks: ${getTrackCount(e)}</p>
-              ${buildTrackDropdown(e, singleMap)}
             </div>
           `;
         });
@@ -696,13 +599,26 @@ body {
       showAllReleased = !showAllReleased;
       render();
     }
-
     function toggleUnreleased() {
       showAllUnreleased = !showAllUnreleased;
       render();
     }
 
-    /* === SIDEBAR MENU === */
+    /* Toggle the ISRC list */
+    document.getElementById('musicDatabase').addEventListener('click', (e) => {
+      const btn = e.target.closest('.track-toggle-btn');
+      if (!btn) return;
+      const entry = btn.closest('.entry');
+      const list = entry.querySelector('.track-list');
+      if (!list) return;
+
+      const isOpen = list.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+      btn.textContent = isOpen ? '▴' : '▾';
+    });
+
+    /* Sidebar */
     (function(){
       const sidebar = document.getElementById('siteSidebar');
       const closeBtn = sidebar && sidebar.querySelector('.close');
@@ -714,7 +630,6 @@ body {
         document.body.classList.add('menu-open');
         sidebar.setAttribute('aria-hidden','false');
       }
-
       function closeMenu(){
         if (!sidebar) return;
         sidebar.classList.remove('open', 'active');
@@ -722,10 +637,7 @@ body {
         sidebar.setAttribute('aria-hidden','true');
       }
 
-      menuButtons.forEach(btn => {
-        if (btn) btn.addEventListener('click', openMenu);
-      });
-
+      menuButtons.forEach(btn => { if (btn) btn.addEventListener('click', openMenu); });
       if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 
       document.addEventListener('click', function(e){
@@ -735,13 +647,11 @@ body {
           closeMenu();
         }
       });
-
       document.addEventListener('keydown', function(e){
         if (e.key === 'Escape') closeMenu();
       });
     })();
 
-    // Fetch from Firebase
     dbRef.on('value', (snapshot) => {
       const data = snapshot.val();
       if (data) {
