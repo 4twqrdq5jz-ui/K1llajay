@@ -288,9 +288,10 @@ body {
 .track-list-item {
   font-size: 11px;
   color: #ffe600;
-  padding: 3px 0;
+  padding: 4px 0;
   letter-spacing: 0.3px;
   opacity: 0.95;
+  line-height: 1.4;
 }
 .track-list-item .from-single {
   opacity: 0.55;
@@ -494,10 +495,9 @@ body {
       return result;
     }
 
-    /* Returns the ISRC row + collapsible list (multi-track only) */
+    /* ISRC block – closed shows "ISRC: ▾", open shows the list */
     function buildIsrcBlock(e, singleMap) {
       if (isSingle(e)) {
-        // Singles keep the simple line
         return e.isrc ? `<p>ISRC: ${e.isrc}</p>` : '';
       }
 
@@ -512,10 +512,11 @@ body {
 
       const items = tracks.map(t => {
         const num = t.trackNum;
+        const name = t.title || '—';
         const isrc = t.isrc
           ? `${t.isrc}${t.copiedFromSingle ? ' <span class="from-single">(from single)</span>' : ''}`
           : '(no ISRC yet)';
-        return `<div class="track-list-item">${num}. ${isrc}</div>`;
+        return `<div class="track-list-item">${num}. ${name} - ${isrc}</div>`;
       }).join('');
 
       return `
