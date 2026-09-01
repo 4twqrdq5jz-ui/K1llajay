@@ -2,160 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy - K1LLAJAY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Privacy Policy – K1LLAJAY</title>
+  <link rel="icon" href="images/favicon.ico">
   <script src="anti-lag-optimization.js"></script>
   <style>
-    @font-face {
-      font-family: "Poppins";
-      src: url("fonts/Poppins-Regular.ttf") format("truetype");
-    }
+@font-face {
+  font-family: 'sitefont';
+  src: url('/font/kobuzan-cy-grotesk-grand-dark.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'altfont';
+  src: url('/font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
-    /* ================= RESET ================= */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      color: #fff;
-      font-family: "Poppins", sans-serif;
-      overflow-x: hidden;
-    }
+html, body {
+  width: 100%;
+  height: 100dvh;
+  font-family: 'sitefont', monospace;
+  color: white;
+  background: #000;
+}
+html { height: 100vh; height: 100dvh; }
 
-    /* ================= SIDEBAR ================= */
-    .sidebar {
-      position: fixed;
-      left: -300px;
-      top: 0;
-      width: 300px;
-      height: 100vh;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      transition: left 0.3s ease;
-      z-index: 1000;
-      overflow-y: auto;
-    }
+/* ================= TOP BAR ================= */
+.top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 76px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("/images/IMG_4619.png") center / cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 20;
+}
+.top-bar .menu-btn { position: absolute; left: 24px; }
+.top-bar-title {
+  font-family: 'altfont', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #ffe600;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(255, 230, 0, 0.35);
+}
+.menu-btn {
+  width: 44px; height: 36px; padding: 8px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 230, 0, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.menu-btn span {
+  display: block; width: 100%; height: 4px;
+  background: #ffe600; border-radius: 999px;
+}
+body.menu-open .menu-btn { display: none !important; }
 
-    .sidebar.active {
-      left: 0;
-    }
+/* ================= SIDEBAR ================= */
+.sidebar {
+  position: fixed; left: 0; top: 0;
+  width: 280px; height: 100%;
+  background: #071123;
+  color: #ffe600;
+  padding: 24px;
+  box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
+  transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
+  z-index: 30;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  font-family: 'sitefont', monospace;
+}
+.sidebar.active, .sidebar.open {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.sidebar .close {
+  position: absolute; right: 12px; top: 12px;
+  background: transparent; border: 0;
+  color: #ffe600; font-size: 24px; cursor: pointer;
+}
+.sidebar nav {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sidebar a {
+  color: #ffe600;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.sidebar a:hover {
+  background: rgba(255, 230, 0, 0.1);
+  text-decoration: none;
+}
 
-    .sidebar-close {
-      background: rgba(0, 0, 0, 0.15);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-size: 24px;
-      position: sticky;
-      top: 0;
-      width: 100%;
-      text-align: right;
-    }
+/* ================= BODY ================= */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  background: #000;
+}
 
-    .sidebar-close:hover {
-      background: rgba(0, 0, 0, 0.3);
-    }
+/* ================= MAIN CONTENT ================= */
+.main-content {
+  flex: 1;
+  padding: 110px 24px 50px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  line-height: 1.75;
+  font-family: 'sitefont', monospace;
+}
+.main-content::-webkit-scrollbar { display: none; }
+.main-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .sidebar ul {
-      list-style: none;
-      padding: 20px 0;
-    }
+.main-content h1 {
+  font-family: 'altfont', sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+  color: #ffe600;
+  margin-bottom: 28px;
+  text-shadow: 0 0 14px rgba(255, 230, 0, 0.25);
+}
 
-    .sidebar ul li {
-      margin: 0;
-    }
+.main-content p {
+  margin-bottom: 14px;
+  font-size: 14px;
+  opacity: 0.92;
+  letter-spacing: 0.3px;
+}
 
-    .sidebar ul li a {
-      display: block;
-      padding: 15px 20px;
-      color: white;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
+.main-content strong {
+  color: #ffe600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
 
-    .sidebar ul li a:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
+.section-indent {
+  margin-left: 16px;
+  opacity: 0.88;
+}
 
-    /* ================= HAMBURGER ================= */
-    .hamburger {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 50px;
-      height: 50px;
-      background: rgba(0, 0, 0, 0.15);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      z-index: 999;
-      transition: background 0.2s;
-    }
+.main-content a {
+  color: #ffe600;
+  text-decoration: none;
+}
+.main-content a:hover {
+  text-decoration: underline;
+}
 
-    .hamburger:hover {
-      background: rgba(0, 0, 0, 0.3);
-    }
+/* ================= FOOTER ================= */
+.footer {
+  max-width: 900px;
+  width: 100%;
+  margin: 10px auto 40px;
+  color: #ffffff;
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  font-family: 'sitefont', monospace;
+}
+.footer a {
+  color: #ffe600;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
 
-    .hamburger span {
-      width: 30px;
-      height: 2px;
-      background: white;
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-
-    /* ================= MAIN CONTENT ================= */
-    .main-content {
-      padding: 40px;
-      max-width: 900px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    .main-content h1 {
-      font-size: 48px;
-      margin-bottom: 30px;
-      background: linear-gradient(135deg, #8a2be2, #1e90ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .main-content p {
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-
-    /* ================= MOBILE RESPONSIVE ================= */
-    @media (max-width: 768px) {
-      .main-content {
-        padding: 20px;
-        max-width: 100%;
-      }
-
-      .main-content h1 {
-        font-size: 32px;
-        margin-bottom: 20px;
-      }
-
-      .main-content p {
-        font-size: 14px;
-      }
-    }
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 96px 16px 30px;
+  }
+  .main-content h1 {
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  .main-content p {
+    font-size: 13px;
+  }
+  .top-bar-title {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  .section-indent {
+    margin-left: 10px;
+  }
+}
   </style>
 </head>
 <body>
-  <!-- Top navigation -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
+    <button class="close" aria-label="Close menu">×</button>
+    <nav aria-label="Main navigation">
+      <a href="https://k1llajay.com">Home</a>
+      <a href="https://k1llajay.com/music">Latest Album</a>
+      <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+      <a href="https://k1llajay.com/podcast">Trend Talk</a>
+      <a href="https://k1llajay.com/extras/database">Catalog Database</a>
+      <a href="https://k1llajay.com/extras/events">Events</a>
+      <a href="https://k1llajay.com/404">Coming Soon</a>
+    </nav>
+  </aside>
+
+  <!-- TOP BAR -->
   <div class="top-bar">
     <button class="menu-btn" aria-label="Open menu" type="button">
       <span></span>
@@ -165,104 +254,89 @@
     <div class="top-bar-title">JAE LAURENT</div>
   </div>
 
-  <aside class="sidebar" id="siteSidebar" aria-hidden="true">
-  <button class="close" aria-label="Close menu">×</button>
-  <nav aria-label="Main navigation">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/database">Catelog Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
-  </nav>
-</aside>
-
-  <!-- Main Content -->
+  <!-- MAIN CONTENT -->
   <main class="main-content">
     <h1>Privacy Policy</h1>
-    
-    <p>
-      <strong>Last updated: January 2025</strong>
-    </p>
 
-    <p>
-      <strong>1. Introduction</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">At K1LLAJAY, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.</p>
+    <p><strong>Last updated: January 2025</strong></p>
 
-    <p>
-      <strong>2. Information We Collect</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>
-    
-    <p style="margin-left: 20px;">
-      <strong>Personal Data:</strong> Personally identifiable information, such as your name, shipping address, email address, and telephone number, and demographic information, such as your age, gender, hometown, and interests, that you voluntarily give to us when you register with the Site when you choose our products or services, when you respond to a survey or form, or when you interact with us in other ways.
-    </p>
+    <p><strong>1. Introduction</strong></p>
+    <p class="section-indent">At K1LLAJAY, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.</p>
 
-    <p>
-      <strong>3. Use of Your Information</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Site to: email you regarding updates to the Site; fulfill and send information related to your email inquiries; generate analytics about how you use the Site, improving our Site experience; monitor and analyze trends, usage, and activities; process your transactions and send you related information; respond to your comments, questions, and requests.</p>
+    <p><strong>2. Information We Collect</strong></p>
+    <p class="section-indent">We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>
+    <p class="section-indent"><strong>Personal Data:</strong> Personally identifiable information, such as your name, shipping address, email address, and telephone number, and demographic information, such as your age, gender, hometown, and interests, that you voluntarily give to us when you register with the Site when you choose our products or services, when you respond to a survey or form, or when you interact with us in other ways.</p>
 
-    <p>
-      <strong>4. Disclosure of Your Information</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">We may share information we have collected about you in certain situations: by law or government request; if we reasonably believe disclosure is in the public interest; to protect against legal liability.</p>
+    <p><strong>3. Use of Your Information</strong></p>
+    <p class="section-indent">Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Site to: email you regarding updates to the Site; fulfill and send information related to your email inquiries; generate analytics about how you use the Site, improving our Site experience; monitor and analyze trends, usage, and activities; process your transactions and send you related information; respond to your comments, questions, and requests.</p>
 
-    <p>
-      <strong>5. Security of Your Information</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are impenetrable.</p>
+    <p><strong>4. Disclosure of Your Information</strong></p>
+    <p class="section-indent">We may share information we have collected about you in certain situations: by law or government request; if we reasonably believe disclosure is in the public interest; to protect against legal liability.</p>
 
-    <p>
-      <strong>6. Contact for Third-Parties</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">The Site may contain links to third-party websites and applications of interest, not operated by us. This Privacy Policy does not apply to third-party websites and applications and we are not responsible for their privacy practices. We encourage you to examine the privacy statements posted on those other websites and applications before disclosing your personal information to them.</p>
+    <p><strong>5. Security of Your Information</strong></p>
+    <p class="section-indent">We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are impenetrable.</p>
 
-    <p>
-      <strong>7. CCPA Privacy Rights (California Residents)</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">If you are a California resident, you are entitled to learn what data we collect about you, ask to delete your data, and opt-out of the sale or sharing of your personal information. To exercise these rights, you can contact us.</p>
+    <p><strong>6. Contact for Third-Parties</strong></p>
+    <p class="section-indent">The Site may contain links to third-party websites and applications of interest, not operated by us. This Privacy Policy does not apply to third-party websites and applications and we are not responsible for their privacy practices. We encourage you to examine the privacy statements posted on those other websites and applications before disclosing your personal information to them.</p>
 
-    <p>
-      <strong>8. GDPR Data Protection Rights</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">If you are a resident of the EEA, you have certain data protection rights. These include the right to access, rectification, erasure, restriction, portability, and to object to processing.</p>
+    <p><strong>7. CCPA Privacy Rights (California Residents)</strong></p>
+    <p class="section-indent">If you are a California resident, you are entitled to learn what data we collect about you, ask to delete your data, and opt-out of the sale or sharing of your personal information. To exercise these rights, you can contact us.</p>
 
-    <p>
-      <strong>9. Changes to This Policy</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">We may update this Privacy Policy from time to time. If material changes are made, we will revise the "Last updated" date and, where appropriate, provide notice (e.g., via email or banner on the site).</p>
+    <p><strong>8. GDPR Data Protection Rights</strong></p>
+    <p class="section-indent">If you are a resident of the EEA, you have certain data protection rights. These include the right to access, rectification, erasure, restriction, portability, and to object to processing.</p>
 
-    <p>
-      <strong>10. Contact Us</strong>
-    </p>
-    
-    <p style="margin-left: 20px;">If you have questions or concerns about this Privacy Policy, please reach out:</p>
-    <p style="margin-left: 20px;">JEFFERSON ENTERTAINMENT LLC</p>
-    <p style="margin-left: 20px;">EMAIL: <a href="mailto:support@k1llajay.com" style="color: white;">support@k1llajay.com</a></p>
-    <p style="margin-left: 20px;">Thank you for trusting K1LLAJAY with your information. We're committed to respecting and protecting your privacy.</p>
+    <p><strong>9. Changes to This Policy</strong></p>
+    <p class="section-indent">We may update this Privacy Policy from time to time. If material changes are made, we will revise the "Last updated" date and, where appropriate, provide notice (e.g., via email or banner on the site).</p>
+
+    <p><strong>10. Contact Us</strong></p>
+    <p class="section-indent">If you have questions or concerns about this Privacy Policy, please reach out:</p>
+    <p class="section-indent">JEFFERSON ENTERTAINMENT LLC</p>
+    <p class="section-indent">EMAIL: <a href="mailto:support@k1llajay.com">support@k1llajay.com</a></p>
+    <p class="section-indent">Thank you for trusting K1LLAJAY with your information. We're committed to respecting and protecting your privacy.</p>
   </main>
 
-  <script>
-    const hamburger = document.querySelector(".hamburger");
-    const sidebar = document.querySelector(".sidebar");
-    const bodyElem = document.body;
+  <footer class="footer">
+    © 2025 Jefferson Entertainment LLC •
+    <a href="https://k1llajay.com/extras/terms">Terms</a> •
+    <a href="https://k1llajay.com/extras/privacy">Privacy</a>
+  </footer>
 
-    hamburger.onclick = () => {
-      sidebar.classList.toggle("active");
-      bodyElem.classList.toggle("sidebar-open");
-    };
+  <script>
+    /* === SIDEBAR MENU === */
+    (function(){
+      const sidebar = document.getElementById('siteSidebar');
+      const closeBtn = sidebar && sidebar.querySelector('.close');
+      const menuButtons = Array.from(document.querySelectorAll('.menu-btn'));
+
+      function openMenu(){
+        if (!sidebar) return;
+        sidebar.classList.add('open', 'active');
+        document.body.classList.add('menu-open');
+        sidebar.setAttribute('aria-hidden','false');
+      }
+      function closeMenu(){
+        if (!sidebar) return;
+        sidebar.classList.remove('open', 'active');
+        document.body.classList.remove('menu-open');
+        sidebar.setAttribute('aria-hidden','true');
+      }
+
+      menuButtons.forEach(btn => {
+        if (btn) btn.addEventListener('click', openMenu);
+      });
+      if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+      document.addEventListener('click', function(e){
+        if (!sidebar) return;
+        const clickedMenuButton = menuButtons.some(btn => btn && btn.contains(e.target));
+        if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !clickedMenuButton) {
+          closeMenu();
+        }
+      });
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') closeMenu();
+      });
+    })();
   </script>
 </body>
 </html>
