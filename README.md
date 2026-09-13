@@ -2,33 +2,12 @@
 
 Official portfolio and media hub for **JAE LAURENT** — Artist, Producer, and Creator.
 
-## 🎙️ Upcoming Album
+## 🎙️ Recently Released
 
-SOUTH OF SOMEWHERE - OUT MARCH 13, 2026
-
-### Singles
-
-Singles from the album are... Jerk (12/28/2026), HIIT A LICK (Up Style) [1/23/2026], & learn2love With 4MIR (2/14/2026)
-
-### Tracklist & Features
-
-1. south of somewhere With Amari2x [intro]
-2. hiit a lick (up style)
-3. rivalry
-4. somber
-5. hurts [interlude]
-6. lost mentality
-7. gt3 With T.GAZZZE
-8. riot
-9. loss With Amari2x [interlude]
-10. vogue pt.2
-11. left4dead
-12. heated
-13. reclamation [interlude]
-14. kontrol With Nae Ka$h
-15. learn2love With 4MIR
-16. jerk
-17. encore [outro]
+- ANY MEANS POSSIBLE - Sept 4, 2026
+- Out Of This World - Aug 28, 2026
+- On My Block (Remix with htgkmo) - Aug 21, 2026
+- SUPERSTAR - Aug 14, 2026
 
 ## 🌐 Website Overview
 
@@ -36,67 +15,28 @@ K1llajay is a modern, full-featured web platform showcasing music, events, podca
 
 ### Key Features
 
-**🎵 Music Hub**
-- Interactive music player with queue management
-- Album and track streaming
-- Released and unreleased music database
-- Real-time track information
-
-**📅 Events Calendar**
+**📅 Events**
 - Interactive calendar with event tracking
 - Past, present, and future event displays
 - Birthday celebration integration
 - Month-based event filtering
 
-**🎙️ Podcast Platform**
+**🎙️ Trend Talk**
 - Episode management and display
 - Audio streaming capabilities
 - Episode metadata and organization
 
-**📸 Portfolio Gallery**
+**📸 Natural Photography Portfolio**
 - Nature photography showcase
 - Grid-based image display
 - Modal preview system
 - Dynamic content loading
 
-**🎬 Video Integration**
-- Video player with playlist support
-- Track navigation controls
-- Meta information display
-
-**📊 Music Database**
+**📊 Catelog Database**
 - Released tracks database
 - Unreleased/WIP tracks management
 - Expandable/collapsible sections
 - Date-based sorting
-
-**🔗 Link Hub**
-- Social media and streaming links
-- Bio information
-- Easy navigation
-
----
-
-## 🚀 Performance Optimizations
-
-All assets and resources have been optimized for **100% faster loading**:
-
-- ⚡ **Preconnect & DNS Prefetch** - Reduces network latency by 100-300ms
-- 🚀 **jsDelivr CDN** - Global edge nodes for 30-50% faster delivery
-- 📦 **Async/Defer Scripts** - Non-blocking Firebase loading (40-60% faster FCP)
-- 🔤 **Font Display Swap** - Instant text rendering with system font fallback
-- **Result**: ~2x faster page load times across all devices
-
----
-
-## 🛠️ Tech Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Backend**: Firebase Realtime Database
-- **Storage**: Firebase Storage
-- **CDN**: jsDelivr (Firebase hosting)
-- **Hosting**: GitHub Pages / Custom Domain
-- **Font**: Custom 'sitefont' (beyoncefont.ttf)
 
 ---
 
@@ -105,42 +45,13 @@ All assets and resources have been optimized for **100% faster loading**:
 ```
 K1llajay/
 ├── index.html                 # Home/Portfolio gallery
-├── 1.html                      # Album/Music showcase page
-├── events.html                # Calendar & event management
 ├── music.html                 # Music player & tracks
-├── player.html                # Alternative music player
 ├── podcast.html               # Podcast episodes
 ├── portfolio.html             # Nature photography gallery
-├── laurent-by-jae-laurent.html # Laurent storefront/boutique
-├── music-database.html        # Database viewer
-├── my-links.html              # Link aggregator
-├── privacy.html               # Privacy policy
-├── terms.html                 # Terms & conditions
-├── maintenance.html           # Maintenance page
-├── 404.html                   # 404 error page
-├── edit-events_editor.html    # Admin: Event management
-├── edit-player_editor.html    # Admin: Music upload
-├── edit-podcast_editor.html   # Admin: Podcast upload
-├── edit-portfolio_editor.html # Admin: Image upload
-├── edit-home_editor.html      # Admin: Slides/content upload
-├── edit-database_editor.html  # Admin: Database manager
-├── backend/                   # Backend server files
-│   ├── index.js               # Main server application
-│   └── .env                   # Environment variables
-├── beyoncefont.ttf            # Custom font (primary)
-├── Andasia Personal Use Only.ttf # Alternative font
-├── IMG_3309.gif               # Black History Month banner image
-├── IMG_3214.JPEG              # Profile image
-├── intro-gif-1.gif through intro-gif-5.gif # Intro animations
-├── Soulaan-flag-v0-26ghsv12s7cb1.webp # Featured image asset
-├── amazon.svg                 # Amazon logo
-├── apple.svg                  # Apple logo
-├── spotify.svg                # Spotify logo
-├── tidal.svg                  # Tidal logo
-├── favicon.ico                # Site icon
-├── CNAME                      # Custom domain configuration
-├── PERFORMANCE_OPTIMIZATIONS.md # Performance documentation
-└── README.md                  # This file
+├── \extras\database.html      # Database viewer
+├── \extras\events.html         # Calendar & event management
+├── \extras\privacy.html       # Privacy policy
+├── \extras\terms.html         # Terms & conditions
 ```
 
 ---
@@ -378,7 +289,7 @@ The banner appears on all pages and is optimized for both desktop and mobile vie
 4. Deploy to hosting platform
 
 ### For Admins
-1. Navigate to `/edit-*_editor.html` pages
+1. Navigate to editor pages
 2. Authenticate with Firebase credentials
 3. Upload content and manage database
 4. Changes reflect in real-time on public pages
@@ -388,7 +299,7 @@ The banner appears on all pages and is optimized for both desktop and mobile vie
 ## 📞 Contact & Links
 
 - **Website**: https://k1llajay.com
-- **Links**: https://k1llajay.com/mylinks
+- **Email**: <mailto:southofsomewhere@icloud.com>
 - **Privacy**: https://k1llajay.com/privacy
 - **Terms**: https://k1llajay.com/terms
 
