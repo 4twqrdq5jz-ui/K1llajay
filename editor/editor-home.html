@@ -1,20 +1,115 @@
-<div class="buttons">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Editor Workspace — Jae Laurent</title>
+  <link rel="stylesheet" href="editor-theme.css" />
+</head>
+<body class="dashboard-body">
+  <header class="topbar">
+    <button class="hamburger" aria-label="Open editor navigation" aria-expanded="false" aria-controls="editorSidebar">☰</button>
+    <div class="top-name">EDITOR WORKSPACE</div>
+  </header>
 
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
-</div>
+  <aside class="sidebar dashboard-sidebar" id="editorSidebar" aria-label="Editor navigation">
+    <div class="name">JAE LAURENT</div>
+    <nav class="buttons">
+      <span class="nav-label">Workspace</span>
+      <a href="editor-home.html" aria-current="page">Overview</a>
+      <span class="nav-label">Publishing</span>
+      <a href="edit-homepage.html">Homepage Slides</a>
+      <a href="edit-portfolio.html">Portfolio</a>
+      <a href="edit-music.html">Music Editor</a>
+      <a href="edit-podcast.html">Podcast Editor</a>
+      <a href="edit-events.html">Events</a>
+      <span class="nav-label">Management</span>
+      <a href="edit-database.html">Catalog Database</a>
+      <a href="edit-store.html">Store Admin</a>
+    </nav>
+    <div class="footer">
+      <a href="https://k1llajay.com">View live site</a>
+      <div class="copyright">© 2026 Jefferson Entertainment LLC</div>
+    </div>
+  </aside>
+
+  <main class="main dashboard-main">
+    <header class="dashboard-header">
+      <div>
+        <p class="dashboard-eyebrow">K1LLAJAY / CONTENT OPERATIONS</p>
+        <h1>Editor workspace</h1>
+        <p class="dashboard-deck">Publishing, catalog, and store management</p>
+      </div>
+      <a class="dashboard-site-link" href="https://k1llajay.com" target="_blank" rel="noopener noreferrer">
+        View live site <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <section class="dashboard-section" aria-labelledby="publishing-title">
+      <div class="dashboard-section-heading">
+        <span class="dashboard-section-index">01</span>
+        <h2 id="publishing-title">Publishing</h2>
+      </div>
+      <div class="dashboard-link-grid">
+        <a class="dashboard-link" href="edit-homepage.html">
+          <span class="dashboard-link-copy"><strong>Homepage slides</strong><small>Homepage image rotation</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="dashboard-link" href="edit-portfolio.html">
+          <span class="dashboard-link-copy"><strong>Portfolio</strong><small>Photography library</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="dashboard-link" href="edit-music.html">
+          <span class="dashboard-link-copy"><strong>Music editor</strong><small>Albums, tracks, and credits</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="dashboard-link" href="edit-podcast.html">
+          <span class="dashboard-link-copy"><strong>Podcast editor</strong><small>Episodes and seasons</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="dashboard-link" href="edit-events.html">
+          <span class="dashboard-link-copy"><strong>Events</strong><small>Events and release dates</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="dashboard-section" aria-labelledby="management-title">
+      <div class="dashboard-section-heading">
+        <span class="dashboard-section-index">02</span>
+        <h2 id="management-title">Management</h2>
+      </div>
+      <div class="dashboard-link-grid">
+        <a class="dashboard-link" href="edit-database.html">
+          <span class="dashboard-link-copy"><strong>Catalog database</strong><small>Release identifiers and track counts</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="dashboard-link" href="edit-store.html">
+          <span class="dashboard-link-copy"><strong>Store admin</strong><small>Products, orders, and exports</small></span>
+          <span class="dashboard-link-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="dashboard-footer">Jefferson Entertainment LLC · Editor workspace</footer>
+  </main>
+
+  <script>
+    const editorMenuButton = document.querySelector('.hamburger');
+    const editorSidebar = document.getElementById('editorSidebar');
+
+    function setEditorMenuOpen(isOpen) {
+      editorSidebar.classList.toggle('active', isOpen);
+      editorMenuButton.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    editorMenuButton.addEventListener('click', () => {
+      setEditorMenuOpen(editorMenuButton.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setEditorMenuOpen(false);
+    });
+  </script>
+</body>
+</html>
