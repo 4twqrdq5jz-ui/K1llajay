@@ -410,28 +410,8 @@ body {
     <div id="pageArtist" class="top-bar-title">JAE LAURENT</div>
   </div>
 
-  <!-- PHOTO GRID - 20 Images -->
+  <!-- PHOTO GRID: filled from Firebase by script below -->
   <div class="main-content" id="grid-container">
-    <div class="grid-item"><img src="images/IMG_3457_Original.jpeg" alt="Portfolio image 1"></div>
-    <div class="grid-item"><img src="images/IMG_3460_Original.jpeg" alt="Portfolio image 2"></div>
-    <div class="grid-item"><img src="images/IMG_3462_Original.jpeg" alt="Portfolio image 3"></div>
-    <div class="grid-item"><img src="images/IMG_3530_Original.jpeg" alt="Portfolio image 4"></div>
-    <div class="grid-item"><img src="images/IMG_3541_Original.jpeg" alt="Portfolio image 5"></div>
-    <div class="grid-item"><img src="images/IMG_3542_Original.jpeg" alt="Portfolio image 6"></div>
-    <div class="grid-item"><img src="images/IMG_3544_Original.jpeg" alt="Portfolio image 7"></div>
-    <div class="grid-item"><img src="images/IMG_3545_Original.jpeg" alt="Portfolio image 8"></div>
-    <div class="grid-item"><img src="images/IMG_3546_Original.jpeg" alt="Portfolio image 9"></div>
-    <div class="grid-item"><img src="images/IMG_3565_Original.jpeg" alt="Portfolio image 10"></div>
-    <div class="grid-item"><img src="images/IMG_3570_Original.jpeg" alt="Portfolio image 11"></div>
-    <div class="grid-item"><img src="images/IMG_4023_Original.jpeg" alt="Portfolio image 12"></div>
-    <div class="grid-item"><img src="images/IMG_4118_Original.jpeg" alt="Portfolio image 13"></div>
-    <div class="grid-item"><img src="images/IMG_6205_Original.jpeg" alt="Portfolio image 14"></div>
-    <div class="grid-item"><img src="images/IMG_6873_Original.jpeg" alt="Portfolio image 15"></div>
-    <div class="grid-item"><img src="images/IMG_6948_Original.jpeg" alt="Portfolio image 16"></div>
-    <div class="grid-item"><img src="images/IMG_3413.jpeg" alt="Portfolio image 17"></div>
-    <div class="grid-item"><img src="images/IMG_3414.jpeg" alt="Portfolio image 18"></div>
-    <div class="grid-item"><img src="images/IMG_4075.jpeg" alt="Portfolio image 19"></div>
-    <div class="grid-item"><img src="images/IMG_4076.jpeg" alt="Portfolio image 20"></div>
   </div>
 
   <!-- MODAL -->
@@ -458,7 +438,7 @@ body {
       document.body.classList.remove("menu-open");
       
       modal.classList.add("open");
-      modalImg.src = e.target.src;
+      modalImg.src = e.target.dataset.full || e.target.src;
     }
   });
 
@@ -505,6 +485,51 @@ body {
       if (e.key === 'Escape') closeMenu();
     });
   })();
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+  /* === FIREBASE PHOTOS ===
+     Firebase is the photo list. Photos that also exist in the images folder use that local file as the
+     thumbnail; the full Firebase image opens in the modal. */
+  firebase.initializeApp({
+    apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+    authDomain: "mainsite-eb919.firebaseapp.com",
+    databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+    projectId: "mainsite-eb919",
+    storageBucket: "mainsite-eb919.firebasestorage.app",
+    messagingSenderId: "799554641103",
+    appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+  });
+
+  // Storage files are named like "1751843306904-IMG_3457.JPEG"; the folder copy is "images/IMG_3457_Original.jpeg".
+  function localThumbnail(imageUrl) {
+    const path = decodeURIComponent((imageUrl.split('/o/')[1] || '').split('?')[0]);
+    const match = path.match(/(IMG_\d+)\.[a-z]+$/i);
+    return match ? `images/${match[1].toUpperCase()}_Original.jpeg` : null;
+  }
+
+  firebase.database().ref('portfolio').on('value', snap => {
+    const photos = Object.values(snap.val() || {})
+      .filter(item => item && item.imageUrl)
+      .sort((a, b) => (b.uploadedAt || b.timestamp || 0) - (a.uploadedAt || a.timestamp || 0));
+    const fragment = document.createDocumentFragment();
+    photos.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'grid-item';
+      const img = document.createElement('img');
+      const thumb = localThumbnail(item.imageUrl);
+      img.src = thumb || item.imageUrl;
+      if (thumb) img.onerror = () => { img.onerror = null; img.src = item.imageUrl; };
+      img.dataset.full = item.imageUrl;
+      img.alt = item.title || 'Portfolio image';
+      img.loading = 'lazy';
+      div.appendChild(img);
+      fragment.appendChild(div);
+    });
+    gridContainer.replaceChildren(fragment);
+  });
   </script>
 </body>
 </html>

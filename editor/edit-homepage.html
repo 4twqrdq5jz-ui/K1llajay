@@ -477,8 +477,13 @@
       .dashboard-header h1 {
         font-size: 28px;
       }
-      .editor-grid {
+      .editor-grid,
+      .image-manager-grid {
         grid-template-columns: 1fr;
+      }
+      .image-btn {
+        min-width: 0;
+        padding: 8px 6px;
       }
       .sidebar {
         left: 0;
@@ -667,7 +672,7 @@
     const defaultValues = {
       releaseTitle: 'ANY MEANS POSSIBLE',
       releaseLink: 'https://moosyc.com/jae-laurent/any-means-possible',
-      scheduledDates: ['2026-10-18', '2026-11-08'],
+      scheduledDates: [],
       streamLinks: [
         { label: 'Spotify', url: 'https://open.spotify.com/artist/7FECUKRSQSao4tari6oa3J?si=vpxOYs9aTPWH8xRuw_nSkA' },
         { label: 'Apple Music', url: 'https://music.apple.com/us/artist/yae-yadir/1722020367/' },
@@ -942,9 +947,10 @@
     function applyHomepageState(savedState) {
       document.getElementById('releaseTitle').value = savedState.releaseTitle || defaultValues.releaseTitle;
       document.getElementById('releaseLink').value = savedState.releaseLink || defaultValues.releaseLink;
-      pageState.scheduledDates = Array.isArray(savedState.scheduledDates) ? savedState.scheduledDates : [...defaultValues.scheduledDates];
-      pageState.streamLinks = Array.isArray(savedState.streamLinks) ? savedState.streamLinks : JSON.parse(JSON.stringify(defaultValues.streamLinks));
-      pageState.socialLinks = Array.isArray(savedState.socialLinks) ? savedState.socialLinks : JSON.parse(JSON.stringify(defaultValues.socialLinks));
+      // Firebase drops empty arrays, so a missing list means it was cleared, not unset.
+      pageState.scheduledDates = Array.isArray(savedState.scheduledDates) ? savedState.scheduledDates : [];
+      pageState.streamLinks = Array.isArray(savedState.streamLinks) ? savedState.streamLinks : [];
+      pageState.socialLinks = Array.isArray(savedState.socialLinks) ? savedState.socialLinks : [];
       pageState.contactLinks = Array.isArray(savedState.contactLinks) ? savedState.contactLinks : JSON.parse(JSON.stringify(defaultValues.contactLinks));
       pageState.imageData = savedState.imageData || { heroBackground: null, tileOne: null, tileTwo: null };
       renderDates();

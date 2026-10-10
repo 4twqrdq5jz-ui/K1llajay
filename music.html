@@ -627,6 +627,11 @@ body {
       if (artistEl) artistEl.textContent = albumData.artist || 'Jae Laurent';
       if (pageArtistEl) pageArtistEl.textContent = albumData.artist || 'Jae Laurent';
       if (pageAlbumEl) pageAlbumEl.textContent = albumData.title || 'This Is For The Girls And The Gays';
+      const coverEl = document.querySelector('.album-cover img');
+      if (coverEl) {
+        coverEl.src = albumData.cover || 'images/Album Cover.PNG';
+        coverEl.alt = `${albumData.title || 'This Is For The Girls And The Gays'} album cover`;
+      }
     }
 
     function parseLocalDate(dateStr) {

@@ -172,77 +172,90 @@
       margin-bottom: 16px;
       grid-auto-flow: row;
     }
-    .track-title-row {
-      position: relative;
+    .track-title-row,
+    .track-feature-row {
+      grid-column: 1 / -1;
       display: flex;
       align-items: center;
-      justify-content: center;
-      grid-column: 1 / -1;
-      height: 56px;
-      margin-bottom: 0;
+      gap: 12px;
     }
-    .track-title-row #trackNumber {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto 0;
-      z-index: 2;
-    }
-    .track-title-row #trackTitle {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      transform: translateX(-50%);
-      margin: auto;
-      width: 80%;
-      min-width: 180px;
-      max-width: 400px;
-      text-align: center;
-      display: block;
-      z-index: 1;
-    }
-    /* Remove margin-left/right auto from #trackTitle for this context */
-    #trackTitle {
-      margin-left: unset;
-      margin-right: unset;
-    }
-    #trackNumber {
-      width: 48px;
-      min-width: 48px;
-      max-width: 48px;
+    .track-title-row #trackTitle,
+    .track-feature-row #trackFeature {
+      flex: 1;
+      min-width: 0;
       height: 48px;
-      min-height: 48px;
-      max-height: 48px;
-      text-align: center;
-      padding: 0;
-      margin-right: 0;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      border-radius: 6px;
-      display: inline-block;
-      vertical-align: middle;
     }
-    #trackTitle {
-      width: 80%;
-      min-width: 180px;
-      max-width: 400px;
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
+    .track-feature-row .custom-checkbox-wrapper {
+      flex-shrink: 0;
     }
-    #trackFeature {
+    #releaseDate {
+      width: 260px;
+      max-width: 100%;
+      text-align: center;
+    }
+    .cover-card {
+      display: grid;
+      gap: 12px;
+      max-width: 360px;
+      margin: 0 auto 4px;
+    }
+    .cover-card.single-cover {
       grid-column: 1 / -1;
-      width: 80%;
-      min-width: 180px;
-      max-width: 400px;
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
+      width: 100%;
+    }
+    .cover-card[hidden] { display: none; }
+    .field-note {
+      font-size: 12px;
+      letter-spacing: 1px;
+      opacity: 0.6;
+    }
+    .image-preview {
+      aspect-ratio: 1 / 1;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.02);
+    }
+    .image-preview.empty::before {
+      content: 'No image';
+      color: #777;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
+    }
+    .image-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .image-input { display: none; }
+    .image-btn {
+      flex: 1;
+      min-height: 40px;
+      padding: 8px 6px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .image-btn.delete { border-color: rgba(255, 92, 92, 0.38); }
+    .image-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .status-line {
+      font-size: 12px;
+      opacity: 0.8;
+      min-height: 1em;
     }
     #releaseTitleInput {
       grid-column: 1/-1;
@@ -314,7 +327,7 @@
       max-height: 48px;
       text-align: center;
       padding: 0;
-      margin-right: 8px;
+      flex-shrink: 0;
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -577,73 +590,64 @@
           <input id="albumTitle" type="text" placeholder="Album Title" />
           <input id="albumArtist" type="text" placeholder="Album Artist" />
         </div>
+        <div class="cover-card" id="albumCoverCard">
+          <div class="field-note">Album cover</div>
+          <div class="image-preview empty"></div>
+          <div class="image-controls">
+            <input class="image-input" type="file" accept="image/*,.heic,.heif" />
+            <button type="button" class="image-btn upload" data-action="upload">Upload image</button>
+            <button type="button" class="image-btn replace" data-action="replace">Replace image</button>
+            <button type="button" class="image-btn delete" data-action="delete">Delete image</button>
+          </div>
+          <div class="status-line" aria-live="polite"></div>
+        </div>
         <button id="updateAlbumBtn" class="primary-btn">Update Album</button>
       </div>
       <div class="upload-section">
         <h4>Track Entry</h4>
         <div class="form-grid">
           <div class="track-title-row">
-            <select id="trackNumber"></select>
+            <select id="trackNumber" aria-label="Track number"></select>
             <input id="trackTitle" type="text" placeholder="Track Title" />
           </div>
-          <div class="track-feature-row" style="position: relative; display: flex; align-items: center; justify-content: center; grid-column: 1 / -1; height: 56px; margin-bottom: 0;">
-            <div style="position: absolute; left: 0; top: 0; bottom: 0; display: flex; align-items: center;">
-              <div class="custom-checkbox-wrapper">
-                <input type="checkbox" id="explicitToggle" />
-                <label for="explicitToggle">Explicit</label>
-              </div>
+          <div class="track-feature-row">
+            <div class="custom-checkbox-wrapper">
+              <input type="checkbox" id="explicitToggle" />
+              <label for="explicitToggle">Explicit</label>
             </div>
-            <input id="trackFeature" type="text" placeholder="Track Feature(s)" style="position: absolute; left: 50%; top: 0; bottom: 0; transform: translateX(-50%); width: 80%; min-width: 180px; max-width: 400px; text-align: center; display: block; z-index: 1;" />
-          </div>
-          <div class="release-date-row" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
-            <input id="releaseDate" type="date" placeholder="Release Date" style="width: 80%; min-width: 180px; max-width: 400px; text-align: center; font-family: 'sitefont', monospace;" />
+            <input id="trackFeature" type="text" placeholder="Track Feature(s)" />
           </div>
           <div class="inline-controls-row">
+            <input id="releaseDate" type="date" placeholder="Release Date" aria-label="Release date" />
             <div class="custom-checkbox-wrapper">
               <input type="checkbox" id="scheduleToggle" />
               <label for="scheduleToggle">Schedule Track</label>
             </div>
-            <input id="scheduleDate" type="date" placeholder="Schedule Date" style="width: 260px; max-width: 100%; text-align: center; font-family: 'sitefont', monospace;" />
           </div>
-          <textarea id="trackLyrics" placeholder="Lyrics" oninput="autoResizeLyrics(this)"></textarea>
-            <script>
-            function autoResizeLyrics(textarea) {
-              textarea.style.height = 'auto';
-              textarea.style.height = (textarea.scrollHeight) + 'px';
-            }
-            // Auto-resize on load/edit
-            document.addEventListener('DOMContentLoaded', function() {
-              var lyrics = document.getElementById('trackLyrics');
-              if (lyrics) autoResizeLyrics(lyrics);
-            });
-            // Also auto-resize when editing a track
-            const origEditTrack = window.editTrack;
-            window.editTrack = function(i) {
-              origEditTrack(i);
-              var lyrics = document.getElementById('trackLyrics');
-              if (lyrics) autoResizeLyrics(lyrics);
-            };
-            </script>
+          <div class="inline-controls-row">
+            <div class="custom-checkbox-wrapper">
+              <input type="checkbox" id="singleToggle" />
+              <label for="singleToggle">Single</label>
+            </div>
+          </div>
+          <div class="cover-card single-cover" id="singleCoverCard">
+            <div class="field-note">Single cover</div>
+            <div class="image-preview empty"></div>
+            <div class="image-controls">
+              <input class="image-input" type="file" accept="image/*,.heic,.heif" />
+              <button type="button" class="image-btn upload" data-action="upload">Upload image</button>
+              <button type="button" class="image-btn replace" data-action="replace">Replace image</button>
+              <button type="button" class="image-btn delete" data-action="delete">Delete image</button>
+            </div>
+            <div class="status-line" aria-live="polite"></div>
+          </div>
         </div>
       </div>
       <div class="upload-section">
         <h4>Credits</h4>
         <div class="form-grid">
-          <input id="creditPerformed" type="text" placeholder="Performed By" />
-          <input id="creditWritten" type="text" placeholder="Written By" />
-          <input id="creditMixed" type="text" placeholder="Mixed By" />
-          <input id="creditRecorded" type="text" placeholder="Recorded By" />
           <input id="creditProduced" type="text" placeholder="Produced By" />
           <input id="creditSampled" type="text" placeholder="Sampled From" />
-        </div>
-      </div>
-      <div class="upload-section">
-        <h4>Services</h4>
-        <div class="form-grid">
-          <input id="linkApple" type="text" placeholder="Apple Music Link" />
-          <input id="linkSpotify" type="text" placeholder="Spotify Link" />
-          <input id="linkAmazon" type="text" placeholder="Amazon Music Link" />
-          <input id="linkTidal" type="text" placeholder="Tidal Link" />
         </div>
       </div>
       <div class="upload-section" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
@@ -656,6 +660,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic-to@1.6.5/dist/iife/heic-to.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
@@ -697,7 +702,6 @@
           container.innerHTML += `
             <div class="entry">
               <h2>${e.number}. ${e.title}${explicitSymbol} — ${e.artist}</h2>
-              <p>Lyrics Preview: ${e.lyrics.substring(0, 50)}...</p>
               <p>Release: ${e.releaseDate || 'N/A'}${scheduleLabel}</p>
               <button onclick="editTrack(${actualIndex})" class="edit-btn">Edit</button>
             </div>`;
@@ -718,10 +722,11 @@
       tracksRef.once('value', snap => {
         const val = snap.val() || {};
         let allCredits = Object.values(val).map(t => t.credits).filter(Boolean).join('<br>');
-        const data = { title, credits: allCredits, artist };
+        const data = { title, credits: allCredits, artist, cover: albumCover.get() };
         albumRef.set(data).then(() => {
-          document.getElementById('albumTitle').value = '';
-          document.getElementById('albumArtist').value = '';
+          albumCover.status.textContent = 'Album published.';
+        }).catch(error => {
+          albumCover.status.textContent = `Publishing failed: ${error.message}`;
         });
       });
     }
@@ -733,7 +738,9 @@
       const explicit = document.getElementById('explicitToggle').checked;
       const releaseDate = document.getElementById('releaseDate').value;
       const scheduleEnabled = document.getElementById('scheduleToggle').checked;
-      const scheduleDate = document.getElementById('scheduleDate').value;
+      if (scheduleEnabled && !releaseDate) return alert('Set a release date to schedule this track');
+      // The site hides scheduled tracks until scheduleDate, which is the release date.
+      const scheduleDate = scheduleEnabled ? releaseDate : '';
       const albumArtist = document.getElementById('albumArtist').value.trim() || 'Jae Laurent';
       let artist = albumArtist;
       if (feature) {
@@ -745,20 +752,8 @@
           artist = albumArtist + ' & ' + feature;
         }
       }
-      const creditPerformed = document.getElementById('creditPerformed').value.trim() || 'Jae Laurent';
-      const creditWritten = document.getElementById('creditWritten').value.trim() || 'Jae Laurent';
-      const creditMixed = document.getElementById('creditMixed').value.trim() || 'Jae Laurent';
-      const creditRecorded = document.getElementById('creditRecorded').value.trim() || 'Jae Laurent';
       const creditProduced = document.getElementById('creditProduced').value.trim() || 'Jae Laurent';
       const creditSampled = document.getElementById('creditSampled').value.trim();
-      const lyrics = document.getElementById('trackLyrics').value.trim();
-      // ...existing code...
-      const links = {
-        apple: document.getElementById('linkApple').value.trim(),
-        spotify: document.getElementById('linkSpotify').value.trim(),
-        amazon: document.getElementById('linkAmazon').value.trim(),
-        tidal: document.getElementById('linkTidal').value.trim()
-      };
 
       if (!title || isNaN(number)) return alert('Title and Number required');
 
@@ -770,10 +765,6 @@
 
       // Build credits string for preview/legacy
       let creditsArr = [];
-      if (creditPerformed) creditsArr.push(`PERFORMED BY ${creditPerformed}`);
-      if (creditWritten) creditsArr.push(`WRITTEN BY ${creditWritten}`);
-      if (creditMixed) creditsArr.push(`MIXED BY ${creditMixed}`);
-      if (creditRecorded) creditsArr.push(`RECORDED BY ${creditRecorded}`);
       if (creditProduced) creditsArr.push(`${creditProduced}`);
       if (creditSampled) creditsArr.push(`SAMPLED FROM ${creditSampled}`);
 
@@ -788,8 +779,11 @@
 
       const credits = `<p>${creditsArr.join(' / ')}</p>`;
 
-      const data = { number, title, artist, feature, explicit, releaseDate, scheduleEnabled, scheduleDate, lyrics, credits, links,
-        creditPerformed, creditWritten, creditMixed, creditRecorded, creditProduced, creditSampled };
+      const single = singleToggle.checked;
+      const cover = single ? singleCover.get() : null;
+
+      const data = { number, title, artist, feature, explicit, releaseDate, scheduleEnabled, scheduleDate, credits,
+        creditProduced, creditSampled, single, cover };
 
       tracksRef.child(slug).set(data).then(resetTrackForm);
     }
@@ -806,20 +800,13 @@
       document.getElementById('trackTitle').value = e.title;
       document.getElementById('trackFeature').value = e.feature || '';
       document.getElementById('explicitToggle').checked = e.explicit || false;
-      document.getElementById('releaseDate').value = e.releaseDate || '';
+      document.getElementById('releaseDate').value = e.releaseDate || e.scheduleDate || '';
       document.getElementById('scheduleToggle').checked = e.scheduleEnabled || false;
-      document.getElementById('scheduleDate').value = e.scheduleDate || '';
-      document.getElementById('trackLyrics').value = e.lyrics;
-      document.getElementById('creditPerformed').value = e.creditPerformed || 'Jae Laurent';
-      document.getElementById('creditWritten').value = e.creditWritten || 'Jae Laurent';
-      document.getElementById('creditMixed').value = e.creditMixed || 'Jae Laurent';
-      document.getElementById('creditRecorded').value = e.creditRecorded || 'Jae Laurent';
+      singleToggle.checked = e.single || false;
+      singleCover.set(e.cover);
+      syncSingleCoverVisibility();
       document.getElementById('creditProduced').value = e.creditProduced || 'Jae Laurent';
       document.getElementById('creditSampled').value = e.creditSampled || '';
-      document.getElementById('linkApple').value = e.links?.apple || '';
-      document.getElementById('linkSpotify').value = e.links?.spotify || '';
-      document.getElementById('linkAmazon').value = e.links?.amazon || '';
-      document.getElementById('linkTidal').value = e.links?.tidal || '';
       editingTrack = i;
       document.getElementById('addUpdateTrackBtn').textContent = 'Update Track';
       document.getElementById('deleteTrackBtn').style.display = 'inline-block';
@@ -841,28 +828,104 @@
       document.getElementById('explicitToggle').checked = false;
       document.getElementById('releaseDate').value = '';
       document.getElementById('scheduleToggle').checked = false;
-      document.getElementById('scheduleDate').value = '';
-      document.getElementById('trackLyrics').value = '';
-      document.getElementById('creditPerformed').value = '';
-      document.getElementById('creditWritten').value = '';
-      document.getElementById('creditMixed').value = '';
-      document.getElementById('creditRecorded').value = '';
+      singleToggle.checked = false;
+      singleCover.set(null);
+      syncSingleCoverVisibility();
       document.getElementById('creditProduced').value = '';
       document.getElementById('creditSampled').value = '';
-      document.getElementById('linkApple').value = '';
-      document.getElementById('linkSpotify').value = '';
-      document.getElementById('linkAmazon').value = '';
-      document.getElementById('linkTidal').value = '';
       editingTrack = null;
       document.getElementById('addUpdateTrackBtn').textContent = 'Add Track';
       document.getElementById('deleteTrackBtn').style.display = 'none';
     }
+
+    // ===== COVER UPLOADERS =====
+    // Wires a .cover-card's upload/replace/delete buttons; get()/set() hold the image as a data URL.
+    function createCoverUploader(card, publishLabel) {
+      const preview = card.querySelector('.image-preview');
+      const input = card.querySelector('.image-input');
+      const buttons = card.querySelectorAll('.image-btn');
+      const status = card.querySelector('.status-line');
+      let image = null;
+
+      function refresh() {
+        const hasImage = Boolean(image);
+        preview.classList.toggle('empty', !hasImage);
+        preview.innerHTML = hasImage ? `<img src="${image}" alt="Cover" />` : '';
+        buttons.forEach(button => {
+          const isUpload = button.dataset.action === 'upload';
+          button.disabled = isUpload ? hasImage : !hasImage;
+        });
+        input.value = '';
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.dataset.action === 'delete') {
+            image = null;
+            refresh();
+            status.textContent = `Cover removed. Click ${publishLabel} to publish.`;
+            return;
+          }
+          input.click();
+        });
+      });
+
+      input.addEventListener('change', async event => {
+        const file = event.target.files[0];
+        if (!file) return;
+        status.textContent = 'Processing image...';
+        try {
+          image = await readCoverAsDataURL(file);
+          refresh();
+          status.textContent = `Cover ready. Click ${publishLabel} to publish.`;
+        } catch (error) {
+          status.textContent = `Could not read image: ${error.message}`;
+        }
+      });
+
+      refresh();
+      return {
+        get: () => image,
+        set: value => { image = value || null; status.textContent = ''; refresh(); },
+        status
+      };
+    }
+
+    // Downscale to keep the cover small enough for the realtime database.
+    async function readCoverAsDataURL(file) {
+      const isHeic = /\.(heic|heif)$/i.test(file.name) || /^image\/(heic|heif)/i.test(file.type);
+      let blob = file;
+      if (isHeic) {
+        if (typeof window.HeicTo !== 'function') {
+          throw new Error('The HEIC converter did not load. Check your connection and try again.');
+        }
+        blob = await window.HeicTo({ blob: file, type: 'image/jpeg', quality: 0.9 });
+      }
+      const bitmap = await createImageBitmap(blob);
+      const scale = Math.min(1, 1200 / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/jpeg', 0.85);
+    }
+
+    const albumCover = createCoverUploader(document.getElementById('albumCoverCard'), 'Update Album');
+    const singleCover = createCoverUploader(document.getElementById('singleCoverCard'), 'Add/Update Track');
+
+    const singleToggle = document.getElementById('singleToggle');
+    function syncSingleCoverVisibility() {
+      document.getElementById('singleCoverCard').hidden = !singleToggle.checked;
+    }
+    singleToggle.addEventListener('change', syncSingleCoverVisibility);
+    syncSingleCoverVisibility();
 
     // Load album data into form for editing
     albumRef.once('value', snap => {
       const data = snap.val() || {};
       document.getElementById('albumTitle').value = data.title || '';
       document.getElementById('albumArtist').value = data.artist || '';
+      albumCover.set(data.cover);
     });
 
     tracksRef.on('value', snap => {

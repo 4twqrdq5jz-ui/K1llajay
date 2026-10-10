@@ -609,6 +609,12 @@
       }
     };
 
+    // Season covers in the images folder, matching the live podcast page; other seasons use the uploaded cover.
+    const seasonThumbnails = {
+      'Season 1': '../images/seasonone.jpg',
+      'Season 2': '../images/seasontwo.png'
+    };
+
     // Load episodes
     db.ref('episodes').orderByChild('uploadedAt').on('value', snap => {
       const data = snap.val() || {};
@@ -618,8 +624,9 @@
         const card = document.createElement('div');
         card.className = 'episode-item';
         
-        const coverHtml = ep.coverURL 
-          ? `<img src="${ep.coverURL}" class="release-cover" alt="${ep.episodeTitle}"/>`
+        const thumbnail = seasonThumbnails[ep.season] || ep.coverURL;
+        const coverHtml = thumbnail
+          ? `<img src="${thumbnail}" class="release-cover" alt="${ep.episodeTitle}"/>`
           : `<div class="release-cover" style="background:#222;display:flex;align-items:center;justify-content:center;"><div style="opacity:0.4;text-align:center;font-size:11px;">No Cover</div></div>`;
 
         const youtubeHtml = ep.youtubeURL 
@@ -637,6 +644,10 @@
             ${youtubeHtml}
           </div>
         `;
+        const coverImg = card.querySelector('img.release-cover');
+        if (coverImg && ep.coverURL && thumbnail !== ep.coverURL) {
+          coverImg.onerror = () => { coverImg.onerror = null; coverImg.src = ep.coverURL; };
+        }
         const audio = card.querySelector('audio');
         audio.src = ep.audioURL;
         list.appendChild(card);

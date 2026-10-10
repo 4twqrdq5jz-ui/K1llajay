@@ -551,7 +551,15 @@ progress::-moz-progress-bar {
 @media (max-width: 768px) {
   .dashboard-body {
     display: block;
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
     padding-top: 50px;
+  }
+
+  .dashboard-body .main {
+    height: auto;
+    overflow: visible;
   }
 
   .dashboard-body .topbar {
