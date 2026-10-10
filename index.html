@@ -31,7 +31,10 @@ body.header-compact .header-hero .container,body.header-compact .header-hero .he
 .sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
 .sidebar a:hover{text-decoration:underline}
 .header-hero{position:relative;height:55vh;min-height:420px;display:flex;align-items:center;max-width:100vw;overflow:hidden;transition:min-height .3s ease,height .3s ease,transform .3s ease,opacity .3s ease}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(0px) saturate(1);z-index:0}
+/* Hero motion blur: .hero-blur blurs horizontally then tilts by --mb-angle; .hero-img counter-rotates so the photo stays upright. Image comes from --img. */
+.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0;--mb-angle:-20deg}
+.hero-blur{position:absolute;inset:-40%;transform:rotate(var(--mb-angle));filter:url(#motion-blur);pointer-events:none}
+.hero-img{position:absolute;inset:0;background:var(--img) center/cover no-repeat;transform:rotate(calc(var(--mb-angle) * -1))}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.7));z-index:1}
 .container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:center;gap:24px;max-width:100vw}
 .brand{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
@@ -120,7 +123,12 @@ body.menu-open .menu-btn{display:none !important}
 </aside>
 
 <header class="header-hero">
-  <div class="hero-bg" style="background-image:url('images/IMG_4619.png')"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="motion-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="28 0" edgeMode="duplicate"/>
+    </filter>
+  </svg>
+  <div class="hero-bg" style="--img:url('images/IMG_4619.png')"><div class="hero-blur"><div class="hero-img"></div></div></div>
   <div class="hero-overlay"></div>
   <button class="menu-btn" aria-label="Open menu">
     <span></span>
@@ -306,7 +314,7 @@ body.menu-open .menu-btn{display:none !important}
 
       const images = data.imageData || {};
       if (images.heroBackground) {
-        document.querySelector('.hero-bg').style.backgroundImage = `url("${images.heroBackground}")`;
+        document.querySelector('.hero-bg').style.setProperty('--img', `url("${images.heroBackground}")`);
       }
       if (images.tileOne && tiles[0]) tiles[0].style.backgroundImage = `url("${images.tileOne}")`;
       if (images.tileTwo && tiles[1]) tiles[1].style.backgroundImage = `url("${images.tileTwo}")`;
