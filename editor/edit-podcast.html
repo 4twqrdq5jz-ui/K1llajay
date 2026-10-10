@@ -410,34 +410,32 @@
   </style>
   <link rel="stylesheet" href="editor-theme.css">
 </head>
-<body>
-  <div class="topbar">
-    <span class="hamburger">&#9776;</span>
-    <div class="top-name">EDITOR</div>
-  </div>
-<div class="sidebar">
-    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
-    <h1 class="name">JAE LAURENT</h1>
-    <div class="buttons">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
-  </div>
+<body class="dashboard-body">
+  <header class="topbar">
+    <button class="hamburger" aria-label="Open editor navigation" aria-expanded="false" aria-controls="editorSidebar">☰</button>
+    <div class="top-name">EDITOR WORKSPACE</div>
+  </header>
 
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
-</div>
+  <aside class="sidebar dashboard-sidebar" id="editorSidebar" aria-label="Editor navigation">
+    <div class="name">JAE LAURENT</div>
+    <nav class="buttons">
+      <span class="nav-label">Workspace</span>
+      <a href="editor-home.html" aria-current="page">Overview</a>
+      <span class="nav-label">Publishing</span>
+      <a href="edit-homepage.html">Homepage Editor</a>
+      <a href="edit-portfolio.html">Portfolio</a>
+      <a href="edit-music.html">Music Editor</a>
+      <a href="edit-podcast.html">Podcast Editor</a>
+      <a href="edit-events.html">Events</a>
+      <span class="nav-label">Management</span>
+      <a href="edit-database.html">Catalog Database</a>
+      <a href="edit-store.html">Store Admin</a>
+    </nav>
+    <div class="footer">
+      <a href="https://k1llajay.com">View live site</a>
+      <div class="copyright">© 2026 Jefferson Entertainment LLC</div>
+    </div>
+  </aside>
 
   <div class="main">
     <h1>Upload Podcast Episode</h1>

@@ -242,7 +242,32 @@
     </style>
     <link rel="stylesheet" href="editor-theme.css">
 </head>
-<body>
+<body class="dashboard-body">
+  <header class="topbar">
+    <button class="hamburger" aria-label="Open editor navigation" aria-expanded="false" aria-controls="editorSidebar">☰</button>
+    <div class="top-name">EDITOR WORKSPACE</div>
+  </header>
+
+  <aside class="sidebar dashboard-sidebar" id="editorSidebar" aria-label="Editor navigation">
+    <div class="name">JAE LAURENT</div>
+    <nav class="buttons">
+      <span class="nav-label">Workspace</span>
+      <a href="editor-home.html" aria-current="page">Overview</a>
+      <span class="nav-label">Publishing</span>
+      <a href="edit-homepage.html">Homepage Editor</a>
+      <a href="edit-portfolio.html">Portfolio</a>
+      <a href="edit-music.html">Music Editor</a>
+      <a href="edit-podcast.html">Podcast Editor</a>
+      <a href="edit-events.html">Events</a>
+      <span class="nav-label">Management</span>
+      <a href="edit-database.html">Catalog Database</a>
+      <a href="edit-store.html">Store Admin</a>
+    </nav>
+    <div class="footer">
+      <a href="https://k1llajay.com">View live site</a>
+      <div class="copyright">© 2026 Jefferson Entertainment LLC</div>
+    </div>
+  </aside>
     <div class="header">
         <h1>LAURENT STORE ADMIN</h1>
         <p>MANAGE PRODUCTS & ORDERS</p>
