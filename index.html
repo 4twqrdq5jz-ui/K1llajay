@@ -201,7 +201,6 @@ body.menu-open .menu-btn{display:none !important}
   © 2025 Jefferson Entertainment LLC • <a href="https://k1llajay.com/extras/terms" style="color:#ffe600;text-decoration:none">Terms</a> • <a href="https://k1llajay.com/extras/privacy" style="color:#ffe600;text-decoration:none">Privacy</a> <a href="https://k1llajay.com/editor/edit-home" style="color:#000000;text-decoration:none">___</a>
 </footer>
 
-</body>
 <script>
   (function(){
     const sidebar = document.getElementById('siteSidebar');
@@ -251,4 +250,75 @@ body.menu-open .menu-btn{display:none !important}
     updateCompactHeader();
   })();
 </script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  (function () {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
+      authDomain: "mainsite-eb919.firebaseapp.com",
+      databaseURL: "https://mainsite-eb919-default-rtdb.firebaseio.com",
+      projectId: "mainsite-eb919",
+      storageBucket: "mainsite-eb919.firebasestorage.app",
+      messagingSenderId: "799554641103",
+      appId: "1:799554641103:web:f23b774cbb08e03aebebba"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function renderHomepage(data) {
+      const releaseName = document.querySelector('.release-name');
+      const listenLink = document.querySelector('.cta .listen');
+      const scheduledCard = document.querySelector('.grid-section .square-card');
+      const linkSections = document.querySelectorAll('.links-section');
+      const tiles = document.querySelectorAll('.grid-section .tile');
+
+      if (releaseName && data.releaseTitle) releaseName.textContent = data.releaseTitle;
+      if (listenLink && data.releaseLink) listenLink.href = data.releaseLink;
+
+      if (scheduledCard && Array.isArray(data.scheduledDates)) {
+        const paragraph = scheduledCard.querySelector('p');
+        const dates = data.scheduledDates.map((value) => {
+          const date = new Date(`${value}T12:00:00`);
+          return Number.isNaN(date.getTime())
+            ? value
+            : date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        });
+        if (paragraph) paragraph.textContent = dates.length ? dates.join(' · ') : 'None Available';
+      }
+
+      [data.streamLinks, data.socialLinks, data.contactLinks].forEach((items, sectionIndex) => {
+        const grid = linkSections[sectionIndex] && linkSections[sectionIndex].querySelector('.links-grid');
+        if (!grid || !Array.isArray(items)) return;
+        grid.replaceChildren();
+        items.forEach((item) => {
+          if (!item || !item.label || !item.url) return;
+          const link = document.createElement('a');
+          const isEmail = sectionIndex === 2;
+          link.href = isEmail && !item.url.startsWith('mailto:') ? `mailto:${item.url}` : item.url;
+          link.textContent = item.label;
+          if (!isEmail) {
+            link.target = '_blank';
+            link.rel = 'noreferrer noopener';
+          }
+          grid.appendChild(link);
+        });
+      });
+
+      const images = data.imageData || {};
+      if (images.heroBackground) {
+        document.querySelector('.hero-bg').style.backgroundImage = `url("${images.heroBackground}")`;
+      }
+      if (images.tileOne && tiles[0]) tiles[0].style.backgroundImage = `url("${images.tileOne}")`;
+      if (images.tileTwo && tiles[1]) tiles[1].style.backgroundImage = `url("${images.tileTwo}")`;
+    }
+
+    firebase.database().ref('homepage').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) renderHomepage(data);
+    }, (error) => {
+      console.error('Could not load live homepage data:', error);
+    });
+  })();
+</script>
+</body>
 </html>
