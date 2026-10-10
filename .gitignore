@@ -1,0 +1,6 @@
+# Secrets — never commit API keys
+.env
+backend/.env
+
+# Dependencies
+node_modules/

@@ -1,0 +1,34 @@
+# Render Blueprint for the store backend (https://render.com/docs/blueprint-spec)
+# Secret values (sync: false) are entered in the Render dashboard, never in this file.
+services:
+  - type: web
+    name: k1llajay-store
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: PRINTIFY_API_KEY
+        sync: false
+      - key: PRINTIFY_SHOP_ID
+        sync: false
+      - key: PODBASE_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: SITE_URL
+        value: https://k1llajay.com
+      - key: STORE_PATH
+        value: /laurent-by-jae-laurent
+      - key: ALLOWED_ORIGINS
+        value: https://k1llajay.com,https://www.k1llajay.com
+      - key: SHIPPING_RATE_CENTS
+        value: "799"
+      - key: SHIPPING_COUNTRIES
+        value: US
+      - key: AUTO_SEND_TO_PRODUCTION
+        value: "false"

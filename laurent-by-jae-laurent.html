@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<!-- saved from url=(0076)file:///C:/Users/yungb/Documents/GitHub/K1llajay/laurent-by-jae-laurent.html -->
+
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Laurent Store - Premium Products &amp; Fashion</title>
-    <link rel="icon" href="file:///C:/Users/yungb/Documents/GitHub/K1llajay/images/favicon.ico">
-    <script src="device-optimization.js"></script>
-    <script src="anti-lag-optimization.js"></script>
+    <link rel="icon" href="images/favicon.ico">
     <style>
         @font-face {
             font-family: 'sitefont';
-            src: url('beyoncefont.ttf') format('truetype');
+            src: url('font/beyoncefont.ttf') format('truetype');
         }
 
         /* ================= RESET ================= */
@@ -33,7 +31,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background: url("IMG_3309.gif") center / cover no-repeat;
+            background: url("images/IMG_3309.gif") center / cover no-repeat;
             z-index: -2;
         }
 
@@ -118,6 +116,11 @@
 .button:hover::before {
   background: rgba(0, 0, 0, 0.3);
 }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            margin-left: 260px;
+            width: calc(100% - 260px);
             height: 100dvh;
             overflow-y: auto;
             padding: 40px;
@@ -436,7 +439,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background: url("IMG_3309.gif") center / cover no-repeat;
+            background: url("images/IMG_3309.gif") center / cover no-repeat;
             z-index: -2;
             pointer-events: none;
         }
@@ -1329,7 +1332,7 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
+        <img src="images/IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
         <div class="name">
             <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
         </div>
@@ -1349,8 +1352,8 @@
   <div class="footer">
     <a href="https://mystery.k1llajay.com">Mystery</a> •
     <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
+    <a href="https://k1llajay.com/extras/terms">Terms</a> •
+    <a href="https://k1llajay.com/extras/privacy">Privacy</a>
     <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
   </div>
 </div>
@@ -1442,49 +1445,15 @@
         </div>
     </div>
 
-    <!-- Include the Podbase client -->
-    <script src="podbase-client.js"></script>
 
     <script>
-// Dynamically set backend URL based on connection
-async function getBackendURL() {
-  const hostname = window.location.hostname;
-  
-  // Always try localhost first (works for all scenarios)
-  const backendURLs = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'https://k1llajay-production.up.railway.app'
-  ];
-  
-  // Try each URL with timeout
-  for (const url of backendURLs) {
-    try {
-      consol000000000000000000000000000000000000e.log(`Attempting to connect to: ${url}`);
-      const response = await Promise.race([
-        fetch(`${url}/shops`, { 
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        }),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), 3000)
-        )
-      ]);
-      
-      if (response && response.ok) {
-        console.log(`✓ Connected to: ${url}`);
-        return url;
-      }
-    } catch (e) {
-      console.log(`✗ Failed: ${url}`);
-    }
-  }
-  
-  // Default to localhost if all fail
-  return 'http://localhost:3000';
-}
+// Store backend (backend/ folder, hosted on Render).
+// After deploying, replace this with your Render service URL.
+const PRODUCTION_API = 'https://k1llajay-store.onrender.com';
+const IS_LOCAL = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+const API = IS_LOCAL ? 'http://localhost:3000' : PRODUCTION_API;
 
-let API = 'http://localhost:3000'; // Default, will be updated in initStore
+
 let SHOP_ID = null;
 let products = [];
 let cart = [];
@@ -1500,11 +1469,11 @@ let colorImageMapping = {}; // Mapping of color names to image indices
 
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
+  // The free Render server sleeps when idle and can take ~30s to wake up
+  document.getElementById("products-grid").innerHTML =
+    `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 20px;">LOADING PRODUCTS…</p>`;
+
   try {
-    // First, detect the correct backend URL
-    API = await getBackendURL();
-    console.log("Using backend URL:", API);
-    
     // Fetch all shops with explicit headers
     const shopsRes = await fetch(`${API}/shops`, {
       method: 'GET',
@@ -1592,22 +1561,14 @@ async function initStore() {
   } catch (error) {
     console.error("Failed to load products:", error);
     
-    const hostname = window.location.hostname;
-    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-    
-    let helpText = `Backend tried: ${API}`;
-    if (!isLocalhost) {
-      helpText += `<br><br><strong>Solution for Testing:</strong><br>1. Run backend locally: <code>cd backend && node index.js</code><br>2. Access site at: <code>http://localhost</code> (not https)<br><br>Local backend works perfectly! ✓`;
-    } else {
-      helpText += `<br>Make sure backend is running: <code>node backend/index.js</code>`;
-    }
-    
-    // Show fallback message
-    document.getElementById("products-grid").innerHTML = 
+    // Visitors get a plain message; setup hints only show when testing on your own computer
+    const helpText = IS_LOCAL
+      ? `<br><small>Is the backend running? <code>cd backend && npm start</code> (${API})<br>${error.message}</small>`
+      : `<br>Please check back soon.`;
+
+    document.getElementById("products-grid").innerHTML =
       `<p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 20px;">
-        <strong>Unable to load products.</strong><br>
-        ${helpText}<br>
-        <small>${error.message}</small>
+        <strong>The store is unavailable right now.</strong>${helpText}
       </p>`;
   }
 }
@@ -1787,6 +1748,15 @@ async function openProductModal(id) {
   // Initialize with local image if available
   if (selectedProduct.image) {
     renderProductImages([selectedProduct.image]);
+  }
+
+  // Podbase items are display-only until Podbase checkout is set up
+  if (selectedProduct.isPodbase) {
+    document.getElementById("sizeOptions").innerHTML = "<span style='color: rgba(255,255,255,0.5);'>COMING SOON</span>";
+    document.getElementById("colorOptions").innerHTML = "";
+    productVariants = [];
+    document.getElementById("product-modal").classList.add("active");
+    return;
   }
 
   // Fetch full product data from Printify API
@@ -2419,7 +2389,12 @@ function filterImagesByColor(colorName) {
 
 function addToCartFromModal() {
   if (!selectedProduct) return;
-  
+
+  if (selectedProduct.isPodbase) {
+    alert("This item isn't available to buy online yet.");
+    return;
+  }
+
   // Validate that both size and color are selected
   if (!selectedSize || !selectedColor) {
     alert("❌ Please select both a size and color");
@@ -2542,59 +2517,41 @@ async function checkout() {
     return;
   }
 
-  // For now, show order summary. In production, integrate payment processing
-  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-  
-  const orderSummary = cart.map(i => `${i.name} x${i.qty}`).join('\n');
-  
-  const response = confirm(
-    `ORDER SUMMARY:\n\n${orderSummary}\n\nTOTAL: $${total.toFixed(2)}\n\nProceed to payment?`
-  );
+  const checkoutBtn = document.getElementById("checkout-btn");
+  checkoutBtn.disabled = true;
+  checkoutBtn.innerText = "LOADING…";
 
-  if (!response) return;
-
-  // Create the order with Printify
+  // Send only ids and quantities; the backend looks up real prices and creates a Stripe Checkout page
   try {
-    const order = {
-      line_items: cart.map(i => ({
-        product_id: i.product_id,
-        variant_id: i.variant_id,
-        quantity: i.qty
-      })),
-      shipping_method: 1, // Standard shipping (required)
-      send_shipping_notification: false, // Required, set to false for demo
-      address_to: {
-        first_name: "Customer",
-        last_name: "Name",
-        email: "customer@example.com",
-        country: "US",
-        region: "State",
-        address1: "123 Main St",
-        city: "City",
-        zip: "12345"
-      }
-    };
-
-    console.log("Sending order:", order);
-    
-    const result = await fetch(`${API}/order/${SHOP_ID}`, {
+    const res = await fetch(`${API}/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order)
-    }).then(r => r.json());
+      body: JSON.stringify({
+        items: cart.map(i => ({ product_id: i.product_id, variant_id: i.variant_id, qty: i.qty }))
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.url) throw new Error(data.error || `HTTP ${res.status}`);
 
-    console.log("Order result:", result);
-    
-    alert(`✓ ORDER PLACED!\nOrder ID: ${result.id}\n\nThank you for your purchase!`);
-    cart = [];
-    updateCart();
-    renderCartModal();
-    toggleCart();
+    // Customer pays and enters their shipping address on Stripe's page
+    window.location.href = data.url;
   } catch (error) {
     console.error("Checkout error:", error);
-    alert("❌ Order failed. Please try again.");
+    alert(`❌ Checkout failed: ${error.message}`);
+    checkoutBtn.disabled = false;
+    checkoutBtn.innerText = "PROCEED TO CHECKOUT";
   }
 }
+
+// Stripe sends customers back here with ?checkout=success or ?checkout=cancelled
+(function handleCheckoutReturn() {
+  const status = new URLSearchParams(window.location.search).get("checkout");
+  if (!status) return;
+  history.replaceState(null, "", window.location.pathname);
+  if (status === "success") {
+    alert("✓ ORDER PLACED!\n\nThank you for your purchase. A receipt is on its way to your email.");
+  }
+})();
 
 initStore();
 </script>

@@ -1,0 +1,20 @@
+{
+  "name": "k1llajay-store-backend",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Store backend for k1llajay.com: Printify + Podbase products, Stripe checkout",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "dotenv": "16.4.7",
+    "express": "5.1.0",
+    "stripe": "18.0.0"
+  }
+}
