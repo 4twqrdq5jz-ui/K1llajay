@@ -293,6 +293,7 @@ let selectedColor = null;
 let productVariants = [];
 let allProductImages = [];  // All images for the product
 let colorImageMapping = {}; // Mapping of color names to image indices
+let printifyColors = {}; // Color name -> exact swatch hex from Printify (e.g. "#000000")
 
 /* ================= LOAD PRODUCTS ================= */
 async function initStore() {
@@ -343,6 +344,7 @@ async function initStore() {
                 p.tags?.includes("electronics") ? "electronics" : 
                 p.tags?.includes("accessories") ? "accessories" : "fashion",
       variants: p.variants || [],
+      options: p.options || [],
       tags: p.tags || []
     }));
 
@@ -432,7 +434,7 @@ function updateProductImage() {
   // Apply color overlay if a color is selected
   trackImages.forEach((img, idx) => {
     if (selectedColor) {
-      const colorHex = generateColorHex(selectedColor);
+      const colorHex = printifyColors[selectedColor] || generateColorHex(selectedColor);
       if (colorHex && idx === currentImageIndex) {
         img.style.filter = "hue-rotate(0deg) saturate(1.2)";
         img.style.backgroundColor = colorHex;
@@ -685,6 +687,14 @@ async function renderProductOptions(product) {
 
   console.log("Processing variants:", variants);
 
+  // Printify sends the real hex for each color; the name-based guess is only a fallback
+  printifyColors = {};
+  (product.options || []).filter(o => o.type === "color").forEach(o => {
+    (o.values || []).forEach(v => {
+      if (v.colors && v.colors.length) printifyColors[v.title] = v.colors[0];
+    });
+  });
+
   // Extract sizes and colors from available variants
   if (variants && variants.length > 0) {
     variants.forEach((variant) => {
@@ -701,7 +711,7 @@ async function renderProductOptions(product) {
         
         // Add color with hex generation
         if (!colors.has(colorStr)) {
-          const hexColor = generateColorHex(colorStr);
+          const hexColor = printifyColors[colorStr] || generateColorHex(colorStr);
           colors.set(colorStr, hexColor);
         }
         
