@@ -3,454 +3,649 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Upload Slides — JAE LAURENT</title>
+  <title>Homepage Editor — JAE LAURENT</title>
   <link rel="icon" href="images/favicon.ico">
-  <script src="device-optimization.js"></script>
-  <script src="anti-lag-optimization.js"></script>
   <style>
-    @font-face {
-      font-family: 'sitefont';
-      src: url('beyoncefont.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; }
     html, body {
-      height: 100%;
-      width: 100%;
-      font-family: 'sitefont', monospace;
-      background-color: black;
-      color: white;
-      text-transform: uppercase;
       margin: 0;
-      padding: 0;
+      min-height: 100%;
+      background: var(--console-bg);
+      color: var(--console-ink);
+      font-family: 'Trebuchet MS', 'Studio Sans', sans-serif;
     }
     body {
-      display: flex;
-      flex-direction: row;
-      height: 100vh;
-      overflow: hidden;
+      display: block;
     }
-    .topbar {
-      display: none;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 12px 15px;
-      background-color: black;
-      border-bottom: 1px solid #333;
+    .dashboard-body {
+      display: flex;
+      min-height: 100dvh;
       width: 100%;
-      height: 50px;
+    }
+    .sidebar {
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 1001;
-      box-sizing: border-box;
-    }
-    .hamburger { font-size: 24px; cursor: pointer; margin-right: 10px; }
-    .top-name { font-size: 18px; text-transform: uppercase; flex: 1; text-align: center; letter-spacing: 1px; }
-    .sidebar {
+      display: flex;
       width: 260px;
       height: 100dvh;
-      padding: 24px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
+      padding: 24px 18px;
+      overflow-y: auto;
       flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(255,255,255,0.15);
-      z-index: 3000;
+      align-items: stretch;
+      background: var(--console-sidebar);
+      color: #f4eded;
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 8px 0 28px rgba(0, 0, 0, 0.24);
     }
-    .profile-img {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-      border: 2px solid #fff;
-    }
-    .name {
+    .sidebar::before {
+      content: 'JL';
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      margin: 8px auto 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      color: #f1dce0;
+      background: rgba(146, 38, 56, 0.2);
+      font-family: 'Studio Sans', 'Trebuchet MS', sans-serif;
       font-size: 22px;
-      letter-spacing: 3px;
-      margin-bottom: 40px;
+      font-weight: 800;
     }
-    .buttons {
+    .sidebar .name {
+      margin: 8px 12px 28px;
+      text-align: left;
+      color: #ffffff;
+      font-family: 'Studio Sans', 'Trebuchet MS', sans-serif;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+    .sidebar .buttons {
+      display: flex;
       width: 100%;
-      display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 4px;
     }
-    .button {
-      padding: 10px;
-      text-align: center;
+    .sidebar .buttons a {
+      display: block;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: rgba(247, 251, 248, 0.78);
+      font-size: 12px;
+      letter-spacing: 0.5px;
       text-decoration: none;
-      color: white;
-      font-size: 13px;
-      letter-spacing: 2px;
-      border: 1px solid rgba(255,255,255,0.4);
-      transition: 0.3s;
-      position: relative;
+      transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+    .sidebar .buttons a:hover,
+    .sidebar .buttons a:focus-visible {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+    .sidebar .footer {
+      margin-top: auto;
+      padding: 18px 12px 0;
+      color: rgba(247, 251, 248, 0.62);
+      font-size: 10px;
+      text-align: left;
+    }
+    .sidebar .footer a {
+      color: rgba(247, 251, 248, 0.82);
+      text-decoration: none;
+    }
+    .sidebar .footer a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .sidebar .copyright {
+      margin-top: 6px;
+      font-size: 9px;
+    }
+    .dashboard-main {
+      flex: 1;
+      min-width: 0;
+      max-width: 1440px;
+      margin-left: 260px;
+      padding: 48px clamp(24px, 5vw, 72px) 42px;
+      box-sizing: border-box;
+    }
+    .editor-layout {
+      display: grid;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .field-note {
+      font-size: 11px;
+      color: var(--console-muted);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .dashboard-header {
       display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--console-border);
+    }
+    .dashboard-header h1 {
+      margin: 10px 0 0;
+      font-size: 36px;
+      font-family: 'Studio Sans','Trebuchet MS',sans-serif;
+    }
+    .dashboard-eyebrow {
+      color: var(--console-accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Studio Sans','Trebuchet MS',sans-serif;
+    }
+    .dashboard-site-link {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      z-index: 1;
-    }
-
-    .button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.15);
-      border-radius: inherit;
-      z-index: -1;
-      transition: background 0.2s ease;
-    }
-
-    .button:hover::before {
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    .button:hover { filter: brightness(1); border-color: white; }
-    .footer {
-      margin-top: auto;
-      font-size: 10px;
-      opacity: 0.7;
-      text-align: center;
-    }
-    .footer a {
-      color: white;
+      padding: 12px 16px;
+      border: 1px solid var(--console-accent);
+      border-radius: 5px;
+      background: var(--console-accent);
+      color: #fff;
       text-decoration: none;
-    }
-    .footer a:hover { opacity: 0.5; }
-    .footer-dot { color: white; font-size: 10px; opacity: 0.7; }
-    .copyright { font-size: 8px; margin-top: 5px; width: 100%; }
-
-    .main {
-      margin-left: 260px;
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-sizing: border-box;
-      height: 100vh;
-    }
-    .main::-webkit-scrollbar { display: none; }
-    .main { -ms-overflow-style: none; scrollbar-width: none; }
-    .main h1 { font-size: 28px; margin: 0 0 24px 0; letter-spacing: 1px; }
-
-    .upload-box {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 24px;
-      width: 100%;
-      max-width: 800px;
-      box-sizing: border-box;
-    }
-    .upload-section {
-      margin-bottom: 28px;
-    }
-    .upload-section h4 {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.6;
-      margin-bottom: 12px;
       font-weight: 700;
+      font-size: 13px;
     }
-    .form-grid {
+    .dashboard-site-link:hover {
+      background: var(--console-accent-hover);
+      border-color: var(--console-accent-hover);
+    }
+    .editor-section {
+      padding: 22px;
+      border: 1px solid var(--console-border);
+      border-radius: 10px;
+      background: var(--console-surface);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      margin-bottom: 8px;
+    }
+    .date-stack,
+    .link-stack,
+    .image-manager-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-      grid-auto-flow: row;
+      gap: 14px;
     }
-    #releaseTitleInput {
-      grid-column: 1/-1;
-    }
-    .file-upload-area {
+    .chip-list {
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
-    }
-    .file-upload-area label {
-      flex: 1;
-      min-width: 150px;
-    }
-    .options-row {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 42px;
       align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--console-border);
+      background: rgba(23, 25, 27, 0.9);
     }
-    .option-group {
-      display: flex;
+    .chip {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
-    }
-    .option-group input[type="checkbox"] {
-      cursor: pointer;
-    }
-    .option-group label {
-      cursor: pointer;
-      user-select: none;
-    }
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .action-buttons button {
-      flex: 1;
-      min-width: 140px;
-    }
-    input, select {
-      background: transparent;
-      border: 1px solid #444;
-      color: white;
-      padding: 12px;
-      border-radius: 6px;
-      font-family: 'beyoncefont', monospace;
-      font-size: 14px;
-      box-sizing: border-box;
-      text-transform: uppercase;
-    }
-    input::placeholder { color: #777; }
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 14px 0;
-      font-size: 13px;
-      flex-wrap: wrap;
-    }
-    .checkbox-row input[type="checkbox"] { accent-color: #00ff99; }
-
-    .primary-btn {
-      background: #00ff99;
-      border: none;
-      color: #000;
-      padding: 12px 24px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(146, 38, 56, 0.18);
+      border: 1px solid rgba(173, 43, 64, 0.25);
+      color: var(--console-ink);
+      font-size: 12px;
       font-weight: 700;
+    }
+    .chip.empty {
+      color: var(--console-muted);
+      background: transparent;
+      border-style: dashed;
+      font-weight: 600;
+    }
+    .chip-remove {
+      border: 0;
+      background: transparent;
+      color: #fff;
       font-size: 14px;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .date-row,
+    .link-row,
+    .image-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .date-row input {
+      max-width: 220px;
+    }
+    .small-btn {
+      padding: 10px 14px;
+      min-width: 116px;
+    }
+    .link-block {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--console-border);
+      border-radius: 8px;
+      background: rgba(17, 19, 21, 0.6);
+    }
+    .link-block-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--console-muted);
+    }
+    .link-list {
+      display: grid;
+      gap: 10px;
+    }
+    .link-item {
+      display: grid;
+      grid-template-columns: minmax(120px, 180px) minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .link-item input {
+      width: 100%;
+    }
+    .link-item.permanent-row .remove-link-btn {
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+    .remove-link-btn,
+    .remove-date-btn {
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+      color: var(--console-ink);
+      min-width: 36px;
+      padding: 10px 8px;
+      cursor: pointer;
+    }
+    .empty-link-state {
+      padding: 10px 12px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 6px;
+      color: var(--console-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .image-manager-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .image-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--console-border);
+      border-radius: 8px;
+      background: rgba(17, 19, 21, 0.6);
+    }
+    .image-preview {
+      position: relative;
+      min-height: 180px;
+      border: 1px solid var(--console-border);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(146,38,56,0.1));
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .image-preview.empty::before {
+      content: 'No image';
+      color: var(--console-muted);
+      font-size: 11px;
       letter-spacing: 1px;
-      margin: 12px 0;
-      font-family: 'beyoncefont', monospace;
       text-transform: uppercase;
     }
-    .primary-btn:hover { background: #00cc77; }
-    .secondary-btn {
-      background: #222;
-      border: 1px solid #666;
-      color: white;
-      margin-left: 10px;
-    }
-    .secondary-btn:hover { border-color: #999; }
-
-    .preview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
+    .image-preview img {
       width: 100%;
-    }
-    .preview-item {
-      position: relative;
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .preview-item img {
-      width: 100%;
-      height: 250px;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
-    .remove-btn {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: rgba(0,0,0,0.7);
-      color: #ff3333;
-      border: none;
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      font-size: 20px;
+    .image-input {
+      display: none;
+    }
+    .image-btn {
+      flex: 1;
+      min-height: 40px;
+      border: 1px solid var(--console-border);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--console-ink);
       cursor: pointer;
+      transition: opacity 160ms ease, filter 160ms ease, background-color 160ms ease;
+      opacity: 0.7;
+    }
+    .image-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(0.25) brightness(0.8);
+    }
+    .image-btn.upload.has-image {
+      filter: brightness(0.9);
+      background: rgba(146, 38, 56, 0.18);
+      opacity: 0.95;
+    }
+    .image-btn.upload.has-image:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(0.25) brightness(0.8);
+    }
+    .image-btn.replace.inactive,
+    .image-btn.delete.inactive {
+      filter: brightness(0.9);
+      background: rgba(146, 38, 56, 0.14);
+      opacity: 0.95;
+    }
+    .image-btn.delete {
+      border-color: rgba(255, 92, 92, 0.38);
+    }
+    .section-heading {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
+      margin-bottom: 18px;
     }
-
-    .slides-list {
-      margin-top: 40px;
-      width: 100%;
-      max-width: 800px;
+    .section-heading .index {
+      color: var(--console-accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Studio Sans','Trebuchet MS',sans-serif;
     }
-    .slides-list h2 { font-size: 24px; margin: 0 0 20px 0; }
-    #slideList {
+    .section-heading h2 {
+      margin: 0;
+      font-size: 19px;
+      font-family: 'Studio Sans','Trebuchet MS',sans-serif;
+    }
+    .editor-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
-      width: 100%;
     }
-    .slide-item {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 8px;
-      overflow: hidden;
+    .form-group {
       display: flex;
       flex-direction: column;
+      gap: 8px;
     }
-    .slide-item img {
-      width: 100%; height: 200px;
-      object-fit: cover;
+    .form-group.full {
+      grid-column: 1 / -1;
     }
-    .slide-item button {
-      background: #ff3333;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      cursor: pointer;
+    .form-group label {
       font-size: 12px;
-      letter-spacing: 1px;
-      margin-top: auto;
+      font-weight: 700;
+      color: var(--console-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
-    .slide-item button:hover { background: #cc0000; }
-
-    progress {
-      width: 100%; height: 10px; border-radius: 5px; margin: 20px 0; display: none;
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 6px;
+      border: 1px solid #494246;
+      background: #17191b;
+      color: var(--console-ink);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 14px;
     }
-    progress::-webkit-progress-value { background: #00ff99; }
-    progress::-moz-progress-bar { background: #00ff99; }
-
-    .status { margin-top: 15px; font-size: 14px; opacity: 0.9; }
-
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .primary-btn, .secondary-btn {
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      border: 1px solid var(--console-border);
+      cursor: pointer;
+      transition: 160ms ease;
+    }
+    .primary-btn {
+      border-color: var(--console-accent);
+      background: var(--console-accent);
+      color: #fff;
+    }
+    .secondary-btn {
+      background: var(--console-control);
+      color: var(--console-ink);
+    }
+    .primary-btn:hover { background: var(--console-accent-hover); border-color: var(--console-accent-hover); }
+    .secondary-btn:hover { background: var(--console-accent-soft); border-color: var(--console-border-strong); }
+    .status-line {
+      margin-top: 14px;
+      min-height: 20px;
+      font-size: 13px;
+      color: var(--console-muted);
+    }
+    .status-line.success {
+      color: #b4f0c9;
+    }
+    .topbar {
+      display: none;
+    }
     @media (max-width: 768px) {
-      body { 
-        flex-direction: column;
-        padding-top: 50px;
+      .dashboard-body {
+        display: block;
       }
-      .topbar { 
-        display: flex;
+      .topbar {
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 2101;
+        display: flex;
         width: 100%;
         height: 50px;
-        padding: 0 15px;
-        padding-top: max(0px, env(safe-area-inset-top));
         align-items: center;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        z-index: 2101;
+        padding: 0 15px;
+        background: var(--console-sidebar);
+        border-bottom: 1px solid rgba(255,255,255,0.14);
       }
-      .hamburger { 
-        font-size: 28px;
+      .topbar .hamburger {
+        background: transparent;
+        border: 0;
+        color: #fff;
+        font-size: 24px;
         cursor: pointer;
-        padding: 5px;
       }
-      .top-name {
-        margin: 0 auto;
-        font-size: 16px;
-        letter-spacing: 2px;
+      .dashboard-main {
+        margin-left: 0;
+        padding: 78px 16px 42px;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .dashboard-header h1 {
+        font-size: 28px;
+      }
+      .editor-grid {
+        grid-template-columns: 1fr;
       }
       .sidebar {
-        display: none;
-        position: fixed;
-        top: 50px;
         left: 0;
+        top: 50px;
+        z-index: 2000;
+        display: none;
         width: 100%;
         height: calc(100dvh - 50px);
-        max-height: none;
-        padding: 15px;
-        z-index: 1900;
-        background: black;
-        border-right: none;
-        border-bottom: 1px solid #333;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        padding: 18px;
+        position: fixed;
       }
-      .sidebar.active { display: flex; }
-      .main {
-        margin-left: 0;
-        margin-top: 50px;
-        padding: 15px;
-        width: 100%;
-        height: auto;
-        min-height: calc(100dvh - 50px);
-        padding-bottom: max(40px, calc(15px + env(safe-area-inset-bottom)));
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+      .sidebar.active {
+        display: flex;
       }
-      .preview-grid { grid-template-columns: 1fr; }
-      #slideList { grid-template-columns: 1fr; }
-      .slide-item button { width: 100%; margin-top: 8px; }
     }
-
   </style>
   <link rel="stylesheet" href="editor-theme.css">
 </head>
-<body>
-  <div class="topbar">
-    <span class="hamburger">&#9776;</span>
-    <div class="top-name">EDITOR</div>
-  </div>
-<div class="sidebar">
-    <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
-    <h1 class="name">JAE LAURENT</h1>
-    <div class="buttons">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
-  </div>
+<body class="dashboard-body">
+  <header class="topbar">
+    <button class="hamburger" aria-label="Open editor navigation" aria-expanded="false" aria-controls="editorSidebar">☰</button>
+    <div class="top-name">EDITOR WORKSPACE</div>
+  </header>
 
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
-</div>
-
-  <div class="main">
-    <h1>Upload to Main Site</h1>
-
-    <div class="upload-box">
-      <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
-      <button onclick="document.getElementById('fileInput').click()" class="primary-btn" style="width:100%; padding:20px; font-size:16px;">
-        Choose Images
-      </button>
-
-      <div id="previewGrid" class="preview-grid"></div>
-
-      <button id="uploadBtn" class="primary-btn" style="display:none;">Upload All Slides</button>
-
-      <progress id="progress" max="100" value="0"></progress>
-      <div id="status" class="status">Select images to begin</div>
+  <aside class="sidebar dashboard-sidebar" id="editorSidebar" aria-label="Editor navigation">
+    <div class="name">JAE LAURENT</div>
+    <nav class="buttons">
+      <span class="nav-label">Publishing</span>
+      <a href="edit-homepage.html">Homepage Editor</a>
+      <a href="edit-portfolio.html">Portfolio</a>
+      <a href="edit-music.html">Music Editor</a>
+      <a href="edit-podcast.html">Podcast Editor</a>
+      <a href="edit-events.html">Events</a>
+      <span class="nav-label">Management</span>
+      <a href="edit-database.html">Catalog Database</a>
+      <a href="edit-store.html">Store Admin</a>
+    </nav>
+    <div class="footer">
+      <a href="https://k1llajay.com">View live site</a>
+      <div class="copyright">© 2026 Jefferson Entertainment LLC</div>
     </div>
+  </aside>
 
-    <div class="slides-list">
-      <h2 style="font-size:28px; margin:60px 0 30px;">Uploaded Slides</h2>
-      <div id="slideList"></div>
+  <main class="main dashboard-main">
+    <header class="dashboard-header">
+      <div>
+        <p class="dashboard-eyebrow">K1LLAJAY / PUBLISHING</p>
+          <h1>Homepage Editor</h1>
+        </div>
+        <a class="dashboard-site-link" href="https://k1llajay.com" target="_blank" rel="noopener noreferrer">View site →</a>
+      </header>
+
+      <form id="homepageForm">
+        <section class="editor-section">
+          <div class="section-heading">
+            <span class="index">01</span>
+            <h2>Header</h2>
+          </div>
+          <div class="editor-grid">
+            <div class="form-group full">
+              <label for="releaseTitle">Release name</label>
+              <input id="releaseTitle" name="releaseTitle" type="text" value="ANY MEANS POSSIBLE" placeholder="ANY MEANS POSSIBLE" />
+            </div>
+            <div class="form-group full">
+              <label for="releaseLink">Listen link</label>
+              <input id="releaseLink" name="releaseLink" type="url" value="https://moosyc.com/jae-laurent/any-means-possible" placeholder="https://..." />
+            </div>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <div class="section-heading">
+            <span class="index">02</span>
+            <h2>Featured blocks</h2>
+          </div>
+          <div class="date-stack">
+            <div class="form-group full">
+              <label>Scheduled lives</label>
+              <div id="scheduledLivesList" class="chip-list" aria-live="polite"></div>
+              <div class="date-row">
+                <input id="scheduledDateInput" type="date" />
+                <input id="scheduledTimeInput" type="time" />
+                <button type="button" class="primary-btn small-btn" id="addDateBtn">Add date</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <div class="section-heading">
+            <span class="index">03</span>
+            <h2>Links</h2>
+          </div>
+          <div class="link-stack">
+            <div class="link-block">
+              <div class="link-block-title">Stream links</div>
+              <div id="streamLinksList" class="link-list"></div>
+              <button type="button" class="secondary-btn small-btn add-link-btn" data-group="streamLinks">Add link</button>
+            </div>
+
+            <div class="link-block">
+              <div class="link-block-title">Social links</div>
+              <div id="socialLinksList" class="link-list"></div>
+              <button type="button" class="secondary-btn small-btn add-link-btn" data-group="socialLinks">Add link</button>
+            </div>
+
+            <div class="link-block">
+              <div class="link-block-title">Contact links</div>
+              <div id="contactLinksList" class="link-list"></div>
+              <button type="button" class="secondary-btn small-btn add-link-btn" data-group="contactLinks">Add link</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <div class="section-heading">
+            <span class="index">04</span>
+            <h2>Images</h2>
+          </div>
+          <div class="image-manager-grid">
+            <div class="image-card" data-target="heroBackground">
+              <div class="field-note">Hero image</div>
+              <div class="image-preview empty" id="heroBackgroundPreview"></div>
+              <div class="image-controls">
+                <input class="image-input" type="file" accept="image/*,.heic,.heif" data-target="heroBackground" />
+                <button type="button" class="image-btn upload" data-action="upload" data-target="heroBackground">Upload image</button>
+                <button type="button" class="image-btn replace" data-action="replace" data-target="heroBackground">Replace image</button>
+                <button type="button" class="image-btn delete" data-action="delete" data-target="heroBackground">Delete image</button>
+              </div>
+            </div>
+
+            <div class="image-card" data-target="tileOne">
+              <div class="field-note">Left image</div>
+              <div class="image-preview empty" id="tileOnePreview"></div>
+              <div class="image-controls">
+                <input class="image-input" type="file" accept="image/*,.heic,.heif" data-target="tileOne" />
+                <button type="button" class="image-btn upload" data-action="upload" data-target="tileOne">Upload image</button>
+                <button type="button" class="image-btn replace" data-action="replace" data-target="tileOne">Replace image</button>
+                <button type="button" class="image-btn delete" data-action="delete" data-target="tileOne">Delete image</button>
+              </div>
+            </div>
+
+            <div class="image-card" data-target="tileTwo">
+              <div class="field-note">Right image</div>
+              <div class="image-preview empty" id="tileTwoPreview"></div>
+              <div class="image-controls">
+                <input class="image-input" type="file" accept="image/*,.heic,.heif" data-target="tileTwo" />
+                <button type="button" class="image-btn upload" data-action="upload" data-target="tileTwo">Upload image</button>
+                <button type="button" class="image-btn replace" data-action="replace" data-target="tileTwo">Replace image</button>
+                <button type="button" class="image-btn delete" data-action="delete" data-target="tileTwo">Delete image</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="editor-actions">
+          <button type="submit" class="primary-btn">Save homepage</button>
+          <button type="button" class="secondary-btn" id="resetEditor">Reset form</button>
+        </div>
+        <div id="formStatus" class="status-line" aria-live="polite"></div>
+      </form>
     </div>
-  </div>
+  </main>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic-to@1.6.5/dist/iife/heic-to.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDQwlDjIGA2whvBDhOeLrnseQB4EoP7EcA",
@@ -462,120 +657,334 @@
       appId: "1:799554641103:web:f23b774cbb08e03aebebba"
     };
     firebase.initializeApp(firebaseConfig);
-    const storage = firebase.storage();
-    const db = firebase.database();
+    const homepageRef = firebase.database().ref('homepage');
+    const form = document.getElementById('homepageForm');
+    const statusLine = document.getElementById('formStatus');
+    const resetBtn = document.getElementById('resetEditor');
 
-    const fileInput = document.getElementById('fileInput');
-    const previewGrid = document.getElementById('previewGrid');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const progress = document.getElementById('progress');
-    const status = document.getElementById('status');
-    const slideList = document.getElementById('slideList');
-
-    let filesQueue = [];
-
-    fileInput.onchange = () => {
-      const files = Array.from(fileInput.files);
-      filesQueue = [...filesQueue, ...files];
-      renderPreview();
-      uploadBtn.style.display = filesQueue.length ? 'block' : 'none';
+    const defaultValues = {
+      releaseTitle: 'ANY MEANS POSSIBLE',
+      releaseLink: 'https://moosyc.com/jae-laurent/any-means-possible',
+      scheduledDates: ['2026-10-18', '2026-11-08'],
+      streamLinks: [
+        { label: 'Spotify', url: 'https://open.spotify.com/artist/7FECUKRSQSao4tari6oa3J?si=vpxOYs9aTPWH8xRuw_nSkA' },
+        { label: 'Apple Music', url: 'https://music.apple.com/us/artist/yae-yadir/1722020367/' },
+        { label: 'SoundCloud', url: 'https://soundcloud.com/k1llajayyyyy' }
+      ],
+      socialLinks: [
+        { label: 'Instagram', url: 'https://instagram.com/k1llajay/' },
+        { label: 'Twitter', url: 'https://twitter.com/k1llajay_' },
+        { label: 'TikTok', url: 'https://www.tiktok.com/@k1llajay' },
+        { label: 'YouTube', url: 'https://www.youtube.com/@k1llajay' }
+      ],
+      contactLinks: [
+        { label: 'Email', url: 'southofsomewhere@icloud.com', permanent: true }
+      ],
+      heroBackground: null,
+      tileOne: null,
+      tileTwo: null
     };
 
-    function renderPreview() {
-      previewGrid.innerHTML = '';
-      filesQueue.forEach((file, i) => {
-        const div = document.createElement('div');
-        div.className = 'preview-item';
+    const pageState = {
+      scheduledDates: [...(defaultValues.scheduledDates || [])],
+      streamLinks: [...(defaultValues.streamLinks || [])],
+      socialLinks: [...(defaultValues.socialLinks || [])],
+      contactLinks: [...(defaultValues.contactLinks || [])],
+      imageData: {
+        heroBackground: null,
+        tileOne: null,
+        tileTwo: null
+      }
+    };
 
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
+    const scheduledList = document.getElementById('scheduledLivesList');
+    const dateInput = document.getElementById('scheduledDateInput');
+    const addDateBtn = document.getElementById('addDateBtn');
+
+    function formatDate(dateValue) {
+      if (!dateValue) return 'None Available';
+      const date = new Date(dateValue + 'T12:00:00');
+      if (Number.isNaN(date.getTime())) return dateValue;
+      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function renderDates() {
+      scheduledList.innerHTML = '';
+      if (!pageState.scheduledDates.length) {
+        const empty = document.createElement('div');
+        empty.className = 'chip empty';
+        empty.textContent = 'None Available';
+        scheduledList.appendChild(empty);
+        return;
+      }
+
+      pageState.scheduledDates.forEach((dateValue, index) => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        const label = document.createElement('span');
+        label.textContent = formatDate(dateValue);
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'chip-remove';
+        remove.textContent = '×';
+        remove.setAttribute('aria-label', 'Remove date');
+        remove.addEventListener('click', () => {
+          pageState.scheduledDates.splice(index, 1);
+          renderDates();
+        });
+        chip.append(label, remove);
+        scheduledList.appendChild(chip);
+      });
+    }
+
+    addDateBtn.addEventListener('click', function () {
+      if (!dateInput.value) return;
+      pageState.scheduledDates.push(dateInput.value);
+      dateInput.value = '';
+      renderDates();
+    });
+
+    function renderLinkGroup(groupName, containerId) {
+      const container = document.getElementById(containerId);
+      const items = pageState[groupName] || [];
+      container.innerHTML = '';
+
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-link-state';
+        empty.textContent = 'No links added';
+        container.appendChild(empty);
+        return;
+      }
+
+      items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'link-item';
+
+        const isPermanentEmail = groupName === 'contactLinks' && (item.permanent || /^Email$/i.test(item.label || ''));
+        if (isPermanentEmail) {
+          row.classList.add('permanent-row');
+        }
+
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.placeholder = 'Label';
+        labelInput.value = item.label || '';
+        labelInput.disabled = isPermanentEmail;
+        labelInput.addEventListener('input', (event) => {
+          if (!isPermanentEmail) {
+            pageState[groupName][index].label = event.target.value;
+          }
+        });
+
+        const urlInput = document.createElement('input');
+        urlInput.type = isPermanentEmail ? 'email' : 'url';
+        urlInput.placeholder = isPermanentEmail ? 'email@example.com' : 'https://...';
+        urlInput.value = item.url || '';
+        urlInput.addEventListener('input', (event) => {
+          pageState[groupName][index].url = event.target.value;
+        });
 
         const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-link-btn';
         removeBtn.textContent = '×';
-        removeBtn.className = 'remove-btn';
-        removeBtn.onclick = () => {
-          filesQueue.splice(i, 1);
-          renderPreview();
-          uploadBtn.style.display = filesQueue.length ? 'block' : 'none';
-        };
+        removeBtn.disabled = isPermanentEmail;
+        removeBtn.title = isPermanentEmail ? 'Email is required' : 'Remove link';
+        removeBtn.addEventListener('click', () => {
+          if (!isPermanentEmail) {
+            pageState[groupName].splice(index, 1);
+            renderLinkGroup(groupName, containerId);
+          }
+        });
 
-        div.append(img, removeBtn);
-        previewGrid.appendChild(div);
+        row.append(labelInput, urlInput, removeBtn);
+        container.appendChild(row);
       });
     }
 
-    uploadBtn.onclick = async () => {
-      if (!filesQueue.length) return;
+    document.querySelectorAll('.add-link-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const groupName = button.dataset.group;
+        if (!pageState[groupName]) pageState[groupName] = [];
+        pageState[groupName].push({ label: '', url: '' });
+        renderLinkGroup(groupName, `${groupName}List`);
+      });
+    });
 
-      progress.style.display = 'block';
-      status.textContent = 'Uploading...';
-      uploadBtn.disabled = true;
+    function updateImageState(target, imageData) {
+      const preview = document.getElementById(`${target}Preview`);
+      const buttons = document.querySelectorAll(`.image-btn[data-target="${target}"]`);
+      const fileInput = document.querySelector(`.image-input[data-target="${target}"]`);
+      const hasImage = Boolean(imageData);
 
-      for (let i = 0; i < filesQueue.length; i++) {
-        const file = filesQueue[i];
-        const timestamp = Date.now();
-        const fileName = `slide_${timestamp}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-        const ref = storage.ref(`slides/${fileName}`);
-
-        const task = ref.put(file);
-        task.on('state_changed', snap => {
-          progress.value = (snap.bytesTransferred / snap.totalBytes) * 100;
-        });
-
-        await task;
-        const url = await ref.getDownloadURL();
-
-        await db.ref('slides').push({
-          url,
-          uploadedAt: timestamp
-        });
-
-        status.textContent = `Uploaded ${i+1} of ${filesQueue.length}`;
+      if (imageData) {
+        preview.classList.remove('empty');
+        preview.innerHTML = `<img src="${imageData}" alt="${target}" />`;
+      } else {
+        preview.classList.add('empty');
+        preview.innerHTML = '';
       }
 
-      status.textContent = 'All slides uploaded!';
-      progress.style.display = 'none';
-      filesQueue = [];
-      renderPreview();
-      uploadBtn.style.display = 'none';
-      loadSlides();
-    };
+      buttons.forEach((button) => {
+        const action = button.dataset.action;
+        const isUpload = action === 'upload';
+        const isReplaceOrDelete = action === 'replace' || action === 'delete';
+        const shouldDisable = (isUpload && hasImage) || (isReplaceOrDelete && !hasImage);
 
-    function loadSlides() {
-      db.ref('slides').orderByChild('uploadedAt').on('value', snap => {
-        const data = snap.val() || {};
-        slideList.innerHTML = '';
-        Object.values(data).reverse().forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'slide-item';
-          div.innerHTML = `
-            <img src="${item.url}">
-            <button onclick="deleteSlide('${item.url.split('/').pop().split('?')[0]}', this)">Delete</button>
-          `;
-          slideList.appendChild(div);
-        });
-        if (!Object.keys(data).length) {
-          slideList.innerHTML = '<p style="opacity:0.6;text-align:center;padding:60px; grid-column: 1/-1;">No slides uploaded yet</p>';
+        button.disabled = shouldDisable;
+        button.classList.toggle('has-image', isUpload && hasImage);
+        button.classList.toggle('inactive', !isUpload && !hasImage);
+      });
+
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    }
+
+    document.querySelectorAll('.image-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.target;
+        const action = button.dataset.action;
+        const fileInput = document.querySelector(`.image-input[data-target="${target}"]`);
+
+        if (action === 'delete') {
+          pageState.imageData[target] = null;
+          updateImageState(target, null);
+          return;
+        }
+
+        if (fileInput) {
+          fileInput.click();
         }
       });
+    });
+
+    async function readImageAsDataURL(file) {
+      const isHeic = /\.(heic|heif)$/i.test(file.name) || /^image\/(heic|heif)/i.test(file.type);
+      let previewFile = file;
+
+      if (isHeic) {
+        if (typeof window.HeicTo !== 'function') {
+          throw new Error('The HEIC converter did not load. Check your connection and try again.');
+        }
+        previewFile = await window.HeicTo({ blob: file, type: 'image/jpeg', quality: 0.9 });
+      }
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('The image could not be read.'));
+        reader.readAsDataURL(previewFile);
+      });
     }
 
-    window.deleteSlide = async (fileName, btn) => {
-      if (!confirm('Delete this slide?')) return;
-      try {
-        await storage.ref(`slides/${fileName}`).delete();
-        btn.closest('.slide-item').remove();
-      } catch (e) {
-        alert('Failed to delete. File may have already been removed.');
+    document.querySelectorAll('.image-input').forEach((input) => {
+      input.addEventListener('change', async (event) => {
+        const target = event.target.dataset.target;
+        const file = event.target.files[0];
+        if (!file) return;
+        statusLine.textContent = /\.(heic|heif)$/i.test(file.name) || /^image\/(heic|heif)/i.test(file.type)
+          ? 'Converting HEIC image...'
+          : '';
+        statusLine.classList.remove('success');
+        try {
+          pageState.imageData[target] = await readImageAsDataURL(file);
+          updateImageState(target, pageState.imageData[target]);
+          statusLine.textContent = '';
+        } catch (error) {
+          statusLine.textContent = `Could not preview image: ${error.message}`;
+        }
+      });
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const payload = {
+        releaseTitle: document.getElementById('releaseTitle').value,
+        releaseLink: document.getElementById('releaseLink').value,
+        scheduledDates: pageState.scheduledDates,
+        streamLinks: pageState.streamLinks,
+        socialLinks: pageState.socialLinks,
+        contactLinks: pageState.contactLinks,
+        imageData: pageState.imageData
+      };
+      localStorage.setItem('homepage-editor-state', JSON.stringify(payload));
+      statusLine.textContent = 'Publishing homepage changes...';
+      statusLine.classList.remove('success');
+      homepageRef.set(payload).then(() => {
+        statusLine.textContent = 'Homepage changes published.';
+        statusLine.classList.add('success');
+      }).catch((error) => {
+        statusLine.textContent = `Local copy saved, but live publishing failed: ${error.message}`;
+      });
+    });
+
+    function hydrateDefaults() {
+      document.getElementById('releaseTitle').value = defaultValues.releaseTitle;
+      document.getElementById('releaseLink').value = defaultValues.releaseLink;
+      pageState.scheduledDates = [...defaultValues.scheduledDates];
+      pageState.streamLinks = JSON.parse(JSON.stringify(defaultValues.streamLinks));
+      pageState.socialLinks = JSON.parse(JSON.stringify(defaultValues.socialLinks));
+      pageState.contactLinks = JSON.parse(JSON.stringify(defaultValues.contactLinks));
+      pageState.imageData = { heroBackground: null, tileOne: null, tileTwo: null };
+      renderDates();
+      renderLinkGroup('streamLinks', 'streamLinksList');
+      renderLinkGroup('socialLinks', 'socialLinksList');
+      renderLinkGroup('contactLinks', 'contactLinksList');
+      updateImageState('heroBackground', null);
+      updateImageState('tileOne', null);
+      updateImageState('tileTwo', null);
+    }
+
+    function applyHomepageState(savedState) {
+      document.getElementById('releaseTitle').value = savedState.releaseTitle || defaultValues.releaseTitle;
+      document.getElementById('releaseLink').value = savedState.releaseLink || defaultValues.releaseLink;
+      pageState.scheduledDates = Array.isArray(savedState.scheduledDates) ? savedState.scheduledDates : [...defaultValues.scheduledDates];
+      pageState.streamLinks = Array.isArray(savedState.streamLinks) ? savedState.streamLinks : JSON.parse(JSON.stringify(defaultValues.streamLinks));
+      pageState.socialLinks = Array.isArray(savedState.socialLinks) ? savedState.socialLinks : JSON.parse(JSON.stringify(defaultValues.socialLinks));
+      pageState.contactLinks = Array.isArray(savedState.contactLinks) ? savedState.contactLinks : JSON.parse(JSON.stringify(defaultValues.contactLinks));
+      pageState.imageData = savedState.imageData || { heroBackground: null, tileOne: null, tileTwo: null };
+      renderDates();
+      renderLinkGroup('streamLinks', 'streamLinksList');
+      renderLinkGroup('socialLinks', 'socialLinksList');
+      renderLinkGroup('contactLinks', 'contactLinksList');
+      updateImageState('heroBackground', pageState.imageData.heroBackground);
+      updateImageState('tileOne', pageState.imageData.tileOne);
+      updateImageState('tileTwo', pageState.imageData.tileTwo);
+    }
+
+    const savedState = JSON.parse(localStorage.getItem('homepage-editor-state') || 'null');
+    if (savedState) {
+      applyHomepageState(savedState);
+    } else {
+      hydrateDefaults();
+    }
+
+    homepageRef.once('value').then((snapshot) => {
+      const liveState = snapshot.val();
+      if (liveState) {
+        applyHomepageState(liveState);
+        localStorage.setItem('homepage-editor-state', JSON.stringify(liveState));
       }
-    };
+    }).catch((error) => {
+      statusLine.textContent = `Could not load live homepage data: ${error.message}`;
+    });
 
-    // Mobile menu
-    document.querySelector('.hamburger').onclick = () => {
-      document.querySelector('.sidebar').classList.toggle('active');
-    };
+    resetBtn.addEventListener('click', function () {
+      hydrateDefaults();
+      localStorage.removeItem('homepage-editor-state');
+      statusLine.textContent = 'Form reset to the homepage default values.';
+      statusLine.classList.remove('success');
+    });
 
-    loadSlides();
+    const sidebar = document.querySelector('.sidebar');
+    const menuButton = document.querySelector('.hamburger');
+    if (menuButton) {
+      menuButton.addEventListener('click', function () {
+        if (sidebar) sidebar.classList.toggle('active');
+      });
+    }
   </script>
 </body>
 </html>
