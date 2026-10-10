@@ -1,337 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>404 | Page Not Found</title>
-  <link rel="icon" href="images/favicon.ico">
-  <script src="device-optimization.js"></script>
-  <script src="anti-lag-optimization.js"></script>
-  <style>
-@font-face {
-  font-family: 'sitefont';
-  src: url('beyoncefont.ttf') format('truetype');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>404 | Page Not Found</title>
+<link rel="icon" href="images/favicon.ico">
+<style>
+@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('truetype');}
+@font-face {font-family: 'altfont'; src: url('font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100dvh;font-family:'sitefont',monospace;color:white;background:#000}
+body{display:flex;flex-direction:column;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* Top bar */
+.top-bar{position:fixed;top:0;left:0;right:0;height:76px;padding:0 24px;display:flex;align-items:center;justify-content:center;background:url("images/IMG_4619.png") center/cover no-repeat;border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:20}
+.top-bar .menu-btn{position:absolute;left:24px}
+.top-bar-title{font-family:'altfont';font-size:22px;font-weight:800;letter-spacing:2px;color:#ffe600;text-align:center;white-space:nowrap;text-transform:uppercase}
+
+/* Hamburger button */
+.menu-btn{width:44px;height:36px;padding:8px;display:flex;flex-direction:column;justify-content:space-between;background:rgba(0,0,0,0.35);border:1px solid rgba(255,230,0,0.5);border-radius:12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background-clip:padding-box}
+.menu-btn span{display:block;width:100%;height:4px;background:#ffe600;border-radius:999px}
+.menu-btn:focus{outline:2px solid rgba(255,230,0,0.35)}
+body.menu-open .menu-btn{visibility:hidden}
+
+/* Sidebar */
+.sidebar{position:fixed;left:0;top:0;width:280px;height:100%;background:#071123;color:#ffe600;padding:24px;box-shadow:2px 0 18px rgba(0,0,0,0.6);transition:transform .28s ease,opacity .28s ease,visibility .28s ease;z-index:30;overflow:auto;display:flex;flex-direction:column;transform:translateX(-100%);opacity:0;visibility:hidden;pointer-events:none}
+.sidebar.open{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
+.sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
+.sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
+.sidebar a{color:#ffe600;padding:6px 8px;border-radius:6px}
+.sidebar a:hover{text-decoration:underline}
+
+/* Page */
+.main-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:110px 24px 40px;text-align:center}
+.error-code{font-family:'altfont';font-size:160px;line-height:1;letter-spacing:6px;color:#ffe600}
+.error-text{font-size:20px;letter-spacing:3px;text-transform:uppercase;color:white;opacity:0.95;margin-bottom:16px}
+.home-btn{background:transparent;border:2px solid #ffe600;color:#ffe600;padding:8px 14px;border-radius:24px;font-weight:500;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.home-btn:hover{background:rgba(255,230,0,0.1)}
+
+.footer{max-width:1200px;width:100%;margin:40px auto;color:#fff;padding:24px}
+.footer a{color:#ffe600}
+
+@media(max-width:768px){
+  .error-code{font-size:96px;letter-spacing:3px}
+  .error-text{font-size:16px}
+  .footer{padding:20px;margin:30px auto}
 }
-
-/* ================= RESET ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100dvh;
-  font-family: 'sitefont', monospace;
-  text-transform: uppercase;
-  color: white;
-}
-
-html {
-  height: 100vh;
-  height: 100dvh;
-}
-
-/* ================= INFINITE BACKGROUND ================= */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: url("IMG_3309.gif") center / cover no-repeat;
-  background-attachment: fixed;
-  z-index: -2;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: rgba(0,0,0,0.65);
-  z-index: -1;
-}
-
-/* ================= BODY ================= */
-body {
-  display: flex;
-  min-height: 100dvh;
-}
-
-/* ================= SIDEBAR ================= */
-.sidebar {
-  width: 260px;
-  height: 100dvh;
-  padding: 24px;
-  position: fixed;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255,255,255,0.15);
-  z-index: 3000;
-}
-
-.profile-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  margin-bottom: 20px;
-}
-
-.name {
-  font-size: 22px;
-  letter-spacing: 3px;
-  margin-bottom: 40px;
-}
-
-.buttons {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.button {
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  font-size: 13px;
-  letter-spacing: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
-  transition: border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  will-change: border-color, color;
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: inherit;
-  z-index: -1;
-  transition: background 0.2s ease;
-}
-
-.button:hover::before {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.button:hover {
-  border-color: white;
-}
-
-.footer {
-  margin-top: auto;
-  font-size: 10px;
-  opacity: 0.7;
-  text-align: center;
-}
-
-.footer a {
-  color: white;
-  text-decoration: none;
-}
-
-.copyright {
-  font-size: 8px;
-  margin-top: 6px;
-}
-
-/* ================= TOP BAR (MOBILE) ================= */
-.topbar {
-  display: none;
-}
-    main.content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0 20px;
-      text-align: center;
-      line-height: 1.6;
-    }
-    .empty {
-      font-size: 50px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-    main.content > * {
-      max-width: 800px;
-    }
-    main.content p {
-      margin-bottom: 16px;
-    }
-    main.content a {
-      z-index: 1000;
-      font-size: 12px;
-      color: white;
-      text-decoration: none;
-      opacity: 0.8;
-      padding: 8px 12px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(6px);
-      transition: all 0.25s ease;
-    }
-    main.content a:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: white;
-    }
-    /* Hero & generic sections */
-    .hero {
-      width: 100%;
-      height: 100vh;
-      background: url('hero-image.jpg') no-repeat center/cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      text-transform: uppercase;
-    }
-    .section {
-      padding: 80px 20px;
-      font-size: 20px;
-      line-height: 1.6;
-    }
-
-    /* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-
-  body.sidebar-open {
-    overflow: hidden;
-  }
-
-  .topbar {
-    display: flex;
-    position: fixed;
-    top: 35px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    padding-top: max(0px, env(safe-area-inset-top));
-    align-items: center;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    z-index: 2101;
-  }
-
-  .hamburger {
-    font-size: 28px;
-    cursor: pointer;
-    padding: 5px;
-  }
-
-  .top-name {
-    margin: 0 auto;
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
-
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 85px;
-    left: 0;
-    width: 100%;
-    height: calc(100dvh - 85px);
-    z-index: 1900;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .sidebar.active {
-    display: flex;
-  }
-
-  .sidebar.active ~ .main-content {
-    overflow: hidden;
-  }
-    }
-
-@media (max-width: 768px) {
-  html, body {
-    padding-top: 0;
-  }
-}
-  </style>
+</style>
 </head>
 <body>
-  <!-- Mobile Top Bar -->
-  <!-- MOBILE TOP BAR -->
-<div class="topbar">
-  <div class="hamburger">☰</div>
-  <div class="top-name">JAE LAURENT</div>
-</div>
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <img src="IMG_3214.JPEG" class="profile-img" alt="JAE LAURENT">
-  <div class="name">
-    <a href="https://k1llajay.com/mylinks" style="color:white;text-decoration:none;">JAE LAURENT</a>
-  </div>
 
-  <div class="buttons">
+<aside class="sidebar" id="siteSidebar" aria-hidden="true">
+  <button class="close" aria-label="Close menu">×</button>
+  <nav aria-label="Main navigation">
     <a href="https://k1llajay.com">Home</a>
     <a href="https://k1llajay.com/music">Latest Album</a>
     <a href="https://k1llajay.com/portfolio">Natural Photography</a>
     <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/player">All Releases</a>
-    <a href="https://k1llajay.com/extras/music-database">Music Database</a>
+    <a href="https://k1llajay.com/extras/database">Catelog Database</a>
     <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/extras/memes">Memes & Videos</a>
     <a href="https://k1llajay.com/404">Coming Soon</a>
-  </div>
+  </nav>
+</aside>
 
-  <div class="footer">
-    <a href="https://mystery.k1llajay.com">Mystery</a> •
-    <a href="https://k1llajay.com/editor/edit-podcast">Upload</a> •
-    <a href="https://k1llajay.com/images/terms">Terms</a> •
-    <a href="https://k1llajay.com/images/privacy">Privacy</a>
-    <div class="copyright">© 2025 Jefferson Entertainment LLC</div>
-  </div>
+<div class="top-bar">
+  <button class="menu-btn" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="top-bar-title">JAE LAURENT</div>
 </div>
 
-  <main class="content">
-    <div class="empty">404</div>
-    <p>PAGE NOT FOUND</p>
-    <a href="https://k1llajay.com/">BACK HOME</a>
-  </main>
+<main class="main-content">
+  <div class="error-code">404</div>
+  <p class="error-text">Page Not Found</p>
+  <a class="home-btn" href="https://k1llajay.com/">Back Home →</a>
+</main>
 
-  <script>
-    /* === MOBILE SIDEBAR === */
-const hamburger = document.querySelector(".hamburger");
-const sidebar = document.querySelector(".sidebar");
-const bodyElem = document.body;
+<footer class="footer">
+  © 2026 Jefferson Entertainment LLC • <a href="https://k1llajay.com/extras/terms">Terms</a> • <a href="https://k1llajay.com/extras/privacy">Privacy</a> <a href="https://k1llajay.com/editor/editor-home" style="color:#000000">___</a>
+</footer>
 
-hamburger.onclick = () => {
-  sidebar.classList.toggle("active");
-  bodyElem.classList.toggle("sidebar-open");
-};
-  </script>
+<script>
+  (function(){
+    const sidebar = document.getElementById('siteSidebar');
+    const close = sidebar.querySelector('.close');
+    const menuButton = document.querySelector('.menu-btn');
 
-  <script>
+    function open(){
+      sidebar.classList.add('open');
+      document.body.classList.add('menu-open');
+      sidebar.setAttribute('aria-hidden','false');
+    }
+
+    function closeMenu(){
+      sidebar.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      sidebar.setAttribute('aria-hidden','true');
+    }
+
+    menuButton.addEventListener('click', open);
+    close.addEventListener('click', closeMenu);
+    document.addEventListener('click', function(e){
+      if(sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuButton.contains(e.target)) closeMenu();
+    });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
+  })();
 </script>
 </body>
 </html>
