@@ -1,6 +1,6 @@
 # Store backend setup
 
-This server sits between the store page (`laurent-by-jae-laurent.html`) and Printify, Podbase and Stripe. It keeps your API keys secret. A customer pays on Stripe first, and only then is the order sent to Printify.
+This server sits between the store page (`laurent-by-jae-laurent.html`) and Printify and Stripe. It keeps your API keys secret. A customer pays on Stripe first, and only then is the order sent to Printify.
 
 **Never put real keys in any file that gets committed.** They go in `backend/.env` on your computer (git ignores it) and in Render's Environment tab online.
 
@@ -20,16 +20,6 @@ This server sits between the store page (`laurent-by-jae-laurent.html`) and Prin
 2. Make sure **Test mode** is on (toggle at the top right) while you set things up.
 3. Go to **Developers → API keys** and copy the **Secret key** (`sk_test_...`). This is `STRIPE_SECRET_KEY`.
 4. You'll create the webhook secret in Step 4, after the server is online.
-
-### Podbase (optional)
-1. In Podbase, go to **Dashboard → Integrations → Podbase API** and click **Connect**. Copy the key; this is `PODBASE_API_KEY`.
-2. In **Store Settings → Orders**, set **Order Approval** to **Manual** while testing, so orders wait for you and nothing is charged.
-3. Podbase's API can't list the products you design in its dashboard, so they're listed in `PODBASE_PRODUCTS` in `index.js`. To add one:
-   - Put the design file in `images/designs/` and push it. Podbase downloads it from your site when an order comes in.
-   - Put the mockup photos in `images/podbase/`.
-   - Find the blank product's id at `/podbase/catalog` on the backend (for example `PBP-37-2FY-223Z` is the MagSafe Tough Phone Case).
-   - Copy the existing entry and change the id, title, price (in cents), catalog id and file names.
-4. Paid orders are sent to Podbase with Economy Delivery. A cart with both Printify and Podbase items becomes one order in each.
 
 ---
 
@@ -62,7 +52,7 @@ It prints a `whsec_...` secret. Put it in `.env` as `STRIPE_WEBHOOK_SECRET` and 
 1. Commit and push this repo to GitHub (your keys stay out because `.env` is git-ignored).
 2. Go to render.com, sign up with GitHub, and click **New → Blueprint**.
 3. Pick the `K1llajay` repo. Render reads `render.yaml` and creates a service called `k1llajay-store`.
-4. When it asks for the secret values, paste `PRINTIFY_API_KEY`, `STRIPE_SECRET_KEY` and (optionally) `PODBASE_API_KEY`. Leave `STRIPE_WEBHOOK_SECRET` empty for now.
+4. When it asks for the secret values, paste `PRINTIFY_API_KEY` and `STRIPE_SECRET_KEY`. Leave `STRIPE_WEBHOOK_SECRET` empty for now.
 5. When the deploy finishes, copy the URL at the top of the service page (something like `https://k1llajay-store.onrender.com`).
 6. Visit `<your URL>/shops` to confirm it works.
 7. If the URL is different from `https://k1llajay-store.onrender.com`, update `PRODUCTION_API` near the top of the script in `laurent-by-jae-laurent.html`.

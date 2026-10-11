@@ -114,8 +114,6 @@ body.menu-open .menu-btn{visibility:hidden}
 .size-selector,.product-modal-colors{margin-bottom:20px}
 .size-selector label,.product-modal-colors label{display:block;font-size:14px;letter-spacing:3px;color:#ffe600;margin-bottom:10px}
 .size-options{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.variant-select{grid-column:1/-1;width:100%;background:#071123;border:1px solid rgba(255,230,0,0.4);color:white;padding:12px;border-radius:12px;font-family:inherit;font-size:12px;cursor:pointer}
-.variant-select:focus{outline:none;border-color:#ffe600}
 .size-option{background:transparent;border:1px solid rgba(255,230,0,0.4);color:white;padding:10px 6px;border-radius:12px;font-size:12px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
 .size-option:hover{border-color:#ffe600}
 .size-option.selected{border-color:#ffe600;background:rgba(255,230,0,0.15);color:#ffe600}
@@ -352,44 +350,6 @@ async function initStore() {
 
     console.log("Printify products loaded:", products.length);
     
-    // Also load Podbase products
-    try {
-      const podbaseRes = await fetch(`${API}/podbase/products`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'omit',
-        timeout: 10000
-      });
-      
-      if (podbaseRes.ok) {
-        const podbaseData = await podbaseRes.json();
-        const podbaseProducts = (podbaseData.data || []).map(p => ({
-          id: 'podbase-' + p.id,
-          name: p.title,
-          price: p.price / 100,
-          image: p.images?.[0] || "",
-          images: p.images || [],
-          description: p.description || "",
-          category: "accessories", // Default category for Podbase products
-          variants: p.variants || [], // Prices in cents, like Printify
-          isPodbase: true,
-          source: 'podbase'
-        }));
-        
-        // Combine both product arrays
-        products = [...products, ...podbaseProducts];
-        console.log("Podbase products loaded:", podbaseProducts.length);
-        console.log("Total products:", products.length);
-      } else {
-        console.warn("Failed to load Podbase products, continuing with Printify only");
-      }
-    } catch (podbaseError) {
-      console.warn("Could not load Podbase products:", podbaseError.message);
-      // Continue with just Printify products
-    }
-    
     renderProducts();
   } catch (error) {
     console.error("Failed to load products:", error);
@@ -581,27 +541,6 @@ async function openProductModal(id) {
   // Initialize with local image if available
   if (selectedProduct.image) {
     renderProductImages([selectedProduct.image]);
-  }
-
-  // Podbase items have one option (e.g. phone model) and no colors
-  const sizeLabel = document.querySelector(".size-selector label");
-  const colorSection = document.querySelector(".product-modal-colors");
-  sizeLabel.innerText = selectedProduct.isPodbase ? "MODEL" : "SIZE";
-  colorSection.style.display = selectedProduct.isPodbase ? "none" : "block";
-
-  if (selectedProduct.isPodbase) {
-    if (selectedProduct.images.length) renderProductImages(selectedProduct.images);
-    const select = document.createElement("select");
-    select.id = "podbaseVariant";
-    select.className = "variant-select";
-    select.innerHTML = `<option value="">Choose your model</option>` + selectedProduct.variants
-      .map(v => `<option value="${v.id}">${v.title}</option>`).join("");
-    const sizeContainer = document.getElementById("sizeOptions");
-    sizeContainer.innerHTML = "";
-    sizeContainer.appendChild(select);
-    productVariants = selectedProduct.variants;
-    document.getElementById("product-modal").classList.add("active");
-    return;
   }
 
   // Fetch full product data from Printify API
@@ -1242,18 +1181,6 @@ function filterImagesByColor(colorName) {
 
 function addToCartFromModal() {
   if (!selectedProduct) return;
-
-  if (selectedProduct.isPodbase) {
-    const variantId = document.getElementById("podbaseVariant")?.value;
-    if (!variantId) {
-      alert("❌ Please choose your model");
-      return;
-    }
-    addToCart(selectedProduct.id, variantId);
-    alert("✓ Added to cart!");
-    closeProductModal();
-    return;
-  }
 
   // Validate that both size and color are selected
   if (!selectedSize || !selectedColor) {
