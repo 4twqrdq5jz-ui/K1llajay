@@ -24,8 +24,7 @@ const SHIPPING_COUNTRIES = (process.env.SHIPPING_COUNTRIES || "US")
 const AUTO_SEND_TO_PRODUCTION = process.env.AUTO_SEND_TO_PRODUCTION === "true";
 
 const PRINTIFY_API = "https://api.printify.com/v1";
-// Podbase's API docs aren't public; this base URL comes from the previous backend.
-// Confirm it against the docs in your Podbase dashboard.
+// Podbase Open API spec: https://open-api.podbase.com/api-docs/
 const PODBASE_API = "https://open-api.podbase.com";
 
 const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY) : null;
@@ -252,22 +251,32 @@ app.get("/product/:shopId/:productId/color-images", route(async (req, res) => {
   });
 }));
 
-/* ================= PODBASE: READ-ONLY =================
-   Listing only for now. Podbase checkout needs their order format from the docs in your dashboard. */
-app.get("/podbase/products", route(async (req, res) => {
-  if (!PODBASE_API_KEY) return res.json({ data: [] });
-  const data = await cached("podbase:products", 60_000, async () => {
-    const r = await fetch(`${PODBASE_API}/products`, {
-      headers: { Authorization: `Bearer ${PODBASE_API_KEY}`, "Content-Type": "application/json" },
-    });
-    const body = await r.json().catch(() => ({}));
-    if (!r.ok) {
-      console.error(`Podbase GET /products → ${r.status}`, body);
-      throw new HttpError(502, "Podbase error");
-    }
-    return body;
+/* ================= PODBASE =================
+   Podbase's API only has its blank catalog and orders — it can't list the products you designed.
+   So the store lists its Podbase products itself (PODBASE_PRODUCTS, empty until they're added). */
+async function podbase(path, options = {}) {
+  const res = await fetch(`${PODBASE_API}${path}`, {
+    ...options,
+    headers: { "x-api-key": PODBASE_API_KEY, "Content-Type": "application/json", ...options.headers },
   });
-  res.json(data);
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    console.error(`Podbase ${options.method || "GET"} ${path} → ${res.status}`, body);
+    throw new HttpError(502, "Podbase error");
+  }
+  return body;
+}
+
+const PODBASE_PRODUCTS = [];
+
+app.get("/podbase/products", route(async (req, res) => {
+  res.json({ data: PODBASE_API_KEY ? PODBASE_PRODUCTS : [] });
+}));
+
+// Blank Podbase products and their variant ids — used to set up PODBASE_PRODUCTS
+app.get("/podbase/catalog", route(async (req, res) => {
+  if (!PODBASE_API_KEY) throw new HttpError(503, "Podbase is not set up");
+  res.json(await cached("podbase:catalog", 10 * 60_000, () => podbase("/catalog")));
 }));
 
 /* ================= STRIPE CHECKOUT =================
