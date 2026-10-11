@@ -114,6 +114,8 @@ body.menu-open .menu-btn{visibility:hidden}
 .size-selector,.product-modal-colors{margin-bottom:20px}
 .size-selector label,.product-modal-colors label{display:block;font-size:14px;letter-spacing:3px;color:#ffe600;margin-bottom:10px}
 .size-options{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.variant-select{grid-column:1/-1;width:100%;background:#071123;border:1px solid rgba(255,230,0,0.4);color:white;padding:12px;border-radius:12px;font-family:inherit;font-size:12px;cursor:pointer}
+.variant-select:focus{outline:none;border-color:#ffe600}
 .size-option{background:transparent;border:1px solid rgba(255,230,0,0.4);color:white;padding:10px 6px;border-radius:12px;font-size:12px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
 .size-option:hover{border-color:#ffe600}
 .size-option.selected{border-color:#ffe600;background:rgba(255,230,0,0.15);color:#ffe600}
@@ -363,13 +365,15 @@ async function initStore() {
       
       if (podbaseRes.ok) {
         const podbaseData = await podbaseRes.json();
-        const podbaseProducts = (podbaseData.data || podbaseData).map(p => ({
+        const podbaseProducts = (podbaseData.data || []).map(p => ({
           id: 'podbase-' + p.id,
-          name: p.name || p.title || 'Product',
-          price: p.price || p.pricing?.retail_price || 0,
-          image: p.images?.[0]?.url || p.image || "",
+          name: p.title,
+          price: p.price / 100,
+          image: p.images?.[0] || "",
+          images: p.images || [],
           description: p.description || "",
           category: "accessories", // Default category for Podbase products
+          variants: p.variants || [], // Prices in cents, like Printify
           isPodbase: true,
           source: 'podbase'
         }));
@@ -579,11 +583,23 @@ async function openProductModal(id) {
     renderProductImages([selectedProduct.image]);
   }
 
-  // Podbase items are display-only until Podbase checkout is set up
+  // Podbase items have one option (e.g. phone model) and no colors
+  const sizeLabel = document.querySelector(".size-selector label");
+  const colorSection = document.querySelector(".product-modal-colors");
+  sizeLabel.innerText = selectedProduct.isPodbase ? "MODEL" : "SIZE";
+  colorSection.style.display = selectedProduct.isPodbase ? "none" : "block";
+
   if (selectedProduct.isPodbase) {
-    document.getElementById("sizeOptions").innerHTML = "<span style='color: rgba(255,255,255,0.5);'>COMING SOON</span>";
-    document.getElementById("colorOptions").innerHTML = "";
-    productVariants = [];
+    if (selectedProduct.images.length) renderProductImages(selectedProduct.images);
+    const select = document.createElement("select");
+    select.id = "podbaseVariant";
+    select.className = "variant-select";
+    select.innerHTML = `<option value="">Choose your model</option>` + selectedProduct.variants
+      .map(v => `<option value="${v.id}">${v.title}</option>`).join("");
+    const sizeContainer = document.getElementById("sizeOptions");
+    sizeContainer.innerHTML = "";
+    sizeContainer.appendChild(select);
+    productVariants = selectedProduct.variants;
     document.getElementById("product-modal").classList.add("active");
     return;
   }
@@ -1228,7 +1244,14 @@ function addToCartFromModal() {
   if (!selectedProduct) return;
 
   if (selectedProduct.isPodbase) {
-    alert("This item isn't available to buy online yet.");
+    const variantId = document.getElementById("podbaseVariant")?.value;
+    if (!variantId) {
+      alert("❌ Please choose your model");
+      return;
+    }
+    addToCart(selectedProduct.id, variantId);
+    alert("✓ Added to cart!");
+    closeProductModal();
     return;
   }
 
@@ -1265,7 +1288,7 @@ function addToCart(productId, variantId) {
   const variant = product.variants.find(v => v.id === variantId);
   if (!variant) return;
   
-  const item = cart.find(i => i.variant_id === variantId);
+  const item = cart.find(i => String(i.variant_id) === String(variantId));
   const itemPrice = variant.price / 100;
   const itemName = `${product.name} (${variant.title})`;
   
@@ -1286,13 +1309,13 @@ function addToCart(productId, variantId) {
 }
 
 function removeFromCart(variantId) {
-  cart = cart.filter(i => i.variant_id !== variantId);
+  cart = cart.filter(i => String(i.variant_id) !== String(variantId));
   updateCart();
   renderCartModal();
 }
 
 function updateQuantity(variantId, delta) {
-  const item = cart.find(i => i.variant_id === variantId);
+  const item = cart.find(i => String(i.variant_id) === String(variantId));
   if (item) {
     item.qty += delta;
     if (item.qty <= 0) removeFromCart(variantId);

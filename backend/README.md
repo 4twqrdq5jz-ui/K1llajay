@@ -21,11 +21,15 @@ This server sits between the store page (`laurent-by-jae-laurent.html`) and Prin
 3. Go to **Developers → API keys** and copy the **Secret key** (`sk_test_...`). This is `STRIPE_SECRET_KEY`.
 4. You'll create the webhook secret in Step 4, after the server is online.
 
-### Podbase (optional, display only for now)
-1. In your Podbase dashboard, look for the API or developer settings and create a key. This is `PODBASE_API_KEY`.
-2. If you can't find it, ask Podbase support for **Open API access and documentation**.
-3. If you created an old key before, **delete it**. It is public in this repo's git history.
-4. Podbase products will show on the store but can't be bought yet. Once you have Podbase's API docs, checkout for them can be added.
+### Podbase (optional)
+1. In Podbase, go to **Dashboard → Integrations → Podbase API** and click **Connect**. Copy the key; this is `PODBASE_API_KEY`.
+2. In **Store Settings → Orders**, set **Order Approval** to **Manual** while testing, so orders wait for you and nothing is charged.
+3. Podbase's API can't list the products you design in its dashboard, so they're listed in `PODBASE_PRODUCTS` in `index.js`. To add one:
+   - Put the design file in `images/designs/` and push it. Podbase downloads it from your site when an order comes in.
+   - Put the mockup photos in `images/podbase/`.
+   - Find the blank product's id at `/podbase/catalog` on the backend (for example `PBP-37-2FY-223Z` is the MagSafe Tough Phone Case).
+   - Copy the existing entry and change the id, title, price (in cents), catalog id and file names.
+4. Paid orders are sent to Podbase with Economy Delivery. A cart with both Printify and Podbase items becomes one order in each.
 
 ---
 

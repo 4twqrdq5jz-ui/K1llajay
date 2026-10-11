@@ -253,7 +253,7 @@ app.get("/product/:shopId/:productId/color-images", route(async (req, res) => {
 
 /* ================= PODBASE =================
    Podbase's API only has its blank catalog and orders — it can't list the products you designed.
-   So the store lists its Podbase products itself (PODBASE_PRODUCTS, empty until they're added). */
+   So the store lists its Podbase products itself in PODBASE_PRODUCTS. */
 async function podbase(path, options = {}) {
   const res = await fetch(`${PODBASE_API}${path}`, {
     ...options,
@@ -267,10 +267,39 @@ async function podbase(path, options = {}) {
   return body;
 }
 
-const PODBASE_PRODUCTS = [];
+// To add a product: pick catalogProductId from /podbase/catalog, put the design in images/designs/
+// (it must be pushed so Podbase can download it), and set the price in cents.
+// Every in-stock variant (phone model) of the catalog product is offered.
+const PODBASE_PRODUCTS = [
+  {
+    id: "rose-phone-case",
+    title: "Rose MagSafe Tough Phone Case",
+    description: "Red roses against a blue sky on a MagSafe-compatible tough case.",
+    price: 2999,
+    catalogProductId: "PBP-37-2FY-223Z", // MagSafe Tough Phone Case
+    printFile: `${SITE_URL}/images/designs/rose-phone-case.png`,
+    images: ["rose-case-front.jpg", "rose-case-angle.jpg", "rose-case-layers.jpg"]
+      .map((f) => `${SITE_URL}/images/podbase/${f}`),
+  },
+];
+const PODBASE_SHIPPING_TYPE = "PBS-F7-7ZH-223S"; // Economy Delivery
+
+async function getPodbaseProducts() {
+  if (!PODBASE_API_KEY) return [];
+  return cached("podbase:products", 10 * 60_000, async () => {
+    const catalog = await podbase("/catalog");
+    return PODBASE_PRODUCTS.map((p) => {
+      const base = catalog.find((c) => c.id === p.catalogProductId);
+      const variants = (base?.variants || [])
+        .filter((v) => v.inStock !== false)
+        .map((v) => ({ id: v.id, title: v.name, price: p.price }));
+      return { id: p.id, title: p.title, description: p.description, price: p.price, images: p.images, variants };
+    }).filter((p) => p.variants.length > 0);
+  });
+}
 
 app.get("/podbase/products", route(async (req, res) => {
-  res.json({ data: PODBASE_API_KEY ? PODBASE_PRODUCTS : [] });
+  res.json({ data: await getPodbaseProducts() });
 }));
 
 // Blank Podbase products and their variant ids — used to set up PODBASE_PRODUCTS
@@ -298,12 +327,32 @@ app.post("/checkout", route(async (req, res) => {
 
   for (const item of items) {
     const productId = String(item.product_id ?? "");
-    const variantId = Number(item.variant_id);
     const qty = Number(item.qty);
-    if (!Number.isInteger(variantId) || !Number.isInteger(qty) || qty < 1 || qty > MAX_QTY) {
-      throw new HttpError(400, "Invalid cart item");
+    if (!Number.isInteger(qty) || qty < 1 || qty > MAX_QTY) throw new HttpError(400, "Invalid cart item");
+
+    if (productId.startsWith("podbase-")) {
+      const variantId = String(item.variant_id ?? "");
+      const product = (await getPodbaseProducts()).find((p) => `podbase-${p.id}` === productId);
+      const variant = product?.variants.find((v) => v.id === variantId);
+      if (!variant) throw new HttpError(400, `${product?.title || "Item"}: that option is no longer available`);
+
+      lineItems.push({
+        quantity: qty,
+        price_data: {
+          currency: "usd",
+          unit_amount: variant.price,
+          product_data: {
+            name: `${product.title} (${variant.title})`,
+            ...(product.images[0] ? { images: [product.images[0]] } : {}),
+          },
+        },
+      });
+      encoded.push(`${productId}:${variantId}:${qty}`);
+      continue;
     }
-    if (productId.startsWith("podbase-")) throw new HttpError(400, "Podbase items can't be purchased yet");
+
+    const variantId = Number(item.variant_id);
+    if (!Number.isInteger(variantId)) throw new HttpError(400, "Invalid cart item");
 
     const product = await getProduct(productId);
     const variant = enabledVariants(product).find((v) => v.id === variantId);
@@ -341,7 +390,7 @@ app.post("/checkout", route(async (req, res) => {
       }],
     }),
     phone_number_collection: { enabled: true },
-    // Read back by the webhook to build the Printify order
+    // Read back by the webhook to build the Printify and Podbase orders
     metadata: { shop_id: String(shop.id), items: encoded.join(",") },
     success_url: `${storeUrl}?checkout=success`,
     cancel_url: `${storeUrl}?checkout=cancelled`,
@@ -354,8 +403,6 @@ app.post("/checkout", route(async (req, res) => {
 async function fulfillOrder(sessionId) {
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   if (session.payment_status !== "paid") return;
-  // Stripe can deliver a webhook more than once; skip sessions already sent to Printify
-  if (session.metadata?.printify_order_id) return;
 
   const shipping = session.collected_information?.shipping_details || session.shipping_details;
   const customer = session.customer_details || {};
@@ -365,43 +412,86 @@ async function fulfillOrder(sessionId) {
   const fullName = (shipping?.name || customer.name || "Customer").trim();
   const [firstName, ...rest] = fullName.split(/\s+/);
 
-  const lineItems = (session.metadata?.items || "").split(",").filter(Boolean).map((entry) => {
+  const entries = (session.metadata?.items || "").split(",").filter(Boolean).map((entry) => {
     const [product_id, variant_id, quantity] = entry.split(":");
-    return { product_id, variant_id: Number(variant_id), quantity: Number(quantity) };
+    return { product_id, variant_id, quantity: Number(quantity) };
   });
-  if (lineItems.length === 0) throw new Error(`Session ${session.id} has no items`);
+  if (entries.length === 0) throw new Error(`Session ${session.id} has no items`);
 
-  const order = await printify(`/shops/${session.metadata.shop_id}/orders.json`, {
-    method: "POST",
-    body: JSON.stringify({
-      external_id: session.id,
-      label: `Stripe ${session.id.slice(-8)}`,
-      line_items: lineItems,
-      shipping_method: 1,
-      send_shipping_notification: true,
-      address_to: {
-        first_name: firstName,
-        last_name: rest.join(" ") || "-",
-        email: customer.email || "",
-        phone: customer.phone || "",
-        country: address.country,
-        region: address.state || "",
-        address1: address.line1,
-        address2: address.line2 || "",
-        city: address.city,
-        zip: address.postal_code,
-      },
-    }),
-  });
+  const printifyItems = entries.filter((e) => !e.product_id.startsWith("podbase-"));
+  const podbaseItems = entries.filter((e) => e.product_id.startsWith("podbase-"));
 
-  await stripe.checkout.sessions.update(session.id, {
-    metadata: { ...session.metadata, printify_order_id: String(order.id) },
-  });
-  console.log(`Printify order ${order.id} created for Stripe session ${session.id}`);
+  // Stripe can deliver a webhook more than once, and retries after a failure;
+  // each order id saved on the session marks that half as already sent.
+  if (printifyItems.length > 0 && !session.metadata?.printify_order_id) {
+    const order = await printify(`/shops/${session.metadata.shop_id}/orders.json`, {
+      method: "POST",
+      body: JSON.stringify({
+        external_id: session.id,
+        label: `Stripe ${session.id.slice(-8)}`,
+        line_items: printifyItems.map((e) => ({
+          product_id: e.product_id, variant_id: Number(e.variant_id), quantity: e.quantity,
+        })),
+        shipping_method: 1,
+        send_shipping_notification: true,
+        address_to: {
+          first_name: firstName,
+          last_name: rest.join(" ") || "-",
+          email: customer.email || "",
+          phone: customer.phone || "",
+          country: address.country,
+          region: address.state || "",
+          address1: address.line1,
+          address2: address.line2 || "",
+          city: address.city,
+          zip: address.postal_code,
+        },
+      }),
+    });
 
-  if (AUTO_SEND_TO_PRODUCTION) {
-    await printify(`/shops/${session.metadata.shop_id}/orders/${order.id}/send_to_production.json`, { method: "POST" });
-    console.log(`Printify order ${order.id} sent to production`);
+    await stripe.checkout.sessions.update(session.id, { metadata: { printify_order_id: String(order.id) } });
+    console.log(`Printify order ${order.id} created for Stripe session ${session.id}`);
+
+    if (AUTO_SEND_TO_PRODUCTION) {
+      await printify(`/shops/${session.metadata.shop_id}/orders/${order.id}/send_to_production.json`, { method: "POST" });
+      console.log(`Printify order ${order.id} sent to production`);
+    }
+  }
+
+  // Podbase holds or charges the order based on Order Approval in its Store Settings
+  if (podbaseItems.length > 0 && !session.metadata?.podbase_order_id) {
+    const order = await podbase("/orders", {
+      method: "POST",
+      body: JSON.stringify({
+        externalOrderId: session.id,
+        buyerInfo: { name: fullName, phone: customer.phone || "", email: customer.email || "" },
+        deliveryAddress: {
+          line1: address.line1,
+          line2: address.line2 || "",
+          city: address.city,
+          postalCode: address.postal_code || "",
+          country: address.country,
+          region: address.state || "",
+        },
+        shippingTypeId: PODBASE_SHIPPING_TYPE,
+        items: podbaseItems.map((e) => {
+          const product = PODBASE_PRODUCTS.find((p) => `podbase-${p.id}` === e.product_id);
+          if (!product) throw new Error(`Unknown Podbase product ${e.product_id} in session ${session.id}`);
+          return {
+            productId: product.catalogProductId,
+            variantId: e.variant_id,
+            quantity: e.quantity,
+            printFile: product.printFile,
+            externalProductId: `${product.id}:${e.variant_id}`,
+            title: product.title,
+            price: product.price,
+          };
+        }),
+      }),
+    });
+
+    await stripe.checkout.sessions.update(session.id, { metadata: { podbase_order_id: String(order.orderId) } });
+    console.log(`Podbase order ${order.orderId} created for Stripe session ${session.id}`);
   }
 }
 
