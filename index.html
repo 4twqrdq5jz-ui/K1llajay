@@ -6,43 +6,43 @@
 <title>Jae Laurent</title>
 <link rel="icon" href="images/favicon.ico">
 <style>
-@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('truetype');}
-@font-face {font-family: 'specialfont'; src: url('font/new-icon-script_fontlot26ec.otf') format('truetype');}
+@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('opentype');}
+@font-face {font-family: 'specialfont'; src: url('font/new-icon-script_fontlot26ec.otf') format('opentype');}
 @font-face {font-family: 'altfont'; src: url('font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100dvh;font-family:'sitefont',monospace;color:#ffe600;background:#000;overflow-x:hidden}
+html,body{width:100%;min-height:100dvh;font-family:'sitefont',monospace;color:#ffe600;background:#000;overflow-x:hidden}
 .btn-reset a, a{color:inherit;text-decoration:none}
 a:hover, a:focus{text-decoration:none}
 /* Hamburger button */
-.menu-btn{position:fixed;left:18px;top:18px;width:44px;height:36px;padding:8px;display:flex!important;flex-direction:column;justify-content:space-between;z-index:999;background:rgba(0,0,0,0.35);border:1px solid rgba(255,230,0,0.5);border-radius:12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background-clip:padding-box}
+.menu-btn{position:fixed;left:calc(18px + env(safe-area-inset-left, 0px));top:calc(18px + env(safe-area-inset-top, 0px));width:44px;height:36px;padding:8px;display:flex!important;flex-direction:column;justify-content:space-between;z-index:999;background:rgba(0,0,0,0.35);border:1px solid rgba(255,230,0,0.5);border-radius:12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background-clip:padding-box}
 .menu-btn span{display:block;width:100%;height:4px;background:#ffe600;border-radius:999px}
 .menu-btn:focus{outline:2px solid rgba(255,230,0,0.35)}
-.compact-topbar{position:fixed;top:0;left:0;right:0;height:74px;padding:0 24px;display:flex!important;align-items:center;justify-content:center;background:url('IMG_4619.png') center/cover no-repeat;border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:30;transform:translateY(-110%);opacity:0;pointer-events:none;transition:transform .3s ease, opacity .3s ease;will-change:transform,opacity}
-.compact-topbar .compact-menu-btn{position:absolute;left:24px;top:50%;transform:translateY(-50%)}
+.compact-topbar{position:fixed;top:0;left:0;right:0;height:calc(74px + env(safe-area-inset-top, 0px));padding:env(safe-area-inset-top, 0px) 24px 0;display:flex!important;align-items:center;justify-content:center;background:#000 var(--img, none) center/cover no-repeat;border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:30;transform:translateY(-110%);opacity:0;pointer-events:none;transition:transform .3s ease, opacity .3s ease;will-change:transform,opacity}
+.compact-topbar .compact-menu-btn{position:absolute;left:24px;top:auto;bottom:19px;transform:none}
 .compact-topbar-title{font-size:22px;font-weight:800;letter-spacing:2px;color:#ffe600;text-align:center;white-space:nowrap;font-family:'altfont';text-transform:uppercase}
 body.header-compact .compact-topbar{transform:translateY(0);opacity:1;pointer-events:auto}
-body.header-compact .header-hero{min-height:72px;height:72px;transform:translateY(-8px);opacity:0.96}
+/* Hero fades under the compact bar instead of collapsing (collapsing made the page jump while scrolling) */
 body.header-compact .header-hero .container,body.header-compact .header-hero .hero-overlay,body.header-compact .header-hero .hero-bg{opacity:0;pointer-events:none}
 /* Sidebar */
-.sidebar{position:fixed;left:0;top:0;width:280px;height:100%;background:#071123;color:#ffe600;padding:24px;box-shadow:2px 0 18px rgba(0,0,0,0.6);transition:transform .28s ease, opacity .28s ease, visibility .28s ease;z-index:2147483647;overflow:auto;display:flex;flex-direction:column;transform:translateX(-100%);opacity:0;visibility:hidden;pointer-events:none}
+.sidebar{position:fixed;left:0;top:0;width:280px;max-width:85vw;height:100%;background:#071123;color:#ffe600;padding:calc(24px + env(safe-area-inset-top, 0px)) 24px 24px;box-shadow:2px 0 18px rgba(0,0,0,0.6);transition:transform .28s ease, opacity .28s ease, visibility .28s ease;z-index:2147483647;overflow:auto;display:flex;flex-direction:column;transform:translateX(-100%);opacity:0;visibility:hidden;pointer-events:none}
 .sidebar.open{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
-.sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
+.sidebar .close{position:absolute;right:12px;top:calc(12px + env(safe-area-inset-top, 0px));background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
 .sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
 .sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
 .sidebar a:hover{text-decoration:underline}
-.header-hero{position:relative;height:55vh;min-height:420px;display:flex;align-items:center;max-width:100vw;overflow:hidden;transition:min-height .3s ease,height .3s ease,transform .3s ease,opacity .3s ease}
+.header-hero{position:relative;width:100%;height:55vh;min-height:420px;display:flex;align-items:center;overflow:hidden;transition:opacity .3s ease}
 /* Hero motion blur: .hero-blur blurs horizontally then tilts by --mb-angle; .hero-img counter-rotates so the photo stays upright. Image comes from --img. */
-.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0;--mb-angle:-20deg}
+.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0;--img:none;--mb-angle:-20deg;transition:opacity .3s ease}
 .hero-blur{position:absolute;inset:-40%;transform:rotate(var(--mb-angle));filter:url(#motion-blur);pointer-events:none}
 .hero-img{position:absolute;inset:0;background:var(--img) center/cover no-repeat;transform:rotate(calc(var(--mb-angle) * -1))}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.7));z-index:1}
-.container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:center;gap:24px;max-width:100vw}
-.brand{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.7));z-index:1;transition:opacity .3s ease}
+.container{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:center;gap:24px;transition:opacity .3s ease}
+.brand{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;min-width:0}
 .brand .title{font-size:96px;line-height:1;color:#ffe600;letter-spacing:6px;text-align:center;display:inline-flex;flex-direction:column;align-items:center;gap:0;overflow:visible}
 .brand .subtitle{display:none}
 .title-row{display:inline-flex;font-family:'altfont';align-items:center;justify-content:center;gap:10px;margin-bottom:16px;overflow:visible;white-space:nowrap !important}
- .title-second{display:block;font-family:'altfont';margin-top:-12px;overflow:visible;white-space:nowrap !important}
- .subtitle-inline{font-size:14px;margin-left:6px;display:inline-block;vertical-align:baseline;position:relative;top:0;opacity:0.95;letter-spacing:0;margin-bottom:-38px !important}
+.title-second{display:block;font-family:'altfont';margin-top:-12px;overflow:visible;white-space:nowrap !important}
+.subtitle-inline{font-size:14px;margin-left:6px;display:inline-block;vertical-align:baseline;position:relative;top:0;opacity:0.95;letter-spacing:0;margin-bottom:-38px !important}
 .subtitle-mobile{display:none;font-size:14px;margin-top:12px;opacity:0.95;letter-spacing:0;white-space:normal}
 .title .title-text{font-family:'altfont';opacity:0.95}
 .connect-amp{font-family:'specialfont';opacity:0.95}
@@ -55,10 +55,11 @@ body.menu-open .menu-btn{display:none !important}
 .release-block{display:flex;flex-direction:column;align-items:flex-start}
 .release-name{font-size:16px;font-weight:700;margin-top:0}
 .out-now{display:block;font-size:12px;opacity:0.9;margin-top:6px}
-.cta .listen{background:transparent;border:2px solid #ffe600;color:#ffe600;padding:8px 14px;border-radius:24px;font-weight:500;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
-.grid-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1200px;margin:40px auto}
+.cta .listen:not([href]){visibility:hidden}
+.cta .listen{background:transparent;border:2px solid #ffe600;color:#ffe600;padding:8px 14px;border-radius:24px;font-weight:500;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+.grid-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1200px;margin:40px auto;padding:0 24px}
 .tile{background-size:cover;background-position:center;border-radius:16px;overflow:hidden;aspect-ratio:1/1;min-height:240px}
-.card{background:#071123;color:#ffe600;padding:24px;border-radius:16px;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;aspect-ratio:1/1;min-height:240px}
+.card{background:#071123;color:#ffe600;padding:24px;border-radius:16px;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;aspect-ratio:1/1;min-height:240px;min-width:0}
 .card h2{font-size:22px;margin-bottom:8px}
 .card p{color:#ffe600;opacity:0.95;margin:0}
 .card a{color:#ffe600;text-decoration:none}
@@ -66,35 +67,42 @@ body.menu-open .menu-btn{display:none !important}
 .links-section{display:block;margin-top:6px}
 .links-title{font-size:20px;margin-bottom:10px;color:#ffe600;opacity:0.98;font-weight:700}
 .links-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.links-grid a{display:inline-block;padding:6px 8px;background:transparent;border:1px solid rgba(255,230,0,0.06);border-radius:8px;font-size:12px;opacity:0.95}
-.footer{max-width:1200px;margin:40px auto;color:#fff;padding:24px}
+.links-grid a{display:inline-block;padding:6px 8px;background:transparent;border:1px solid rgba(255,230,0,0.06);border-radius:8px;font-size:12px;opacity:0.95;overflow-wrap:anywhere}
+.footer{max-width:1200px;margin:40px auto;color:#fff;padding:24px 24px calc(24px + env(safe-area-inset-bottom, 0px))}
+
+/* Tablet + phone */
 @media(max-width:900px){
-  .header-hero{min-height:auto;aspect-ratio:1/1;align-items:center;justify-content:center;padding-top:0}
-  .brand .title{font-size:40px;letter-spacing:2px;white-space:normal}
-  .title-row{gap:6px;flex-wrap:wrap;justify-content:center}
-  .title-second{margin-top:-4px}
+  /* The old aspect-ratio:1/1 combined with height:55vh made the hero only as wide as it was tall — that was the black strip on the right */
+  .header-hero{height:auto;min-height:min(100svh, 720px);aspect-ratio:auto;align-items:center;justify-content:center;padding:calc(72px + env(safe-area-inset-top, 0px)) 0 48px}
+  .brand .title{font-size:clamp(44px, 12vw, 88px);letter-spacing:2px;white-space:normal}
+  .title-row{gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+  .title-second{margin-top:0}
   .subtitle-inline{display:none}
-  .subtitle-mobile{display:block;width:100%;text-align:center;position:relative;top:0;margin-left:0;font-size:11px;margin-top:8px;letter-spacing:0.5px;line-height:1.2;white-space:normal}
-  .title .letter-special{padding-right:4px}
-  .title-second .letter-special{margin-left:-18px}
-  .container{padding:20px 16px;flex-direction:column;align-items:center;gap:16px}
-  .grid-section{grid-template-columns:1fr;}
-  .card{padding:18px;aspect-ratio:auto;min-height:auto}
-  .square-card{aspect-ratio:1/1}
+  .subtitle-mobile{display:block;width:100%;text-align:center;font-size:clamp(11px, 2vw, 16px);margin-top:14px;letter-spacing:0.5px;line-height:1.3}
+  .container{padding:20px 20px;flex-direction:column;align-items:center;gap:16px}
+  .grid-section{grid-template-columns:1fr;gap:16px;margin:24px auto;padding:0 16px}
+  .card{padding:20px;aspect-ratio:auto;min-height:auto}
+  .tile{min-height:0}
   .card h2{font-size:18px;margin-bottom:6px}
   .links-title{font-size:16px;margin-bottom:8px}
-  .links-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .links-grid a{font-size:11px;padding:6px 10px}
-  .latest-stack div{font-size:14px}
-  .release-name{font-size:14px;text-align:center}
-  .out-now{font-size:11px}
-  .cta{margin-top:10px}
-  .cta-inner{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px}
-  .latest-stack{flex:0 1 auto;align-items:center;flex-direction:row;gap:6px}
+  .links-grid a{font-size:11px;padding:8px 10px}
+  /* CTA stacks into one centered column */
+  .cta{margin-top:24px;width:100%}
+  .cta-inner{flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+  .latest-stack{flex-direction:row;align-items:center;gap:6px;opacity:0.85}
+  .latest-stack div{font-size:13px}
   .latest-stack div:first-child{margin-bottom:0}
-  .release-block{flex:0 1 auto;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:160px}
-  .cta .listen{align-self:center}
-  .footer{padding:20px;margin:30px auto}
+  .release-block{align-items:center;text-align:center}
+  .release-name{font-size:clamp(18px, 4vw, 26px)}
+  .out-now{font-size:11px}
+  .cta .listen{margin-top:6px;padding:10px 18px;font-size:13px}
+  .footer{padding:20px 16px calc(20px + env(safe-area-inset-bottom, 0px));margin:24px auto;font-size:13px}
+}
+
+/* Tablet: keep the two-column grid where there's room */
+@media(min-width:600px) and (max-width:900px){
+  .grid-section{grid-template-columns:1fr 1fr}
+  .square-card{aspect-ratio:1/1}
 }
 </style>
 </head>
@@ -116,7 +124,7 @@ body.menu-open .menu-btn{display:none !important}
     <a href="https://k1llajay.com/music">Latest Album</a>
     <a href="https://k1llajay.com/portfolio">Natural Photography</a>
     <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/database">Catelog Database</a>
+    <a href="https://k1llajay.com/extras/database">Catalog Database</a>
     <a href="https://k1llajay.com/extras/events">Events</a>
     <a href="https://k1llajay.com/404">Coming Soon</a>
   </nav>
@@ -128,7 +136,7 @@ body.menu-open .menu-btn{display:none !important}
       <feGaussianBlur stdDeviation="28 0" edgeMode="duplicate"/>
     </filter>
   </svg>
-  <div class="hero-bg" style="--img:url('images/IMG_4619.png')"><div class="hero-blur"><div class="hero-img"></div></div></div>
+  <div class="hero-bg"><div class="hero-blur"><div class="hero-img"></div></div></div>
   <div class="hero-overlay"></div>
   <button class="menu-btn" aria-label="Open menu">
     <span></span>
@@ -149,10 +157,10 @@ body.menu-open .menu-btn{display:none !important}
             <div>Release</div>
           </div>
           <div class="release-block">
-            <div class="release-name">ANY MEANS POSSIBLE</div>
+            <div class="release-name"></div>
             <div class="out-now">Out now on all streaming platforms</div>
           </div>
-          <a class="listen" href="https://moosyc.com/jae-laurent/any-means-possible">Listen Now →</a>
+          <a class="listen">Listen Now →</a>
         </div>
       </div>
     </div>
@@ -164,9 +172,9 @@ body.menu-open .menu-btn{display:none !important}
     <h2><span class="alt-font">SCHEDULED LIVES</span></h2>
     <p>None Available</p>
   </div>
-  <div class="tile" style="background-image:url('images/IMG_3215.jpeg')"></div>
+  <div class="tile"></div>
   <div class="card">
-    <h2><span class="alt-font">CONNECT</span> <span class="connect-amp">&</span> <span class="alt-font">FOLLOW</span></h2>
+    <h2><span class="alt-font">CONNECT</span> <span class="connect-amp">&amp;</span> <span class="alt-font">FOLLOW</span></h2>
     <div class="links-section">
       <div class="links-title">Stream all tracks on →</div>
       <div class="links-grid">
@@ -174,9 +182,6 @@ body.menu-open .menu-btn{display:none !important}
         <a href="https://music.apple.com/us/artist/yae-yadir/1722020367/" target="_blank" rel="noreferrer noopener">Apple Music</a>
         <a href="https://soundcloud.com/k1llajayyyyy" target="_blank" rel="noreferrer noopener">SoundCloud</a>
         <a href="https://open.spotify.com/artist/5W7BkfrrRcG6arIreq6m2k?si=XmiSnoYOR7qTIdFmEBBh6A" target="_blank" rel="noreferrer noopener">Spotify</a>
-        <span></span>
-        <span></span>
-        <span></span>
       </div>
     </div>
     <div class="links-section">
@@ -186,23 +191,16 @@ body.menu-open .menu-btn{display:none !important}
         <a href="https://twitter.com/k1llajay_" target="_blank" rel="noreferrer noopener">Twitter</a>
         <a href="https://www.tiktok.com/@k1llajay" target="_blank" rel="noreferrer noopener">TikTok</a>
         <a href="https://www.youtube.com/@k1llajay" target="_blank" rel="noreferrer noopener">YouTube</a>
-        <span></span>
-        <span></span>
       </div>
     </div>
     <div class="links-section">
       <div class="links-title">Contact →</div>
       <div class="links-grid">
         <a href="mailto:southofsomewhere@icloud.com">southofsomewhere@icloud.com</a>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
       </div>
     </div>
   </div>
-  <div class="tile" style="background-image:url('images/2BC8FA17-73EE-49FE-B013-744F3E0C01FF.jpeg')"></div>
+  <div class="tile"></div>
 </section>
 
   <footer class="footer">
@@ -247,8 +245,12 @@ body.menu-open .menu-btn{display:none !important}
     function updateCompactHeader(){
       const currentScroll = window.scrollY || window.pageYOffset;
       const scrollingUp = currentScroll < lastScrollTop - 8;
-      const shouldShow = currentScroll > 60 && scrollingUp;
-      document.body.classList.toggle('header-compact', shouldShow);
+      const scrollingDown = currentScroll > lastScrollTop + 8;
+      if (currentScroll <= 60 || scrollingDown) {
+        document.body.classList.remove('header-compact');
+      } else if (scrollingUp) {
+        document.body.classList.add('header-compact');
+      }
       lastScrollTop = currentScroll;
     }
 
@@ -315,6 +317,7 @@ body.menu-open .menu-btn{display:none !important}
       const images = data.imageData || {};
       if (images.heroBackground) {
         document.querySelector('.hero-bg').style.setProperty('--img', `url("${images.heroBackground}")`);
+        document.getElementById('compactTopbar').style.setProperty('--img', `url("${images.heroBackground}")`);
       }
       if (images.tileOne && tiles[0]) tiles[0].style.backgroundImage = `url("${images.tileOne}")`;
       if (images.tileTwo && tiles[1]) tiles[1].style.backgroundImage = `url("${images.tileTwo}")`;
