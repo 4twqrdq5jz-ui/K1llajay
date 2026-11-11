@@ -3,61 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Loading... – Jae Laurent</title> <!-- Will be updated dynamically -->
+  <title>Jae Laurent</title>
   <link rel="icon" href="images/favicon.ico">
   <style>
-@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('truetype');}
+@font-face {font-family: 'sitefont'; src: url('font/kobuzan-cy-grotesk-grand-dark.otf') format('opentype');}
 @font-face {font-family: 'altfont'; src: url('font/TT-Commons-Pro-Bold-GFXTRA.COM-iF66f11118bc78d.ttf') format('truetype');}
 
 /* ================= RESET ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
   width: 100%;
-  height: 100dvh;
+  min-height: 100dvh;
   font-family: 'sitefont', monospace;
   color: white;
-  background: #000000;
-}
-html {
-  height: 100vh;
-  height: 100dvh;
-  padding-top: 0;
+  background: #000;
 }
 
-.sidebar {
-  display: flex !important;
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateX(-100%);
+body {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* ================= TOP BAR ================= */
 .top-bar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 76px;
-  padding: 0 24px;
+  top: 0; left: 0; right: 0;
+  height: calc(76px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 24px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("images/IMG_4619.png") center / cover no-repeat;
+  background: #000 url("images/IMG_4619.png") center / cover no-repeat;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   z-index: 20;
 }
 .top-bar .menu-btn {
   position: absolute;
-  left: 24px;
+  left: calc(24px + env(safe-area-inset-left, 0px));
+  bottom: 20px;
 }
 .top-bar-title {
+  font-family: 'altfont', sans-serif;
+  text-transform: uppercase;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -70,10 +60,9 @@ html {
   width: 44px;
   height: 36px;
   padding: 8px;
-  display: flex !important;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  z-index: 999;
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 230, 0, 0.5);
   border-radius: 12px;
@@ -81,7 +70,6 @@ html {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  background-clip: padding-box;
 }
 .menu-btn span {
   display: block;
@@ -90,22 +78,19 @@ html {
   background: #ffe600;
   border-radius: 999px;
 }
-.menu-btn:focus {
-  outline: 2px solid rgba(255, 230, 0, 0.35);
-}
-body.menu-open .menu-btn {
-  display: none !important;
-}
+.menu-btn:focus-visible { outline: 2px solid rgba(255, 230, 0, 0.6); }
+body.menu-open .menu-btn { visibility: hidden; }
 
+/* ================= SIDEBAR ================= */
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 0; top: 0;
   width: 280px;
+  max-width: 85vw;
   height: 100%;
   background: #071123;
   color: #ffe600;
-  padding: 24px;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) 24px 24px;
   box-shadow: 2px 0 18px rgba(0, 0, 0, 0.6);
   transition: transform .28s ease, opacity .28s ease, visibility .28s ease;
   z-index: 30;
@@ -117,189 +102,30 @@ body.menu-open .menu-btn {
   visibility: hidden;
   pointer-events: none;
 }
-.sidebar.active{transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
-.sidebar .close{position:absolute;right:12px;top:12px;background:transparent;border:0;color:#ffe600;font-size:24px;cursor:pointer}
-.sidebar nav{margin-top:36px;display:flex;flex-direction:column;gap:12px}
-.sidebar a{color:#ffe600;text-decoration:none;padding:6px 8px;border-radius:6px}
-.sidebar a:hover{text-decoration:underline}
-.footer{max-width:1200px;width:100%;margin:20px 0 30px;color:#fff;padding:20px 24px;text-align:left!important;display:block;line-height:1.6;align-self:flex-start}
-
-/* ================= BODY ================= */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-  position: relative;
-  overflow-x: hidden;
-}
+.sidebar.active { transform: translateX(0); opacity: 1; visibility: visible; pointer-events: auto; }
+.sidebar .close { position: absolute; right: 12px; top: calc(12px + env(safe-area-inset-top, 0px)); background: transparent; border: 0; color: #ffe600; font-size: 24px; cursor: pointer; }
+.sidebar nav { margin-top: 36px; display: flex; flex-direction: column; gap: 12px; }
+.sidebar a { color: #ffe600; text-decoration: none; padding: 6px 8px; border-radius: 6px; }
+.sidebar a:hover { text-decoration: underline; }
 
 /* ================= PAGE LAYOUT ================= */
-.main-content::-webkit-scrollbar { display: none; }
-.main-content { -ms-overflow-style: none; scrollbar-width: none; }
 .main-content {
   flex: 1;
-  padding: 110px 24px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  flex-direction: column;
-  position: relative;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.page-title {
-  font-size: 72px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #ffe600;
-  text-align: center;
-}
-
-.page-subtitle {
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: rgba(255,230,0,0.95);
-  align-items: start;
-}
-
-.album-cover {
   width: 100%;
-  aspect-ratio: 1/1;
-  border-radius: 36px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255,255,255,0.12);
-}
-
-.album-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.album-meta {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-.album-heading {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.album-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.album-title-toggle {
-  background: transparent;
-  border: none;
-  color: #ffe600;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-}
-
-.album-heading .album-label {
-  font-size: 58px;
-  font-weight: 900;
-  color: #ffe600;
-  letter-spacing: 1.4px;
-}
-
-.album-heading .album-artist {
-  font-size: 28px;
-  line-height: 1.05;
-  letter-spacing: 1.8px;
-  color: white;
-  text-transform: uppercase;
-}
-
-.album-meta.collapsed .album-data-grid {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-}
-
-.album-data-grid {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
-  gap: 18px;
-  overflow: hidden;
-  max-height: 1000px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: max-height 0.35s ease, opacity 0.28s ease, transform 0.35s ease;
-}
-
-.meta-column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.meta-column h3 {
-  font-size: 14px;
-  letter-spacing: 3px;
-  color: #ffe600;
-  margin-bottom: 6px;
-}
-
-.meta-column ul,
-.meta-column ol {
-  list-style-position: outside;
-  color: white;
-  font-size: 14px;
-  line-height: 1.8;
-  padding-left: 25px;
-  display: grid;
-  gap: 4px;
-}
-
-.meta-column ul {
-  list-style-type: disc;
-}
-
-.meta-column ol {
-  list-style-type: decimal;
-}
-
-.meta-column ul li,
-.meta-column ol li {
-  opacity: 0.95;
-}
-
-.tracklist-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  background: #071123;
-  border-radius: 28px;
-  padding: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: calc(110px + env(safe-area-inset-top, 0px)) 24px 40px;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(320px, 420px) minmax(320px, 1fr);
-  gap: 48px;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  gap: 40px;
   align-items: start;
 }
+.hero-grid > * { min-width: 0; }
 
+/* ================= ALBUM CARD ================= */
 .album-card {
   display: flex;
   flex-direction: column;
@@ -307,254 +133,213 @@ body {
   background: #071123;
   border-radius: 28px;
   padding: 28px;
+  min-width: 0;
 }
 
-.album-meta {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+.album-cover {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #0e1d38; /* placeholder while the cover loads */
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.album-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.album-cover img.loaded { opacity: 1; }
+
+.album-meta { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+
+.album-heading { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+.album-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.album-label {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(30px, 3.6vw, 52px);
+  line-height: 1.05;
+  font-weight: 900;
+  color: #ffe600;
+  letter-spacing: 1px;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.album-title-toggle {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: #ffe600;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px 2px;
+  line-height: 1;
+}
+
+.album-artist {
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.05;
+  letter-spacing: 1.8px;
+  color: white;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 
 .album-data-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+  overflow: hidden;
+  max-height: 1500px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.35s ease, opacity 0.28s ease, transform 0.35s ease;
+}
+.album-meta.collapsed .album-data-grid {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
 }
 
-.meta-column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+.meta-column { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 
 .meta-column h3 {
-  font-size: 14px;
-  letter-spacing: 3px;
+  font-size: 13px;
+  letter-spacing: 2px;
   color: #ffe600;
   margin-bottom: 6px;
 }
 
-.meta-column ul {
-  list-style: none;
+.meta-column ul,
+.meta-column ol {
   color: white;
   font-size: 14px;
-  line-height: 1.8;
-  padding-left: 0px;
+  line-height: 1.6;
   display: grid;
-  gap: 4px;
+  gap: 6px;
+  overflow-wrap: break-word;
 }
+.meta-column ul { list-style: none; padding-left: 0; }
+.meta-column ol { list-style: decimal outside; padding-left: 22px; }
+.meta-column li { opacity: 0.95; }
 
-.meta-column ul li {
-  opacity: 0.95;
-}
-
-.tracklist-header {
+/* ================= TRACKLIST ================= */
+.tracklist-panel {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 24px;
+  background: #071123;
+  border-radius: 28px;
+  padding: 32px;
+  min-width: 0;
 }
 
 .tracklist-header h2 {
-  font-size: 52px;
+  font-size: clamp(34px, 4vw, 52px);
   letter-spacing: 2px;
   color: #ffe600;
-  margin: 0;
 }
 
-.tracklist {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+.tracklist { display: flex; flex-direction: column; gap: 10px; }
 
 .track {
   display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 20px;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 16px;
   align-items: baseline;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+.track-number { font-size: 16px; font-weight: 700; opacity: 0.9; }
+.track-title { font-size: 18px; line-height: 1.3; color: #ffe600; overflow-wrap: break-word; }
 
-.track-number {
-  font-size: 16px;
-  font-weight: 700;
-  opacity: 0.9;
-  min-width: 28px;
+/* ================= FOOTER ================= */
+.footer {
+  width: 100%;
+  max-width: 1280px;
+  margin: 20px auto 30px;
+  color: #fff;
+  padding: 20px 24px calc(20px + env(safe-area-inset-bottom, 0px));
+  line-height: 1.6;
 }
+.footer a { color: #ffe600; text-decoration: none; }
 
-.track-title {
-  font-size: 18px;
-  line-height: 1.3;
-  color: #ffe600;
-}
-
-.track-extra {
-  font-size: 12px;
-  opacity: 0.65;
-  margin-top: 4px;
-}
-
+/* ================= RESPONSIVE ================= */
 @media (max-width: 980px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
-  .album-data-grid {
-    grid-template-columns: 1fr;
-  }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .album-card { max-width: 640px; width: 100%; margin: 0 auto; }
+  .tracklist-panel { max-width: 640px; width: 100%; margin: 0 auto; }
+  .album-label { font-size: clamp(30px, 6vw, 48px); }
 }
 
 @media (max-width: 640px) {
-  .main-content {
-    padding: 100px 0px 0px;
-  }
-
-  .page-title {
-    font-size: 32px;
-  }
-
-  .hero-grid {
-    gap: 20px;
-  }
-
-  .album-cover {
-    border-radius: 28px;
-  }
-
-  .album-heading .album-artist {
-    font-size: 32px;
-  }
-
-  .meta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tracklist-header h2 {
-    font-size: 36px;
-  }
-}
-
-
-
-/* Mobile */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-
-  .main-content {
-    padding: 100px 0px 0px;
-  }
-
-  .page-title {
-    font-size: 36px;
-  }
-
-  .page-subtitle {
-    font-size: 16px;
-  }
-
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .album-card {
-    padding: 24px;
-    padding-top: 28px;
-    border-radius: 28px;
-  }
-
-  .album-heading .album-label {
-    font-size: 42px;
-  }
-
-  .album-heading .album-artist {
-    font-size: 22px;
-  }
-
-  .meta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tracklist-panel {
-    padding: 24px;
-    border-radius: 28px;
-  }
-
-  .tracklist-header h2 {
-    font-size: 38px;
-  }
-
-  .track {
-    gap: 14px;
-  }
-
-  .footer{padding:20px;margin:30px auto}
-}
-
-@media (max-width: 768px) {
-  html, body {
-    padding-top: 0;
-  }
-}
-
-.page-footer {
-  max-width: 1200px;
-  margin: 40px auto;
-  color: #fff;
-  padding: 24px 16px;
-  text-align: center;
-}
-
-.page-footer a {
-  color: #ffe600;
-  text-decoration: none;
-}
-
-.page-footer a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 900px) {
-  .footer{padding:20px;margin:30px auto}
+  .main-content { padding: calc(96px + env(safe-area-inset-top, 0px)) 12px 0; }
+  .top-bar { padding-left: 16px; padding-right: 16px; }
+  .top-bar .menu-btn { left: calc(16px + env(safe-area-inset-left, 0px)); }
+  .top-bar-title { font-size: 18px; }
+  .album-card { padding: 20px; gap: 22px; border-radius: 24px; }
+  .album-cover { border-radius: 20px; }
+  .album-label { font-size: clamp(28px, 9vw, 40px); }
+  .album-artist { font-size: 20px; }
+  .album-data-grid { grid-template-columns: minmax(0, 1fr); }
+  .tracklist-panel { padding: 20px; border-radius: 24px; }
+  .track { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; }
+  .track-title { font-size: 16px; }
+  .footer { padding: 20px 16px calc(20px + env(safe-area-inset-bottom, 0px)); font-size: 13px; }
 }
   </style>
 </head>
 <body>
   <aside class="sidebar" id="siteSidebar" aria-hidden="true">
-  <button class="close" aria-label="Close menu">×</button>
-  <nav aria-label="Main navigation">
-    <a href="https://k1llajay.com">Home</a>
-    <a href="https://k1llajay.com/music">Latest Album</a>
-    <a href="https://k1llajay.com/portfolio">Natural Photography</a>
-    <a href="https://k1llajay.com/podcast">Trend Talk</a>
-    <a href="https://k1llajay.com/extras/database">Catelog Database</a>
-    <a href="https://k1llajay.com/extras/events">Events</a>
-    <a href="https://k1llajay.com/404">Coming Soon</a>
-  </nav>
-</aside>
+    <button class="close" aria-label="Close menu">×</button>
+    <nav aria-label="Main navigation">
+      <a href="https://k1llajay.com">Home</a>
+      <a href="https://k1llajay.com/music">Latest Album</a>
+      <a href="https://k1llajay.com/portfolio">Natural Photography</a>
+      <a href="https://k1llajay.com/podcast">Trend Talk</a>
+      <a href="https://k1llajay.com/extras/database">Catalog Database</a>
+      <a href="https://k1llajay.com/extras/events">Events</a>
+      <a href="https://k1llajay.com/404">Coming Soon</a>
+    </nav>
+  </aside>
+
   <div class="top-bar">
     <button class="menu-btn" aria-label="Open menu">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <div id="pageArtist" class="top-bar-title" style="font-family:'altfont';text-transform: uppercase">JAE LAURENT</div>
+    <div id="pageArtist" class="top-bar-title"></div>
   </div>
+
   <main class="main-content">
     <section class="hero-grid">
       <article class="album-card">
         <div class="album-cover">
-          <img src="images/Album Cover.PNG" alt="This Is For The Girls And The Gays album cover" />
+          <img alt="" />
         </div>
         <div class="album-meta">
           <div class="album-heading">
             <div class="album-title-row">
-              <div id="album-label" class="album-label">This Is For The Girls And The Gays</div>
-              <button class="album-title-toggle" id="albumToggle" aria-label="Toggle album details" type="button">▾</button>
+              <h1 id="album-label" class="album-label"></h1>
+              <button class="album-title-toggle" id="albumToggle" aria-label="Toggle album details" aria-expanded="true" type="button">▾</button>
             </div>
-            <div id="album-artist" class="album-artist">Jae Laurent</div>
+            <div id="album-artist" class="album-artist"></div>
           </div>
           <div class="album-data-grid">
             <div class="meta-column">
@@ -580,20 +365,19 @@ body {
           <h2>TRACKLIST</h2>
         </div>
         <div class="tracklist" id="tracklist">
-          <!-- Tracks loaded dynamically -->
+          <!-- Tracks loaded from Firebase -->
         </div>
       </article>
     </section>
   </main>
 
   <footer class="footer">
-    © 2026 Jefferson Entertainment LLC • <a href="https://k1llajay.com/extras/terms" style="color:#ffe600;text-decoration:none">Terms</a> • <a href="https://k1llajay.com/extras/privacy" style="color:#ffe600;text-decoration:none">Privacy</a> <a href="https://k1llajay.com/editor/editor-home" style="color:#000000;text-decoration:none">___</a>
+    © 2026 Jefferson Entertainment LLC • <a href="https://k1llajay.com/extras/terms">Terms</a> • <a href="https://k1llajay.com/extras/privacy">Privacy</a> <a href="https://k1llajay.com/editor/editor-home" style="color:#000000">___</a>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script>
-
     const firebaseConfig = {
       apiKey: "AIzaSyDf2Caujz2FQuUDtzDr8eArpmaHXX_vsVY",
       authDomain: "music-database-3ee0a.firebaseapp.com",
@@ -609,28 +393,30 @@ body {
     const albumRef = db.ref('album');
     const tracksRef = db.ref('tracks');
 
-    let albumData = { title: 'This Is For The Girls And The Gays', artist: 'Jae Laurent' };
+    // Everything below starts empty and is filled only by Firebase
+    let albumData = {};
     let trackData = {};
     let trackKeys = [];
 
     function updatePageTitle() {
-      const title = albumData.title || 'This Is For The Girls And The Gays';
-      document.title = `${title} – Jae Laurent`;
+      const parts = [albumData.title, albumData.artist].filter(Boolean);
+      document.title = parts.length ? parts.join(' – ') : 'Jae Laurent';
     }
 
     function updateAlbumHeader() {
       const labelEl = document.getElementById('album-label');
       const artistEl = document.getElementById('album-artist');
       const pageArtistEl = document.getElementById('pageArtist');
-      const pageAlbumEl = document.getElementById('pageAlbum');
-      if (labelEl) labelEl.textContent = albumData.title || 'This Is For The Girls And The Gays';
-      if (artistEl) artistEl.textContent = albumData.artist || 'Jae Laurent';
-      if (pageArtistEl) pageArtistEl.textContent = albumData.artist || 'Jae Laurent';
-      if (pageAlbumEl) pageAlbumEl.textContent = albumData.title || 'This Is For The Girls And The Gays';
+      if (labelEl) labelEl.textContent = albumData.title || '';
+      if (artistEl) artistEl.textContent = albumData.artist || '';
+      if (pageArtistEl) pageArtistEl.textContent = albumData.artist || '';
+
       const coverEl = document.querySelector('.album-cover img');
-      if (coverEl) {
-        coverEl.src = albumData.cover || 'images/Album Cover.PNG';
-        coverEl.alt = `${albumData.title || 'This Is For The Girls And The Gays'} album cover`;
+      if (coverEl && albumData.cover && coverEl.getAttribute('src') !== albumData.cover) {
+        coverEl.classList.remove('loaded');
+        coverEl.onload = () => coverEl.classList.add('loaded');
+        coverEl.src = albumData.cover;
+        coverEl.alt = albumData.title ? `${albumData.title} album cover` : 'Album cover';
       }
     }
 
@@ -645,29 +431,23 @@ body {
       if (!track || !track.scheduleEnabled) return true;
       const scheduledFor = parseLocalDate(track.scheduleDate);
       if (!scheduledFor) return true;
-
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       return scheduledFor <= today;
     }
 
-
-    // Load album data
     albumRef.on('value', snap => {
-      albumData = snap.val() || { title: 'This Is For The Girls And The Gays', artist: 'Jae Laurent' };
+      albumData = snap.val() || {};
       updatePageTitle();
       updateAlbumHeader();
+      populateMetadataLists();
     });
 
-    // Load tracks (sort by number)
     tracksRef.on('value', snap => {
       const val = snap.val() || {};
-      // Sort both keys and tracks by track number
-      const entries = Object.entries(val).map(([k, v]) => [k, v]);
+      const entries = Object.entries(val);
       entries.sort((a, b) => (a[1].number || 0) - (b[1].number || 0));
-
       const visibleEntries = entries.filter(([, v]) => shouldShowTrack(v));
-
       trackKeys = visibleEntries.map(([k]) => k);
       trackData = {};
       visibleEntries.forEach(([k, v]) => { trackData[k] = v; });
@@ -692,116 +472,99 @@ body {
       });
     }
 
-    function populateMetadataLists() {
-      const producerList = document.getElementById('producerList');
-      const sampleList = document.getElementById('sampleList');
-      const featureList = document.getElementById('featureList');
-      const featureBlock = document.querySelector('[data-feature-block]');
+    function fillList(listEl, values) {
+      if (!listEl) return;
+      listEl.replaceChildren();
+      values.forEach(value => {
+        const item = document.createElement('li');
+        item.textContent = value;
+        listEl.appendChild(item);
+      });
+    }
 
+    function populateMetadataLists() {
       const producedValues = [];
       const sampledValues = [];
       const featureValues = [];
 
       trackKeys.forEach(key => {
         const track = trackData[key] || {};
-        const rawProduced = track.creditProduced || albumData.artist || 'Jae Laurent';
-        const rawSampled = track.creditSampled || '';
-        const rawFeature = track.feature || '';
-
-        producedValues.push(...parseListValues(rawProduced));
-        sampledValues.push(...parseListValues(rawSampled));
-        featureValues.push(...parseListValues(rawFeature));
+        producedValues.push(...parseListValues(track.creditProduced || albumData.artist || ''));
+        sampledValues.push(...parseListValues(track.creditSampled || ''));
+        featureValues.push(...parseListValues(track.feature || ''));
       });
 
-      const uniqueProduced = dedupeValues(producedValues);
-      const uniqueSampled = dedupeValues(sampledValues);
+      const artistLower = String(albumData.artist || '').toLowerCase();
       const uniqueFeatures = dedupeValues(featureValues.filter(value => {
         const normalized = value.toLowerCase();
-        return normalized !== 'undefined' && normalized !== 'unknown' && normalized !== String(albumData.artist || '').toLowerCase();
+        return normalized !== 'undefined' && normalized !== 'unknown' && normalized !== artistLower;
       }));
 
-      if (producerList) {
-        producerList.innerHTML = '';
-        uniqueProduced.forEach(value => {
-          const item = document.createElement('li');
-          item.textContent = value;
-          producerList.appendChild(item);
-        });
-      }
+      fillList(document.getElementById('producerList'), dedupeValues(producedValues));
+      fillList(document.getElementById('sampleList'), dedupeValues(sampledValues));
+      fillList(document.getElementById('featureList'), uniqueFeatures);
 
-      if (sampleList) {
-        sampleList.innerHTML = '';
-        uniqueSampled.forEach(value => {
-          const item = document.createElement('li');
-          item.textContent = value;
-          sampleList.appendChild(item);
-        });
-      }
-
-      if (featureList) {
-        featureList.innerHTML = '';
-        uniqueFeatures.forEach(value => {
-          const item = document.createElement('li');
-          item.textContent = value;
-          featureList.appendChild(item);
-        });
-      }
-
-      if (featureBlock) {
-        featureBlock.style.display = uniqueFeatures.length ? '' : 'none';
-      }
+      const featureBlock = document.querySelector('[data-feature-block]');
+      if (featureBlock) featureBlock.style.display = uniqueFeatures.length ? '' : 'none';
     }
 
     function renderTracklist() {
       const tracklist = document.getElementById('tracklist');
-      tracklist.innerHTML = '';
+      tracklist.replaceChildren();
+      const artistLower = String(albumData.artist || '').toLowerCase();
+
       trackKeys.forEach(key => {
-        const track = trackData[key];
-        const explicitSymbol = track.explicit ? ' 🄴' : '';
+        const track = trackData[key] || {};
         const rawFeature = String(track.feature || '').trim();
         const lowerFeature = rawFeature.toLowerCase();
-        const lowerAlbumArtist = String(albumData.artist || '').toLowerCase();
-        const validFeature = rawFeature && lowerFeature !== 'undefined' && lowerFeature !== 'unknown' && lowerFeature !== lowerAlbumArtist;
-        const featureText = validFeature ? ` With ${rawFeature}` : '';
-        tracklist.innerHTML += `
-          <div class="track">
-            <div class="track-number">${track.number || '?' }.</div>
-            <div class="track-title">${track.title || 'Untitled'}${featureText}${explicitSymbol}</div>
-          </div>
-        `;
+        const validFeature = rawFeature && lowerFeature !== 'undefined' && lowerFeature !== 'unknown' && lowerFeature !== artistLower;
+
+        const row = document.createElement('div');
+        row.className = 'track';
+        const num = document.createElement('div');
+        num.className = 'track-number';
+        num.textContent = `${track.number || '?'}.`;
+        const title = document.createElement('div');
+        title.className = 'track-title';
+        title.textContent = `${track.title || 'Untitled'}${validFeature ? ` With ${rawFeature}` : ''}${track.explicit ? ' 🄴' : ''}`;
+        row.append(num, title);
+        tracklist.appendChild(row);
       });
       populateMetadataLists();
     }
 
+    // Menu
     const menuButton = document.querySelector('.menu-btn');
-    const sidebarEl = document.querySelector('.sidebar');
+    const sidebarEl = document.getElementById('siteSidebar');
+    const closeBtn = sidebarEl.querySelector('.close');
+
+    function openMenu() {
+      sidebarEl.classList.add('active');
+      sidebarEl.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('menu-open');
+    }
+    function closeMenu() {
+      sidebarEl.classList.remove('active');
+      sidebarEl.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+    }
+    menuButton.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    document.addEventListener('click', e => {
+      if (sidebarEl.classList.contains('active') && !sidebarEl.contains(e.target) && !menuButton.contains(e.target)) closeMenu();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    // Album details toggle
     const albumMetaEl = document.querySelector('.album-meta');
     const albumToggleBtn = document.getElementById('albumToggle');
+    albumToggleBtn.addEventListener('click', () => {
+      const isCollapsed = albumMetaEl.classList.toggle('collapsed');
+      albumToggleBtn.textContent = isCollapsed ? '▸' : '▾';
+      albumToggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    });
 
-    if (menuButton && sidebarEl) {
-      menuButton.addEventListener('click', () => {
-        sidebarEl.classList.toggle('active');
-        document.body.classList.toggle('menu-open');
-      });
-    }
-    const closeBtn = document.querySelector('.sidebar .close');
-    if (closeBtn && sidebarEl) {
-      closeBtn.addEventListener('click', () => {
-        sidebarEl.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      });
-    }
-
-    if (albumToggleBtn && albumMetaEl) {
-      albumToggleBtn.addEventListener('click', () => {
-        const isCollapsed = albumMetaEl.classList.toggle('collapsed');
-        albumToggleBtn.textContent = isCollapsed ? '▸' : '▾';
-        albumToggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
-      });
-    }
-
-    // Initial title (will be updated once data loads)
     updatePageTitle();
-</script>
+  </script>
 </body>
 </html>
